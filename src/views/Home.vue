@@ -16,8 +16,22 @@ export default {
     indexTop,
     indexContent
   },
-  methods: {},
-  mounted() {},
+  methods: {
+    getNumber() {
+      console.log(13156)
+      this.$axios
+        .get("/ksExam/getByMeCount")
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  },
+  mounted() {
+    this.getNumber();
+  },
   watch: {},
   computed: {}
 };
