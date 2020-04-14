@@ -27,8 +27,8 @@
     <div class="userlist">
       <div class="word">性别</div>
       <div class="input">
-        <el-radio v-model="radio" label="1">男</el-radio>
-        <el-radio v-model="radio" label="2">女</el-radio>
+        <el-radio v-model="radio" disabled label="1">男</el-radio>
+        <el-radio v-model="radio" disabled label="2">女</el-radio>
       </div>
     </div>
     <div class="userlist">
