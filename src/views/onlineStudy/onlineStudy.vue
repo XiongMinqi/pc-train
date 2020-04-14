@@ -1,5 +1,5 @@
 <template>
-  <div class="chooseList">content</div>
+  <div>onlineStudy</div>
 </template>
 
 <script>
@@ -16,6 +16,4 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-.chooseList {
-}
 </style>

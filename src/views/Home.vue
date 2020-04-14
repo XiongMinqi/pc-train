@@ -1,41 +1,53 @@
 <template>
-  <div>
-    <indexTop />
-    <indexContent />
+  <div class="content">
+    <el-container>
+      <el-header>
+        <indexTop />
+      </el-header>
+      <el-container>
+        <el-aside width="200px">
+          <indexLeft />
+        </el-aside>
+        <el-main>
+          <router-view></router-view>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 
 <script>
 import indexTop from "../components/index-top/index-top";
-import indexContent from "../components/index-content/index-content";
+import indexLeft from "../components/index-left/index-left";
 export default {
   data() {
     return {};
   },
   components: {
     indexTop,
-    indexContent
+    indexLeft
   },
-  methods: {
-    getNumber() {
-      console.log(13156)
-      this.$axios
-        .get("/ksExam/getByMeCount")
-        .then(res => {
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    }
-  },
-  mounted() {
-    this.getNumber();
-  },
+  methods: {},
+  mounted() {},
   watch: {},
   computed: {}
 };
 </script>
 
 <style scoped lang='scss'>
+.content{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+.el-container{
+border-top: 1px solid black;
+}
+.is-vertical{
+  border: 0;
+}
+.el-main{
+  height: 696px;
+  border-left: 1px solid black;
+}
 </style>

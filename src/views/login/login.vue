@@ -34,7 +34,7 @@
         </div>
         <div class="btn">
           <el-row>
-            <el-button type="primary" @click="login">登录</el-button>
+            <el-button type="primary" @click="loginIng">登录</el-button>
           </el-row>
         </div>
       </div>
@@ -43,7 +43,6 @@
 </template>
 
 <script>
-import loginApi from "./loginApi"
 export default {
   data() {
     return {
@@ -62,11 +61,30 @@ export default {
       // console.log(e);
       this.passwords = e;
     },
-    login() {
-      console.log(this.username);
-      console.log(this.passwords);
-      console.log(this.checked);
-      
+    loginIng() {
+      let data = {
+        username: this.username,
+        password: this.passwords,
+        "remeber-me": this.checked
+      };
+      // console.log(data);
+      this.$api
+        .login(data)
+        .then(res => {
+          console.log(res);
+          if (res.code === 0) {
+            // console.log(res.data[0]);
+            this.$message({
+              message: res.msg,
+              type: "success"
+            });
+            localStorage.setItem("userInfo", JSON.stringify(res.data[0]));
+            this.$router.push({ name: "index", path: "/index" });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   mounted() {},
@@ -81,7 +99,7 @@ export default {
   height: 100%;
   background: url("../../assets/icon/1543822105765191.jpg");
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: 100% 100%;
   .title {
     position: absolute;
     top: 10%;

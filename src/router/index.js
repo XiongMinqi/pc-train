@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import Index from '../views/index/index.vue'
 
 Vue.use(VueRouter)
 
@@ -9,47 +10,108 @@ Vue.use(VueRouter)
     path: '/', // 默认进入路由
     redirect: '/home'  //重定向
   },
-  {
-    path: '/home',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/index',
-    name: 'index',
-    component: () => import('../views/index/index.vue')
-  },
+  // {
+  //   path:'/',
+  //   name:'home'
+  // },
   {
     path: '/login',
     name: 'login',
     component: () => import('../views/login/login.vue')
+  },
+  {
+    path: "/index",
+    component: Home,
+    meta: {
+      title: '首页'
+    },
+    children: [
+      {
+        path: "",
+        name: "index",
+        component: Index
+      }
+    ]
+  },
+  {
+    path: "/score",
+    component: Home,
+    children: [
+      {
+        path: "",
+        name: "score",
+        component: ()=>import("../views/score/score.vue")
+      }
+    ]
+  },
+  {
+    path: "/onlineTest",
+    component: Home,
+    children: [
+      {
+        path: "",
+        name: "onlineTest",
+        component: ()=>import("../views/onlineTest/onlineTest.vue")
+      }
+    ]
+  },
+  {
+    path: "/onlineStudy",
+    component: Home,
+    children: [
+      {
+        path: "",
+        name: "onlineStudy",
+        component: ()=>import("../views/onlineStudy/onlineStudy.vue")
+      }
+    ]
+  },
+  {
+    path: "/mistake",
+    component: Home,
+    children: [
+      {
+        path: "",
+        name: "mistake",
+        component: ()=>import("../views/mistake/mistake.vue")
+      }
+    ]
+  },
+  {
+    path: "/grade",
+    component: Home,
+    children: [
+      {
+        path: "",
+        name: "grade",
+        component: ()=>import("../views/grade/grade.vue")
+      }
+    ]
+  },
+  {
+    path: "/user",
+    component: Home,
+    children: [
+      {
+        path: "",
+        name: "user",
+        component: ()=>import("../views/user/user.vue")
+      }
+    ]
   }
 ]
 
 const router = new VueRouter({
   routes
 })
-// 全局路由守卫
+//路由守卫
 router.beforeEach((to, from, next) => {
-  console.log('navigation-guards');
-  // to: Route: 即将要进入的目标 路由对象
-  // from: Route: 当前导航正要离开的路由
-  // next: Function: 一定要调用该方法来 resolve 这个钩子。执行效果依赖 next 方法的调用参数。
-  const nextRoute = ['home', 'good-list', 'good-detail', 'cart', 'profile'];
-  let isLogin = global.isLogin; // 是否登录
-  // 未登录状态；当路由到nextRoute指定页时，跳转至login
-  if (nextRoute.indexOf(to.name) >= 0) { 
-   if (!isLogin) {
-    console.log('what fuck');
-    router.push({ name: 'login' })
-   }
+  document.title = to.meta.title;
+  let user = localStorage.getItem("userInfo");
+  if (to.path === "/login") {
+    next();
+  } else {
+    user ? next() : next("/login");
   }
-  // 已登录状态；当路由到login时，跳转至home 
-  if (to.name === 'login') {
-   if (isLogin) {
-    router.push({ name: 'home' });
-   }
-  }
-  next();
- });
+});
 export default router
