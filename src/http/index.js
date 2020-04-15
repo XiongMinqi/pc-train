@@ -1,5 +1,4 @@
 import axios from "axios"
-import qs from "qs"
 import router from "../router"
 
 // 创建axios配置对象
@@ -11,7 +10,7 @@ service.defaults.baseURL = "http://localhost:8080"
 // 超时时间
 service.defaults.timeout = 10000
     // 请求头类型
-service.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded"
+service.defaults.headers.post["Content-Type"] = "application/json"
 
 // 请求拦截器
 service.interceptors.request.use(
@@ -46,7 +45,8 @@ service.req = function(...params) {
         return service.get(params[0])
     }
     if (params.length === 2) {
-        return service.post(params[0], qs.stringify(params[1]))
+        console.log(params,111)
+        return service.post(params[0], params[1])
     }
 }
 

@@ -21,9 +21,6 @@ const routes = [{
   {
     path: "/index",
     component: Home,
-    meta: {
-      title: '首页'
-    },
     children: [{
       path: "",
       name: "index",

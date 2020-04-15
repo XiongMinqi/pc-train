@@ -16,8 +16,11 @@
         </div>
         <div>{{userInfo.nickName}}</div>
       </div>
+      <div class="submitBtn">
+          <el-button type="danger" size="mini" @click="logout">退出登录</el-button>
+        </div>
     </div>
-    <el-drawer title="个人信息" :visible.sync="popup" :withHeader="false">
+    <!-- <el-drawer title="个人信息" :visible.sync="popup" :withHeader="false">
       <div>
         <div class="userlist">
           <div>用户名</div>
@@ -26,7 +29,7 @@
           </div>
         </div>
       </div>
-    </el-drawer>
+    </el-drawer> -->
   </div>
 </template>
 
@@ -47,7 +50,7 @@ export default {
       this.$api
         .getNumber()
         .then(res => {
-          console.log(res);
+          // console.log(res);
           this.number = res.data[0];
         })
         .catch(err => {
@@ -62,7 +65,26 @@ export default {
         .then(res => {
           //   console.log(res);
           this.user = res.data[0];
-          console.log(this.user);
+          // console.log(this.user);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    //退出登录
+    logout() {
+      this.$api
+        .logout()
+        .then(res => {
+          console.log(res);
+          if (res.data.code === 0) {
+            this.$message({
+              message:"退出登录成功",
+              type:"success"
+            })
+            localStorage.removeItem("userInfo")
+            this.$router.push({ name: "login", path: "/login" });
+          }
         })
         .catch(err => {
           console.log(err);
@@ -72,7 +94,7 @@ export default {
   mounted() {
     this.getAmount();
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    console.log(this.userInfo, "userInfo");
+    // console.log(this.userInfo, "userInfo");
   },
   watch: {},
   computed: {}
@@ -118,5 +140,9 @@ export default {
   display: flex;
   align-items: center;
   padding: 10px 10px 0 10px;
+}
+.submitBtn {
+  margin-left: 10px;
+  
 }
 </style>

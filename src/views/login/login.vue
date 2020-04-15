@@ -72,13 +72,13 @@ export default {
         .login(data)
         .then(res => {
           console.log(res);
-          if (res.code === 0) {
+          if (res.data.code === 0) {
             // console.log(res.data[0]);
             this.$message({
-              message: res.msg,
+              message: res.data.msg,
               type: "success"
             });
-            localStorage.setItem("userInfo", JSON.stringify(res.data[0]));
+            localStorage.setItem("userInfo", JSON.stringify(res.data.data[0]));
             this.$router.push({ name: "index", path: "/index" });
           }
         })
@@ -95,6 +95,7 @@ export default {
 
 <style scoped lang='scss'>
 .bgImg {
+  position: absolute;
   width: 100%;
   height: 100%;
   background: url("../../assets/icon/1543822105765191.jpg");
