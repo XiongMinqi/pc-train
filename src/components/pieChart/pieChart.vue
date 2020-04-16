@@ -17,10 +17,6 @@ require("echarts/lib/component/tooltip");
 require("echarts/lib/component/title");
 
 export default {
-  props: {
-    passScoreMsg: Object,
-    required: true
-  },
   created() {},
   mounted() {
     this.getStatistics();
@@ -30,10 +26,10 @@ export default {
       this.$grade
         .getStatistics()
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.data.code === 0) {
             this.passScoreMsg = res.data.data[0].passScoreStruct;
-            console.log(this.passScore);
+            // console.log(this.passScore);
             this.initData();
           }
         })

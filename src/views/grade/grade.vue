@@ -36,11 +36,15 @@
         <pieChart :passScoreMsg="passScore" />
       </div>
     </div>
+    <div>
+      <testRecords />
+    </div>
   </div>
 </template>
 
 <script>
 import pieChart from "../../components/pieChart/pieChart";
+import testRecords from "../../components/testRecords/testRecords";
 export default {
   data() {
     return {
@@ -50,17 +54,18 @@ export default {
     };
   },
   components: {
-    pieChart
+    pieChart,
+    testRecords
   },
   methods: {
     getSubmitExam() {
       this.$grade
         .submitExam()
         .then(res => {
-          console.log(res);
+          // console.log(res);
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     //获取科目名称
@@ -68,14 +73,14 @@ export default {
       this.$grade
         .getdict()
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.data.code === 0) {
             this.subjectName = res.data.data[0]["科目名称"];
-            console.log(this.subjectName);
+            // console.log(this.subjectName);
           }
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     //获取考试统计
@@ -83,21 +88,20 @@ export default {
       this.$grade
         .getStatistics()
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.data.code === 0) {
             this.statistics = res.data.data[0];
-            console.log(this.statistics);
+            // console.log(this.statistics);
             this.passScore = res.data.data[0].passScoreStruct;
-            console.log(this.passScore);
+            // console.log(this.passScore);
           }
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     }
   },
   mounted() {
-    this.getSubmitExam();
     this.getSubjectName();
     this.getStatistics();
   },

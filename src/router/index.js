@@ -69,7 +69,29 @@ const routes = [{
     children: [{
       path: "",
       name: "grade",
-      component: () => import("../views/grade/grade.vue")
+      component: () => import("../views/grade/grade.vue"),
+      redirect:"/allExam",
+      children: [{
+          path: "/allExam",
+          name: "allExam",
+          component: () => import("../views/examRecord/allExam.vue")
+        },
+        {
+          path: "/emptyExam",
+          name: "emptyExam",
+          component: () => import("../views/examRecord/emptyExam.vue")
+        },
+        {
+          path: "/passExam",
+          name: "passExam",
+          component: () => import("../views/examRecord/passExam.vue")
+        },
+        {
+          path: "/failExam",
+          name: "failExam",
+          component: () => import("../views/examRecord/failExam.vue")
+        }
+      ]
     }]
   },
   {
