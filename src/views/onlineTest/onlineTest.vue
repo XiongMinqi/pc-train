@@ -17,12 +17,11 @@
       <div class="operation">进入考试</div>
     </div>
     <div class="block">
-      <span class="demonstration">完整功能</span>
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
-        :page-sizes="[100, 200, 300, 400]"
+        :page-sizes="[10, 20, 30, 40]"
         :page-size="100"
         layout="total, sizes, prev, pager, next, jumper"
         :total="400"
@@ -79,5 +78,9 @@ export default {
   .operation {
     width: 10%;
   }
+}
+.block{
+  margin: 0 auto;
+  text-align: center;
 }
 </style>
