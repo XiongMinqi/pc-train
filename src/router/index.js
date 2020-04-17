@@ -46,6 +46,15 @@ const routes = [{
     }]
   },
   {
+    path: "/independentTest",
+    component: Home,
+    children: [{
+      path: "",
+      name: "independentTest",
+      component: () => import("../views/independentTest/independentTest.vue")
+    }]
+  },
+  {
     path: "/onlineStudy",
     component: Home,
     children: [{

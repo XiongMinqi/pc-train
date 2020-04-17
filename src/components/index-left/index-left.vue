@@ -19,6 +19,10 @@
             <i class="el-icon-edit-outline"></i>
             <span slot="title">在线考试</span>
           </el-menu-item>
+          <el-menu-item index="8" @click="goTo('/independentTest')">
+            <i class="el-icon-edit"></i>
+            <span slot="title">自主考试</span>
+          </el-menu-item>
           <el-menu-item index="4" @click="goTo('/onlineStudy')">
             <i class="el-icon-s-promotion"></i>
             <span slot="title">在线学习</span>
