@@ -16,5 +16,9 @@ export default {
     //获取考试记录
     getExam(){
         return axios.post('ksExam/getMySubmitExam')
+    },
+    //获取已提交试卷
+    getSubmitPaper(id){
+        return axios.get(`ksExam/getSubmitPaper?submitId=${id}`)
     }
 }

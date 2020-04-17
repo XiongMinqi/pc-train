@@ -6,11 +6,13 @@ import store from './store/index'
 import api from './http/api'
 import grade from './http/grade'
 import Axios from 'axios'
+import dayjs from 'dayjs'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'; //样式文件一定要引入
 
 Vue.use(ElementUI);
 Vue.use(Vuex);
+Vue.prototype.$dayjs = dayjs;
 Vue.prototype.$api = api
 Vue.prototype.$grade = grade
 // 设置axios

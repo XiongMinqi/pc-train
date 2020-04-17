@@ -66,12 +66,13 @@
       <div class="input">
         <el-upload
           class="avatar-uploader"
-          action="https://jsonplaceholder.typicode.com/posts/"
+          action="people/setMyAvatar"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
+          :on-error="handleAvatarFail"
           :before-upload="beforeAvatarUpload"
         >
-          <img v-if="userMsg" :src="userMsg.avatarUrl" class="avatar" />
+          <img v-if="imageUrl" :src="imageUrl" class="avatar" />
           <i v-else class="el-icon-plus avatar-uploader-icon"></i>
         </el-upload>
       </div>
@@ -150,6 +151,7 @@ export default {
       radio: "0",
       department: [],
       userMsg: {},
+      imageUrl: "",
       telNumber: "",
       majorName: "",
       departmentName: "",
@@ -162,6 +164,11 @@ export default {
   methods: {
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    handleAvatarFail(err, file, fileList) {
+      console.log(err);
+      console.log(file);
+      console.log(fileList);
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";
@@ -190,13 +197,13 @@ export default {
         .resetPersonalMsg(data)
         .then(res => {
           console.log(res);
-          if(res.data.code===0){
+          if (res.data.code === 0) {
             this.$message({
               message: "个人信息修改成功",
               type: "success"
             });
-            this.$router.push({name:'login',path:'/login'})
-          }else{
+            this.$router.push({ name: "login", path: "/login" });
+          } else {
             this.$message({
               message: res.data.msg,
               type: "error"
@@ -224,7 +231,7 @@ export default {
               message: "密码修改成功",
               type: "success"
             });
-            this.$router.push({name:'login',path:'/login'})
+            this.$router.push({ name: "login", path: "/login" });
           }
         })
         .catch(err => {
@@ -282,11 +289,11 @@ export default {
         .then(res => {
           console.log(res);
           if (res.data.code === 0) {
-             this.$message({
-              message:"退出登录成功",
-              type:"success"
-            })
-            localStorage.removeItem("userInfo")
+            this.$message({
+              message: "退出登录成功",
+              type: "success"
+            });
+            localStorage.removeItem("userInfo");
             this.$router.push({ name: "login", path: "/login" });
           }
         })
@@ -297,6 +304,8 @@ export default {
   },
   mounted() {
     this.userMsg = JSON.parse(localStorage.getItem("userInfo"));
+    this.imageUrl = this.userMsg.avatarUrl;
+    console.log(this.imageUrl);
     this.getUserList();
     this.getSubjectDetail();
   },
