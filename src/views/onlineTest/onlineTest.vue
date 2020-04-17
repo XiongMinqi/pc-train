@@ -24,7 +24,7 @@
         :page-sizes="[10, 20, 30, 40]"
         :page-size="100"
         layout="total, sizes, prev, pager, next, jumper"
-        :total="400"
+        :total="total"
       ></el-pagination>
     </div>
   </div>
@@ -34,19 +34,40 @@
 export default {
   data() {
     return {
-      currentPage: 1
+      currentPage: 1,
+      offset: 0,
+      limit: 10,
+      total: 0
     };
   },
   components: {},
   methods: {
+    //获取考试信息
+    getTest() {
+      this.$onlineTest
+        .getTestInfo(this.offset, this.limit)
+        .then(res => {
+          console.log(res);
+          this.total = res.data.count;
+          console.log(res.data.data);
+          console.log(this.total);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     handleSizeChange(val) {
+      this.limit = val;
+      this.getTest();
       console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       console.log(`当前页: ${val}`);
     }
   },
-  mounted() {},
+  mounted() {
+    this.getTest();
+  },
   watch: {},
   computed: {}
 };
@@ -79,7 +100,7 @@ export default {
     width: 10%;
   }
 }
-.block{
+.block {
   margin: 0 auto;
   text-align: center;
 }

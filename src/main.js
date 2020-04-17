@@ -5,6 +5,7 @@ import router from './router'
 import store from './store/index'
 import api from './http/api'
 import grade from './http/grade'
+import onlineTest from './http/onlineTest'
 import Axios from 'axios'
 import dayjs from 'dayjs'
 import ElementUI from 'element-ui';
@@ -15,6 +16,7 @@ Vue.use(Vuex);
 Vue.prototype.$dayjs = dayjs;
 Vue.prototype.$api = api
 Vue.prototype.$grade = grade
+Vue.prototype.$onlineTest = onlineTest
 // 设置axios
 Vue.prototype.$axios = Axios
 // Axios.defaults.baseURL = '/apis'
