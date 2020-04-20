@@ -19,6 +19,11 @@ const routes = [{
     component: () => import('../views/login/login.vue')
   },
   {
+    path: '/testIng',
+    name: 'testIng',
+    component: () => import('../views/testIng/testIng.vue')
+  },
+  {
     path: "/index",
     component: Home,
     children: [{
@@ -79,7 +84,7 @@ const routes = [{
       path: "",
       name: "grade",
       component: () => import("../views/grade/grade.vue"),
-      redirect:"/allExam",
+      redirect: "/allExam",
       children: [{
           path: "/allExam",
           name: "allExam",
@@ -119,22 +124,6 @@ const router = new VueRouter({
 })
 //路由守卫
 router.beforeEach((to, from, next) => {
-  document.title = to.meta.title;
-
-  // function getCookie(name) {
-  //   if (document.cookie.length > 0) {
-  //     var start = document.cookie.indexOf(name + '=');
-  //     if (start !== -1) {
-  //       start = start + name.length + 1;
-  //       var end = document.cookie.indexOf(';', start);
-  //       if (end === -1) {
-  //         end = document.cookie.length;
-  //         return unescape(document.cookie.substring(start, end));
-  //       }
-  //     }
-  //   }
-  //   return '';
-  // }
   let user = localStorage.getItem("userInfo");
   // let user = cookie.getItem("JSESSIONID")
   // let user = getCookie("JSESSIONID")
