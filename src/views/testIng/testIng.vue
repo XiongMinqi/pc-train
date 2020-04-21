@@ -44,15 +44,59 @@
           <div v-if="item.type===1">
             <checkbox :options="currentOptions" :index="index" />
           </div>
+          <!-- 填空 -->
+          <div v-if="item.type===2">
+            <fillBlanks :options="currentOptions" :index="index" />
+          </div>
+          <!-- 填空 -->
+          <div v-if="item.type===3">
+            <judge :options="currentOptions" :index="index" />
+          </div>
+          <!-- 名词解释 -->
+          <div v-if="item.type===4">
+            <nounExplanation :options="currentOptions" :index="index" />
+          </div>
+          <!-- 问答 -->
+          <div v-if="item.type===5">
+            <explain :options="currentOptions" :index="index" />
+          </div>
         </div>
       </div>
     </div>
+    <div class="btn">
+      <el-button type="primary" @click="checkPaper">提交试卷</el-button>
+    </div>
+    <el-dialog title="确认提交？" :visible.sync="dialogVisible" width="30%">
+      <div>
+        <div v-if="empty.length>0">
+          还有题号
+          <span v-for="(item,index) in empty" :key="index">
+            <span v-if="index===empty.length-1">{{item}}</span>
+            <span v-else>{{item}}、</span>
+          </span>
+          等{{length}}道题未做
+        </div>
+        <div v-else>确认提交试卷</div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submit">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
-
+<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
+<script type="text/javascript">
+console.log(returnCitySN["cip"]);
+// document.write(returnCitySN["cip"]+','+returnCitySN["cname"])
+</script>
 <script>
 import radio from "../../components/options/radio";
 import checkbox from "../../components/options/checkbox";
+import fillBlanks from "../../components/options/fillBlanks";
+import judge from "../../components/options/judge";
+import nounExplanation from "../../components/options/nounExplanation";
+import explain from "../../components/options/explain";
 export default {
   data() {
     return {
@@ -61,37 +105,141 @@ export default {
       currentOptions: {},
       currentIndex: 0,
       testInfo: {},
-      radio: 0
+      radio: 0,
+      dialogVisible: false,
+      allAnswer: {},
+      answerId: [],
+      empty: [],
+      ksExamId:"",
+      length: 0,
+      llqName: ""
     };
   },
   components: {
     radio,
-    checkbox
+    checkbox,
+    fillBlanks,
+    judge,
+    nounExplanation,
+    explain
   },
   methods: {
-    //单选
-    changeRadio() {
-      console.log(this.radio);
+    //提示
+    checkPaper() {
+      this.empty = [];
+      this.answerId = [];
+      this.dialogVisible = true;
+      this.allAnswer = this.$store.state.answerList;
+      for (let a in this.allAnswer) {
+        a = Number(a);
+        this.answerId.push(a);
+      }
+      // console.log(this.answerId);
+      this.currentOptions.map((item, index) => {
+        if (this.answerId.indexOf(item.id) === -1) {
+          // console.log(index);
+          index += 1;
+          this.empty.push(index);
+        }
+      });
+      // console.log(this.empty, "未答题号");
+      this.length = this.empty.length;
+      if (this.empty.length > 5) {
+        this.empty.splice(5);
+        // console.log(this.empty);
+      }
     },
-    inputMsg(e) {
-      console.log(e);
-      console.log(this.currentRadio);
+    //提交
+    submit() {
+      // 目标时区，东8区
+      let targetTimezone = -8;
+      // 当前时区与中时区时差，以min为维度
+      let _dif = new Date().getTimezoneOffset();
+      // 本地时区时间 + 时差  = 中时区时间
+      // 目标时区时间 + 时差 = 中时区时间
+      // 目标时区时间 = 本地时区时间 + 本地时区时差 - 目标时区时差
+      // 东8区时间
+      let east8time =
+        new Date().getTime() +
+        _dif * 60 * 1000 -
+        targetTimezone * 60 * 60 * 1000;
+      let nowTime = new Date(east8time);
+      console.log(nowTime);
+      this.dialogVisible = false;
+      //获取学员peopleId
+      let userinfo = JSON.parse(localStorage.getItem("userInfo"));
+      //获取ip地址
+      let ip = localStorage.getItem("Ip");
+      ip = ip.toString();
+      this.getBrowser();
+      // console.log(this.testInfo.id);
+      let data = {
+        answers: this.allAnswer,
+        beginTime: nowTime,
+        device: this.llqName,
+        ip: ip,
+        ksExamId: this.ksExamId,
+        peopleId: userinfo.userId
+      };
+      console.log(data);
+      this.$onlineTest
+        .submitPaper(data)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    //获取浏览器信息
+    getBrowser() {
+      let types = ["edge", "firefox", "chrome", "safari", "opera "];
+      let userAgent = navigator.userAgent.toLocaleLowerCase();
+      var res = [];
+      types.forEach(element => {
+        // console.log(element);
+        if (userAgent.indexOf(element) > 0) {
+          let rule = `${element}` + "\\/([\\d.]+)";
+          // console.log(rule);
+          res.push(element);
+          // console.log(userAgent.match(rule)[1]);
+          res.push(userAgent.match(rule)[1]);
+          this.llqName = res[0];
+          // console.log(this.llqName);
+          // console.log(res);
+        }
+      });
+      if (res.indexOf("chrome") > -1 && res.indexOf("safari") > -1) {
+        if (res.length === 4) {
+          let temp = [];
+          temp.push("chrome");
+          temp.push(res[res.indexOf("chrome") + 1]);
+          return temp;
+          console.log(temp);
+        } else {
+          res.splice(res.indexOf("chrome"), 2);
+          res.splice(res.indexOf("safari"), 2);
+          return res;
+          console.log(res);
+        }
+      } else {
+        return res;
+        console.log(res);
+      }
     },
     //获取考试信息
     getTestMsg() {
       this.$onlineTest
         .onlineTest(this.id)
         .then(res => {
+          // console.log(res);
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
-            //   console.log(res);
+            // console.log(res);
             this.testInfo = res.data.data[0];
             this.currentOptions = res.data.data[0].questions;
-            this.currentOptions.map(item => {
-              this.$set(item, "checked", false);
-            });
             console.log(this.testInfo);
             this.timeDown();
           }
@@ -131,7 +279,9 @@ export default {
     }
   },
   mounted() {
-    this.id = this.$route.query.id;
+    // console.log(localStorage.getItem("Ip"));
+    this.id = this.$route.query.paperId;
+    this.ksExamId = this.$route.query.id
     // console.log(this.id);
     this.getTestMsg();
   },
@@ -191,5 +341,10 @@ span {
 }
 .answer {
   padding-left: 45px;
+}
+.btn {
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 50px;
 }
 </style>

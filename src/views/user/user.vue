@@ -83,7 +83,7 @@
     <div class="submitBtn">
       <el-button type="danger" size="medium" @click="logout">退出登录</el-button>
     </div>
-    <el-drawer title="修改密码" :visible.sync="popup" :withHeader="false">
+    <el-dialog title="修改密码" :visible.sync="popup">
       <div class="changepass">
         <div class="userlist">
           <div class="word">姓名</div>
@@ -137,7 +137,7 @@
           <el-button type="primary" size="medium" @click="submitPass">提交</el-button>
         </div>
       </div>
-    </el-drawer>
+    </el-dialog>
   </div>
 </template>
 
@@ -287,7 +287,7 @@ export default {
               if (item.key == this.userInfo.departmentId) {
                 this.departmentName = item.value;
               }
-            }); 
+            });
             // console.log(this.major);
             // console.log(this.department);
             // console.log(this.majorName);

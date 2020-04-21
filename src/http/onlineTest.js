@@ -8,4 +8,8 @@ export default {
     onlineTest(id) {
         return axios.get(`tkPaper/getWithDefaultChapterQuestionById?id=${id}`)
     },
+    //提交试卷
+    submitPaper(data) {
+        return axios.post('ksExam/submitExam', data)
+    }
 }

@@ -49,34 +49,34 @@ export default {
       return temp;
     },
     changeCheckbox() {
-      console.log(this.checkList);
+      // console.log(this.checkList);
       this.checkList.map(item => {
         if (item == "0") {
-          console.log(0);
+          // console.log(0);
           this.answerInfo.push("A");
         }
         if (item == "1") {
-          console.log(1);
+          // console.log(1);
           this.answerInfo.push("B");
         }
         if (item == "2") {
-          console.log(2);
+          // console.log(2);
           this.answerInfo.push("C");
         }
         if (item == "3") {
-          console.log(3);
+          // console.log(3);
           this.answerInfo.push("D");
         }
         if (item == "4") {
-          console.log(3);
+          // console.log(3);
           this.answerInfo.push("E");
         }
         if (item == "5") {
-          console.log(3);
+          // console.log(3);
           this.answerInfo.push("F");
         }
       });
-      this.answerInfo = this.uniq(this.answerInfo);
+      this.answerInfo = this.uniq(this.answerInfo).sort();
       // console.log(this.answerInfo, "答案");
       this.$store.state.answerList[this.list.id] = this.answerInfo;
       console.log(this.$store.state.answerList);
@@ -85,7 +85,7 @@ export default {
   mounted() {
     this.options[this.index].checked = true;
     this.list = this.options[this.index];
-    console.log(this.list);
+    // console.log(this.list);
   },
   watch: {},
   computed: {}

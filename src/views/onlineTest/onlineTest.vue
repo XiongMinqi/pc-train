@@ -122,12 +122,13 @@ export default {
       });
     },
     onlineTest(e) {
-      console.log(e.paperId);
+      console.log(e);
       this.$router.push({
         name: "testIng",
         path: "/testIng",
         query: {
-          id: e.paperId
+          paperId: e.paperId,
+          id: e.id
         }
       });
     },
