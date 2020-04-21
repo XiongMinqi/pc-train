@@ -65,11 +65,9 @@ export default {
   },
   mounted() {
     this.options[this.index].checked = true;
-    // console.log(this.options[this.index], this.index);
     this.list = this.options[this.index];
     this.answerList = this.$store.state.answerList;
-    // this.answerInfo = this.answerList;
-    console.log(this.answerList);
+    // console.log(this.answerList);
     // console.log(this.$store.state);
   },
   watch: {},

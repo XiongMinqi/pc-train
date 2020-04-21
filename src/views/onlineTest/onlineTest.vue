@@ -85,25 +85,30 @@ export default {
       this.$onlineTest
         .getTestInfo(this.offset, this.limit)
         .then(res => {
-          console.log(res);
-          this.total = res.data.count;
-          this.testList = res.data.data;
-          this.testList.map(item => {
-            item.publishTime = this.timeFormat(item.publishTime);
-            item.createTime = this.timeFormat(item.createTime);
-            this.$set(
-              item,
-              "expirationTime",
-              new Date(item.publishTime) + item.minutes
-            );
-            // item.expirationTime = this.timeFormat(item.expirationTime);
-          });
-          this.testList.sort(function(a, b) {
-            let minTime = new Date(a.publishTime).getTime();
-            let maxTime = new Date(b.publishTime).getTime();
-            return maxTime - minTime;
-          });
-          console.log(this.testList);
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            console.log(res);
+            this.total = res.data.count;
+            this.testList = res.data.data;
+            this.testList.map(item => {
+              item.publishTime = this.timeFormat(item.publishTime);
+              item.createTime = this.timeFormat(item.createTime);
+              this.$set(
+                item,
+                "expirationTime",
+                new Date(item.publishTime) + item.minutes
+              );
+              // item.expirationTime = this.timeFormat(item.expirationTime);
+            });
+            this.testList.sort(function(a, b) {
+              let minTime = new Date(a.publishTime).getTime();
+              let maxTime = new Date(b.publishTime).getTime();
+              return maxTime - minTime;
+            });
+            console.log(this.testList);
+          }
         })
         .catch(err => {
           console.log(err);

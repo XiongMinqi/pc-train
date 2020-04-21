@@ -125,6 +125,9 @@ export default {
       this.$grade
         .getExam()
         .then(res => {
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
           if (res.data.code === 0) {
             this.loading = false;
             this.allTestList = res.data.data[0].items;

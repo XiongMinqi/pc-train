@@ -110,19 +110,24 @@ export default {
       this.$grade
         .getExam()
         .then(res => {
-          this.allTestList = res.data.data[0].items;
-          this.allTestList.map(item => {
-            item.beginTime = this.timeFormat(item.beginTime);
-            item.beginWriteTime = this.timeFormat(item.beginWriteTime);
-            item.endWriteTime = this.timeFormat(item.endWriteTime);
-            item.costMinutes = this.twoNumber(item.costMinutes);
-          });
-          this.allTestList.sort(function(a, b) {
-            let minTime = new Date(a.beginTime).getTime();
-            let maxTime = new Date(b.beginTime).getTime();
-            return maxTime - minTime;
-          });
-          console.log(this.allTestList, "allTestList");
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            this.allTestList = res.data.data[0].items;
+            this.allTestList.map(item => {
+              item.beginTime = this.timeFormat(item.beginTime);
+              item.beginWriteTime = this.timeFormat(item.beginWriteTime);
+              item.endWriteTime = this.timeFormat(item.endWriteTime);
+              item.costMinutes = this.twoNumber(item.costMinutes);
+            });
+            this.allTestList.sort(function(a, b) {
+              let minTime = new Date(a.beginTime).getTime();
+              let maxTime = new Date(b.beginTime).getTime();
+              return maxTime - minTime;
+            });
+            console.log(this.allTestList, "allTestList");
+          }
         })
         .catch(err => {
           console.log(err);

@@ -4,7 +4,7 @@
       <img src="../../assets/icon/logo.jpg" alt />
     </div>
     <div class="indexTop">
-      <div class="topLeft" @click="checkUserList">
+      <div class="topLeft">
         <div>
           <img class="userImg" v-if="userInfo" :src="userInfo.avatarUrl" alt />
           <img
@@ -17,19 +17,9 @@
         <div>{{userInfo.nickName}}</div>
       </div>
       <div class="submitBtn">
-          <el-button type="danger" size="mini" @click="logout">退出登录</el-button>
-        </div>
-    </div>
-    <!-- <el-drawer title="个人信息" :visible.sync="popup" :withHeader="false">
-      <div>
-        <div class="userlist">
-          <div>用户名</div>
-          <div>
-            <el-input size="mini" v-model="user.nickName"></el-input>
-          </div>
-        </div>
+        <el-button type="danger" size="mini" @click="logout">退出登录</el-button>
       </div>
-    </el-drawer> -->
+    </div>
   </div>
 </template>
 
@@ -50,22 +40,13 @@ export default {
       this.$api
         .getNumber()
         .then(res => {
-          // console.log(res);
-          this.number = res.data[0];
-        })
-        .catch(err => {
-          console.log(err);
-        });
-    },
-    //查看个人资料
-    checkUserList() {
-      this.popup = true;
-      this.$api
-        .checkUser(this.userInfo.userId)
-        .then(res => {
-          //   console.log(res);
-          this.user = res.data[0];
-          // console.log(this.user);
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            // console.log(res);
+            this.number = res.data[0];
+          }
         })
         .catch(err => {
           console.log(err);
@@ -79,10 +60,10 @@ export default {
           console.log(res);
           if (res.data.code === 0) {
             this.$message({
-              message:"退出登录成功",
-              type:"success"
-            })
-            localStorage.removeItem("userInfo")
+              message: "退出登录成功",
+              type: "success"
+            });
+            localStorage.removeItem("userInfo");
             this.$router.push({ name: "login", path: "/login" });
           }
         })
@@ -143,6 +124,5 @@ export default {
 }
 .submitBtn {
   margin-left: 10px;
-  
 }
 </style>

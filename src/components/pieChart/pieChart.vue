@@ -26,6 +26,9 @@ export default {
       this.$grade
         .getStatistics()
         .then(res => {
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
           // console.log(res);
           if (res.data.code === 0) {
             this.passScoreMsg = res.data.data[0].passScoreStruct;

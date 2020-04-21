@@ -58,21 +58,14 @@ export default {
     testRecords
   },
   methods: {
-    getSubmitExam() {
-      this.$grade
-        .submitExam()
-        .then(res => {
-          // console.log(res);
-        })
-        .catch(err => {
-          // console.log(err);
-        });
-    },
     //获取科目名称
     getSubjectName() {
       this.$grade
         .getdict()
         .then(res => {
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
           // console.log(res);
           if (res.data.code === 0) {
             this.subjectName = res.data.data[0]["科目名称"];
@@ -88,6 +81,9 @@ export default {
       this.$grade
         .getStatistics()
         .then(res => {
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
           // console.log(res);
           if (res.data.code === 0) {
             this.statistics = res.data.data[0];

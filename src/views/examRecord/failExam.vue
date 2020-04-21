@@ -122,31 +122,36 @@ export default {
       this.$grade
         .getExam()
         .then(res => {
-          this.allTestList = res.data.data[0].items;
-          this.allTestList.map(item => {
-            item.beginTime = this.timeFormat(item.beginTime);
-            item.beginWriteTime = this.timeFormat(item.beginWriteTime);
-            item.endWriteTime = this.timeFormat(item.endWriteTime);
-            item.costMinutes = this.twoNumber(item.costMinutes);
-          });
-          
-          console.log(res.data.data[0]);
-          this.failExamIds = res.data.data[0].failExamIds;
-          if (this.failExamIds.length > 0) {
-            this.failExamIds.map(item => {
-              this.allTestList.map(itemes => {
-                if (itemes.examId == item) {
-                  this.failScoreData.push(itemes);
-                }
-              });
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            this.allTestList = res.data.data[0].items;
+            this.allTestList.map(item => {
+              item.beginTime = this.timeFormat(item.beginTime);
+              item.beginWriteTime = this.timeFormat(item.beginWriteTime);
+              item.endWriteTime = this.timeFormat(item.endWriteTime);
+              item.costMinutes = this.twoNumber(item.costMinutes);
             });
-            this.failScoreData.sort(function(a, b) {
-            let minTime = new Date(a.beginTime).getTime();
-            let maxTime = new Date(b.beginTime).getTime();
-            return maxTime - minTime;
-          });
-            this.failScoreData = this.duplicate(this.failScoreData);
-            console.log(this.failScoreData, "failScoreData");
+
+            console.log(res.data.data[0]);
+            this.failExamIds = res.data.data[0].failExamIds;
+            if (this.failExamIds.length > 0) {
+              this.failExamIds.map(item => {
+                this.allTestList.map(itemes => {
+                  if (itemes.examId == item) {
+                    this.failScoreData.push(itemes);
+                  }
+                });
+              });
+              this.failScoreData.sort(function(a, b) {
+                let minTime = new Date(a.beginTime).getTime();
+                let maxTime = new Date(b.beginTime).getTime();
+                return maxTime - minTime;
+              });
+              this.failScoreData = this.duplicate(this.failScoreData);
+              console.log(this.failScoreData, "failScoreData");
+            }
           }
         })
         .catch(err => {

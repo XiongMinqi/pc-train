@@ -197,6 +197,9 @@ export default {
         .resetPersonalMsg(data)
         .then(res => {
           console.log(res);
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
           if (res.data.code === 0) {
             this.$message({
               message: "个人信息修改成功",
@@ -226,6 +229,9 @@ export default {
         })
         .then(res => {
           console.log(res);
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
           if (res.data.code == 0) {
             this.$message({
               message: "密码修改成功",
@@ -243,12 +249,17 @@ export default {
       this.$api
         .getUser()
         .then(res => {
-          // console.log(res);
-          this.userInfo = res.data.data[0];
-          this.radio = this.userInfo.sex.toString();
-          this.telNumber = this.userInfo.phoneNumber;
-          console.log(this.userInfo);
-          // console.log(this.radio);
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            // console.log(res);
+            this.userInfo = res.data.data[0];
+            this.radio = this.userInfo.sex.toString();
+            this.telNumber = this.userInfo.phoneNumber;
+            console.log(this.userInfo);
+            // console.log(this.radio);
+          }
         })
         .catch(err => {
           console.log(err);
@@ -259,24 +270,29 @@ export default {
       this.$api
         .getSubject()
         .then(res => {
-          // console.log(res);
-          this.major = res.data.data[0]["专业名称"];
-          // console.log(this.userInfo.majorId,"majorId");
-          this.major.map(item => {
-            if (this.userInfo.majorId == item.key) {
-              this.majorName = item.value;
-            }
-          });
-          this.department = res.data.data[0]["部门名称"];
-          this.department.map(item => {
-            if (item.key == this.userInfo.departmentId) {
-              this.departmentName = item.value;
-            }
-          });
-          // console.log(this.major);
-          // console.log(this.department);
-          // console.log(this.majorName);
-          // console.log(this.departmentName);
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            // console.log(res);
+            this.major = res.data.data[0]["专业名称"];
+            // console.log(this.userInfo.majorId,"majorId");
+            this.major.map(item => {
+              if (this.userInfo.majorId == item.key) {
+                this.majorName = item.value;
+              }
+            });
+            this.department = res.data.data[0]["部门名称"];
+            this.department.map(item => {
+              if (item.key == this.userInfo.departmentId) {
+                this.departmentName = item.value;
+              }
+            }); 
+            // console.log(this.major);
+            // console.log(this.department);
+            // console.log(this.majorName);
+            // console.log(this.departmentName);
+          }
         })
         .catch(err => {
           console.log(err);

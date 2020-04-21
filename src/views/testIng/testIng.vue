@@ -38,7 +38,11 @@
         <div class="answer">
           <!-- 单选 -->
           <div v-if="item.type===0">
-            <radio :options="currentOptions" :index=index />
+            <radio :options="currentOptions" :index="index" />
+          </div>
+          <!-- 多选 -->
+          <div v-if="item.type===1">
+            <checkbox :options="currentOptions" :index="index" />
           </div>
         </div>
       </div>
@@ -48,6 +52,7 @@
 
 <script>
 import radio from "../../components/options/radio";
+import checkbox from "../../components/options/checkbox";
 export default {
   data() {
     return {
@@ -60,7 +65,8 @@ export default {
     };
   },
   components: {
-    radio
+    radio,
+    checkbox
   },
   methods: {
     //单选
@@ -76,14 +82,19 @@ export default {
       this.$onlineTest
         .onlineTest(this.id)
         .then(res => {
-        //   console.log(res);
-          this.testInfo = res.data.data[0];
-          this.currentOptions = res.data.data[0].questions
-          this.currentOptions.map(item=>{
-              this.$set(item,"checked",false)
-          })
-          console.log(this.testInfo);
-          this.timeDown();
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            //   console.log(res);
+            this.testInfo = res.data.data[0];
+            this.currentOptions = res.data.data[0].questions;
+            this.currentOptions.map(item => {
+              this.$set(item, "checked", false);
+            });
+            console.log(this.testInfo);
+            this.timeDown();
+          }
         })
         .catch(err => {
           console.log(err);
@@ -93,7 +104,7 @@ export default {
     timeDown() {
       var countdown = document.getElementById("countdown");
       var time = this.testInfo.minutes * 60; //30分钟换算成1800秒
-    //   console.log(this.testInfo.minutes);
+      //   console.log(this.testInfo.minutes);
       setInterval(function() {
         time = time - 1;
         var minute = parseInt(time / 60);
@@ -178,7 +189,7 @@ span {
   font-size: 50px;
   color: red;
 }
-.answer{
-    padding-left: 45px;
+.answer {
+  padding-left: 45px;
 }
 </style>
