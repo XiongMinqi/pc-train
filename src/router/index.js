@@ -122,7 +122,16 @@ const routes = [{
 const router = new VueRouter({
   routes
 })
-//路由守卫
+router.onError((error) => {
+  const pattern = /Loading chunk (\d)+ failed/g;
+  const isChunkLoadFailed = error.message.match(pattern);
+  if (isChunkLoadFailed) {
+    window.location.reload();
+    // router.replace(router.history.pending.fullPath);
+  } else {
+    console.log(error)
+  }
+});
 router.beforeEach((to, from, next) => {
   let user = localStorage.getItem("userInfo");
   // let user = cookie.getItem("JSESSIONID")
