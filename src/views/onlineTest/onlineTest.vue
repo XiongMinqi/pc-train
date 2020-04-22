@@ -4,7 +4,7 @@
       <div class="index">序号</div>
       <div class="subjectName">科目</div>
       <div class="testTime">考试时间</div>
-      <div class="duringTime">有效期</div>
+      <div class="duringTime">截止时间</div>
       <div class="passTime">是否过期</div>
       <div class="operation">操作</div>
     </div>
@@ -12,7 +12,7 @@
       <div class="index">{{index+1}}</div>
       <div class="subjectName">{{item.name}}</div>
       <div class="testTime">{{item.publishTime}}</div>
-      <div class="duringTime">{{item.minutes}}分钟</div>
+      <div class="duringTime">{{item.expirationTime}}</div>
       <div class="passTime">
         <div v-if="item.status===1" style="color: #F43F3B;">未开始</div>
         <div v-if="item.status===2" style="color: #2FC25B;">考试中</div>
@@ -20,20 +20,19 @@
         <div v-if="item.status===4" style="color: #E54D42;">结束</div>
       </div>
       <div class="operation">
-        <!-- <div
+        <div
           v-if="item.status===1||item.status===3||item.status===4"
           style="color: #808080;"
           @click="showToast"
         >进入考试</div>
-        <div v-if="item.status===2" style="color: #2FC25B;" @click="onlineTest(item.id)">进入考试</div>-->
-        <div style="color: #2FC25B;" @click="onlineTest(item)">进入考试</div>
+        <div v-if="item.status===2" style="color: #2FC25B;" @click="onlineTest(item)">进入考试</div>
+        <!-- <div style="color: #2FC25B;" @click="onlineTest(item)">进入考试</div> -->
       </div>
     </div>
     <div class="block">
       <el-pagination
         @size-change="handleSizeChange"
-        @next-click="nextPage"
-        @prev-click="beforePage"
+        @current-change="handleCurrentChange"
         :current-page="currentPage"
         :page-sizes="[10, 20, 30, 40]"
         :page-size="100"
@@ -89,24 +88,25 @@ export default {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
-            console.log(res);
+            // console.log(res);
             this.total = res.data.count;
             this.testList = res.data.data;
             this.testList.map(item => {
               item.publishTime = this.timeFormat(item.publishTime);
               item.createTime = this.timeFormat(item.createTime);
+              let expirationTime =
+                Date.parse(new Date(item.publishTime)) + item.minutes * 60000;
               this.$set(
                 item,
                 "expirationTime",
-                new Date(item.publishTime) + item.minutes
+                this.timeFormat(expirationTime)
               );
-              // item.expirationTime = this.timeFormat(item.expirationTime);
             });
-            this.testList.sort(function(a, b) {
-              let minTime = new Date(a.publishTime).getTime();
-              let maxTime = new Date(b.publishTime).getTime();
-              return maxTime - minTime;
-            });
+            // this.testList.sort(function(a, b) {
+            //   let minTime = new Date(a.publishTime).getTime();
+            //   let maxTime = new Date(b.publishTime).getTime();
+            //   return maxTime - minTime;
+            // });
             console.log(this.testList);
           }
         })
@@ -124,7 +124,6 @@ export default {
     onlineTest(e) {
       console.log(e);
       this.$router.push({
-        name: "testIng",
         path: "/testIng",
         query: {
           paperId: e.paperId,
@@ -138,27 +137,14 @@ export default {
       this.getTest();
       // console.log(`每页 ${val} 条`);
     },
-    //上一页
-    beforePage(val) {
-      console.log(val);
-      if (val > 1) {
-        this.offset = this.limit * val;
-      } else {
-        this.offset = 0;
-      }
-      console.log(this.offset);
-      this.getTest();
-    },
-    //下一页
-    nextPage(val) {
-      console.log(val);
-      this.offset = this.limit * (val - 1);
-      console.log(this.offset);
+    handleCurrentChange(val) {
+      // console.log(`当前页: ${val}`);
+      this.offset = (val - 1) * this.limit;
+      console.log(this.offset, this.limit);
       this.getTest();
     }
   },
   mounted() {
-    console.log(new Date("Mon Apr 20 2020 11:50:57 GMT+0800"));
     this.getTest();
   },
   watch: {},
@@ -178,13 +164,13 @@ export default {
     width: 5%;
   }
   .subjectName {
-    width: 35%;
+    width: 31%;
   }
   .testTime {
-    width: 30%;
+    width: 27%;
   }
   .duringTime {
-    width: 10%;
+    width: 27%;
   }
   .passTime {
     width: 10%;

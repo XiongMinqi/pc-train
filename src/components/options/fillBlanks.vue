@@ -1,15 +1,17 @@
 <template>
   <div>
     <div v-for="(item,index) in fillList" :key="index">
-      <div class="el-textarea">
-        <!-- <el-input
+      <div>
+        <el-input
           type="textarea"
           :rows="1"
           placeholder="请输入内容"
-          :value="item"
-          @input="inputInfo"
-        ></el-input>-->
-        <input type="text" :value="item" @input="inputInfo" />
+          v-model="textarea[index]"
+          @input="inputInfo(index)"
+        ></el-input>
+        <!-- <div class="el-textarea">
+          <input type="text" :value="item" @input="inputInfo" />
+        </div>-->
       </div>
     </div>
   </div>
@@ -30,7 +32,7 @@ export default {
   },
   data() {
     return {
-      textarea: "",
+      textarea: [""],
       answerInfo: [],
       list: {},
       fillList: []
@@ -39,18 +41,23 @@ export default {
   components: {},
   methods: {
     inputInfo(e) {
-      console.log(e);
-      console.log(this.fillList);
-      //   if (this.textarea !== "") {
-      //     this.answerInfo = [];
-      //     this.answerInfo.push(this.textarea);
-      //     this.$store.state.answerList[this.list.id] = this.answerInfo;
-      //     console.log(this.$store.state.answerList);
-      //   }
-      //   if (this.textarea === "") {
-      //     delete this.$store.state.answerList[this.list.id];
-      //     console.log(this.$store.state.answerList);
-      //   }
+      if (this.textarea[e] !== "") {
+        this.fillList[e] = this.textarea[e];
+        this.$store.state.answerList[this.list.id] = this.fillList;
+        console.log(this.$store.state.answerList);
+      }
+      if (this.textarea[e] === "") {
+        this.fillList[e] = this.textarea[e];
+        console.log(13243212);
+        this.fillList.map(item => {
+          if (item !== "") {
+            this.$store.state.answerList[this.list.id] = this.fillList;
+          } else {
+            delete this.$store.state.answerList[this.list.id];
+          }
+        });
+        console.log(this.$store.state.answerList);
+      }
     }
   },
   mounted() {
@@ -60,7 +67,7 @@ export default {
     for (let i = 0; i < this.list.fillCount; i++) {
       this.fillList.push("");
     }
-    console.log(this.fillList);
+    // console.log(this.fillList);
   },
   watch: {},
   computed: {}
@@ -69,25 +76,25 @@ export default {
 
 <style scoped lang='scss'>
 .el-textarea {
-//   padding-bottom: 10px;
-//   display: block;
-//   resize: vertical;
-//   padding: 5px 15px;
-//   line-height: 1.5;
-//   box-sizing: border-box;
+  //   padding-bottom: 10px;
+  //   display: block;
+  //   resize: vertical;
+  //   padding: 5px 15px;
+  //   line-height: 1.5;
+  //   box-sizing: border-box;
   width: 100%;
-//   font-size: inherit;
-//   color: #606266;
-//   background-color: #fff;
-//   background-image: none;
+  //   font-size: inherit;
+  //   color: #606266;
+  //   background-color: #fff;
+  //   background-image: none;
   border: 1px solid #dcdfe6;
-//   border-radius: 4px;
-//   transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
+  //   border-radius: 4px;
+  //   transition: border-color 0.2s cubic-bezier(0.645, 0.045, 0.355, 1);
 }
 input {
-    width: 100%;;
-    height: 100%;
-    border: 0;
-    // margin-bottom: 10px;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  // margin-bottom: 10px;
 }
 </style>

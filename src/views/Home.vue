@@ -35,19 +35,31 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-.content{
+.content {
   position: absolute;
   width: 100%;
   height: 100%;
 }
-.el-container{
-border-top: 1px solid black;
+.el-container {
+  height: 100%;
 }
-.is-vertical{
-  border: 0;
+.el-header,
+.el-footer {
+  background-color: #b3c0d1;
+  color: #333;
+  text-align: center;
+  // line-height: 60px;
 }
-.el-main{
-  height: 696px;
-  border-left: 1px solid black;
+
+.el-aside {
+  background-color: #d3dce6;
+  height: 100%;
+  color: #333;
+}
+
+.el-main {
+  // background-color: #e9eef3;
+  // color: #333;
+  height: 100%;
 }
 </style>

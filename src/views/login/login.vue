@@ -78,7 +78,7 @@ export default {
               message: res.data.msg,
               type: "success"
             });
-            localStorage.setItem("userame",this.username)
+            // localStorage.setItem("userame",this.username)
             localStorage.setItem("userInfo", JSON.stringify(res.data.data[0]));
             this.$router.push({ name: "index", path: "/index" });
           }

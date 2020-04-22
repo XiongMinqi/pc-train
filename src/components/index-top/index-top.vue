@@ -1,7 +1,9 @@
 <template>
   <div class="indexTopContent">
     <div class="title">
-      <img src="../../assets/icon/logo.jpg" alt />
+      <!-- <img src="../../assets/icon/logo.png" style="opacity: 0.1;" alt /> -->
+      <!-- 四川新科电子技术工程有限责任公司 -->
+      新科电子培训系统
     </div>
     <div class="indexTop">
       <div class="topLeft">
@@ -84,16 +86,15 @@ export default {
 
 <style scoped lang='scss'>
 .indexTopContent {
+  height: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 .title {
-  //   text-align: center;
-  // color: #ff0000;
-  //   font-weight: bold;
-  //   font-size: 30px;
-  //   padding: 20px;
+  padding-left: 20px;
+  font-size: 25px;
+  font-weight: bold;
 }
 .indexTop {
   display: flex;

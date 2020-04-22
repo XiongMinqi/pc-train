@@ -1,88 +1,92 @@
 <template>
-  <div class="test">
-    <div>
-      <div class="textcenter fontweight testTop">四川新科在线考试系统</div>
-      <div class="textcenter" style="color:blue">{{testInfo.name}}</div>
-      <div class="times">
-        <div class="explain">
-          <div class="grid-content" style="color:green">考试说明</div>
-          <div>考试次数:{{testInfo.level}}</div>
-          <div>考试限时:{{testInfo.minutes}}分钟</div>
-          <div>及格分数:{{testInfo.defaultPassScore}}</div>
-          <div>考试规则:允许返回修改答案</div>
-          <div>如果考试异常中断，请退出并及时按同样步骤进入，可继续进行考试</div>
-        </div>
+  <div class="btn-fullscreen">
+    <el-tooltip effect="dark" content="祝您考试顺利" placement="bottom">
+      <div class="test">
         <div>
-          <div>考试时间还剩</div>
-          <div id="countdown">00:00</div>
-        </div>
-      </div>
-    </div>
-    <div class="content">
-      <div v-for="(item,index) in testInfo.questions" :key="index">
-        <div class="title">
-          <div style="width:3%">
-            <div v-if="index<9">0{{index+1}}、</div>
-            <div v-else>{{index+1}}、</div>
-          </div>
-          <div style="width:6%" :class="item.type===4?'name':'public'">
-            <span v-if="item.type===0">【单选】</span>
-            <span v-if="item.type===1">【多选】</span>
-            <span v-if="item.type===2">【填空】</span>
-            <span v-if="item.type===3">【判断】</span>
-            <span v-if="item.type===4">【名词解释】</span>
-            <span v-if="item.type===5">【问答】</span>
-          </div>
-          <div style="width:88%">{{item.content}}</div>
-        </div>
-        <div class="answer">
-          <!-- 单选 -->
-          <div v-if="item.type===0">
-            <radio :options="currentOptions" :index="index" />
-          </div>
-          <!-- 多选 -->
-          <div v-if="item.type===1">
-            <checkbox :options="currentOptions" :index="index" />
-          </div>
-          <!-- 填空 -->
-          <div v-if="item.type===2">
-            <fillBlanks :options="currentOptions" :index="index" />
-          </div>
-          <!-- 填空 -->
-          <div v-if="item.type===3">
-            <judge :options="currentOptions" :index="index" />
-          </div>
-          <!-- 名词解释 -->
-          <div v-if="item.type===4">
-            <nounExplanation :options="currentOptions" :index="index" />
-          </div>
-          <!-- 问答 -->
-          <div v-if="item.type===5">
-            <explain :options="currentOptions" :index="index" />
+          <div class="textcenter fontweight testTop">四川新科在线考试系统</div>
+          <div class="textcenter" style="color:blue">{{testInfo.name}}</div>
+          <div class="times">
+            <div class="explain">
+              <div class="grid-content" style="color:green">考试说明</div>
+              <div>考试次数:{{testInfo.level}}</div>
+              <div>考试限时:{{testInfo.minutes}}分钟</div>
+              <div>及格分数:{{testInfo.defaultPassScore}}</div>
+              <div>考试规则:允许返回修改答案</div>
+              <div>如果考试异常中断，请退出并及时按同样步骤进入，可继续进行考试</div>
+            </div>
+            <div>
+              <div>考试时间还剩</div>
+              <div id="countdown">00:00</div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-    <div class="btn">
-      <el-button type="primary" @click="checkPaper">提交试卷</el-button>
-    </div>
-    <el-dialog title="确认提交？" :visible.sync="dialogVisible" width="30%">
-      <div>
-        <div v-if="empty.length>0">
-          还有题号
-          <span v-for="(item,index) in empty" :key="index">
-            <span v-if="index===empty.length-1">{{item}}</span>
-            <span v-else>{{item}}、</span>
+        <div class="content">
+          <div v-for="(item,index) in testInfo.questions" :key="index">
+            <div class="title">
+              <div style="width:3%">
+                <div v-if="index<9">0{{index+1}}、</div>
+                <div v-else>{{index+1}}、</div>
+              </div>
+              <div style="width:6%" :class="item.type===4?'name':'public'">
+                <span v-if="item.type===0">【单选】</span>
+                <span v-if="item.type===1">【多选】</span>
+                <span v-if="item.type===2">【填空】</span>
+                <span v-if="item.type===3">【判断】</span>
+                <span v-if="item.type===4">【名词解释】</span>
+                <span v-if="item.type===5">【问答】</span>
+              </div>
+              <div style="width:88%">{{item.content}}</div>
+            </div>
+            <div class="answer">
+              <!-- 单选 -->
+              <div v-if="item.type===0">
+                <radio :options="currentOptions" :index="index" />
+              </div>
+              <!-- 多选 -->
+              <div v-if="item.type===1">
+                <checkbox :options="currentOptions" :index="index" />
+              </div>
+              <!-- 填空 -->
+              <div v-if="item.type===2">
+                <fillBlanks :options="currentOptions" :index="index" />
+              </div>
+              <!-- 填空 -->
+              <div v-if="item.type===3">
+                <judge :options="currentOptions" :index="index" />
+              </div>
+              <!-- 名词解释 -->
+              <div v-if="item.type===4">
+                <nounExplanation :options="currentOptions" :index="index" />
+              </div>
+              <!-- 问答 -->
+              <div v-if="item.type===5">
+                <explain :options="currentOptions" :index="index" />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="btn">
+          <el-button type="primary" @click="checkPaper">提交试卷</el-button>
+        </div>
+        <el-dialog title="确认提交？" :visible.sync="dialogVisible" width="30%">
+          <div>
+            <div v-if="empty.length>0">
+              还有题号
+              <span v-for="(item,index) in empty" :key="index">
+                <span v-if="index===empty.length-1">{{item}}</span>
+                <span v-else>{{item}}、</span>
+              </span>
+              等{{length}}道题未做
+            </div>
+            <div v-else>确认提交试卷</div>
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="dialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="submit">确 定</el-button>
           </span>
-          等{{length}}道题未做
-        </div>
-        <div v-else>确认提交试卷</div>
+        </el-dialog>
       </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submit">确 定</el-button>
-      </span>
-    </el-dialog>
+    </el-tooltip>
   </div>
 </template>
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
@@ -106,11 +110,12 @@ export default {
       currentIndex: 0,
       testInfo: {},
       radio: 0,
+      fullscreen: false,
       dialogVisible: false,
       allAnswer: {},
       answerId: [],
       empty: [],
-      ksExamId:"",
+      ksExamId: "",
       length: 0,
       llqName: ""
     };
@@ -124,6 +129,32 @@ export default {
     explain
   },
   methods: {
+    handleFullScreen() {
+      let element = document.documentElement;
+      if (this.fullscreen) {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        } else if (document.webkitCancelFullScreen) {
+          document.webkitCancelFullScreen();
+        } else if (document.mozCancelFullScreen) {
+          document.mozCancelFullScreen();
+        } else if (document.msExitFullscreen) {
+          document.msExitFullscreen();
+        }
+      } else {
+        if (element.requestFullscreen) {
+          element.requestFullscreen();
+        } else if (element.webkitRequestFullScreen) {
+          element.webkitRequestFullScreen();
+        } else if (element.mozRequestFullScreen) {
+          element.mozRequestFullScreen();
+        } else if (element.msRequestFullscreen) {
+          // IE11
+          element.msRequestFullscreen();
+        }
+      }
+      this.fullscreen = !this.fullscreen;
+    },
     //提示
     checkPaper() {
       this.empty = [];
@@ -151,10 +182,9 @@ export default {
     },
     //提交
     submit() {
-      // 目标时区，东8区
-      let targetTimezone = -8;
-      // 当前时区与中时区时差，以min为维度
-      let _dif = new Date().getTimezoneOffset();
+      this.handleFullScreen();
+      let targetTimezone = -8; // 目标时区，东8区
+      let _dif = new Date().getTimezoneOffset(); // 当前时区与中时区时差，以min为维度
       // 本地时区时间 + 时差  = 中时区时间
       // 目标时区时间 + 时差 = 中时区时间
       // 目标时区时间 = 本地时区时间 + 本地时区时差 - 目标时区时差
@@ -186,6 +216,17 @@ export default {
         .submitPaper(data)
         .then(res => {
           console.log(res);
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            this.$router.push({ name: "onlineTest", path: "/onlineTest" });
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
+          }
         })
         .catch(err => {
           console.log(err);
@@ -279,11 +320,33 @@ export default {
     }
   },
   mounted() {
+    //进入全屏
+    this.handleFullScreen();
     // console.log(localStorage.getItem("Ip"));
     this.id = this.$route.query.paperId;
-    this.ksExamId = this.$route.query.id
+    // console.log(this.id);
+    // console.log(this.$route.query);
+    this.ksExamId = this.$route.query.id;
     // console.log(this.id);
     this.getTestMsg();
+    document.onkeydown = function() {
+      if (window.event.keyCode === 27) {
+        window.event.keyCode = 0;
+        window.event.returnValue = false;
+      }
+      if (window.event.keyCode === 122) {
+        window.event.keyCode = 0;
+        window.event.returnValue = false;
+      }
+      if (window.event.keyCode === 18) {
+        window.event.keyCode = 0;
+        window.event.returnValue = false;
+      }
+      if (window.event.keyCode === 9) {
+        window.event.keyCode = 0;
+        window.event.returnValue = false;
+      }
+    };
   },
   watch: {},
   computed: {}
@@ -291,6 +354,9 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+.test {
+  // pointer-events: none;
+}
 span {
   color: blue;
 }

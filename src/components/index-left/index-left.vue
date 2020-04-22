@@ -2,14 +2,10 @@
   <div class="indexLeft">
     <el-row class="tac">
       <el-col :span="12">
-        <el-menu
-          default-active="1"
-          @open="handleOpen"
-          @close="handleClose"
-        >
+        <el-menu default-active="1" @open="handleOpen" @close="handleClose">
           <el-menu-item index="1" @click="goTo('/index')">
             <i class="el-icon-menu"></i>
-            <span slot="title">我的课程</span>
+            <span slot="title">首页</span>
           </el-menu-item>
           <el-menu-item index="2" @click="goTo('/score')">
             <i class="el-icon-s-data"></i>
@@ -21,7 +17,7 @@
           </el-menu-item>
           <el-menu-item index="8" @click="goTo('/independentTest')">
             <i class="el-icon-edit"></i>
-            <span slot="title">自主考试</span>
+            <span slot="title">我的课程</span>
           </el-menu-item>
           <el-menu-item index="4" @click="goTo('/onlineStudy')">
             <i class="el-icon-s-promotion"></i>
@@ -52,7 +48,7 @@ export default {
   },
   components: {},
   methods: {
-     goTo(path) {
+    goTo(path) {
       this.$router.push(path);
     },
     handleOpen(key, keyPath) {
@@ -69,8 +65,10 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-.el-menu{
+.el-menu {
   width: 200px;
   border: 0;
+  background-color: #d3dce6;
+  color: #333;
 }
 </style>
