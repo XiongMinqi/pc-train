@@ -1,10 +1,10 @@
 <template>
-  <!-- <el-table v-loading="loading" :data="emptyScoreData" style="width: 100%"> -->
-  <div class="scroll" v-if="emptyScoreData.length>=0">
+  <div class="scroll" v-if="allTestList.length>=0">
     <div v-if="emptyScoreData.length>0" class="infinite-list" style="overflow:auto">
       <div class="flex">
         <div class="index">序号</div>
         <div class="testName">试卷</div>
+        <div class="subject">科目</div>
         <div class="testTime">考试时间</div>
         <div class="duringTime">考试用时</div>
         <div class="score">得分</div>
@@ -16,6 +16,10 @@
             <div class="index" v-if="index>=9">{{index+1}}</div>
             <div class="index" v-if="index<9">0{{index+1}}</div>
             <div class="testName">{{item.paperName}}</div>
+            <div class="subject">
+              <span v-if="item.subjectId">{{item.subjextName}}</span>
+              <span v-else>---</span>
+            </div>
             <div class="testTime">{{item.beginTime}}</div>
             <div class="duringTime">{{item.costMinutes}}</div>
             <div class="score">{{item.score}}</div>
@@ -35,7 +39,6 @@
     </div>
     <div v-else>暂无数据</div>
   </div>
-  <!-- </el-table> -->
 </template>
 
 <script>
@@ -48,7 +51,8 @@ export default {
       loading: true,
       dialogTableVisible: false,
       submitId: "",
-      paperDetail: {}
+      paperDetail: {},
+      subjectName: []
     };
   },
   components: { submitPaper },
@@ -66,6 +70,22 @@ export default {
           type: "warning"
         });
       }
+    },
+    //获取科目名称
+    getSubjectName() {
+      this.$grade
+        .getdict()
+        .then(res => {
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            this.getTestExam();
+            this.subjectName = res.data.data[0]["科目名称"];
+            // console.log(this.subjectName);
+          }
+        })
+        .catch();
     },
     //转换时间
     timeFormat(time) {
@@ -138,7 +158,7 @@ export default {
               item.costMinutes = this.twoNumber(item.costMinutes);
             });
 
-            console.log(res.data.data[0]);
+            // console.log(res.data.data[0]);
             this.emptyExamIds = res.data.data[0].emptyExamIds;
             if (this.emptyExamIds.length > 0) {
               this.emptyExamIds.map(item => {
@@ -148,13 +168,20 @@ export default {
                   }
                 });
               });
+              this.emptyScoreData.map(item => {
+                this.subjectName.map(itm => {
+                  if (itm.key == item.subjectId) {
+                    this.$set(item, "subjextName", itm.value);
+                  }
+                });
+              });
               this.emptyScoreData.sort(function(a, b) {
                 let minTime = new Date(a.beginTime).getTime();
                 let maxTime = new Date(b.beginTime).getTime();
                 return maxTime - minTime;
               });
               this.emptyScoreData = this.duplicate(this.emptyScoreData);
-              console.log(this.emptyScoreData, "emptyScoreData");
+              // console.log(this.emptyScoreData, "emptyScoreData");
             }
           }
         })
@@ -164,7 +191,7 @@ export default {
     }
   },
   mounted() {
-    this.getTestExam();
+    this.getSubjectName();
   },
   watch: {},
   computed: {}
@@ -187,7 +214,7 @@ span {
   margin-top: 1vh !important;
 }
 .scroll {
-  height: 290px;
+  height: 550px;
 }
 .flex {
   display: flex;
@@ -195,14 +222,17 @@ span {
   justify-content: space-around;
   text-align: center;
   margin-bottom: 20px;
-  .index {
+ .index {
     width: 5%;
   }
   .testName {
-    width: 30%;
+    width: 24%;
+  }
+  .subject {
+    width: 8%;
   }
   .testTime {
-    width: 25%;
+    width: 23%;
   }
   .duringTime {
     width: 10%;
@@ -216,9 +246,6 @@ span {
       cursor: pointer;
     }
   }
-  // :hover {
-  //   cursor: pointer;
-  // }
   div {
     overflow: hidden;
   }

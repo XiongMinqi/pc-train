@@ -4,6 +4,7 @@
       <div class="flex">
         <div class="index">序号</div>
         <div class="testName">试卷</div>
+        <div class="subject">科目</div>
         <div class="testTime">考试时间</div>
         <div class="duringTime">考试用时</div>
         <div class="score">得分</div>
@@ -15,6 +16,10 @@
             <div class="index" v-if="index>=9">{{index+1}}</div>
             <div class="index" v-if="index<9">0{{index+1}}</div>
             <div class="testName">{{item.paperName}}</div>
+            <div class="subject">
+              <span v-if="item.subjectId">{{item.subjextName}}</span>
+              <span v-else>---</span>
+            </div>
             <div class="testTime">{{item.beginTime}}</div>
             <div class="duringTime">{{item.costMinutes}}</div>
             <div class="score">{{item.score}}</div>
@@ -45,7 +50,8 @@ export default {
       failScoreData: [],
       dialogTableVisible: false,
       submitId: "",
-      paperDetail: {}
+      paperDetail: {},
+      subjectName: []
     };
   },
   components: { submitPaper },
@@ -117,6 +123,22 @@ export default {
       }
       return arr;
     },
+    //获取科目名称
+    getSubjectName() {
+      this.$grade
+        .getdict()
+        .then(res => {
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            this.getTestExam();
+            this.subjectName = res.data.data[0]["科目名称"];
+            // console.log(this.subjectName);
+          }
+        })
+        .catch();
+    },
     //获取考试记录
     getTestExam() {
       this.$grade
@@ -134,7 +156,7 @@ export default {
               item.costMinutes = this.twoNumber(item.costMinutes);
             });
 
-            console.log(res.data.data[0]);
+            // console.log(res.data.data[0]);
             this.failExamIds = res.data.data[0].failExamIds;
             if (this.failExamIds.length > 0) {
               this.failExamIds.map(item => {
@@ -144,13 +166,20 @@ export default {
                   }
                 });
               });
+              this.failScoreData.map(item => {
+                this.subjectName.map(itm => {
+                  if (itm.key == item.subjectId) {
+                    this.$set(item, "subjextName", itm.value);
+                  }
+                });
+              });
               this.failScoreData.sort(function(a, b) {
                 let minTime = new Date(a.beginTime).getTime();
                 let maxTime = new Date(b.beginTime).getTime();
                 return maxTime - minTime;
               });
               this.failScoreData = this.duplicate(this.failScoreData);
-              console.log(this.failScoreData, "failScoreData");
+              // console.log(this.failScoreData, "failScoreData");
             }
           }
         })
@@ -160,7 +189,7 @@ export default {
     }
   },
   mounted() {
-    this.getTestExam();
+    this.getSubjectName();
   },
   watch: {},
   computed: {}
@@ -183,7 +212,7 @@ span {
   margin-top: 1vh !important;
 }
 .scroll {
-  height: 290px;
+  height: 550px;
 }
 .flex {
   display: flex;
@@ -195,10 +224,13 @@ span {
     width: 5%;
   }
   .testName {
-    width: 30%;
+    width: 24%;
+  }
+  .subject {
+    width: 8%;
   }
   .testTime {
-    width: 25%;
+    width: 23%;
   }
   .duringTime {
     width: 10%;

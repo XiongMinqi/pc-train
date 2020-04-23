@@ -59,7 +59,7 @@ export default {
       this.$api
         .logout()
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.data.code === 0) {
             this.$message({
               message: "退出登录成功",
@@ -77,7 +77,7 @@ export default {
   mounted() {
     this.getAmount();
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
-    // console.log(this.userInfo, "userInfo");
+    // console.log(this.userInfo.avatarUrl, "userInfo");
   },
   watch: {},
   computed: {}

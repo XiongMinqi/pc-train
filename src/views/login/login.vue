@@ -68,10 +68,35 @@ export default {
         "remeber-me": this.checked
       };
       // console.log(data);
+      // this.$axios
+      //   .post(`http://39.104.70.60:8080/login`,
+      //   Headers= {
+      //           "Content-Type": "application/x-www-form-urlencoded"
+      //       }, {
+      //     username: this.username,
+      //     password: this.passwords,
+      //     "remeber-me": this.checked
+      //   })
+      //   .then(res => {
+      //     // console.log(res);
+      //     if (res.data.code === 0) {
+      //       // console.log(res.data[0]);
+      //       this.$message({
+      //         message: res.data.msg,
+      //         type: "success"
+      //       });
+      //       // localStorage.setItem("userame",this.username)
+      //       localStorage.setItem("userInfo", JSON.stringify(res.data.data[0]));
+      //       this.$router.push({ name: "index", path: "/index" });
+      //     }
+      //   })
+      //   .catch(err => {
+      //     console.log(err);
+      //   });
       this.$api
         .login(data)
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.data.code === 0) {
             // console.log(res.data[0]);
             this.$message({

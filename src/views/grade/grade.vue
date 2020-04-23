@@ -1,11 +1,7 @@
 <template>
-  <div>
-    <div class="flex justify">
-      <div style="width:50%">
-        <!-- <div class="flex list">
-          <div class="words">试卷:</div>
-          <div class="number">{{statistics.paperCount}}</div>
-        </div>-->
+  <div class="gradebody">
+    <div class="flex justify" style="height:280px">
+      <div style="width:50%;height:100%">
         <div class="flex list">
           <div class="words">考试次数:</div>
           <div class="number">{{statistics.paperCount}}次</div>
@@ -35,8 +31,8 @@
         <pieChart :passScoreMsg="passScore" />
       </div>
     </div>
-    <div>
-      <testRecords />
+    <div class="broken">
+      <brokenLine />
     </div>
   </div>
 </template>
@@ -44,17 +40,20 @@
 <script>
 import pieChart from "../../components/pieChart/pieChart";
 import testRecords from "../../components/testRecords/testRecords";
+import brokenLine from "../../components/brokenLine/brokenLine";
 export default {
   data() {
     return {
       subjectName: [],
       statistics: [],
-      passScore: {}
+      passScore: {},
+      paperIndex: 0
     };
   },
   components: {
     pieChart,
-    testRecords
+    testRecords,
+    brokenLine
   },
   methods: {
     //获取科目名称
@@ -138,6 +137,11 @@ export default {
 }
 .justify {
   justify-content: space-between;
+  // height: 200px;
+  // line-height: 200px;
+}
+.broken {
+  height: 300px;
 }
 .words {
   width: 30%;

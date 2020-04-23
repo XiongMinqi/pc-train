@@ -5,11 +5,13 @@
       <div>
         <div class="logintime">
           <div class="name">我的登录次数 :</div>
-          <div class="content">6 次</div>
+          <div class="content" v-if="userInfo.loginCount">{{userInfo.loginCount}} 次</div>
+          <div class="content" v-else>0 次</div>
         </div>
         <div class="logintime">
           <div class="name">上次登录时间 :</div>
-          <div class="content">2020/04/20 20:20:20</div>
+          <div class="content" v-if="userInfo.lastLoginTime">{{userInfo.lastLoginTime}}</div>
+          <div class="content" v-else>暂时没有上次登录的记录</div>
         </div>
         <div class="logintime">
           <div class="name">我的积分 :</div>
@@ -34,41 +36,45 @@
       </div>
     </div>
     <div class="test">
-      <div>我的考试</div>
+      <div v-if="testInfo.todoExamCount" class="newTest" @click="myTest">
+        <div>我的考试({{testInfo.todoExamCount}})</div>
+        <div class="new">new</div>
+      </div>
+      <div v-else>我的考试</div>
       <el-row>
         <el-col :span="6">
-          <div class="grid-content bg-purple">
+          <div class="grid-content bg-purple" @click="testPaper(1)">
             <div>
               <img src="../../assets/img/myscore.svg" alt />
             </div>
-            <div>X份</div>
+            <div>{{total}}份</div>
             <div>全部试卷</div>
           </div>
         </el-col>
         <el-col :span="6">
-          <div class="grid-content bg-purple-light">
+          <div class="grid-content bg-purple-light" @click="testPaper(2)">
             <div>
               <img src="../../assets/img/myscore.svg" alt />
             </div>
-            <div>X份</div>
+            <div>{{pass}}份</div>
             <div>及格试卷</div>
           </div>
         </el-col>
         <el-col :span="6">
-          <div class="grid-content bg-purple">
+          <div class="grid-content bg-purple" @click="testPaper(3)">
             <div>
               <img src="../../assets/img/myscore.svg" alt />
             </div>
-            <div>X份</div>
+            <div>{{fail}}份</div>
             <div>不及格试卷</div>
           </div>
         </el-col>
         <el-col :span="6">
-          <div class="grid-content bg-purple-light">
+          <div class="grid-content bg-purple-light" @click="testPaper(4)">
             <div>
               <img src="../../assets/img/myscore.svg" alt />
             </div>
-            <div>X份</div>
+            <div>{{empty}}份</div>
             <div>空白试卷</div>
           </div>
         </el-col>
@@ -92,7 +98,14 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      userInfo: {},
+      testInfo: {},
+      total: 0,
+      pass: 0,
+      fail: 0,
+      empty: 0
+    };
   },
   components: {},
   methods: {
@@ -101,9 +114,74 @@ export default {
     },
     classes() {
       this.$router.push({ name: "independentTest", path: "/independentTest" });
+    },
+    myTest() {
+      this.$router.push({ name: "onlineTest", path: "/onlineTest" });
+    },
+    testPaper(e) {
+      this.$router.push({ name: "grade", path: "/grade" });
+    },
+    //转换时间
+    timeFormat(time) {
+      var clock = "";
+      var d = new Date(time);
+      var year = d.getFullYear(); //年
+      var month = d.getMonth() + 1; //月
+      var day = d.getDate(); //日
+      var hh = d.getHours(); //时
+      var mm = d.getMinutes(); //分
+      var ss = d.getSeconds(); //秒
+      clock += year + "/";
+      if (month < 10) clock += "0";
+      clock += month + "/";
+      if (day < 10) clock += "0";
+      clock += day + " ";
+      if (hh < 10) clock += "0";
+      clock += hh + ":";
+      if (mm < 10) clock += "0";
+      clock += mm + ":";
+      if (ss < 10) clock += "0";
+      clock += ss;
+      return clock;
+    },
+    //获取考试记录
+    getTestExam() {
+      this.$grade
+        .getExam()
+        .then(res => {
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            this.total = res.data.data[0].totalExamIds.length;
+            this.pass = res.data.data[0].passExamIds.length;
+            this.fail = res.data.data[0].failExamIds.length;
+            this.empty = res.data.data[0].emptyExamIds.length;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
-  mounted() {},
+  mounted() {
+    this.getTestExam();
+    this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
+    this.userInfo.lastLoginTime = this.timeFormat(this.userInfo.lastLoginTime);
+    // console.log(this.userInfo);
+    this.$api
+      .getMyMsg()
+      .then(res => {
+        // console.log(res);
+        if (res.data.code === 0) {
+          this.testInfo = res.data.data[0];
+          console.log(this.testInfo);
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   watch: {},
   computed: {}
 };
@@ -157,6 +235,7 @@ export default {
   :hover {
     cursor: pointer;
     background: #e9e9e9;
+    color: green;
   }
 }
 .grid-content {
@@ -168,10 +247,25 @@ export default {
   width: 60%;
   margin-top: 20px;
 }
-// .bg-purple {
-//   background: #d3dce6;
-// }
-// .bg-purple-light {
-//   background: #e5e9f2;
-// }
+.newTest {
+  color: red;
+  width: 123px;
+  :hover {
+    cursor: pointer;
+    color: green;
+  }
+  position: relative;
+  .new {
+    position: absolute;
+    top: -18px;
+    right: 10px;
+    background: red;
+    color: white;
+    :hover {
+      cursor: pointer;
+      color: red !important;
+      background: white;
+    }
+  }
+}
 </style>

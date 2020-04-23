@@ -1,15 +1,15 @@
 <template>
   <div>
-    <div class="flex">
+    <!-- <div class="flex">
       <div class="index">序号</div>
       <div class="subjectName">科目</div>
       <div class="testTime">考试时间</div>
       <div class="duringTime">截止时间</div>
       <div class="passTime">是否过期</div>
       <div class="operation">操作</div>
-    </div>
+    </div>-->
     <div class="flex" v-for="(item,index) in testList" :key="index">
-      <div class="index">{{index+1}}</div>
+      <!-- <div class="index">{{index+1}}</div>
       <div class="subjectName">{{item.name}}</div>
       <div class="testTime">{{item.publishTime}}</div>
       <div class="duringTime">{{item.expirationTime}}</div>
@@ -26,7 +26,36 @@
           @click="showToast"
         >进入考试</div>
         <div v-if="item.status===2" style="color: #2FC25B;" @click="onlineTest(item)">进入考试</div>
-        <!-- <div style="color: #2FC25B;" @click="onlineTest(item)">进入考试</div> -->
+      </div>-->
+      <div style=" display: flex;align-items: center;">
+        <div class="userImg">
+          <img src="http://pic.51yuansu.com/pic3/cover/01/02/80/590085d34c319_610.jpg" alt />
+        </div>
+        <div style="margin-left:20px">
+          <div class="name" style="font-weight:bold">{{item.name}}</div>
+          <div>
+            专业 : {{item.majorname}} |
+            部门 : {{item.departname}} |
+            总分 ： {{item.totalScore}}分 |
+            及格分数:
+            <span style="color:#3C3CC4">{{item.passScore}}分</span>
+          </div>
+
+          <div>
+            创建时间 : {{item.publishTime}} | 
+            <span style="color:#CC3352">截止时间 : {{item.expirationTime}}</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div>
+          <div v-if="item.status===1||item.status===3||item.status===4" @click="showToast">
+            <el-button type="danger" round>进入考试</el-button>
+          </div>
+          <div v-if="item.status===2" @click="onlineTest(item)">
+            <el-button type="primary" round>进入考试</el-button>
+          </div>
+        </div>
       </div>
     </div>
     <div class="block">
@@ -34,7 +63,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
-        :page-sizes="[10, 20, 30, 40]"
+        :page-sizes="[5,1, 10, 20, 30, 40]"
         :page-size="100"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -49,9 +78,11 @@ export default {
     return {
       currentPage: 1,
       offset: 0,
-      limit: 10,
+      limit: 5,
       total: 0,
-      testList: []
+      testList: [],
+      major: [],
+      department: []
     };
   },
   components: {},
@@ -96,6 +127,16 @@ export default {
               item.createTime = this.timeFormat(item.createTime);
               let expirationTime =
                 Date.parse(new Date(item.publishTime)) + item.minutes * 60000;
+              this.major.map(itm => {
+                if (item.majorId == itm.key) {
+                  this.$set(item, "majorname", itm.value);
+                }
+              });
+              this.department.map(itm => {
+                if (item.departmentId == itm.key) {
+                  this.$set(item, "departname", itm.value);
+                }
+              });
               this.$set(
                 item,
                 "expirationTime",
@@ -142,10 +183,31 @@ export default {
       this.offset = (val - 1) * this.limit;
       console.log(this.offset, this.limit);
       this.getTest();
+    },
+    //获取专业和部门名称
+    getSubjectDetail() {
+      this.$api
+        .getSubject()
+        .then(res => {
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            this.getTest();
+            // console.log(res);
+            this.major = res.data.data[0]["专业名称"];
+            this.department = res.data.data[0]["部门名称"];
+            // console.log(this.major);
+            // console.log(this.department);
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
   mounted() {
-    this.getTest();
+    this.getSubjectDetail();
   },
   watch: {},
   computed: {}
@@ -156,10 +218,12 @@ export default {
 .flex {
   display: flex;
   align-items: center;
-  text-align: center;
-  div {
-    margin-bottom: 10px;
-  }
+  // text-align: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  padding: 10px 10px;
+  border: 1px solid #e9e9e9;
+  border-radius: 10px;
   .index {
     width: 5%;
   }
@@ -185,5 +249,17 @@ export default {
 .block {
   margin: 0 auto;
   text-align: center;
+}
+.userImg {
+  width: 80px;
+  height: 90px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+.name {
+  padding-bottom: 10px;
+  font-size: 17px;
 }
 </style>

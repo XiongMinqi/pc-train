@@ -31,6 +31,10 @@
             <i class="el-icon-document-copy"></i>
             <span slot="title">成绩统计</span>
           </el-menu-item>
+          <el-menu-item index="9" @click="goTo('/testRecords')">
+            <i class="el-icon-document-copy"></i>
+            <span slot="title">考试记录</span>
+          </el-menu-item>
           <el-menu-item index="7" @click="goTo('/user')">
             <i class="el-icon-user-solid"></i>
             <span slot="title">个人信息</span>

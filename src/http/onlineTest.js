@@ -1,5 +1,6 @@
 import axios from 'axios'
 axios.defaults.timeout = 10000
+// axios.defaults.baseURL = "http://39.104.70.60:8080/"
 export default {
     getTestInfo(offset, limit) {
         return axios.get(`ksExam/getByMe?offset=${offset}&limit=${limit}`)

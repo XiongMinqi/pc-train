@@ -257,7 +257,7 @@ export default {
             this.userInfo = res.data.data[0];
             this.radio = this.userInfo.sex.toString();
             this.telNumber = this.userInfo.phoneNumber;
-            console.log(this.userInfo);
+            // console.log(this.userInfo);
             // console.log(this.radio);
           }
         })
@@ -303,7 +303,7 @@ export default {
       this.$api
         .logout()
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.data.code === 0) {
             this.$message({
               message: "退出登录成功",
@@ -321,7 +321,7 @@ export default {
   mounted() {
     this.userMsg = JSON.parse(localStorage.getItem("userInfo"));
     this.imageUrl = this.userMsg.avatarUrl;
-    console.log(this.imageUrl);
+    // console.log(this.imageUrl);
     this.getUserList();
     this.getSubjectDetail();
   },

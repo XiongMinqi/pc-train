@@ -19,7 +19,7 @@ Vue.prototype.$grade = grade
 Vue.prototype.$onlineTest = onlineTest
 // 设置axios
 Vue.prototype.$axios = Axios
-// Axios.defaults.baseURL = '/apis'
+// Axios.defaults.baseURL = "http://39.104.70.60:8080/"
 Vue.config.productionTip = false
 
 new Vue({

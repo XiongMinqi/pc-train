@@ -1,29 +1,25 @@
 <template>
   <div class="indexLeft">
-    <el-row class="tac">
-      <el-col :span="12">
-        <el-menu
-          default-active="1"
-          @open="handleOpen"
-          @close="handleClose"
-        >
-          <el-menu-item index="1" @click="goTo('/allExam')">
-            <!-- <i class="el-icon-menu"></i> -->
-            <span slot="title">全部试卷</span>
-          </el-menu-item>
-          <el-menu-item index="2" @click="goTo('/passExam')">
-            <!-- <i class="el-icon-s-data"></i> -->
-            <span slot="title">及格试卷</span>
-          </el-menu-item>
-          <el-menu-item index="3" @click="goTo('/failExam')">
-            <!-- <i class="el-icon-edit-outline"></i> -->
-            <span slot="title">不及格试卷</span>
-          </el-menu-item>
-          <el-menu-item index="4" @click="goTo('/emptyExam')">
-            <!-- <i class="el-icon-s-promotion"></i> -->
-            <span slot="title">未做试卷</span>
-          </el-menu-item>
-        </el-menu>
+    <el-row>
+      <el-col :span="6">
+        <div class="grid-content bg-purple-all" @click="goTo('/allExam')">
+          <span>全部试卷({{total}})</span>
+        </div>
+      </el-col>
+      <el-col :span="6">
+        <div class="grid-content bg-purple-pass" @click="goTo('/passExam')">
+          <span>及格试卷({{pass}})</span>
+        </div>
+      </el-col>
+      <el-col :span="6">
+        <div class="grid-content bg-purple-fail" @click="goTo('/failExam')">
+          <span>不及格试卷({{fail}})</span>
+        </div>
+      </el-col>
+      <el-col :span="6">
+        <div class="grid-content bg-purple-empty" @click="goTo('/emptyExam')">
+          <span>未做试卷({{empty}})</span>
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -32,11 +28,17 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      chooseIndex: 1,
+      total: 0,
+      pass: 0,
+      fail: 0,
+      empty: 0
+    };
   },
   components: {},
   methods: {
-     goTo(path) {
+    goTo(path) {
       this.$router.push(path);
     },
     handleOpen(key, keyPath) {
@@ -44,20 +46,74 @@ export default {
     },
     handleClose(key, keyPath) {
       console.log(key, keyPath);
+    },
+    //获取考试记录
+    getTestExam() {
+      this.$grade
+        .getExam()
+        .then(res => {
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            this.total = res.data.data[0].totalExamIds.length;
+            this.pass = res.data.data[0].passExamIds.length;
+            this.fail = res.data.data[0].failExamIds.length;
+            this.empty = res.data.data[0].emptyExamIds.length;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   },
-  mounted() {},
+  mounted() {
+    this.getTestExam();
+  },
   watch: {},
   computed: {}
 };
 </script>
 
 <style scoped lang='scss'>
-.indexLeft{
-    border-right: 1px solid black;
+.el-col {
+  text-align: center;
 }
-.el-menu{
-  width: 200px;
-  border: 0;
+.grid-content {
+  padding: 10px 0;
+  border-radius: 10px;
+}
+span :hover {
+  color: red;
+  cursor: pointer;
+}
+
+.bg-purple-all {
+  background: #d3dce6;
+  :hover {
+    color: magenta;
+    cursor: pointer;
+  }
+}
+.bg-purple-pass {
+  background: #e5e9f2;
+  :hover {
+    color: green;
+    cursor: pointer;
+  }
+}
+.bg-purple-fail {
+  background: #d3dce6;
+  :hover {
+    color: red;
+    cursor: pointer;
+  }
+}
+.bg-purple-empty {
+  background: #e5e9f2;
+  :hover {
+    color: blue;
+    cursor: pointer;
+  }
 }
 </style>

@@ -1,14 +1,21 @@
 import axios from "axios"
 axios.defaults.timeout = 10000
+// axios.defaults.baseURL = "http://39.104.70.60:8080/"
 export default {
     // 登录
     login(data) {
         return axios({
-            Headers: {
+            headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
             method:"POST",
-            url:`login?username=${data.username}&password=${data.password}&"remeber-me"=${data["remeber-me"]}`
+            baseURL: 'http://39.104.70.60:8080/',
+            params: {
+                username: data.username,
+                password: data.password,
+                "remember-me": data["remember-me"]
+            },
+            url:`login`
         })
     },
     //首页请求消息条数
@@ -37,6 +44,10 @@ export default {
     },
     //手机号是否重复
     checkNumber(){
-        return axios.get('/people/isPhoneNumberDuplicate')
+        return axios.get('people/isPhoneNumberDuplicate')
+    },
+    //获取我的看板数据
+    getMyMsg(){
+        return axios.get('ksExam/getKanbanByMe')
     }
 }
