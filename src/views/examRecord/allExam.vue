@@ -77,14 +77,14 @@ export default {
     handleSizeChange(val) {
       this.offset = 1;
       this.limit = val;
-      this.getTest();
+      this.getTestExam();
       // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       // console.log(`当前页: ${val}`);
       this.offset = val;
       // console.log(this.offset, this.limit);
-      this.getTest();
+      this.getTestExam();
     },
     //查看明细
     checkDetail(e) {

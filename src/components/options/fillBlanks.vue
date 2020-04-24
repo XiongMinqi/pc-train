@@ -9,9 +9,6 @@
           v-model="textarea[index]"
           @input="inputInfo(index)"
         ></el-input>
-        <!-- <div class="el-textarea">
-          <input type="text" :value="item" @input="inputInfo" />
-        </div>-->
       </div>
     </div>
   </div>

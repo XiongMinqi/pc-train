@@ -7,7 +7,7 @@ Vue.use(VueRouter)
 
 const routes = [{
     path: '/', // 默认进入路由
-    redirect: '/index' //重定向
+    redirect: '/login' //重定向
   },
   // {
   //   path:'/',
@@ -100,29 +100,7 @@ const routes = [{
     children: [{
       path: "",
       name: "testRecords",
-      component: () => import("../views/testRecords/testRecords.vue"),
-      redirect: "/allExam",
-      children: [{
-          path: "/allExam",
-          name: "allExam",
-          component: () => import("../views/examRecord/allExam.vue")
-        },
-        {
-          path: "/emptyExam",
-          name: "emptyExam",
-          component: () => import("../views/examRecord/emptyExam.vue")
-        },
-        {
-          path: "/passExam",
-          name: "passExam",
-          component: () => import("../views/examRecord/passExam.vue")
-        },
-        {
-          path: "/failExam",
-          name: "failExam",
-          component: () => import("../views/examRecord/failExam.vue")
-        }
-      ]
+      component: () => import("../views/testRecords/testRecords.vue")
     }]
   },
   {

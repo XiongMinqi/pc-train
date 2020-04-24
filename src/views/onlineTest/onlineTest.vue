@@ -55,6 +55,9 @@
           <div v-if="item.status===2" @click="onlineTest(item)">
             <el-button type="primary" round>进入考试</el-button>
           </div>
+          <!-- <div @click="onlineTest(item)">
+            <el-button type="primary" round>进入考试</el-button>
+          </div> -->
         </div>
       </div>
     </div>

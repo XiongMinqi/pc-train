@@ -6,7 +6,7 @@ const isProduction = process.env.NODE_ENV === "production"
 axios.defaults.baseURL = isProduction ? "http://39.104.70.60:8080" : "http://localhost:8080"
 export default {
     getTestInfo(page, pageSize) {
-        return axios.get(`ksExam/getByMe?page=${page}&pageSize=${pageSize}`)
+        return axios.get(`ksExam/getByMe?page=${page}&limit=${pageSize}`)
     },
     //考试页面
     onlineTest(id) {

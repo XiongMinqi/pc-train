@@ -18,12 +18,18 @@ export default {
         return axios.get('ksExam/getMyStatistics')
     },
     //获取考试记录
-    getExam(page, pageSize) {
+    getExam(page, pageSize, status) {
         return axios.post(`ksExam/getMySubmitExam`, {
             page: page,
             limit: pageSize,
-            object:{}
+            object: {
+                status: status
+            }
         })
+    },
+    //获取考试记录数目
+    gettestNumber() {
+        return axios.get(`ksExam/getMyTotalExamCount`)
     },
     //获取已提交试卷
     getSubmitPaper(id) {
