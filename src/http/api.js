@@ -1,6 +1,9 @@
 import axios from "axios"
 axios.defaults.timeout = 10000
 // axios.defaults.baseURL = "http://39.104.70.60:8080/"
+const isProduction = process.env.NODE_ENV === "production"
+// 接口基础路径
+axios.defaults.baseURL = isProduction ? "http://39.104.70.60:8080" : "http://localhost:8080"
 export default {
     // 登录
     login(data) {
@@ -8,14 +11,14 @@ export default {
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
-            method:"POST",
-            baseURL: 'http://39.104.70.60:8080/',
+            method: "POST",
+            // baseURL: 'http://39.104.70.60:8080/',
             params: {
                 username: data.username,
                 password: data.password,
                 "remember-me": data["remember-me"]
             },
-            url:`login`
+            url: `login`
         })
     },
     //首页请求消息条数
@@ -43,11 +46,15 @@ export default {
         return axios.post('logout')
     },
     //手机号是否重复
-    checkNumber(){
+    checkNumber() {
         return axios.get('people/isPhoneNumberDuplicate')
     },
     //获取我的看板数据
-    getMyMsg(){
+    getMyMsg() {
         return axios.get('ksExam/getKanbanByMe')
+    },
+    //获取在线学习附件
+    getLearn(data){
+        return axios.post('courseware/getAll',data)
     }
 }

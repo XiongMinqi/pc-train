@@ -181,7 +181,7 @@ export default {
                 return maxTime - minTime;
               });
               this.emptyScoreData = this.duplicate(this.emptyScoreData);
-              // console.log(this.emptyScoreData, "emptyScoreData");
+              console.log(this.emptyScoreData, "emptyScoreData");
             }
           }
         })

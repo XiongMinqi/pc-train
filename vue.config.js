@@ -3,7 +3,7 @@
 // 这里只列一部分，具体配置参考文档
 module.exports = {
     // baseUrl: process.env.NODE_ENV === 'production'? '/': '/',
-    publicPath: process.env.NODE_ENV === "production" ? "/" : "/",
+    publicPath: process.env.NODE_ENV === "production" ? "./" : "/",
     outputDir: "pc", // outputDir: 在npm run build 或 yarn build 时 ，生成文件的目录名称（要和baseUrl的生产环境路径一致）
     assetsDir: "assets", //用于放置生成的静态资源 (js、css、img、fonts) 的；（项目打包之后，静态资源会放在这个文件夹下）
     // indexPath: "myIndex.html",//指定生成的 index.html 的输出路径  (打包之后，改变系统默认的index.html的文件名)
@@ -18,7 +18,7 @@ module.exports = {
         https: false, // https:{type:Boolean}
         // open: true, //配置自动启动浏览器
         // proxy: 'http://39.104.70.60:8080/pc/',
-        proxy: 'http://39.104.70.60:8080/',
-        // proxy: 'http://192.168.0.45:8080/',
+        // proxy: 'http://39.104.70.60:8080/',
+        proxy: 'http://192.168.0.45:8080/',
     }
 };

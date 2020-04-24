@@ -77,7 +77,7 @@ export default {
   data() {
     return {
       currentPage: 1,
-      offset: 0,
+      offset: 1,
       limit: 5,
       total: 0,
       testList: [],
@@ -173,14 +173,14 @@ export default {
       });
     },
     handleSizeChange(val) {
-      this.offset = 0;
+      this.offset = 1;
       this.limit = val;
       this.getTest();
       // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
       // console.log(`当前页: ${val}`);
-      this.offset = (val - 1) * this.limit;
+      this.offset = val;
       console.log(this.offset, this.limit);
       this.getTest();
     },

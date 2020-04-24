@@ -65,7 +65,24 @@ const routes = [{
     children: [{
       path: "",
       name: "onlineStudy",
-      component: () => import("../views/onlineStudy/onlineStudy.vue")
+      component: () => import("../views/onlineStudy/onlineStudy.vue"),
+      redirect: "/courseware",
+      children: [{
+          path: "/courseware",
+          name: "courseware",
+          component: () => import("../views/study/courseware.vue")
+        },
+        {
+          path: "/material",
+          name: "material",
+          component: () => import("../views/study/material.vue")
+        },
+        {
+          path: "/online",
+          name: "online",
+          component: () => import("../views/study/online.vue")
+        }
+      ]
     }]
   },
   {

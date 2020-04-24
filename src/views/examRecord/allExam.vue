@@ -1,41 +1,54 @@
 <template>
   <div class="scroll" v-if="allTestList.length>=0">
     <div v-if="allTestList.length>0" class="infinite-list" style="overflow:auto">
-      <div class="flex">
-        <div class="index">序号</div>
-        <div class="testName">试卷</div>
-        <div class="subject">科目</div>
-        <div class="testTime">考试时间</div>
-        <div class="duringTime">考试用时</div>
-        <div class="score">得分</div>
-        <div class="operation">操作</div>
-      </div>
       <div>
-        <div v-for="(item,index) in allTestList" :key="index">
-          <div class="flex">
-            <div class="index" v-if="index>=9">{{index+1}}</div>
-            <div class="index" v-if="index<9">0{{index+1}}</div>
-            <div class="testName">{{item.paperName}}</div>
-            <div class="subject">
-              <span v-if="item.subjectId">{{item.subjextName}}</span>
-              <span v-else>---</span>
-            </div>
-            <div class="testTime">{{item.beginTime}}</div>
-            <div class="duringTime">{{item.costMinutes}}</div>
-            <div class="score">{{item.score}}</div>
-            <div
-              class="operation"
-              :class="item.submitId?'bgblue':'bggray'"
-              @click="checkDetail(item)"
-            >
-              <span>查看明细</span>
+        <div class="flex">
+          <div class="index">序号</div>
+          <div class="testName">试卷</div>
+          <div class="subject">科目</div>
+          <div class="testTime">考试时间</div>
+          <div class="duringTime">考试用时</div>
+          <div class="score">得分</div>
+          <div class="operation">操作</div>
+        </div>
+        <div>
+          <div v-for="(item,index) in allTestList" :key="index">
+            <div class="flex">
+              <div class="index" v-if="index>=9">{{index+1}}</div>
+              <div class="index" v-if="index<9">0{{index+1}}</div>
+              <div class="testName">{{item.paperName}}</div>
+              <div class="subject">
+                <span v-if="item.subjectId">{{item.subjextName}}</span>
+                <span v-else>---</span>
+              </div>
+              <div class="testTime">{{item.beginTime}}</div>
+              <div class="duringTime">{{item.costMinutes}}</div>
+              <div class="score">{{item.score}}</div>
+              <div
+                class="operation"
+                :class="item.submitId?'bgblue':'bggray'"
+                @click="checkDetail(item)"
+              >
+                <span>查看明细</span>
+              </div>
             </div>
           </div>
         </div>
+        <el-dialog width="80%" title="试卷明细" top="1vh" :visible.sync="dialogTableVisible">
+          <submitPaper :submitId="submitId" :paperDetail="paperDetail" />
+        </el-dialog>
       </div>
-      <el-dialog width="80%" title="试卷明细" top="1vh" :visible.sync="dialogTableVisible">
-        <submitPaper :submitId="submitId" :paperDetail="paperDetail" />
-      </el-dialog>
+      <div class="block">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[5,1, 10, 20, 30, 40]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+        ></el-pagination>
+      </div>
     </div>
     <div v-else>暂无数据</div>
   </div>
@@ -49,6 +62,10 @@ export default {
       allTestList: [],
       dialogTableVisible: false,
       submitId: "",
+      currentPage: 1,
+      offset: 1,
+      limit: 5,
+      total: 0,
       paperDetail: {},
       subjectName: []
     };
@@ -57,6 +74,18 @@ export default {
     submitPaper
   },
   methods: {
+    handleSizeChange(val) {
+      this.offset = 1;
+      this.limit = val;
+      this.getTest();
+      // console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      // console.log(`当前页: ${val}`);
+      this.offset = val;
+      // console.log(this.offset, this.limit);
+      this.getTest();
+    },
     //查看明细
     checkDetail(e) {
       if (e.submitId) {
@@ -130,13 +159,14 @@ export default {
     //获取考试记录
     getTestExam() {
       this.$grade
-        .getExam()
+        .getExam(this.offset, this.limit)
         .then(res => {
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
             this.allTestList = res.data.data[0].items;
+            this.total = res.data.count
             this.allTestList.map(item => {
               item.beginTime = this.timeFormat(item.beginTime);
               item.beginWriteTime = this.timeFormat(item.beginWriteTime);
@@ -223,5 +253,9 @@ span {
   div {
     overflow: hidden;
   }
+}
+.block {
+  margin: 0 auto;
+  text-align: center;
 }
 </style>
