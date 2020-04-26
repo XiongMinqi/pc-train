@@ -60,7 +60,13 @@
               </div>
             </div>
           </div>
-          <el-dialog width="80%" title="试卷明细" top="1vh" :visible.sync="dialogTableVisible">
+          <el-dialog
+            width="80%"
+            title="试卷明细"
+            top="1vh"
+            :visible.sync="dialogTableVisible"
+            @close="closeDialog"
+          >
             <submitPaper :submitId="submitId" :paperDetail="paperDetail" />
           </el-dialog>
         </div>
@@ -91,34 +97,39 @@ export default {
       page: 1,
       limit: 5,
       status: null,
-      totalNum:0,
+      totalNum: 0,
       total: 0,
       pass: 0,
       fail: 0,
       empty: 0,
       dialogTableVisible: false,
-      submitId: "",
+      submitId: 0,
       currentPage: 1,
       total: 0,
       paperDetail: {},
       subjectName: []
     };
   },
-  components: {},
+  components: { submitPaper },
   methods: {
+    closeDialog() {
+      this.submitId = 0;
+      this.paperDetail = {};
+      console.log(this.submitId, this.paperDetail);
+    },
     goTo(e) {
-      console.log(e);
-      if(e==null){
-        this.totalNum = this.total
+      // console.log(e);
+      if (e == null) {
+        this.totalNum = this.total;
       }
-      if(e==1){
-        this.totalNum = this.fail
+      if (e == 1) {
+        this.totalNum = this.fail;
       }
-      if(e==2){
-        this.totalNum = this.empty
+      if (e == 2) {
+        this.totalNum = this.empty;
       }
-      if(e==0){
-        this.totalNum = this.pass
+      if (e == 0) {
+        this.totalNum = this.pass;
       }
       this.status = e;
       this.getTestExam();
@@ -127,12 +138,12 @@ export default {
       this.page = 1;
       this.limit = val;
       this.getTestExam();
-      console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
       this.page = val;
-      console.log(this.offset, this.limit);
+      // console.log(this.offset, this.limit);
       this.getTestExam();
     },
     //查看明细
@@ -140,6 +151,7 @@ export default {
       if (e.submitId) {
         this.submitId = e.submitId;
         this.paperDetail = e;
+         console.log(this.submitId, this.paperDetail);
         // console.log("允许查看");
         this.dialogTableVisible = true;
       } else {
@@ -227,7 +239,7 @@ export default {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
-            console.log(res);
+            // console.log(res);
             this.allTestList = res.data.data;
             this.allTestList.map(item => {
               item.beginTime = this.timeFormat(item.beginTime);

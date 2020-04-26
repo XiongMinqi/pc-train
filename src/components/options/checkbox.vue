@@ -49,7 +49,8 @@ export default {
       return temp;
     },
     changeCheckbox() {
-      // console.log(this.checkList);
+      // console.log(this.checkList, "前");
+      this.answerInfo = [];
       this.checkList.map(item => {
         if (item == "0") {
           // console.log(0);
@@ -76,6 +77,8 @@ export default {
           this.answerInfo.push("F");
         }
       });
+      // console.log(this.checkList, "后");
+      // console.log(this.answerInfo, "答案");
       this.answerInfo = this.uniq(this.answerInfo).sort();
       // console.log(this.answerInfo, "答案");
       this.$store.state.answerList[this.list.id] = this.answerInfo;

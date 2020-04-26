@@ -8,15 +8,16 @@
       </div>
       <div class="classname">
         <el-select v-model="classname" placeholder="请选择科目">
+          <el-option key value="全部"></el-option>
           <el-option v-for="item in classList" :key="item.key" :value="item.value"></el-option>
         </el-select>
       </div>
       <div class="btn">
-        <el-button type="primary">开始筛选</el-button>
+        <el-button type="primary" @click="chooseClass">开始筛选</el-button>
       </div>
     </div>
-    <div>
-      <div class="course" v-for="(item,index) in allList" :key="index">
+    <div v-if="allList.length>0">
+      <div class="course" v-for="(item,index) in allList" :key="index" @click="checkcourse(item)">
         <el-popover
           placement="top-end"
           :title="item.name"
@@ -61,10 +62,13 @@
         </el-popover>
       </div>
     </div>
+    <div v-else>暂无数据</div>
+    <!-- <pdf src="../../static/test.pdf"></pdf> -->
   </div>
 </template>
 
 <script>
+// import pdf from 'vue-pdf'
 export default {
   data() {
     return {
@@ -72,13 +76,65 @@ export default {
       classname: "",
       classList: [],
       subjectList: [],
-      data: {},
+      data: {
+        object: {
+          subjectId: ""
+        }
+      },
       allList: [],
       visible: false
     };
   },
-  components: {},
+  components: {
+    // pdf
+  },
   methods: {
+    //选择科目
+    chooseClass() {
+      // console.log(this.classname);
+      if (this.classname == "全部") {
+        this.data.object.subjectId = "";
+      } else {
+        this.classList.map(item => {
+          if (item.value == this.classname) {
+            this.data.object.subjectId = item.key;
+          }
+        });
+      }
+
+      this.getAllLearn();
+    },
+    //查看资料
+    checkcourse(e) {
+      console.log(e);
+      this.$api
+        .geturl(e.id)
+        .then(res => {
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            console.log(res);
+            if (e.fileSuffix === ".docx" || e.fileSuffix === ".doc") {
+              window.open(
+                "http://view.officeapps.live.com/op/view.aspx?src=" +
+                  encodeURIComponent(res.data.data[0])
+              );
+            } else {
+              window.open(res.data.data[0]);
+            }
+          } else {
+            console.log(res);
+            this.$message({
+              message: res.data.msg,
+              type: "error"
+            });
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     //转换时间
     timeFormat(time) {
       var clock = "";
@@ -94,12 +150,6 @@ export default {
       clock += month + "/";
       if (day < 10) clock += "0";
       clock += day + " ";
-      // if (hh < 10) clock += "0";
-      // clock += hh + ":";
-      // if (mm < 10) clock += "0";
-      // clock += mm + ":";
-      // if (ss < 10) clock += "0";
-      // clock += ss;
       return clock;
     },
     //保留两位小数
@@ -123,12 +173,15 @@ export default {
       this.$grade
         .getdict()
         .then(res => {
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
           //   console.log(res);
           if (res.data.code === 0) {
             this.classList = res.data.data[0]["科目名称"];
             this.subjectList = res.data.data[0]["专业名称"];
-            console.log(this.subjectList, "专业");
-            console.log(this.classList, "科目");
+            // console.log(this.subjectList, "专业");
+            // console.log(this.classList, "科目");
           }
         })
         .catch(err => {
@@ -139,12 +192,17 @@ export default {
       this.$api
         .getLearn(this.data)
         .then(res => {
-          this.allList = res.data.data;
-          this.allList.map(item => {
-            item.uploadTime = this.timeFormat(item.uploadTime);
-            item.fileSize = this.twoNumber(item.fileSize / 1024);
-          });
-          console.log(this.allList);
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            this.allList = res.data.data;
+            this.allList.map(item => {
+              item.uploadTime = this.timeFormat(item.uploadTime);
+              item.fileSize = this.twoNumber(item.fileSize / 1024);
+            });
+            // console.log(this.allList);
+          }
         })
         .catch();
     }

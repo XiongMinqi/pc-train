@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="publicList.length>0">
     <el-row>
       <el-col :span="24">
         <div class="grid-content">
@@ -56,28 +56,36 @@
           class="grid-content bg-purple span"
           :class="number===0?'bgblue':'bg-purple'"
           @click="checkAll"
-        ><b>全部题({{allList.length}})</b></div>
+        >
+          <b>全部题({{allList.length}})</b>
+        </div>
       </el-col>
       <el-col :span="6">
         <div
           class="grid-content bg-purple-light span"
           :class="number===1?'bgblue':'bg-purple-light'"
           @click="checkRight"
-        ><b>答对题({{rightList.length}})</b></div>
+        >
+          <b>答对题({{rightList.length}})</b>
+        </div>
       </el-col>
       <el-col :span="6">
         <div
           class="grid-content bg-purple span"
           :class="number===2?'bgblue':'bg-purple'"
           @click="checkErr"
-        ><b>答错题({{errList.length}})</b></div>
+        >
+          <b>答错题({{errList.length}})</b>
+        </div>
       </el-col>
       <el-col :span="6">
         <div
           class="grid-content bg-purple-light span"
           :class="number===3?'bgblue':'bg-purple-light'"
           @click="checkEmpty"
-        ><b>未答题({{emptyList.length}})</b></div>
+        >
+          <b>未答题({{emptyList.length}})</b>
+        </div>
       </el-col>
     </el-row>
     <div class="infinite-list" style="overflow:auto">
@@ -139,22 +147,37 @@
                 <div style="padding-right:10px;width:6%">考生答案</div>
                 <div class v-if="item.answer.ksAnswerContents.length>0">
                   <div class="bggreens" v-if="item.answer.right===true">
-                    {{item.answer.ksAnswerContents[0].content}}
-                    <!-- <image class="iconImg" src="http://39.104.70.60:8080/html5/static/img/right.svg" mode=""></image> -->
+                    <span
+                      style="padding-left:10px"
+                      v-for="(itm,idx) in item.answer.ksAnswerContents"
+                      :key="idx"
+                    >
+                      <span>{{itm.content}}</span>
+                    </span>
                   </div>
                   <div class="bgreds" v-else>
-                    {{item.answer.ksAnswerContents[0].content}}
-                    <!-- <image class="iconImg" src="http://39.104.70.60:8080/html5/static/img/errors.svg" mode=""></image> -->
+                    <span
+                      style="padding-left:10px"
+                      v-for="(itm,idx) in item.answer.ksAnswerContents"
+                      :key="idx"
+                    >
+                      <span>{{itm.content}}</span>
+                    </span>
                   </div>
                 </div>
                 <div v-else class="unanwser" style="color:#ff0000">该题考生未作答</div>
               </div>
               <div class="currectAnswer" style="display: flex;align-items: center">
                 <div style="padding-right:10px;width:6%">正确答案</div>
-                <div
-                  style="color: #007AFF;width:90%"
-                  v-if="item.question.answers.length>0"
-                >{{item.question.answers[0].content}}</div>
+                <div style="color: #007AFF;width:90%" v-if="item.question.answers.length>0">
+                  <span
+                    style="padding-left:10px"
+                    v-for="(itm,idx) in item.question.answers"
+                    :key="idx"
+                  >
+                    <span>{{itm.content}}</span>
+                  </span>
+                </div>
               </div>
               <div class="score" style="display: flex;align-items: center">
                 <div style="padding-right:10px;width:6%">分数</div>
@@ -193,10 +216,14 @@ export default {
     };
   },
   props: {
-    submitId: Number,
-    required: true,
-    paperDetail: Object,
-    require: true
+    submitId: {
+      type: Number,
+      required: true
+    },
+    paperDetail: {
+      type: Object,
+      require: true
+    }
   },
   components: {},
   methods: {
@@ -227,11 +254,6 @@ export default {
               }
             });
             this.publicList = this.allList;
-            // console.log(this.allList, "全部");
-            // console.log(this.publicList, "渲染数组");
-            // console.log(this.rightList, "正确");
-            // console.log(this.errList, "错误");
-            // console.log(this.emptyList, "未做");
           }
         })
         .catch(err => {
@@ -269,7 +291,23 @@ export default {
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     // console.log(this.userInfo);
   },
-  watch: {},
+  watch: {
+    submitId: {
+      handler(newValue, oldValue) {
+        this.submitId = newValue;
+        this.getSubmitPaper();
+        console.log(newValue, "submitid");
+      },
+      deep: true
+    },
+    paperDetail: {
+      handler(newValue, oldValue) {
+        this.paperDetail = newValue;
+        console.log(newValue, "paperDetail");
+      },
+      deep: true
+    }
+  },
   computed: {}
 };
 </script>

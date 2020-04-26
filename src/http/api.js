@@ -56,5 +56,9 @@ export default {
     //获取在线学习附件
     getLearn(data){
         return axios.post('courseware/getAll',data)
+    },
+    //获取课件的url
+    geturl(id){
+        return axios.get(`courseware/getAttachmentURL?coursewareId=${id}`)
     }
 }

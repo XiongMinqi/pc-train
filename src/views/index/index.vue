@@ -119,7 +119,7 @@ export default {
       this.$router.push({ name: "onlineTest", path: "/onlineTest" });
     },
     testPaper(e) {
-      this.$router.push({ name: "grade", path: "/grade" });
+      this.$router.push({ name: "testRecords", path: "/testRecords" });
     },
     //转换时间
     timeFormat(time) {
@@ -145,27 +145,23 @@ export default {
       return clock;
     },
     //获取考试记录
-    getTestExam() {
+    getTestNumber() {
       this.$grade
-        .getExam()
+        .gettestNumber()
         .then(res => {
-          if (res.data.code === 1000) {
-            this.$router.push({ name: "login", path: "/login" });
-          }
           if (res.data.code === 0) {
-            this.total = res.data.data[0].totalExamIds.length;
-            this.pass = res.data.data[0].passExamIds.length;
-            this.fail = res.data.data[0].failExamIds.length;
-            this.empty = res.data.data[0].emptyExamIds.length;
+            this.total = res.data.data[0].totalCount;
+            this.totalNum = res.data.data[0].totalCount;
+            this.pass = res.data.data[0].successCount;
+            this.fail = res.data.data[0].failCount;
+            this.empty = res.data.data[0].undoCount;
           }
         })
-        .catch(err => {
-          console.log(err);
-        });
+        .catch();
     }
   },
   mounted() {
-    this.getTestExam();
+    this.getTestNumber();
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     this.userInfo.lastLoginTime = this.timeFormat(this.userInfo.lastLoginTime);
     // console.log(this.userInfo);
@@ -175,7 +171,7 @@ export default {
         // console.log(res);
         if (res.data.code === 0) {
           this.testInfo = res.data.data[0];
-          console.log(this.testInfo);
+          // console.log(this.testInfo);
         }
       })
       .catch(err => {

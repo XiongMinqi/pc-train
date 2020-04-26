@@ -34,5 +34,23 @@ export default {
     //获取已提交试卷
     getSubmitPaper(id) {
         return axios.get(`ksExam/getSubmitPaper?submitId=${id}`)
+    },
+    //获取错题集
+    getMistake(page, limit, questionType) {
+        return axios.post("ksExam/etMyWrongQuestion", {
+            page: page,
+            limit: limit,
+            object: {
+                questionType: questionType
+            }
+        })
+    },
+    //获取所有题目类型
+    getAllQuestionType() {
+        return axios.get(`getDict?keys=题目类型`)
+    },
+    //根据id获取错题具体详情
+    getErrorDetail(id) {
+        return axios.get(`tkQuestion/getByIdWithOptionAndAnswer?id=${id}`)
     }
 }

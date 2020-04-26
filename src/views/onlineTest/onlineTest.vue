@@ -38,18 +38,20 @@
             部门 : {{item.departname}} |
             总分 ： {{item.totalScore}}分 |
             及格分数:
-            <span style="color:#3C3CC4">{{item.passScore}}分</span>
+            <span
+              style="color:#3C3CC4"
+            >{{item.passScore}}分</span>
           </div>
 
           <div>
-            创建时间 : {{item.publishTime}} | 
+            创建时间 : {{item.publishTime}} |
             <span style="color:#CC3352">截止时间 : {{item.expirationTime}}</span>
           </div>
         </div>
       </div>
       <div>
         <div>
-          <div v-if="item.status===1||item.status===3||item.status===4" @click="showToast">
+          <div v-if="item.status===1||item.status===3||item.status===4" @click="showToast(item)">
             <el-button type="danger" round>进入考试</el-button>
           </div>
           <div v-if="item.status===2" @click="onlineTest(item)">
@@ -57,7 +59,7 @@
           </div>
           <!-- <div @click="onlineTest(item)">
             <el-button type="primary" round>进入考试</el-button>
-          </div> -->
+          </div>-->
         </div>
       </div>
     </div>
@@ -158,15 +160,27 @@ export default {
           console.log(err);
         });
     },
-    showToast() {
-      this.$message({
-        message:
-          "很遗憾，考试时间已过或者您已经参加过该场考试，不能进入该场考试",
-        type: "warning"
-      });
+    showToast(e) {
+      console.log(e);
+      if (e.status === 1) {
+        this.$message({
+          message: "抱歉，考试时间还未开始，不能进入该场考试",
+          type: "warning"
+        });
+      }
+      if (e.status === 3 || e.status === 4) {
+        this.$message({
+          message: "抱歉，考试时间已过，不能再进入该场考试",
+          type: "error"
+        });
+      }
     },
     onlineTest(e) {
-      console.log(e);
+      this.$message({
+        message: "即将进入考试，祝您考试顺利",
+        type: "success"
+      });
+      // console.log(e);
       this.$router.push({
         path: "/testIng",
         query: {
