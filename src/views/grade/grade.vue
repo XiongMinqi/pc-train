@@ -3,8 +3,12 @@
     <div class="flex justify" style="height:280px">
       <div style="width:50%;height:100%">
         <div class="flex list">
+          <div class="words">试卷总数:</div>
+          <div class="number">{{statistics.paperCount}}张</div>
+        </div>
+        <div class="flex list">
           <div class="words">考试次数:</div>
-          <div class="number">{{statistics.paperCount}}次</div>
+          <div class="number">{{statistics.examCount}}次</div>
         </div>
         <div class="flex list">
           <div class="words">平均考试时间:</div>

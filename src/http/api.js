@@ -54,11 +54,15 @@ export default {
         return axios.get('ksExam/getKanbanByMe')
     },
     //获取在线学习附件
-    getLearn(data){
-        return axios.post('courseware/getAll',data)
+    getLearn(data) {
+        return axios.post('courseware/getAll', data)
     },
     //获取课件的url
-    geturl(id){
+    geturl(id) {
         return axios.get(`courseware/getAttachmentURL?coursewareId=${id}`)
+    },
+    //获取我的学习记录
+    getStudyRecord(peopleId, page, limit) {
+        return axios.get(`courseware/getMyLogList?peopleId=${peopleId}&page=${page}&limit=${limit}`)
     }
 }

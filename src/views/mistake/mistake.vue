@@ -28,7 +28,7 @@
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
-        :page-sizes="[5, 1, 10, 20, 30, 40]"
+        :page-sizes="[10, 15, 20, 30, 40]"
         :page-size="100"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -158,7 +158,7 @@ export default {
       this.judge1 = "";
       this.judge2 = "";
       this.checkList = [];
-      this.closeDialog = false
+      this.closeDialog = false;
     },
     //确定按钮
     submit() {
@@ -172,7 +172,7 @@ export default {
         if (this.closeDialog === false) {
           this.disappear = true;
           this.closeDialog = true;
-        }else{
+        } else {
           this.dialogFormVisible = false;
         }
       } else {
@@ -219,6 +219,8 @@ export default {
     },
     //选择题目类型
     chooseClass() {
+      this.currentPage = 1;
+      this.page = 1;
       // console.log(this.question);
       if (this.question === "全部") {
         this.status = null;

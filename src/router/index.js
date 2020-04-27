@@ -81,7 +81,12 @@ const routes = [{
           path: "/online",
           name: "online",
           component: () => import("../views/study/online.vue")
-        }
+        },
+        {
+          path: "/studyRecord",
+          name: "studyRecord",
+          component: () => import("../views/study/studyRecord.vue")
+        },
       ]
     }]
   },
