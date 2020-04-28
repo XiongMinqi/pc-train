@@ -64,5 +64,19 @@ export default {
     //获取我的学习记录
     getStudyRecord(peopleId, page, limit) {
         return axios.get(`courseware/getMyLogList?peopleId=${peopleId}&page=${page}&limit=${limit}`)
+    },
+    // 随机生成题目
+    getRandomQuestion(data) {
+        return axios.post("tkQuestion/getByRandom", {
+                "criteria": {
+                    "level": data.criteria.level,
+                    "majorId": data.criteria.majorId,
+                    "subjectId": data.criteria.subjectId,
+                    "type": data.criteria.type
+                },
+                "size": data.size
+            }
+
+        )
     }
 }

@@ -11,7 +11,7 @@ export default {
     },
     //获取科目名称
     getdict() {
-        return axios.get(`getDict?keys=科目名称&keys=专业名称`)
+        return axios.get(`getDict?keys=科目名称&keys=专业名称&keys=题目类型`)
     },
     //获取考试统计
     getStatistics() {
