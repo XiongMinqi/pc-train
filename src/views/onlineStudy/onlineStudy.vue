@@ -1,24 +1,6 @@
 <template>
   <div>
-    <div>
-      <el-row>
-        <el-col :span="6">
-          <div class="grid-content bg-purple-courseware" @click="goto('courseware')">电子课件</div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple-material" @click="goto('material')">电子教材</div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple-online" @click="goto('online')">在线练习</div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple-studyRecord" @click="goto('studyRecord')">学习记录</div>
-        </el-col>
-      </el-row>
-    </div>
-    <div>
-      <router-view />
-    </div>
+    <router-view />
   </div>
 </template>
 

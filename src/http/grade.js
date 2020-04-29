@@ -37,7 +37,7 @@ export default {
     },
     //获取错题集
     getMistake(page, limit, questionType) {
-        return axios.post("ksExam/etMyWrongQuestion", {
+        return axios.post("ksExam/getMyWrongQuestion", {
             page: page,
             limit: limit,
             object: {
@@ -49,7 +49,7 @@ export default {
     getAllQuestionType() {
         return axios.get(`getDict?keys=题目类型`)
     },
-    //根据id获取错题具体详情
+    //根据id获取题目具体详情
     getErrorDetail(id) {
         return axios.get(`tkQuestion/getByIdWithOptionAndAnswer?id=${id}`)
     }

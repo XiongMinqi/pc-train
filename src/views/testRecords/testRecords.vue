@@ -113,8 +113,8 @@ export default {
   components: { submitPaper },
   methods: {
     closeDialog() {
-      this.submitId = 0;
-      this.paperDetail = {};
+      // this.submitId = 0;
+      // this.paperDetail = {};
       console.log(this.submitId, this.paperDetail);
     },
     goTo(e) {
@@ -151,7 +151,7 @@ export default {
       if (e.submitId) {
         this.submitId = e.submitId;
         this.paperDetail = e;
-         console.log(this.submitId, this.paperDetail);
+        console.log(this.submitId, this.paperDetail);
         // console.log("允许查看");
         this.dialogTableVisible = true;
       } else {
@@ -243,6 +243,8 @@ export default {
             this.allTestList = res.data.data;
             this.allTestList.map(item => {
               item.beginTime = this.timeFormat(item.beginTime);
+              item.endWriteTime = this.timeFormat(item.endWriteTime);
+              item.beginWriteTime = this.timeFormat(item.beginWriteTime);
               this.subjectName.map(itm => {
                 if (itm.key == item.subjectId) {
                   this.$set(item, "subjextName", itm.value);

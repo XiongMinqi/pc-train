@@ -237,6 +237,10 @@ export default {
           }
           if (res.data.code === 0) {
             this.paperMsg = res.data.data[0];
+            this.allList = [];
+            this.emptyList = [];
+            this.rightList = [];
+            this.errList = [];
             res.data.data[0].actualAnswer.map((item, index) => {
               let list = {
                 question: res.data.data[0].tkQuestions[index],
