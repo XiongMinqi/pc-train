@@ -11,8 +11,8 @@
               <div>考试次数:{{testInfo.level}}</div>
               <div>考试限时:{{testInfo.minutes}}分钟</div>
               <div>及格分数:{{testInfo.defaultPassScore}}</div>
-              <div>考试规则:允许返回修改答案</div>
-              <div>如果考试异常中断，请退出并及时按同样步骤进入，可继续进行考试</div>
+              <div style="color:green">考试规则:允许返回修改答案</div>
+              <div style="color:green">如果考试异常中断，请退出并及时按同样步骤进入，可继续进行考试</div>
             </div>
             <div>
               <div>考试时间还剩</div>
@@ -180,6 +180,29 @@ export default {
         // console.log(this.empty);
       }
     },
+    //转换时间
+    timeFormat(time) {
+      var clock = "";
+      var d = new Date(time);
+      var year = d.getFullYear(); //年
+      var month = d.getMonth() + 1; //月
+      var day = d.getDate(); //日
+      var hh = d.getHours(); //时
+      var mm = d.getMinutes(); //分
+      var ss = d.getSeconds(); //秒
+      clock += year + "-";
+      if (month < 10) clock += "0";
+      clock += month + "-";
+      if (day < 10) clock += "0";
+      clock += day + " ";
+      if (hh < 10) clock += "0";
+      clock += hh + ":";
+      if (mm < 10) clock += "0";
+      clock += mm + ":";
+      if (ss < 10) clock += "0";
+      clock += ss;
+      return clock;
+    },
     //提交
     submit() {
       this.handleFullScreen();
@@ -193,7 +216,7 @@ export default {
         new Date().getTime() +
         _dif * 60 * 1000 -
         targetTimezone * 60 * 60 * 1000;
-      let nowTime = new Date(east8time);
+      let nowTime = this.timeFormat(new Date(east8time));
       console.log(nowTime);
       this.dialogVisible = false;
       //获取学员peopleId

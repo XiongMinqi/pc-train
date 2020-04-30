@@ -6,18 +6,24 @@
       新科电子培训系统
     </div>
     <div class="indexTop">
-      <div class="topLeft">
-        <div>
-          <img class="userImg" v-if="userInfo" :src="userInfo.avatarUrl" alt />
-          <img
-            v-else
-            class="userImg"
-            src="../../assets/icon/u=2669898717,1590930959&fm=26&gp=0.jpg"
-            alt
-          />
+      <el-dropdown>
+        <div class="topLeft">
+          <div>
+            <img class="userImg" v-if="userInfo" :src="userInfo.avatarUrl" alt />
+            <img
+              v-else
+              class="userImg"
+              src="../../assets/icon/u=2669898717,1590930959&fm=26&gp=0.jpg"
+              alt
+            />
+          </div>
+          <div>{{userInfo.nickName}}</div>
         </div>
-        <div>{{userInfo.nickName}}</div>
-      </div>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item><div @click="goTo('/user')">个人信息</div></el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+
       <div class="submitBtn">
         <el-button type="danger" size="mini" @click="logout">退出登录</el-button>
       </div>
@@ -37,6 +43,9 @@ export default {
   },
   components: {},
   methods: {
+    goTo(path) {
+      this.$router.push(path);
+    },
     //获取消息数目
     getAmount() {
       this.$api
