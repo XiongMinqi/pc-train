@@ -40,6 +40,11 @@
               <div v-if="item.fileSuffix == '.pdf'">
                 <img src="../../assets/icon/pdf.png" alt />
               </div>
+              <div
+                v-if="item.fileSuffix == '.jpg'||item.fileSuffix == '.png'||item.fileSuffix == '.gif'||item.fileSuffix == '.tif'||item.fileSuffix == '.psd'||item.fileSuffix == '.dng'"
+              >
+                <img src="../../assets/icon/picture.png" alt />
+              </div>
               <div v-if="item.fileSuffix == null">
                 <img src="../../assets/icon/other.png" alt />
               </div>
@@ -63,15 +68,56 @@
       </div>
     </div>
     <div v-else>暂无数据</div>
-    <!-- <pdf src="../../static/test.pdf"></pdf> -->
+    <!-- <el-dialog :visible.sync="dialogVisible" width="30%">
+      <div class="input_video">
+        <video-player
+          class="video-player vjs-custom-skin"
+          :src="videoPlayer"
+          :playsinline="true"
+          :options="playerOptions"
+        ></video-player>
+      </div>
+    </el-dialog>-->
+    <el-dialog
+      @close="close"
+      @open="open"
+      class="dialogVisible"
+      title="课件在线预览"
+      :visible.sync="dialogVisible"
+      :close-on-click-modal="false"
+      :show-close="false"
+      :modal-append-to-body="true"
+    >
+      <div v-if="videoPlayer">
+        <vueVideoPlayer :src="videoPlayer" :cover_url="openVideoImg" />
+      </div>
+      <div v-if="pdfUrl">
+        <iframe class="filename" :src="pdfUrl" width="100%" height="400px" frameborder="0"></iframe>
+      </div>
+      <div v-if="wordUrl">
+        <iframe class="filename" :src="wordUrl" width="100%" height="400px" frameborder="0"></iframe>
+      </div>
+      <div v-if="pictureUrl">
+        <img :src="pictureUrl" alt />
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-// import pdf from 'vue-pdf'
+import vueVideoPlayer from "../../components/video";
 export default {
   data() {
     return {
+      videoPlayer: "",
+      pdfUrl: "",
+      wordUrl: "",
+      pictureUrl: "",
+      dialogVisible: false,
+      openVideoImg: "",
       subjectname: "",
       classname: "",
       classList: [],
@@ -85,10 +131,16 @@ export default {
       visible: false
     };
   },
-  components: {
-    // pdf
-  },
+  components: { vueVideoPlayer },
   methods: {
+    //关闭对话框
+    close() {
+      console.log("结束计时");
+    },
+    //开启对话框
+    open() {
+      console.log("开始计时");
+    },
     //选择科目
     chooseClass() {
       // console.log(this.classname);
@@ -106,7 +158,11 @@ export default {
     },
     //查看资料
     checkcourse(e) {
-      console.log(e);
+      this.wordUrl = "";
+      this.pdfUrl = "";
+      this.videoPlayer = "";
+      this.pictureUrl = "";
+      // console.log(e);
       this.$api
         .geturl(e.id)
         .then(res => {
@@ -114,12 +170,33 @@ export default {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
-            console.log(res);
-            if (e.fileSuffix === ".docx" || e.fileSuffix === ".doc") {
-              window.open(
-                "http://view.officeapps.live.com/op/view.aspx?src=" +
-                  encodeURIComponent(res.data.data[0])
-              );
+            // console.log(res);
+            if (e.fileSuffix === ".docx" || e.fileSuffix === ".doc" || e.fileSuffix === ".xls" || e.fileSuffix === ".xlsx") {
+              this.wordUrl =
+                "https://view.officeapps.live.com/op/view.aspx?src=" +
+                res.data.data[0];
+              this.dialogVisible = true;
+              console.log(this.wordUrl);
+              // window.open(
+              //   "http://view.officeapps.live.com/op/view.aspx?src=" +
+              //     encodeURIComponent(res.data.data[0])
+              // );
+            } else if (e.fileSuffix === ".mp4") {
+              this.videoPlayer = res.data.data[0];
+              this.dialogVisible = true;
+            } else if (e.fileSuffix === ".pdf") {
+              this.pdfUrl = res.data.data[0];
+              this.dialogVisible = true;
+            } else if (
+              e.fileSuffix == ".jpg" ||
+              e.fileSuffix == ".png" ||
+              e.fileSuffix == ".gif" ||
+              e.fileSuffix == ".tif" ||
+              e.fileSuffix == ".psd" ||
+              e.fileSuffix == ".dng"
+            ) {
+              this.pictureUrl = res.data.data[0];
+              this.dialogVisible = true;
             } else {
               window.open(res.data.data[0]);
             }
@@ -256,8 +333,5 @@ export default {
   display: flex;
   align-items: center;
   color: blue;
-}
-.desc {
-  // padding-left: 90px;
 }
 </style>

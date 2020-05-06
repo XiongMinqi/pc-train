@@ -14,11 +14,12 @@ export default {
     goto(e) {
       console.log(e);
       this.$router.push({ name: e, path: `/${e}` });
-    }
+    },
   },
-  mounted() {},
+  mounted() {
+  },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 

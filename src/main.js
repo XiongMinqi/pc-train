@@ -10,7 +10,15 @@ import Axios from 'axios'
 import dayjs from 'dayjs'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css'; //样式文件一定要引入
+// import vueVideoPlayer from 'vue-video-player'
+// require('video.js/dist/video-js.css')
+// require('vue-video-player/src/custom-theme.css')
 
+import VueVideoPlayer from 'vue-video-player'
+import 'video.js/dist/video-js.css'
+
+
+Vue.use(VueVideoPlayer)
 Vue.use(ElementUI);
 Vue.use(Vuex);
 Vue.prototype.$dayjs = dayjs;
