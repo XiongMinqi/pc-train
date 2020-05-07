@@ -1,79 +1,55 @@
 <template>
   <div>
-    <!-- <div class="flex">
-      <div class="index">序号</div>
-      <div class="subjectName">科目</div>
-      <div class="testTime">考试时间</div>
-      <div class="duringTime">截止时间</div>
-      <div class="passTime">是否过期</div>
-      <div class="operation">操作</div>
-    </div>-->
-    <div class="flex" v-for="(item,index) in testList" :key="index">
-      <!-- <div class="index">{{index+1}}</div>
-      <div class="subjectName">{{item.name}}</div>
-      <div class="testTime">{{item.publishTime}}</div>
-      <div class="duringTime">{{item.expirationTime}}</div>
-      <div class="passTime">
-        <div v-if="item.status===1" style="color: #F43F3B;">未开始</div>
-        <div v-if="item.status===2" style="color: #2FC25B;">考试中</div>
-        <div v-if="item.status===3" style="color: #F0AD4E;">审核中</div>
-        <div v-if="item.status===4" style="color: #E54D42;">结束</div>
-      </div>
-      <div class="operation">
-        <div
-          v-if="item.status===1||item.status===3||item.status===4"
-          style="color: #808080;"
-          @click="showToast"
-        >进入考试</div>
-        <div v-if="item.status===2" style="color: #2FC25B;" @click="onlineTest(item)">进入考试</div>
-      </div>-->
-      <div style=" display: flex;align-items: center;">
-        <div class="userImg">
-          <img src="http://pic.51yuansu.com/pic3/cover/01/02/80/590085d34c319_610.jpg" alt />
-        </div>
-        <div style="margin-left:20px">
-          <div class="name" style="font-weight:bold">{{item.name}}</div>
-          <div>
-            专业 : {{item.majorname}} |
-            部门 : {{item.departname}} |
-            总分 ： {{item.totalScore}}分 |
-            及格分数:
-            <span
-              style="color:#3C3CC4"
-            >{{item.passScore}}分</span>
+    <div v-if="testList.length>0">
+      <div class="flex" v-for="(item,index) in testList" :key="index">
+        <div style=" display: flex;align-items: center;">
+          <div class="userImg">
+            <img src="http://pic.51yuansu.com/pic3/cover/01/02/80/590085d34c319_610.jpg" alt />
           </div>
+          <div style="margin-left:20px">
+            <div class="name" style="font-weight:bold">{{item.name}}</div>
+            <div>
+              专业 : {{item.majorname}} |
+              部门 : {{item.departname}} |
+              总分 ： {{item.totalScore}}分 |
+              及格分数:
+              <span
+                style="color:#3C3CC4"
+              >{{item.passScore}}分</span>
+            </div>
 
-          <div>
-            创建时间 : {{item.publishTime}} |
-            <span style="color:#CC3352">截止时间 : {{item.expirationTime}}</span>
+            <div>
+              创建时间 : {{item.publishTime}} |
+              <span
+                style="color:#CC3352"
+              >截止时间 : {{item.expirationTime}}</span>
+            </div>
           </div>
         </div>
-      </div>
-      <div>
         <div>
-          <div v-if="item.status===1||item.status===3||item.status===4" @click="showToast(item)">
-            <el-button type="danger" round>进入考试</el-button>
+          <div>
+            <div v-if="item.status===1||item.status===3||item.status===4" @click="showToast(item)">
+              <el-button type="danger" round>进入考试</el-button>
+            </div>
+            <div v-if="item.status===2" @click="onlineTest(item)">
+              <el-button type="primary" round>进入考试</el-button>
+            </div>
           </div>
-          <div v-if="item.status===2" @click="onlineTest(item)">
-            <el-button type="primary" round>进入考试</el-button>
-          </div>
-          <!-- <div @click="onlineTest(item)">
-            <el-button type="primary" round>进入考试</el-button>
-          </div>-->
         </div>
       </div>
+      <div class="block">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[5, 10, 15, 20, 30, 40]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+        ></el-pagination>
+      </div>
     </div>
-    <div class="block">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[5, 10, 15, 20, 30, 40]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      ></el-pagination>
-    </div>
+    <div v-else style="padding:30px">暂无考试</div>
   </div>
 </template>
 

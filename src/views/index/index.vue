@@ -85,7 +85,7 @@
       <div>
         <div class="logintime">
           <div class="name">在线学习时长 :</div>
-          <div class="content">6小时50分钟</div>
+          <div class="content">{{totalStudyTime}}分钟</div>
         </div>
         <div class="logintime">
           <div class="name">在线测试记录 :</div>
@@ -101,10 +101,13 @@ export default {
     return {
       userInfo: {},
       testInfo: {},
+      page: 1,
+      limit: 10000,
       total: 0,
       pass: 0,
       fail: 0,
-      empty: 0
+      empty: 0,
+      totalStudyTime: 0
     };
   },
   components: {},
@@ -158,13 +161,32 @@ export default {
           }
         })
         .catch();
+    },
+    //获取我的学习记录
+    getStudy() {
+      this.$api
+        .getStudyRecord(this.userInfo.userId, this.page, this.limit)
+        .then(res => {
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            res.data.data.map(item => {
+              this.totalStudyTime += item.totalMinutes;
+            });
+          }
+        })
+        .catch();
     }
   },
   mounted() {
     this.getTestNumber();
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     this.userInfo.lastLoginTime = this.timeFormat(this.userInfo.lastLoginTime);
-    // console.log(this.userInfo);
+    console.log(this.userInfo.userId);
+    if (this.userInfo !== {}) {
+      this.getStudy();
+    }
     this.$api
       .getMyMsg()
       .then(res => {

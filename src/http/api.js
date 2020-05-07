@@ -3,7 +3,7 @@ axios.defaults.timeout = 10000
 // axios.defaults.baseURL = "http://39.104.70.60:8080/"
 const isProduction = process.env.NODE_ENV === "production"
 // 接口基础路径
-axios.defaults.baseURL = isProduction ? "http://39.104.70.60:8080" : "http://localhost:8080"
+axios.defaults.baseURL = isProduction ? "http://39.104.70.60:8080" : "http://localhost:8081"
 export default {
     // 登录
     login(data) {
@@ -78,5 +78,9 @@ export default {
             }
 
         )
+    },
+    //保存我的学习记录
+    saveMyLog(data) {
+        return axios.get(`courseware/saveMyLog?coursewareId=${data.coursewareId}&peopleId=${data.peopleId}&minutes=${data.minutes}`)
     }
 }

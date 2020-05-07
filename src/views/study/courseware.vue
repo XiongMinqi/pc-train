@@ -25,7 +25,6 @@
           trigger="hover"
           :content="item.description"
         >
-          <!-- <el-button slot="reference">hover 激活</el-button> -->
           <div class="courseware" slot="reference">
             <div>
               <div v-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
@@ -66,18 +65,19 @@
           </div>
         </el-popover>
       </div>
+      <div class="block">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[9,6,12,15,18]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+        ></el-pagination>
+      </div>
     </div>
     <div v-else>暂无数据</div>
-    <!-- <el-dialog :visible.sync="dialogVisible" width="30%">
-      <div class="input_video">
-        <video-player
-          class="video-player vjs-custom-skin"
-          :src="videoPlayer"
-          :playsinline="true"
-          :options="playerOptions"
-        ></video-player>
-      </div>
-    </el-dialog>-->
     <el-dialog
       @close="close"
       @open="open"
@@ -113,19 +113,27 @@ export default {
   data() {
     return {
       videoPlayer: "",
+      currentPage: 1,
+      total: 0,
       pdfUrl: "",
       wordUrl: "",
       pictureUrl: "",
       dialogVisible: false,
       openVideoImg: "",
       subjectname: "",
+      coursewareId: "",
+      peopleId: "",
       classname: "",
+      beginTime: "",
+      endTime: "",
       classList: [],
       subjectList: [],
       data: {
         object: {
           subjectId: ""
-        }
+        },
+        limit: 9,
+        page: 1
       },
       allList: [],
       visible: false
@@ -133,13 +141,45 @@ export default {
   },
   components: { vueVideoPlayer },
   methods: {
-    //关闭对话框
-    close() {
-      console.log("结束计时");
+    handleSizeChange(val) {
+      this.data.page = 1;
+      this.data.limit = val;
+      this.getAllLearn();
+      // console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      // console.log(`当前页: ${val}`);
+      this.data.page = val;
+      // console.log(this.offset, this.limit);
+      this.getAllLearn();
     },
     //开启对话框
     open() {
-      console.log("开始计时");
+      // console.log("开始计时");
+      this.beginTime = "";
+      this.endTime = "";
+      this.beginTime = Date.parse(new Date());
+      // console.log(this.beginTime);
+    },
+    //关闭对话框
+    close() {
+      // console.log("结束计时");
+      this.endTime = Date.parse(new Date());
+      // console.log(this.endTime);
+      let duringTime = Math.round((this.endTime - this.beginTime) / 60000);
+      // console.log(duringTime, "差时/分钟");
+      if (duringTime >= 1) {
+        let data = {
+          coursewareId: this.coursewareId,
+          peopleId: this.peopleId,
+          minutes: duringTime
+        };
+        // console.log(data);
+        this.$api
+          .saveMyLog(data)
+          .then()
+          .catch();
+      }
     },
     //选择科目
     chooseClass() {
@@ -158,6 +198,8 @@ export default {
     },
     //查看资料
     checkcourse(e) {
+      // console.log(e);
+      this.coursewareId = e.id;
       this.wordUrl = "";
       this.pdfUrl = "";
       this.videoPlayer = "";
@@ -171,10 +213,15 @@ export default {
           }
           if (res.data.code === 0) {
             // console.log(res);
-            if (e.fileSuffix === ".docx" || e.fileSuffix === ".doc" || e.fileSuffix === ".xls" || e.fileSuffix === ".xlsx") {
+            if (
+              e.fileSuffix === ".docx" ||
+              e.fileSuffix === ".doc" ||
+              e.fileSuffix === ".xls" ||
+              e.fileSuffix === ".xlsx"
+            ) {
               this.wordUrl =
                 "https://view.officeapps.live.com/op/view.aspx?src=" +
-                res.data.data[0];
+                encodeURIComponent(res.data.data[0]);
               this.dialogVisible = true;
               console.log(this.wordUrl);
               // window.open(
@@ -274,6 +321,7 @@ export default {
           }
           if (res.data.code === 0) {
             this.allList = res.data.data;
+            this.total = res.data.count;
             this.allList.map(item => {
               item.uploadTime = this.timeFormat(item.uploadTime);
               item.fileSize = this.twoNumber(item.fileSize / 1024);
@@ -287,6 +335,8 @@ export default {
   mounted() {
     this.getdict();
     this.getAllLearn();
+    let userinfo = JSON.parse(localStorage.getItem("userInfo"));
+    this.peopleId = userinfo.userId;
   },
   watch: {},
   computed: {}
@@ -316,6 +366,9 @@ export default {
   :hover {
     cursor: pointer;
     color: #cc4820;
+    img {
+      transform: scale(1.1);
+    }
   }
 }
 .courseware {
@@ -333,5 +386,9 @@ export default {
   display: flex;
   align-items: center;
   color: blue;
+}
+.block {
+  margin: 0 auto;
+  text-align: center;
 }
 </style>
