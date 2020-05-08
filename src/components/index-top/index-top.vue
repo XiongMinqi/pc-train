@@ -1,26 +1,25 @@
 <template>
   <div class="indexTopContent">
     <div class="title">
-      <!-- <img src="../../assets/icon/logo.png" style="opacity: 0.1;" alt /> -->
-      <!-- 四川新科电子技术工程有限责任公司 -->
       新科电子培训系统
     </div>
     <div class="indexTop">
       <el-dropdown>
         <div class="topLeft">
           <div>
-            <img class="userImg" v-if="userInfo" :src="userInfo.avatarUrl" alt />
-            <img
-              v-else
-              class="userImg"
-              src="../../assets/icon/u=2669898717,1590930959&fm=26&gp=0.jpg"
-              alt
-            />
+            <div v-if="userInfo.avatarUrl">
+              <img class="userImg" :src="userInfo.avatarUrl" alt />
+            </div>
+            <div v-else>
+              <img class="userImg" src="../../assets/icon/userImg.jpg" alt />
+            </div>
           </div>
           <div>{{userInfo.nickName}}</div>
         </div>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item><div @click="goTo('/user')">个人信息</div></el-dropdown-item>
+          <el-dropdown-item>
+            <div @click="goTo('/user')">个人信息</div>
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
 

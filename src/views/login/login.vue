@@ -46,8 +46,8 @@
 export default {
   data() {
     return {
-      username: "student5",
-      passwords: "1234",
+      username: "",
+      passwords: "",
       checked: true
     };
   },

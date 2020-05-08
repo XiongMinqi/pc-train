@@ -223,11 +223,7 @@ export default {
                 "https://view.officeapps.live.com/op/view.aspx?src=" +
                 encodeURIComponent(res.data.data[0]);
               this.dialogVisible = true;
-              console.log(this.wordUrl);
-              // window.open(
-              //   "http://view.officeapps.live.com/op/view.aspx?src=" +
-              //     encodeURIComponent(res.data.data[0])
-              // );
+              // console.log(this.wordUrl);
             } else if (e.fileSuffix === ".mp4") {
               this.videoPlayer = res.data.data[0];
               this.dialogVisible = true;
@@ -245,7 +241,7 @@ export default {
               this.pictureUrl = res.data.data[0];
               this.dialogVisible = true;
             } else {
-              window.open(res.data.data[0]);
+              // window.open(res.data.data[0]);
             }
           } else {
             console.log(res);
