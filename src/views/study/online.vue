@@ -136,7 +136,7 @@
       </div>
       <div class="choosebtn">
         <div>
-          <el-button type="primary" round @click="before">上一题</el-button>
+          <el-button type="primary" round @click="before">完成</el-button>
         </div>
         <div>
           <el-button type="primary" round @click="after">下一题</el-button>
@@ -202,18 +202,8 @@ export default {
   methods: {
     //上一题
     before() {
-      this.showAnswer = false;
-      this.index -= 1;
-      // console.log(this.questionId);
-      if (this.index < 0) {
-        this.index += 1;
-        this.$message({
-          message: "当前是第一题",
-          type: "warning"
-        });
-      } else {
-        this.getInfo(this.questionId[this.index]);
-      }
+      this.showAnswer = true;
+      this.choosed=true;
     },
     //下一题
     after() {
@@ -221,6 +211,7 @@ export default {
       // console.log(this.questionId);
       if (this.index < this.questionId.length) {
         this.showAnswer = false;
+        this.choosed = false;
         this.questionDetail = {};
         this.getInfo(this.questionId[this.index]);
       } else {
