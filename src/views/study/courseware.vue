@@ -387,4 +387,12 @@ export default {
   margin: 0 auto;
   text-align: center;
 }
+.el-dialog {
+  position: absolute;
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  width: 90%;
+}
 </style>

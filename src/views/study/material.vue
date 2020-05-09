@@ -25,7 +25,6 @@
           trigger="hover"
           :content="item.description"
         >
-          <!-- <el-button slot="reference">hover 激活</el-button> -->
           <div class="courseware" slot="reference">
             <div>
               <div v-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
@@ -39,6 +38,11 @@
               </div>
               <div v-if="item.fileSuffix == '.pdf'">
                 <img src="../../assets/icon/pdf.png" alt />
+              </div>
+              <div
+                v-if="item.fileSuffix == '.jpg'||item.fileSuffix == '.png'||item.fileSuffix == '.gif'||item.fileSuffix == '.tif'||item.fileSuffix == '.psd'||item.fileSuffix == '.dng'"
+              >
+                <img src="../../assets/icon/picture.png" alt />
               </div>
               <div v-if="item.fileSuffix == null">
                 <img src="../../assets/icon/other.png" alt />
@@ -61,34 +65,122 @@
           </div>
         </el-popover>
       </div>
+      <div class="block">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[9,6,12,15,18]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+        ></el-pagination>
+      </div>
     </div>
     <div v-else>暂无数据</div>
-    <!-- <pdf src="../../static/test.pdf"></pdf> -->
+    <el-dialog
+      @close="close"
+      @open="open"
+      class="dialogVisible"
+      title="课件在线预览"
+      :visible.sync="dialogVisible"
+      :close-on-click-modal="false"
+      :show-close="false"
+      :modal-append-to-body="true"
+    >
+      <div v-if="videoPlayer">
+        <vueVideoPlayer :src="videoPlayer" :cover_url="openVideoImg" />
+      </div>
+      <div v-if="pdfUrl">
+        <iframe class="filename" :src="pdfUrl" width="100%" height="400px" frameborder="0"></iframe>
+      </div>
+      <div v-if="wordUrl">
+        <iframe class="filename" :src="wordUrl" width="100%" height="400px" frameborder="0"></iframe>
+      </div>
+      <div v-if="pictureUrl">
+        <img :src="pictureUrl" alt />
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-// import pdf from 'vue-pdf'
+import vueVideoPlayer from "../../components/video";
 export default {
   data() {
     return {
+      videoPlayer: "",
+      currentPage: 1,
+      total: 0,
+      pdfUrl: "",
+      wordUrl: "",
+      pictureUrl: "",
+      dialogVisible: false,
+      openVideoImg: "",
       subjectname: "",
+      coursewareId: "",
+      peopleId: "",
       classname: "",
+      beginTime: "",
+      endTime: "",
       classList: [],
       subjectList: [],
       data: {
         object: {
           subjectId: ""
-        }
+        },
+        limit: 9,
+        page: 1
       },
       allList: [],
       visible: false
     };
   },
-  components: {
-    // pdf
-  },
+  components: { vueVideoPlayer },
   methods: {
+    handleSizeChange(val) {
+      this.data.page = 1;
+      this.data.limit = val;
+      this.getAllLearn();
+      // console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      // console.log(`当前页: ${val}`);
+      this.data.page = val;
+      // console.log(this.offset, this.limit);
+      this.getAllLearn();
+    },
+    //开启对话框
+    open() {
+      // console.log("开始计时");
+      this.beginTime = "";
+      this.endTime = "";
+      this.beginTime = Date.parse(new Date());
+      // console.log(this.beginTime);
+    },
+    //关闭对话框
+    close() {
+      // console.log("结束计时");
+      this.endTime = Date.parse(new Date());
+      // console.log(this.endTime);
+      let duringTime = Math.round((this.endTime - this.beginTime) / 60000);
+      // console.log(duringTime, "差时/分钟");
+      if (duringTime >= 1) {
+        let data = {
+          coursewareId: this.coursewareId,
+          peopleId: this.peopleId,
+          minutes: duringTime
+        };
+        // console.log(data);
+        this.$api
+          .saveMyLog(data)
+          .then()
+          .catch();
+      }
+    },
     //选择科目
     chooseClass() {
       // console.log(this.classname);
@@ -106,7 +198,13 @@ export default {
     },
     //查看资料
     checkcourse(e) {
-      console.log(e);
+      // console.log(e);
+      this.coursewareId = e.id;
+      this.wordUrl = "";
+      this.pdfUrl = "";
+      this.videoPlayer = "";
+      this.pictureUrl = "";
+      // console.log(e);
       this.$api
         .geturl(e.id)
         .then(res => {
@@ -114,14 +212,36 @@ export default {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
-            console.log(res);
-            if (e.fileSuffix === ".docx" || e.fileSuffix === ".doc") {
-              window.open(
-                "http://view.officeapps.live.com/op/view.aspx?src=" +
-                  encodeURIComponent(res.data.data[0])
-              );
+            // console.log(res);
+            if (
+              e.fileSuffix === ".docx" ||
+              e.fileSuffix === ".doc" ||
+              e.fileSuffix === ".xls" ||
+              e.fileSuffix === ".xlsx"
+            ) {
+              this.wordUrl =
+                "https://view.officeapps.live.com/op/view.aspx?src=" +
+                encodeURIComponent(res.data.data[0]);
+              this.dialogVisible = true;
+              // console.log(this.wordUrl);
+            } else if (e.fileSuffix === ".mp4") {
+              this.videoPlayer = res.data.data[0];
+              this.dialogVisible = true;
+            } else if (e.fileSuffix === ".pdf") {
+              this.pdfUrl = res.data.data[0];
+              this.dialogVisible = true;
+            } else if (
+              e.fileSuffix == ".jpg" ||
+              e.fileSuffix == ".png" ||
+              e.fileSuffix == ".gif" ||
+              e.fileSuffix == ".tif" ||
+              e.fileSuffix == ".psd" ||
+              e.fileSuffix == ".dng"
+            ) {
+              this.pictureUrl = res.data.data[0];
+              this.dialogVisible = true;
             } else {
-              window.open(res.data.data[0]);
+              // window.open(res.data.data[0]);
             }
           } else {
             console.log(res);
@@ -197,6 +317,7 @@ export default {
           }
           if (res.data.code === 0) {
             this.allList = res.data.data;
+            this.total = res.data.count;
             this.allList.map(item => {
               item.uploadTime = this.timeFormat(item.uploadTime);
               item.fileSize = this.twoNumber(item.fileSize / 1024);
@@ -210,6 +331,8 @@ export default {
   mounted() {
     this.getdict();
     this.getAllLearn();
+    let userinfo = JSON.parse(localStorage.getItem("userInfo"));
+    this.peopleId = userinfo.userId;
   },
   watch: {},
   computed: {}
@@ -239,6 +362,9 @@ export default {
   :hover {
     cursor: pointer;
     color: #cc4820;
+    img {
+      transform: scale(1.1);
+    }
   }
 }
 .courseware {
@@ -257,7 +383,16 @@ export default {
   align-items: center;
   color: blue;
 }
-.desc {
-  // padding-left: 90px;
+.block {
+  margin: 0 auto;
+  text-align: center;
+}
+.el-dialog {
+  position: absolute;
+  margin: 0 auto;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  width: 90%;
 }
 </style>

@@ -16,8 +16,9 @@ import 'element-ui/lib/theme-chalk/index.css'; //样式文件一定要引入
 
 import VueVideoPlayer from 'vue-video-player'
 import 'video.js/dist/video-js.css'
-
-
+import VueCookies from 'vue-cookies'
+Vue.use(VueCookies)
+Vue.prototype.$cookies = VueCookies
 Vue.use(VueVideoPlayer)
 Vue.use(ElementUI);
 Vue.use(Vuex);

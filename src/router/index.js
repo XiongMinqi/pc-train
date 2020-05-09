@@ -143,7 +143,7 @@ router.onError((error) => {
 });
 router.beforeEach((to, from, next) => {
   let user = localStorage.getItem("userInfo");
-  // let user = cookie.getItem("JSESSIONID")
+  // let user = this.$cookies.get("JSESSIONID")
   // let user = getCookie("JSESSIONID")
 
   if (to.path === "/login") {
