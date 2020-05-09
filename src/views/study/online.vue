@@ -111,15 +111,25 @@
             <div @click="checkRightAnswer">
               <img src="../../assets/icon/light-bulb.png" alt />
             </div>
-            <div @click="checkRightAnswer" v-if="showAnswer">关闭正确答案</div>
-            <div @click="checkRightAnswer" v-else>查看正确答案</div>
+            <div @click="checkRightAnswer" v-if="showAnswer">关闭提示</div>
+            <div @click="checkRightAnswer" v-else>查看提示</div>
           </div>
-          <div v-show="showAnswer" style="display:flex;align-items: center;padding-bottom:20px">
-            <div>正确答案 :</div>
-            <div style="padding-left:10px;color:green">
-              <span v-for="(item,index) in questionDetail.answers" :key="index">
-                <span>{{item.content}}</span>
-              </span>
+          <div v-show="showAnswer">
+            <div v-if="questionDetail.answerResolve" style=";margin-bottom:20px">
+              提示:
+              <span style="color:red;padding-left:10px">{{questionDetail.answerResolve}}</span>
+            </div>
+            <div v-else style="margin-bottom:10px">
+              提示:
+              <span style="color:red;padding-left:10px">暂无提示</span>
+            </div>
+            <div style="display:flex;align-items: center;padding-bottom:10px" v-if="choosed">
+              <div>正确答案 :</div>
+              <div style="padding-left:10px;color:green">
+                <span v-for="(item,index) in questionDetail.answers" :key="index">
+                  <span>{{item.content}}</span>
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -147,6 +157,7 @@ export default {
       classList: [],
       subjectList: [],
       questionType: [],
+      choosed:false,//是否已选择选项
       size: "",
       listSize: ["10", "15", "20", "25", "30"],
       data: {
