@@ -14,7 +14,7 @@
               </span>
             </el-col>
             <el-col :span="22">
-              <el-input class="inps" placeholder="用户名"  v-model="username"></el-input>
+              <el-input class="inps" placeholder="用户名" v-model="username"></el-input>
             </el-col>
           </el-row>
         </el-form-item>
@@ -26,7 +26,13 @@
               </span>
             </el-col>
             <el-col :span="22">
-              <el-input class="inps" type="password" placeholder="密码"  v-model="passwords"></el-input>
+              <el-input
+                class="inps"
+                type="password"
+                placeholder="密码"
+                v-model="passwords"
+                @keydown.enter.native="submitForm"
+              ></el-input>
             </el-col>
           </el-row>
         </el-form-item>
@@ -35,7 +41,12 @@
         </el-form-item>
 
         <el-form-item style="margin-top:20px;">
-          <el-button type="primary" round class="submitBtn" @click="submitForm">登录</el-button>
+          <el-button
+            type="primary"
+            round
+            class="submitBtn"
+            @click="submitForm"
+          >登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -46,11 +57,9 @@
 export default {
   data() {
     return {
-      username: "student5",
-      passwords: "1234",
+      username: "",
+      passwords: "",
       checked: true,
-      ///////////////////
-
       canvas: null,
       context: null,
       stars: [], //星星数组
@@ -130,6 +139,9 @@ export default {
             });
             // localStorage.setItem("userame",this.username)
             localStorage.setItem("userInfo", JSON.stringify(res.data.data[0]));
+            if (this.checked === true) {
+              localStorage.setItem("userList-afsdfsdafd", JSON.stringify(data));
+            }
             this.$router.push({ name: "index", path: "/index" });
           }
         })
@@ -218,13 +230,19 @@ export default {
         star.x += star.radius / this.speed;
       }
       star.draw(this.context);
-    }
+    },
   },
   mounted() {
     this.canvas = document.getElementById("myCanvas");
     this.context = this.canvas.getContext("2d");
     this.createStar(true);
     this.drawFrame();
+    let userMsg = JSON.parse(localStorage.getItem("userList-afsdfsdafd"));
+    if (userMsg) {
+      this.username = userMsg.username;
+      this.passwords = userMsg.password;
+      this.checked = true;
+    }
   },
   watch: {},
   computed: {}

@@ -183,7 +183,6 @@ export default {
     this.getTestNumber();
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     this.userInfo.lastLoginTime = this.timeFormat(this.userInfo.lastLoginTime);
-    console.log(this.userInfo.userId);
     if (this.userInfo !== {}) {
       this.getStudy();
     }

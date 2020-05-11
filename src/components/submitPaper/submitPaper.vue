@@ -1,5 +1,5 @@
 <template>
-  <div v-if="publicList.length>0">
+  <div>
     <el-row>
       <el-col :span="24">
         <div class="grid-content">

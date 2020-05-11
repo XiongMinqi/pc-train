@@ -14,7 +14,10 @@
               <div style="color:green">考试规则:允许返回修改答案</div>
               <div style="color:green">如果考试异常中断，请退出并及时按同样步骤进入，可继续进行考试</div>
             </div>
-            <div>
+            <div
+              class="fixedTime"
+              style="position: fixed;top: 90px;right: 50px;z-index:99;background:white;padding:10px 30px"
+            >
               <div>考试时间还剩</div>
               <div id="countdown">00:00</div>
             </div>
@@ -85,12 +88,16 @@
             <el-button type="primary" @click="submit">确 定</el-button>
           </span>
         </el-dialog>
-        <el-dialog title="时间到" :visible.sync="showDialog" width="30%">
-          <div>
-            时间已到，请交卷
-          </div>
+        <el-dialog
+          title="时间到"
+          :visible.sync="showDialog"
+          width="30%"
+          :close-on-click-modal="close"
+          :show-close="close"
+          :close-on-press-escape="close"
+        >
+          <div>时间已到，请交卷</div>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="showDialog = false">取 消</el-button>
             <el-button type="primary" @click="submit">确 定</el-button>
           </span>
         </el-dialog>
@@ -118,10 +125,11 @@ export default {
       currentOptions: {},
       currentIndex: 0,
       testInfo: {},
+      close:false,
       radio: 0,
       fullscreen: false,
       dialogVisible: false,
-      showDialog:false,
+      showDialog: false,
       allAnswer: {},
       answerId: [],
       empty: [],
@@ -129,7 +137,7 @@ export default {
       length: 0,
       llqName: "",
       timecount: {},
-      numberes:false
+      numberes: false
     };
   },
   components: {
@@ -326,13 +334,12 @@ export default {
     },
     //时间倒计时
     timeDown() {
-      var _this = this
+      var _this = this;
       var countdown = document.getElementById("countdown");
       var time = _this.testInfo.minutes * 60; //30分钟换算成1800秒
       //   console.log(this.testInfo.minutes);
       var timecount = setInterval(function() {
         time = time - 1;
-        console.log(time);
         if (time >= 0) {
           var minute = parseInt(time / 60);
           if (minute > 60) {
@@ -344,6 +351,9 @@ export default {
             if (minute < 10) {
               minute = "0" + minute;
             }
+          }
+          if (minute < 10) {
+            minute = "0" + minute;
           }
           var second = parseInt(time % 60);
           if (second < 10) {
@@ -359,13 +369,12 @@ export default {
           // _this.numberes = true;
           _this.showDialog = true;
           // console.log(_this.numberes);
-          
         }
       }, 1000);
       this.timecount = timecount;
-      if(this.numberes){
-            this.submit()
-          }
+      if (this.numberes) {
+        this.submit();
+      }
     }
   },
   destroyed() {
@@ -464,5 +473,10 @@ span {
   text-align: center;
   margin-top: 20px;
   margin-bottom: 50px;
+}
+.fixedTime {
+  position: fixed;
+  top: 50px;
+  right: 50px;
 }
 </style>
