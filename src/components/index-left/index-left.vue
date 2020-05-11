@@ -30,10 +30,10 @@
                 <i class="el-icon-notebook-1"></i>
                 <span slot="title">电子课件</span>
               </el-menu-item>
-              <el-menu-item index="4-2" @click="goTo('/material')">
+              <!-- <el-menu-item index="4-2" @click="goTo('/material')">
                 <i class="el-icon-notebook-2"></i>
                 <span slot="title">电子教材</span>
-              </el-menu-item>
+              </el-menu-item> -->
               <el-menu-item index="4-3" @click="goTo('/online')">
                 <i class="el-icon-edit"></i>
                 <span slot="title">在线练习</span>

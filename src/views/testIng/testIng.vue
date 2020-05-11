@@ -85,6 +85,15 @@
             <el-button type="primary" @click="submit">确 定</el-button>
           </span>
         </el-dialog>
+        <el-dialog title="时间到" :visible.sync="showDialog" width="30%">
+          <div>
+            时间已到，请交卷
+          </div>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="showDialog = false">取 消</el-button>
+            <el-button type="primary" @click="submit">确 定</el-button>
+          </span>
+        </el-dialog>
       </div>
     </el-tooltip>
   </div>
@@ -112,12 +121,15 @@ export default {
       radio: 0,
       fullscreen: false,
       dialogVisible: false,
+      showDialog:false,
       allAnswer: {},
       answerId: [],
       empty: [],
       ksExamId: "",
       length: 0,
-      llqName: ""
+      llqName: "",
+      timecount: {},
+      numberes:false
     };
   },
   components: {
@@ -304,7 +316,7 @@ export default {
             // console.log(res);
             this.testInfo = res.data.data[0];
             this.currentOptions = res.data.data[0].questions;
-            console.log(this.testInfo);
+            // console.log(this.testInfo);
             this.timeDown();
           }
         })
@@ -314,33 +326,50 @@ export default {
     },
     //时间倒计时
     timeDown() {
+      var _this = this
       var countdown = document.getElementById("countdown");
-      var time = this.testInfo.minutes * 60; //30分钟换算成1800秒
+      var time = _this.testInfo.minutes * 60; //30分钟换算成1800秒
       //   console.log(this.testInfo.minutes);
-      setInterval(function() {
+      var timecount = setInterval(function() {
         time = time - 1;
-        var minute = parseInt(time / 60);
-        if (minute > 60) {
-          var hour = parseInt(time / 60 / 60);
-          if (hour < 10) {
-            hour = "0" + hour;
+        console.log(time);
+        if (time >= 0) {
+          var minute = parseInt(time / 60);
+          if (minute > 60) {
+            var hour = parseInt(time / 60 / 60);
+            if (hour < 10) {
+              hour = "0" + hour;
+            }
+            minute = parseInt((time - hour * 60 * 60) / 60);
+            if (minute < 10) {
+              minute = "0" + minute;
+            }
           }
-          minute = parseInt((time - hour * 60 * 60) / 60);
-          if (minute < 10) {
-            minute = "0" + minute;
+          var second = parseInt(time % 60);
+          if (second < 10) {
+            second = "0" + second;
           }
-        }
-        var second = parseInt(time % 60);
-        if (second < 10) {
-          second = "0" + second;
-        }
-        if (hour) {
-          countdown.innerHTML = hour + ":" + minute + ":" + second;
+          if (hour) {
+            countdown.innerHTML = hour + ":" + minute + ":" + second;
+          } else {
+            countdown.innerHTML = minute + ":" + second;
+          }
         } else {
-          countdown.innerHTML = minute + ":" + second;
+          clearInterval(timecount);
+          // _this.numberes = true;
+          _this.showDialog = true;
+          // console.log(_this.numberes);
+          
         }
       }, 1000);
+      this.timecount = timecount;
+      if(this.numberes){
+            this.submit()
+          }
     }
+  },
+  destroyed() {
+    clearInterval(this.timecount);
   },
   mounted() {
     //进入全屏

@@ -73,7 +73,7 @@
             </div>
             <!-- 判断 -->
             <div v-if="questionDetail.type==3">
-              <el-radio-group v-model="radio">
+              <el-radio-group v-model="radio" @change="juage">
                 <div style="padding:0 0 10px 0">
                   <el-radio label="judge1">正确</el-radio>
                 </div>
@@ -85,8 +85,8 @@
             <!-- 多选 -->
             <div v-if="questionDetail.type==1">
               <div v-for="(item,index) in questionDetail.options" :key="index">
-                <el-checkbox-group v-model="checkList">
-                  <el-checkbox :label="item.content">
+                <el-checkbox-group v-model="checkList" @change="checkbox">
+                  <el-checkbox :label="item.order">
                     <span v-if="item.order === 0">A、</span>
                     <span v-if="item.order === 1">B、</span>
                     <span v-if="item.order === 2">C、</span>
@@ -135,10 +135,10 @@
         </div>
       </div>
       <div class="choosebtn">
-        <div>
-          <el-button type="primary" round @click="before">完成</el-button>
+        <div v-if="showBtn">
+          <el-button type="primary" round @click="confirm">完成</el-button>
         </div>
-        <div>
+        <div v-else>
           <el-button type="primary" round @click="after">下一题</el-button>
         </div>
       </div>
@@ -157,7 +157,8 @@ export default {
       classList: [],
       subjectList: [],
       questionType: [],
-      choosed:false,//是否已选择选项
+      showBtn: true,
+      choosed: false, //是否已选择选项
       size: "",
       listSize: ["10", "15", "20", "25", "30"],
       data: {
@@ -195,23 +196,38 @@ export default {
       showAnswer: false,
       showselect: true,
       rightQuestionId: [],
-      radioing: "" //被选中的单选
+      radioing: "", //被选中的单选
+      result: false
     };
   },
   components: {},
   methods: {
     //上一题
-    before() {
+    confirm() {
       this.showAnswer = true;
-      this.choosed=true;
+      if (this.radio !== "" || this.checkList.length > 0) {
+        this.showBtn = false;
+        this.choosed = true;
+      } else {
+        this.$message({
+          message: "至少选择一个选项才能进入下一题",
+          type: "none"
+        });
+      }
     },
     //下一题
     after() {
       this.index += 1;
-      // console.log(this.questionId);
       if (this.index < this.questionId.length) {
+        if (this.result === true) {
+          this.rightQuestionId.push(this.questionDetail.id);
+        }
+        console.log(this.rightQuestionId);
         this.showAnswer = false;
         this.choosed = false;
+        this.showBtn = true;
+        this.radio = "";
+        this.checkList = [];
         this.questionDetail = {};
         this.getInfo(this.questionId[this.index]);
       } else {
@@ -367,11 +383,80 @@ export default {
       if (e === 5) {
         this.radioing = "F";
       }
-      console.log(this.radioing);
+      // console.log(this.radioing);
       if (this.radioing === this.questionDetail.answers[0].content) {
-        this.rightQuestionId.push(this.questionDetail.id);
+        this.result = true;
       }
-      console.log(this.rightQuestionId);
+    },
+    //判断
+    juage(e) {
+      // console.log(e);
+      var judge = "";
+      if (e === "judge1") {
+        judge = "正确";
+      }
+      if (e === "judge2") {
+        judge = "错误";
+      }
+      if (judge === this.questionDetail.answers[0].content) {
+        this.result = true;
+      }
+    },
+    //多选
+    checkbox(e) {
+      let checkbox = [];
+      let result = false;
+      e.map(item => {
+        if (item === 0) {
+          checkbox.push("A");
+        }
+        if (item === 1) {
+          checkbox.push("B");
+        }
+        if (item === 2) {
+          checkbox.push("C");
+        }
+        if (item === 3) {
+          checkbox.push("D");
+        }
+        if (item === 4) {
+          checkbox.push("E");
+        }
+        if (item === 5) {
+          checkbox.push("F");
+        }
+      });
+      checkbox = checkbox.sort();
+      let arr = [];
+      this.questionDetail.answers.map(item => {
+        arr.push(item.content);
+      });
+      if (this.compare(arr,checkbox)) {
+        this.result = true;
+      }else{
+        this.result = false
+      }
+    },
+    //比较两个数组
+    compare(arr1, arr2) {
+      for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i] !== arr2[i]) {
+          return false;
+        }
+      }
+      return true;
+    },
+    //数组去重
+    unique(arr) {
+      for (var i = 0; i < arr.length; i++) {
+        for (var j = i + 1; j < arr.length; j++) {
+          if (arr[i] == arr[j]) {
+            arr.splice(j, 1);
+            j--;
+          }
+        }
+      }
+      return arr;
     }
   },
   mounted() {

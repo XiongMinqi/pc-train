@@ -244,7 +244,7 @@ export default {
   color: #fff;
   font-family: "Source Sans Pro";
   background-size: 100%;
-  background-image: url("https://img2018.cnblogs.com/blog/1211637/201908/1211637-20190809112720089-1507550740.png");
+  background-image: url("../../assets/icon/bgimg.png");
   position: relative;
   #bgd {
     height: 100vh;
