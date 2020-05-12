@@ -114,16 +114,17 @@ export default {
         passWord: ""
       },
       loginRules: {
-        userName: "",
+        username: "",
         passWord: ""
       }
     };
   },
   components: {},
   methods: {
-    inputUsername(){
-      if(this.username === ""){
-        this.passwords = ""
+    inputUsername(e) {
+      if (e !== this.loginRules.username) {
+        this.passwords = "";
+        localStorage.removeItem("userList-afsdfsdafd")
       }
     },
     //提交登录
@@ -248,6 +249,7 @@ export default {
       this.username = userMsg.username;
       this.passwords = userMsg.password;
       this.checked = true;
+      this.loginRules.username = userMsg.username;
     }
   },
   watch: {},

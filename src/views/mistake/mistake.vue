@@ -42,7 +42,7 @@
             </div>
           </div>
           <div>
-            <el-button type="primary" round @click="checkDetail(item)">查看详情</el-button>
+            <el-button type="primary" round @click="checkDetail(item)">错题重做</el-button>
           </div>
         </div>
       </div>

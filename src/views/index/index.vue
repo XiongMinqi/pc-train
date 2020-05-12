@@ -85,7 +85,7 @@
       <div>
         <div class="logintime">
           <div class="name">在线学习时长 :</div>
-          <div class="content">{{totalStudyTime}}分钟</div>
+          <div class="content">{{totalStudyTime}}</div>
         </div>
         <div class="logintime">
           <div class="name">在线测试记录 :</div>
@@ -174,6 +174,13 @@ export default {
             res.data.data.map(item => {
               this.totalStudyTime += item.totalMinutes;
             });
+            if (this.totalStudyTime > 60) {
+              let hour = Math.floor(this.totalStudyTime / 60);
+              let minute = this.totalStudyTime - hour * 60;
+              this.totalStudyTime = hour + "小时" + minute+"分钟";
+            } else {
+              this.totalStudyTime = this.totalStudyTime+"分钟";
+            }
           }
         })
         .catch();
