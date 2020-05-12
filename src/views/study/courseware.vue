@@ -30,21 +30,24 @@
               <div v-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
                 <img src="../../assets/icon/word.png" alt />
               </div>
-              <div v-if="item.fileSuffix == '.xls' || item.fileSuffix == '.xlsx'">
+              <div v-else-if="item.fileSuffix == '.xls' || item.fileSuffix == '.xlsx'">
                 <img src="../../assets/icon/excel.png" alt />
               </div>
-              <div v-if="item.fileSuffix == '.mp4'">
+              <div v-else-if="item.fileSuffix == '.ppt' || item.fileSuffix == '.pptx'">
+                <img src="../../assets/icon/ppt.png" alt />
+              </div>
+              <div v-else-if="item.fileSuffix == '.mp4'">
                 <img src="../../assets/icon/movie.png" alt />
               </div>
-              <div v-if="item.fileSuffix == '.pdf'">
+              <div v-else-if="item.fileSuffix == '.pdf'">
                 <img src="../../assets/icon/pdf.png" alt />
               </div>
               <div
-                v-if="item.fileSuffix == '.jpg'||item.fileSuffix == '.png'||item.fileSuffix == '.gif'||item.fileSuffix == '.tif'||item.fileSuffix == '.psd'||item.fileSuffix == '.dng'"
+                v-else-if="item.fileSuffix == '.jpg'||item.fileSuffix == '.png'||item.fileSuffix == '.gif'||item.fileSuffix == '.tif'||item.fileSuffix == '.psd'||item.fileSuffix == '.dng'"
               >
                 <img src="../../assets/icon/picture.png" alt />
               </div>
-              <div v-if="item.fileSuffix == null">
+              <div v-else>
                 <img src="../../assets/icon/other.png" alt />
               </div>
             </div>
@@ -52,13 +55,13 @@
               <div class="msg">
                 <div>课件名称: {{item.name}}</div>
               </div>
-              <div>
+              <div style="font-size:14px">
                 <div>作者: {{item.author}}</div>
               </div>
-              <div class="desc">
+              <div class="desc" style="font-size:14px">
                 <div>上传时间: {{item.uploadTime}}</div>
               </div>
-              <div class="desc">
+              <div class="desc" style="font-size:14px">
                 <div>文件大小: {{item.fileSize}}KB</div>
               </div>
             </div>
@@ -206,7 +209,6 @@ export default {
       this.pdfUrl = "";
       this.videoPlayer = "";
       this.pictureUrl = "";
-      // console.log(e);
       this.$api
         .geturl(e.id)
         .then(res => {
@@ -219,13 +221,15 @@ export default {
               e.fileSuffix === ".docx" ||
               e.fileSuffix === ".doc" ||
               e.fileSuffix === ".xls" ||
-              e.fileSuffix === ".xlsx"
+              e.fileSuffix === ".xlsx" ||
+              e.fileSuffix === ".ppt" ||
+              e.fileSuffix === ".pptx"
             ) {
               this.wordUrl =
                 "https://view.officeapps.live.com/op/view.aspx?src=" +
                 encodeURIComponent(res.data.data[0]);
               this.dialogVisible = true;
-              // console.log(this.wordUrl);
+              console.log(this.wordUrl);
             } else if (e.fileSuffix === ".mp4") {
               this.videoPlayer = res.data.data[0];
               this.dialogVisible = true;

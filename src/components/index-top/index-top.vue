@@ -24,7 +24,7 @@
       </el-dropdown>
 
       <div class="submitBtn">
-        <el-button type="danger" size="mini" @click="logout">退出登录</el-button>
+        <el-button type="danger" round size="mini" @click="logout">退出登录</el-button>
       </div>
     </div>
   </div>

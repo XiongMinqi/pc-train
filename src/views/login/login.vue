@@ -18,6 +18,7 @@
                 class="inps"
                 placeholder="用户名"
                 v-model="username"
+                @input="inputUsername"
                 @keydown.enter.native="submitForm"
               ></el-input>
             </el-col>
@@ -120,6 +121,11 @@ export default {
   },
   components: {},
   methods: {
+    inputUsername(){
+      if(this.username === ""){
+        this.passwords = ""
+      }
+    },
     //提交登录
     submitForm() {
       let data = {

@@ -24,7 +24,7 @@
                   <span v-if="item.type == itm.key" style="color:blue;">【{{itm.value}}】</span>
                 </div>
               </div>
-              <div class="content">{{item.content}}</div>
+              <div class="questioncontent">{{item.content}}</div>
               <div style="font-size:12px;color:#a5a5a5;padding-left:6px">
                 <span style="color:rgb(204, 51, 82)">
                   困难程度:
@@ -37,9 +37,7 @@
                 |
                 <span style="color:purple">所属专业 : {{item.majorname}}</span> |
                 <span style="color:skyblue">所属部门 : {{item.departname}}</span> |
-                <span style="color:green">
-                  分数 ：{{item.defaultScore}}分
-                </span>
+                <span style="color:green">分数 ：{{item.defaultScore}}分</span>
               </div>
             </div>
           </div>
@@ -64,11 +62,10 @@
     <el-dialog title="错题详情" :visible.sync="dialogFormVisible" @close="close">
       <div>
         <div class="detail">
-          <div class="index">*</div>
           <div class="questiontype" v-for="(itm,idx) in questionType" :key="idx">
             <span v-if="questionDetail.type == itm.key">【{{itm.value}}】</span>
           </div>
-          <div style="width:80%">{{questionDetail.content}}</div>
+          <div class="content">{{questionDetail.content}}</div>
         </div>
         <!-- 选项 -->
         <div>
@@ -322,8 +319,8 @@ export default {
 }
 .detail {
   // width: 100%;
-  display: flex;
-  align-items: center;
+  // display: flex;
+  // align-items: center;
   padding-bottom: 20px;
   padding-left: 20px;
   span {
@@ -354,7 +351,16 @@ export default {
   // width: 10%;
 }
 .content {
-  width: 80%;
+  // width: 80%;
+  // display: inline-block;
+  // white-space: nowrap;
+  // overflow: hidden;
+  // text-overflow: ellipsis;
+  // padding-bottom: 5px;
+  // padding-left: 6px;
+}
+.questioncontent{
+  width: 920px;
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
@@ -366,8 +372,8 @@ export default {
   padding: 0 0 15px 25px;
 }
 .userImg {
-  width: 80px;
-  height: 90px;
+  width: 70px;
+  height: 80px;
   img {
     width: 100%;
     height: 100%;
