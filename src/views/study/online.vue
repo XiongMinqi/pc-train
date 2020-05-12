@@ -139,7 +139,12 @@
           <el-button type="primary" round @click="confirm">完成</el-button>
         </div>
         <div v-else>
-          <el-button type="primary" round @click="after">下一题</el-button>
+          <div v-if="index===questionId.length-1">
+            <el-button type="primary" round @click="submitTrain">提交练习</el-button>
+          </div>
+          <div v-else>
+            <el-button type="primary" round @click="after">下一题</el-button>
+          </div>
         </div>
       </div>
     </div>
@@ -160,7 +165,7 @@ export default {
       showBtn: true,
       choosed: false, //是否已选择选项
       size: "",
-      listSize: ["10", "15", "20", "25", "30"],
+      listSize: ["10", "2", "15", "20", "25", "30"],
       data: {
         criteria: {
           level: null,
@@ -202,7 +207,7 @@ export default {
   },
   components: {},
   methods: {
-    //上一题
+    //完成
     confirm() {
       this.showAnswer = true;
       if (this.radio !== "" || this.checkList.length > 0) {
@@ -237,6 +242,17 @@ export default {
           type: "warning"
         });
       }
+    },
+    //提交练习
+    submitTrain() {
+      if (this.result === true) {
+        this.rightQuestionId.push(this.questionDetail.id);
+      }
+      this.$message({
+        message:"提交练习",
+        type:"success"
+      })
+      console.log(this.rightQuestionId);
     },
     //查看正确答案
     checkRightAnswer() {
@@ -384,8 +400,11 @@ export default {
         this.radioing = "F";
       }
       // console.log(this.radioing);
+      // console.log(this.questionDetail.answers[0].content);
       if (this.radioing === this.questionDetail.answers[0].content) {
         this.result = true;
+      }else{
+        this.result = false;
       }
     },
     //判断
@@ -400,6 +419,8 @@ export default {
       }
       if (judge === this.questionDetail.answers[0].content) {
         this.result = true;
+      }else{
+        this.result = false;
       }
     },
     //多选
@@ -431,10 +452,10 @@ export default {
       this.questionDetail.answers.map(item => {
         arr.push(item.content);
       });
-      if (this.compare(arr,checkbox)) {
+      if (this.compare(arr, checkbox)) {
         this.result = true;
-      }else{
-        this.result = false
+      } else {
+        this.result = false;
       }
     },
     //比较两个数组

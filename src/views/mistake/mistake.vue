@@ -11,24 +11,51 @@
         <el-button type="primary" @click="chooseClass">开始筛选</el-button>
       </div>
     </div>
-    <div>
+    <div v-if="errorList.length>0">
       <div v-for="(item,index) in errorList" :key="index">
-        <div class="allList" @click="checkDetail(item)">
-          <div class="index" v-if="index<9">0{{index+1}}、</div>
-          <div v-else>{{index+1}}、</div>
-          <div class="questiontype" v-for="(itm,idx) in questionType" :key="idx">
-            <span v-if="item.type == itm.key">【{{itm.value}}】</span>
+        <div class="mistake">
+          <div style="display: flex; align-items: center;">
+            <div class="userImg">
+              <img src="../../assets/icon/mistake.png" alt />
+            </div>
+            <div style="margin-left:20px">
+              <div class="name" style="font-weight:bold;padding-bottom:5px">
+                <div class="questiontype" v-for="(itm,idx) in questionType" :key="idx">
+                  <span v-if="item.type == itm.key" style="color:blue;">【{{itm.value}}】</span>
+                </div>
+              </div>
+              <div class="content">{{item.content}}</div>
+              <div style="font-size:12px;color:#a5a5a5;padding-left:6px">
+                <span style="color:rgb(204, 51, 82)">
+                  困难程度:
+                  <span>
+                    <span v-if="item.level===0">简单</span>
+                    <span v-if="item.level===1">普通</span>
+                    <span v-if="item.level===2">困难</span>
+                  </span>
+                </span>
+                |
+                <span style="color:purple">所属专业 : {{item.majorname}}</span> |
+                <span style="color:skyblue">所属部门 : {{item.departname}}</span> |
+                <span style="color:green">
+                  分数 ：{{item.defaultScore}}分
+                </span>
+              </div>
+            </div>
           </div>
-          <div class="content">{{item.content}}</div>
+          <div>
+            <el-button type="primary" round @click="checkDetail(item)">查看详情</el-button>
+          </div>
         </div>
       </div>
     </div>
+    <div v-else class="else">暂无数据</div>
     <div class="block">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
         :current-page="currentPage"
-        :page-sizes="[10, 15, 20, 30, 40]"
+        :page-sizes="[5, 10, 15, 20, 30, 40]"
         :page-size="100"
         layout="total, sizes, prev, pager, next, jumper"
         :total="total"
@@ -122,7 +149,7 @@ export default {
       question: "", //问题类型
       status: null,
       page: 1,
-      limit: 10,
+      limit: 5,
       disappear: false,
       total: 0,
       currentPage: 1,
@@ -134,7 +161,9 @@ export default {
       checkList: [],
       textarea: "",
       judge1: "",
-      judge2: ""
+      judge2: "",
+      department: [],
+      major: []
     };
   },
   components: {},
@@ -190,9 +219,9 @@ export default {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
-            console.log(res);
+            // console.log(res);
             this.questionDetail = res.data.data[0];
-            console.log(this.questionDetail);
+            // console.log(this.questionDetail);
           } else {
             this.$message({
               message: res.data.msg,
@@ -205,14 +234,17 @@ export default {
     //获取全部题目类型
     getQuestionType() {
       this.$grade
-        .getAllQuestionType()
+        .getdict()
         .then(res => {
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
             this.questionType = res.data.data[0]["题目类型"];
-            // console.log(this.questionType);
+            this.major = res.data.data[0]["专业名称"];
+            this.department = res.data.data[0]["部门名称"];
+            this.getErrorList();
+            console.log(this.department);
           }
         })
         .catch();
@@ -244,7 +276,19 @@ export default {
           if (res.data.code === 0) {
             this.errorList = res.data.data;
             this.total = res.data.count;
-            // console.log(this.errorList);
+            this.errorList.map(item => {
+              this.major.map(itm => {
+                if (item.majorId == itm.key) {
+                  this.$set(item, "majorname", itm.value);
+                }
+              });
+              this.department.map(itm => {
+                if (item.departmentId == itm.key) {
+                  this.$set(item, "departname", itm.value);
+                }
+              });
+            });
+            console.log(this.errorList);
           } else {
             this.$message({
               message: res.data.msg,
@@ -257,7 +301,6 @@ export default {
   },
   mounted() {
     this.getQuestionType();
-    this.getErrorList();
   },
   watch: {},
   computed: {}
@@ -268,7 +311,7 @@ export default {
 .choose {
   display: flex;
   align-items: center;
-  padding: 20px 20px;
+  padding: 0 0 10px 20px;
 }
 .subject {
   margin-right: 20px;
@@ -316,8 +359,34 @@ export default {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  padding-bottom: 5px;
+  padding-left: 6px;
 }
 .el-radio-group {
   padding: 0 0 15px 25px;
+}
+.userImg {
+  width: 80px;
+  height: 90px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+.mistake {
+  display: flex;
+  align-items: center;
+  // text-align: center;
+  justify-content: space-between;
+  margin-bottom: 5px;
+  padding: 5px 10px;
+  border: 1px solid #e9e9e9;
+  border-radius: 10px;
+}
+.else {
+  text-align: center;
+  padding: 20px 0;
+  font-size: 17px;
+  color: red;
 }
 </style>

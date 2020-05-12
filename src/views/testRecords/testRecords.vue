@@ -31,7 +31,7 @@
             <div class="index">序号</div>
             <div class="testName">试卷</div>
             <div class="subject">科目</div>
-            <div class="testTime">考试时间</div>
+            <div class="testTime">发布考试时间</div>
             <div class="duringTime">考试用时</div>
             <div class="score">得分</div>
             <div class="operation">操作</div>

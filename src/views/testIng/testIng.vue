@@ -125,7 +125,7 @@ export default {
       currentOptions: {},
       currentIndex: 0,
       testInfo: {},
-      close:false,
+      close: false,
       radio: 0,
       fullscreen: false,
       dialogVisible: false,
@@ -263,6 +263,7 @@ export default {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
+            this.$store.state.answerList = {};
             this.$router.push({ name: "onlineTest", path: "/onlineTest" });
           } else {
             this.$message({
@@ -381,6 +382,7 @@ export default {
     clearInterval(this.timecount);
   },
   mounted() {
+    this.$store.state.answerList = {};
     //进入全屏
     this.handleFullScreen();
     // console.log(localStorage.getItem("Ip"));

@@ -126,19 +126,6 @@
               <div class="chooices">正确</div>
               <div class="chooices">错误</div>
             </div>
-            <!-- 问答 -->
-            <div class v-if="item.question.type===5">
-              <div class v-if="item.answer.ksAnswerContents.length>0">
-                <div class="chooices">{{item.answer.ksAnswerContents[0].content}}</div>
-              </div>
-            </div>
-            <!-- 名词解释 -->
-            <div class v-if="item.question.type===4">
-              <div
-                class
-                v-if="item.answer.ksAnswerContents.length>0"
-              >{{item.answer.ksAnswerContents[0].content}}</div>
-            </div>
           </div>
           <!-- 考生答案和正确答案以及分数 -->
           <div class="jiexi" style="padding-left:4%">

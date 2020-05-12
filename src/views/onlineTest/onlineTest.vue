@@ -4,7 +4,7 @@
       <div class="flex" v-for="(item,index) in testList" :key="index">
         <div style=" display: flex;align-items: center;">
           <div class="userImg">
-            <img src="http://pic.51yuansu.com/pic3/cover/01/02/80/590085d34c319_610.jpg" alt />
+            <img src="../../assets/icon/testlist.png" alt />
           </div>
           <div style="margin-left:20px">
             <div class="name" style="font-weight:bold">{{item.name}}</div>

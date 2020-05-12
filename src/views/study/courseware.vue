@@ -79,6 +79,8 @@
     </div>
     <div v-else>暂无数据</div>
     <el-dialog
+      width="70%"
+      top="1vh"
       @close="close"
       @open="open"
       class="dialogVisible"

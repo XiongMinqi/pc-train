@@ -14,7 +14,12 @@
               </span>
             </el-col>
             <el-col :span="22">
-              <el-input class="inps" placeholder="用户名" v-model="username"></el-input>
+              <el-input
+                class="inps"
+                placeholder="用户名"
+                v-model="username"
+                @keydown.enter.native="submitForm"
+              ></el-input>
             </el-col>
           </el-row>
         </el-form-item>
@@ -41,12 +46,7 @@
         </el-form-item>
 
         <el-form-item style="margin-top:20px;">
-          <el-button
-            type="primary"
-            round
-            class="submitBtn"
-            @click="submitForm"
-          >登录</el-button>
+          <el-button type="primary" round class="submitBtn" @click="submitForm">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -230,7 +230,7 @@ export default {
         star.x += star.radius / this.speed;
       }
       star.draw(this.context);
-    },
+    }
   },
   mounted() {
     this.canvas = document.getElementById("myCanvas");
