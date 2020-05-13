@@ -36,7 +36,7 @@ export default {
   components: {},
   methods: {
     changeRadio() {
-    //   console.log(this.radio);
+    // console.log(this.radio);
       if (this.radio == "0") {
         this.answerInfo = [];
         this.answerInfo.push("正确");
@@ -46,7 +46,7 @@ export default {
         this.answerInfo.push("错误");
       }
       this.$store.state.answerList[this.list.id] = this.answerInfo;
-      console.log(this.$store.state.answerList);
+      // console.log(this.$store.state.answerList);
     }
   },
   mounted() {

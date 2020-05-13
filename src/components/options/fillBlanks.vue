@@ -41,11 +41,11 @@ export default {
       if (this.textarea[e] !== "") {
         this.fillList[e] = this.textarea[e];
         this.$store.state.answerList[this.list.id] = this.fillList;
-        console.log(this.$store.state.answerList);
+        // console.log(this.$store.state.answerList);
       }
       if (this.textarea[e] === "") {
         this.fillList[e] = this.textarea[e];
-        console.log(13243212);
+        // console.log(13243212);
         this.fillList.map(item => {
           if (item !== "") {
             this.$store.state.answerList[this.list.id] = this.fillList;
@@ -53,7 +53,7 @@ export default {
             delete this.$store.state.answerList[this.list.id];
           }
         });
-        console.log(this.$store.state.answerList);
+        // console.log(this.$store.state.answerList);
       }
     }
   },

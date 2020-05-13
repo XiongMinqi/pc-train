@@ -27,18 +27,18 @@ export default {
   components: {},
   methods: {
     inputInfo() {
-      //   console.log(this.textarea);
+      // console.log(this.textarea);
       if (this.textarea !== "") {
-        //   console.log("abvshf ");
+        // console.log("abvshf ");
         this.answerInfo = [];
         this.answerInfo.push(this.textarea);
         // console.log(this.answerInfo);
         this.$store.state.answerList[this.list.id] = this.answerInfo;
-        console.log(this.$store.state.answerList);
+        // console.log(this.$store.state.answerList);
       }
       if (this.textarea === "") {
         delete this.$store.state.answerList[this.list.id];
-        console.log(this.$store.state.answerList);
+        // console.log(this.$store.state.answerList);
       }
     }
   },

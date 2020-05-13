@@ -107,7 +107,7 @@
 </template>
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
 <script type="text/javascript">
-console.log(returnCitySN["cip"]);
+//  console.log(returnCitySN["cip"]);
 // document.write(returnCitySN["cip"]+','+returnCitySN["cname"])
 </script>
 <script>
@@ -185,19 +185,19 @@ export default {
         a = Number(a);
         this.answerId.push(a);
       }
-      // console.log(this.answerId);
+      //  console.log(this.answerId);
       this.currentOptions.map((item, index) => {
         if (this.answerId.indexOf(item.id) === -1) {
-          // console.log(index);
+          //  console.log(index);
           index += 1;
           this.empty.push(index);
         }
       });
-      // console.log(this.empty, "未答题号");
+      //  console.log(this.empty, "未答题号");
       this.length = this.empty.length;
       if (this.empty.length > 5) {
         this.empty.splice(5);
-        // console.log(this.empty);
+        //  console.log(this.empty);
       }
     },
     //转换时间
@@ -237,7 +237,7 @@ export default {
         _dif * 60 * 1000 -
         targetTimezone * 60 * 60 * 1000;
       let nowTime = this.timeFormat(new Date(east8time));
-      console.log(nowTime);
+      //  console.log(nowTime);
       this.dialogVisible = false;
       //获取学员peopleId
       let userinfo = JSON.parse(localStorage.getItem("userInfo"));
@@ -245,7 +245,7 @@ export default {
       let ip = localStorage.getItem("Ip");
       ip = ip.toString();
       this.getBrowser();
-      // console.log(this.testInfo.id);
+      //  console.log(this.testInfo.id);
       let data = {
         answers: this.allAnswer,
         beginTime: nowTime,
@@ -258,7 +258,7 @@ export default {
       this.$onlineTest
         .submitPaper(data)
         .then(res => {
-          console.log(res);
+          //  console.log(res);
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -273,7 +273,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          //  console.log(err);
         });
     },
     //获取浏览器信息
@@ -282,16 +282,16 @@ export default {
       let userAgent = navigator.userAgent.toLocaleLowerCase();
       var res = [];
       types.forEach(element => {
-        // console.log(element);
+        //  console.log(element);
         if (userAgent.indexOf(element) > 0) {
           let rule = `${element}` + "\\/([\\d.]+)";
-          // console.log(rule);
+          //  console.log(rule);
           res.push(element);
-          // console.log(userAgent.match(rule)[1]);
+          //  console.log(userAgent.match(rule)[1]);
           res.push(userAgent.match(rule)[1]);
           this.llqName = res[0];
-          // console.log(this.llqName);
-          // console.log(res);
+          //  console.log(this.llqName);
+          //  console.log(res);
         }
       });
       if (res.indexOf("chrome") > -1 && res.indexOf("safari") > -1) {
@@ -300,16 +300,16 @@ export default {
           temp.push("chrome");
           temp.push(res[res.indexOf("chrome") + 1]);
           return temp;
-          console.log(temp);
+          //  console.log(temp);
         } else {
           res.splice(res.indexOf("chrome"), 2);
           res.splice(res.indexOf("safari"), 2);
           return res;
-          console.log(res);
+          //  console.log(res);
         }
       } else {
         return res;
-        console.log(res);
+        //  console.log(res);
       }
     },
     //获取考试信息
@@ -317,20 +317,20 @@ export default {
       this.$onlineTest
         .onlineTest(this.id)
         .then(res => {
-          // console.log(res);
+          //  console.log(res);
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
-            // console.log(res);
+            //  console.log(res);
             this.testInfo = res.data.data[0];
             this.currentOptions = res.data.data[0].questions;
-            // console.log(this.testInfo);
+            //  console.log(this.testInfo);
             this.timeDown();
           }
         })
         .catch(err => {
-          console.log(err);
+          //  console.log(err);
         });
     },
     //时间倒计时
@@ -338,7 +338,7 @@ export default {
       var _this = this;
       var countdown = document.getElementById("countdown");
       var time = _this.testInfo.minutes * 60; //30分钟换算成1800秒
-      //   console.log(this.testInfo.minutes);
+      //  console.log(this.testInfo.minutes);
       var timecount = setInterval(function() {
         time = time - 1;
         if (time >= 0) {
@@ -385,12 +385,8 @@ export default {
     this.$store.state.answerList = {};
     //进入全屏
     this.handleFullScreen();
-    // console.log(localStorage.getItem("Ip"));
     this.id = this.$route.query.paperId;
-    // console.log(this.id);
-    // console.log(this.$route.query);
     this.ksExamId = this.$route.query.id;
-    // console.log(this.id);
     this.getTestMsg();
     document.onkeydown = function() {
       if (window.event.keyCode === 27) {
@@ -417,9 +413,6 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-.test {
-  // pointer-events: none;
-}
 span {
   color: blue;
 }

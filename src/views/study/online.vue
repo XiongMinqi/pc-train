@@ -4,25 +4,25 @@
       <div class="choose">
         <div class="subject">
           <el-select v-model="subjectname" placeholder="请选择专业">
-            <el-option key value="全部"></el-option>
+            <el-option key value="不限"></el-option>
             <el-option v-for="item in subjectList" :key="item.key" :value="item.value"></el-option>
           </el-select>
         </div>
         <div class="classname">
           <el-select v-model="classname" placeholder="请选择科目">
-            <el-option key value="全部"></el-option>
+            <el-option key value="不限"></el-option>
             <el-option v-for="item in classList" :key="item.key" :value="item.value"></el-option>
           </el-select>
         </div>
         <div class="subject">
           <el-select v-model="topicType" placeholder="请选择题型">
-            <!-- <el-option key value="全部"></el-option> -->
+            <!-- <el-option key value="不限"></el-option> -->
             <el-option v-for="item in questionType" :key="item.key" :value="item.value"></el-option>
           </el-select>
         </div>
         <div class="classname">
           <el-select v-model="easyType" placeholder="请选择难易程度">
-            <el-option key value="全部"></el-option>
+            <el-option key value="不限"></el-option>
             <el-option v-for="item in diffcult" :key="item.key" :value="item.value"></el-option>
           </el-select>
         </div>
@@ -171,7 +171,7 @@ export default {
           level: null,
           majorId: null,
           subjectId: null,
-          type: null
+          type: 0
         },
         size: 10
       },
@@ -209,8 +209,8 @@ export default {
   methods: {
     //完成
     confirm() {
-      this.showAnswer = true;
       if (this.radio !== "" || this.checkList.length > 0) {
+        this.showAnswer = true;
         this.showBtn = false;
         this.choosed = true;
       } else {
@@ -249,9 +249,9 @@ export default {
         this.rightQuestionId.push(this.questionDetail.id);
       }
       this.$message({
-        message:"提交练习",
-        type:"success"
-      })
+        message: "提交练习",
+        type: "success"
+      });
       console.log(this.rightQuestionId);
     },
     //查看正确答案
@@ -279,6 +279,11 @@ export default {
               }
             });
             // this.questionType = res.data.data[0]["题目类型"];
+          } else {
+            this.$message({
+              message: res.data.msg,
+              typr: "warning"
+            });
           }
         })
         .catch(err => {
@@ -309,7 +314,7 @@ export default {
     //选择科目，专业，题型
     chooseClass() {
       // console.log(this.classname);
-      if (this.classname == "" || this.classname == "全部") {
+      if (this.classname == "" || this.classname == "不限") {
         this.data.criteria.subjectId = null;
       } else {
         this.classList.map(item => {
@@ -319,7 +324,7 @@ export default {
         });
       }
       // console.log(this.subjectname);
-      if (this.subjectname == "" || this.subjectname == "全部") {
+      if (this.subjectname == "" || this.subjectname == "不限") {
         this.data.criteria.majorId = null;
       } else {
         this.subjectList.map(item => {
@@ -329,7 +334,7 @@ export default {
         });
       }
       // console.log(this.topicType);
-      if (this.topicType == "" || this.topicType == "全部") {
+      if (this.topicType == "" || this.topicType == "不限") {
         this.data.criteria.type = 0;
         this.type = false;
       } else {
@@ -341,7 +346,7 @@ export default {
         });
       }
       // console.log(this.easyType);
-      if (this.easyType == "" || this.easyType == "全部") {
+      if (this.easyType == "" || this.easyType == "不限") {
         this.data.criteria.level = null;
       } else {
         this.diffcult.map(item => {
@@ -355,18 +360,23 @@ export default {
         this.data.size = Number(this.size);
       }
       // console.log(this.data);
-      if (this.type === true) {
-        this.showselect = !this.showselect;
+      if (this.type === true || this.data.type !== null) {
         this.$api
           .getRandomQuestion(this.data)
           .then(res => {
             // console.log(res);
             if (res.data.code === 0) {
+              this.showselect = !this.showselect;
               this.index = 0;
               this.questionId = [];
               this.questionId = res.data.data;
               // console.log(this.questionId);
               this.getInfo(res.data.data[this.index]);
+            } else {
+              this.$message({
+                message: "暂时没有足够的题目",
+                type: "warning"
+              });
             }
           })
           .catch();
@@ -403,7 +413,7 @@ export default {
       // console.log(this.questionDetail.answers[0].content);
       if (this.radioing === this.questionDetail.answers[0].content) {
         this.result = true;
-      }else{
+      } else {
         this.result = false;
       }
     },
@@ -419,7 +429,7 @@ export default {
       }
       if (judge === this.questionDetail.answers[0].content) {
         this.result = true;
-      }else{
+      } else {
         this.result = false;
       }
     },

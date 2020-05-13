@@ -58,9 +58,9 @@ export default {
         this.answerInfo = [];
         this.answerInfo.push("D");
       }
-      //   console.log(this.answerInfo, "答案");
+      // console.log(this.answerInfo, "答案");
       this.$store.state.answerList[this.list.id] = this.answerInfo;
-      console.log(this.$store.state.answerList);
+      // console.log(this.$store.state.answerList);
     }
   },
   mounted() {

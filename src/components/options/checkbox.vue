@@ -82,7 +82,7 @@ export default {
       this.answerInfo = this.uniq(this.answerInfo).sort();
       // console.log(this.answerInfo, "答案");
       this.$store.state.answerList[this.list.id] = this.answerInfo;
-      console.log(this.$store.state.answerList);
+      // console.log(this.$store.state.answerList);
     }
   },
   mounted() {
