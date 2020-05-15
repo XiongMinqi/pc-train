@@ -3,7 +3,7 @@ axios.defaults.timeout = 10000
 // axios.defaults.baseURL = "http://39.104.70.60:8080/"
 const isProduction = process.env.NODE_ENV === "production"
 // 接口基础路径
-axios.defaults.baseURL = isProduction ? "http://39.104.70.60:8080" : "http://localhost:8081"
+axios.defaults.baseURL = isProduction ? "http://39.104.70.60:8080" : "http://localhost:8080"
 export default {
     //获取已提交的考试信息
     submitExam() {
@@ -52,5 +52,23 @@ export default {
     //根据id获取题目具体详情
     getErrorDetail(id) {
         return axios.get(`tkQuestion/getByIdWithOptionAndAnswer?id=${id}`)
+    },
+    //提交练习
+    submitPractise(data) {
+        return axios.post("system/addExerciseLog", {
+            costSeconds: data.costSeconds,
+            peopleId: data.peopleId,
+            questionNumber: data.questionNumber,
+            rightNumber: data.rightNumber
+        })
+    },
+    getPractiseRecord(data) {
+        return axios.post("system/getExerciseLogByPage", {
+            page: data.page,
+            limit: data.limit,
+            object: {
+                peopleId: data.peopleId
+            }
+        })
     }
 }

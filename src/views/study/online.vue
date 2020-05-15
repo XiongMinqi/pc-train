@@ -35,7 +35,10 @@
           <el-button type="primary" @click="chooseClass">开始练习</el-button>
         </div>
       </div>
-      <div class="info">请选择题型等筛选条件,系统默认选择单选题</div>
+      <div class="info">
+        <div>请选择题型等筛选条件,系统默认选择单选题，默认十道题，其余条件不限</div>
+        <div style="padding-top:5px">若练习中途退出则不计入练习记录</div>
+      </div>
     </div>
     <div v-else class="else">
       <div>
@@ -60,7 +63,7 @@
             <!-- 单选 -->
             <div v-if="questionDetail.type==0">
               <div v-for="(item,index) in questionDetail.options" :key="index">
-                <el-radio-group v-model="radio" @change="chooseRadio">
+                <el-radio-group v-model="radio" :disabled="disabled" @change="chooseRadio">
                   <el-radio :label="item.order">
                     <span v-if="item.order === 0">A、</span>
                     <span v-if="item.order === 1">B、</span>
@@ -73,7 +76,7 @@
             </div>
             <!-- 判断 -->
             <div v-if="questionDetail.type==3">
-              <el-radio-group v-model="radio" @change="juage">
+              <el-radio-group v-model="radio" :disabled="disabled" @change="juage">
                 <div style="padding:0 0 10px 0">
                   <el-radio label="judge1">正确</el-radio>
                 </div>
@@ -85,7 +88,7 @@
             <!-- 多选 -->
             <div v-if="questionDetail.type==1">
               <div v-for="(item,index) in questionDetail.options" :key="index">
-                <el-checkbox-group v-model="checkList" @change="checkbox">
+                <el-checkbox-group v-model="checkList" :disabled="disabled" @change="checkbox">
                   <el-checkbox :label="item.order">
                     <span v-if="item.order === 0">A、</span>
                     <span v-if="item.order === 1">B、</span>
@@ -148,6 +151,38 @@
         </div>
       </div>
     </div>
+    <el-dialog title="练习结果" :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false" :show-close="false">
+      <div>
+        <div>
+          <div class="padding">本次答对题目数: {{data.size}}</div>
+        </div>
+        <div>
+          <div class="flex justify-between aligh-center">
+            <div class="w30">正确率: {{rightPercent}}</div>
+            <div class="w50">用时: {{trainTime}}</div>
+          </div>
+          <div  class="flex justify-between aligh-center">
+            <div class="w30">错题数: {{errorCount}}</div>
+            <div class="w50">积分: 1</div>
+          </div>
+        </div>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button
+          type="primary"
+          @click="dialogVisible = false;
+          showselect = true;
+          disabled = false;
+          showAnswer = false;
+          choosed = false;
+          showBtn = true;
+          radio = '';
+          checkList = [];
+          questionDetail = {};
+        "
+        >确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -155,16 +190,18 @@
 export default {
   data() {
     return {
-      subjectname: "",
-      classname: "",
-      topicType: "",
-      easyType: "",
+      subjectname: "不限",
+      classname: "不限",
+      topicType: "单选题",
+      easyType: "不限",
+      dialogVisible: false,
       classList: [],
+      disabled: false, //点击确定后就不能再选择其他答案
       subjectList: [],
       questionType: [],
       showBtn: true,
       choosed: false, //是否已选择选项
-      size: "",
+      size: "10",
       listSize: ["10", "2", "15", "20", "25", "30"],
       data: {
         criteria: {
@@ -196,13 +233,19 @@ export default {
       textarea: "",
       judge1: "",
       judge2: "",
+      trainTime:"",
       index: 0,
+      duringTime: "",
       type: false,
       showAnswer: false,
       showselect: true,
       rightQuestionId: [],
       radioing: "", //被选中的单选
-      result: false
+      result: false,
+      beginTime: 0,
+      endTime: 0,
+      errorCount:0,
+      rightPercent:""
     };
   },
   components: {},
@@ -211,6 +254,7 @@ export default {
     confirm() {
       if (this.radio !== "" || this.checkList.length > 0) {
         this.showAnswer = true;
+        this.disabled = true;
         this.showBtn = false;
         this.choosed = true;
       } else {
@@ -228,6 +272,7 @@ export default {
           this.rightQuestionId.push(this.questionDetail.id);
         }
         console.log(this.rightQuestionId);
+        this.disabled = false;
         this.showAnswer = false;
         this.choosed = false;
         this.showBtn = true;
@@ -248,10 +293,48 @@ export default {
       if (this.result === true) {
         this.rightQuestionId.push(this.questionDetail.id);
       }
-      this.$message({
-        message: "提交练习",
-        type: "success"
-      });
+      this.dialogVisible = true;
+      this.endTime = Date.parse(new Date());
+      let duringTime = this.endTime - this.beginTime;
+      if (duringTime / 1000 >= 60) {
+        if (duringTime % 60000 === 0) {
+          let minute = duringTime / 60000;
+          this.trainTime = minute + "分钟";
+        } else {
+          let minute = Math.floor(duringTime / 1000 / 60);
+          let second = duringTime / 1000 - minute * 60;
+          if (second < 10) {
+            second = "0" + second;
+          }
+          this.trainTime = minute + "分钟" + second + "秒";
+        }
+      } else {
+        this.trainTime = duringTime / 1000 + "秒";
+      }
+      this.errorCount = this.data.size - this.rightQuestionId.length;
+      this.rightPercent = Math.floor(this.rightQuestionId.length/this.data.size*100)+"%"
+      let user = JSON.parse(localStorage.getItem("userInfo"));
+      let data = {
+        costSeconds: duringTime / 1000,
+        peopleId: user.userId,
+        questionNumber: this.data.size,
+        rightNumber: this.rightQuestionId.length
+      };
+      this.$grade
+        .submitPractise(data)
+        .then(res => {
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "waring"
+            });
+          }
+        })
+        .catch();
       console.log(this.rightQuestionId);
     },
     //查看正确答案
@@ -370,7 +453,8 @@ export default {
               this.index = 0;
               this.questionId = [];
               this.questionId = res.data.data;
-              // console.log(this.questionId);
+              this.beginTime = Date.parse(new Date());
+              // console.log(this.beginTime);
               this.getInfo(res.data.data[this.index]);
             } else {
               this.$message({
@@ -492,7 +576,6 @@ export default {
   },
   mounted() {
     this.getdict();
-    // this.chooseClass();
   },
   watch: {},
   computed: {}
@@ -564,5 +647,23 @@ export default {
   padding: 50px;
   font-size: 20px;
   color: red;
+}
+.flex {
+  display: flex;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.aligh-center {
+  align-items: center;
+}
+.w30{
+  width: 30%;
+}
+.w50{
+  width: 50%;
+}
+.padding{
+  padding: 10px 0;
 }
 </style>

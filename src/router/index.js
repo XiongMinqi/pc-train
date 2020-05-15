@@ -87,6 +87,11 @@ const routes = [{
           name: "studyRecord",
           component: () => import("../views/study/studyRecord.vue")
         },
+        {
+          path: "/practiseRecord",
+          name: "studyRecord",
+          component: () => import("../views/study/practiseRecord.vue")
+        },
       ]
     }]
   },

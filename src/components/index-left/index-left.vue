@@ -42,6 +42,10 @@
                 <i class="el-icon-tickets"></i>
                 <span slot="title">学习记录</span>
               </el-menu-item>
+              <el-menu-item index="4-5" @click="goTo('/practiseRecord')">
+                <i class="el-icon-document"></i>
+                <span slot="title">练习记录</span>
+              </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
           <el-menu-item index="5" @click="goTo('/mistake')">

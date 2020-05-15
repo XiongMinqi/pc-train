@@ -89,10 +89,11 @@
         </div>
         <div class="logintime">
           <div class="name">在线测试记录 :</div>
-          <div class="content">8 次</div>
+          <div class="content">{{fail+pass}}次</div>
         </div>
       </div>
     </div>
+    <div style="text-align: center;">版本号:20.05.15.15</div>
   </div>
 </template>
 <script>
@@ -227,6 +228,7 @@ export default {
   padding: 10px 20px;
   border-radius: 20px;
   margin-bottom: 10px;
+  
 }
 .test {
   // background: #efefef;

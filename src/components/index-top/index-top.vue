@@ -1,7 +1,7 @@
 <template>
   <div class="indexTopContent">
-    <div class="title">
-      新科电子培训系统
+    <div class="title" @click="goTo('/index')">
+      <span>新科电子培训系统</span>
     </div>
     <div class="indexTop">
       <el-dropdown>
@@ -103,6 +103,9 @@ export default {
   padding-left: 20px;
   font-size: 25px;
   font-weight: bold;
+}
+.title:hover{
+  cursor: pointer;
 }
 .indexTop {
   display: flex;

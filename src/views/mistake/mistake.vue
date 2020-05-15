@@ -14,7 +14,7 @@
     <div v-if="errorList.length>0">
       <div v-for="(item,index) in errorList" :key="index">
         <div class="mistake">
-          <div style="display: flex; align-items: center;">
+          <div style="display: flex; align-items: center">
             <div class="userImg">
               <img src="../../assets/icon/mistake.png" alt />
             </div>
@@ -344,23 +344,8 @@ export default {
   cursor: pointer;
   color: green;
 }
-.index {
-  // width: 5%;
-}
-.questiontype {
-  // width: 10%;
-}
-.content {
-  // width: 80%;
-  // display: inline-block;
-  // white-space: nowrap;
-  // overflow: hidden;
-  // text-overflow: ellipsis;
-  // padding-bottom: 5px;
-  // padding-left: 6px;
-}
 .questioncontent{
-  width: 920px;
+  width: 800px;
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;

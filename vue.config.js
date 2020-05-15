@@ -19,5 +19,20 @@ module.exports = {
         // open: true, //配置自动启动浏览器
         proxy: 'http://39.104.70.60:8080/',
         // proxy: 'http://192.168.0.45:8080/',
-    }
+    },
+    // chainWebpack:config=>{
+    //     //配置部署时的入口文件
+    //     config.when(process.env.NODE_ENV === "production",config=>{
+    //         config.entry("app").clear().add("./src/prod_env.js")
+    //         //配置打包时使用的CDN节点的依赖
+    //         config.set('externals',{
+    //             vue:"vue",
+    //             axios:"axios",
+    //             lodash:"_",
+    //             moment:"moment",
+    //             wangeditor:"wangeditor",
+                
+    //         })
+    //     })
+    // }
 };

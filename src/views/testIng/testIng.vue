@@ -96,9 +96,9 @@
           :show-close="close"
           :close-on-press-escape="close"
         >
-          <div>时间已到，请交卷</div>
+          <div>时间已到，系统已自动提交试卷</div>
           <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="submit">确 定</el-button>
+            <el-button type="primary" @click="closePopup">确 定</el-button>
           </span>
         </el-dialog>
       </div>
@@ -222,6 +222,12 @@ export default {
       if (ss < 10) clock += "0";
       clock += ss;
       return clock;
+    },
+    //时间到,关闭弹出层，跳转页面
+    closePopup() {
+      this.showDialog = false;
+      this.$store.state.answerList = {};
+      this.$router.push({ name: "onlineTest", path: "/onlineTest" });
     },
     //提交
     submit() {
@@ -370,11 +376,63 @@ export default {
           // _this.numberes = true;
           _this.showDialog = true;
           // console.log(_this.numberes);
+          // _this.submit();
+
+          _this.handleFullScreen();
+          let targetTimezone = -8; // 目标时区，东8区
+          let _dif = new Date().getTimezoneOffset(); // 当前时区与中时区时差，以min为维度
+          // 本地时区时间 + 时差  = 中时区时间
+          // 目标时区时间 + 时差 = 中时区时间
+          // 目标时区时间 = 本地时区时间 + 本地时区时差 - 目标时区时差
+          // 东8区时间
+          let east8time =
+            new Date().getTime() +
+            _dif * 60 * 1000 -
+            targetTimezone * 60 * 60 * 1000;
+          let nowTime = _this.timeFormat(new Date(east8time));
+          //  console.log(nowTime);
+          _this.dialogVisible = false;
+          //获取学员peopleId
+          let userinfo = JSON.parse(localStorage.getItem("userInfo"));
+          //获取ip地址
+          let ip = localStorage.getItem("Ip");
+          ip = ip.toString();
+          _this.getBrowser();
+          //  console.log(this.testInfo.id);
+          let data = {
+            answers: _this.allAnswer,
+            beginTime: nowTime,
+            device: _this.llqName,
+            ip: ip,
+            ksExamId: _this.ksExamId,
+            peopleId: userinfo.userId
+          };
+          console.log(data);
+          _this.$onlineTest
+            .submitPaper(data)
+            .then(res => {
+              //  console.log(res);
+              if (res.data.code === 1000) {
+                _this.$router.push({ name: "login", path: "/login" });
+              }
+              if (res.data.code === 0) {
+                _this.$store.state.answerList = {};
+                // this.$router.push({ name: "onlineTest", path: "/onlineTest" });
+              } else {
+                _this.$message({
+                  message: res.data.msg,
+                  type: "warning"
+                });
+              }
+            })
+            .catch(err => {
+              //  console.log(err);
+            });
         }
       }, 1000);
-      this.timecount = timecount;
-      if (this.numberes) {
-        this.submit();
+      _this.timecount = timecount;
+      if (_this.numberes) {
+        _this.submit();
       }
     }
   },
