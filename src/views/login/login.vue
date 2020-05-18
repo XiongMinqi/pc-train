@@ -58,6 +58,7 @@
 export default {
   data() {
     return {
+      imgLink:"../../assets/icon/bgimg.png",
       username: "",
       passwords: "",
       checked: true,

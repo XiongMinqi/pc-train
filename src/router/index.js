@@ -1,7 +1,6 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+// import Vue from 'vue'
+// import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Index from '../views/index/index.vue'
 
 Vue.use(VueRouter)
 
@@ -9,19 +8,17 @@ const routes = [{
     path: '/', // 默认进入路由
     redirect: '/login' //重定向
   },
-  // {
-  //   path:'/',
-  //   name:'home'
-  // },
   {
     path: '/login',
     name: 'login',
-    component: () => import('../views/login/login.vue')
+    component: resolve => (require(["../views/login/login.vue"], resolve))
+    // component: () => import('../views/login/login.vue')
   },
   {
     path: '/testIng',
     name: 'testIng',
-    component: () => import('../views/testIng/testIng.vue')
+    component: resolve => (require(["../views/testIng/testIng.vue"], resolve))
+    // component: () => import('../views/testIng/testIng.vue')
   },
   {
     path: "/index",
@@ -29,7 +26,8 @@ const routes = [{
     children: [{
       path: "",
       name: "index",
-      component: Index
+      component: resolve => (require(["../views/index/index.vue"], resolve))
+      // component: () => import('../views/index/index.vue')
     }]
   },
   {
@@ -38,7 +36,8 @@ const routes = [{
     children: [{
       path: "",
       name: "score",
-      component: () => import("../views/score/score.vue")
+      component: resolve => (require(["../views/score/score.vue"], resolve))
+      // component: () => import("../views/score/score.vue")
     }]
   },
   {
@@ -47,7 +46,8 @@ const routes = [{
     children: [{
       path: "",
       name: "onlineTest",
-      component: () => import("../views/onlineTest/onlineTest.vue")
+      component: resolve => (require(["../views/onlineTest/onlineTest.vue"], resolve))
+      // component: () => import("../views/onlineTest/onlineTest.vue")
     }]
   },
   {
@@ -56,7 +56,8 @@ const routes = [{
     children: [{
       path: "",
       name: "independentTest",
-      component: () => import("../views/independentTest/independentTest.vue")
+      component: resolve => (require(["../views/independentTest/independentTest.vue"], resolve))
+      // component: () => import("../views/independentTest/independentTest.vue")
     }]
   },
   {
@@ -65,32 +66,38 @@ const routes = [{
     children: [{
       path: "",
       name: "onlineStudy",
-      component: () => import("../views/onlineStudy/onlineStudy.vue"),
+      component: resolve => (require(["../views/onlineStudy/onlineStudy.vue"], resolve)),
+      // component: () => import("../views/onlineStudy/onlineStudy.vue"),
       redirect: "/courseware",
       children: [{
           path: "/courseware",
           name: "courseware",
-          component: () => import("../views/study/courseware.vue")
+          component: resolve => (require(["../views/study/courseware.vue"], resolve))
+          // component: () => import("../views/study/courseware.vue")
         },
         {
           path: "/material",
           name: "material",
-          component: () => import("../views/study/material.vue")
+          component: resolve => (require(["../views/study/material.vue"], resolve))
+          // component: () => import("../views/study/material.vue")
         },
         {
           path: "/online",
           name: "online",
-          component: () => import("../views/study/online.vue")
+          component: resolve => (require(["../views/study/online.vue"], resolve))
+          // component: () => import("../views/study/online.vue")
         },
         {
           path: "/studyRecord",
           name: "studyRecord",
-          component: () => import("../views/study/studyRecord.vue")
+          component: resolve => (require(["../views/study/studyRecord.vue"], resolve))
+          // component: () => import("../views/study/studyRecord.vue")
         },
         {
           path: "/practiseRecord",
           name: "studyRecord",
-          component: () => import("../views/study/practiseRecord.vue")
+          component: resolve => (require(["../views/study/practiseRecord.vue"], resolve))
+          // component: () => import("../views/study/practiseRecord.vue")
         },
       ]
     }]
@@ -101,7 +108,8 @@ const routes = [{
     children: [{
       path: "",
       name: "mistake",
-      component: () => import("../views/mistake/mistake.vue")
+      component: resolve => (require(["../views/mistake/mistake.vue"], resolve))
+      // component: () => import("../views/mistake/mistake.vue")
     }]
   },
   {
@@ -110,7 +118,8 @@ const routes = [{
     children: [{
       path: "",
       name: "testRecords",
-      component: () => import("../views/testRecords/testRecords.vue")
+      component: resolve => (require(["../views/testRecords/testRecords.vue"], resolve))
+      // component: () => import("../views/testRecords/testRecords.vue")
     }]
   },
   {
@@ -119,7 +128,8 @@ const routes = [{
     children: [{
       path: "",
       name: "grade",
-      component: () => import("../views/grade/grade.vue")
+      component: resolve => (require(["../views/testRecords/testRecords.vue"], resolve))
+      // component: () => import("../views/testRecords/grade.vue")
     }]
   },
   {
@@ -128,7 +138,8 @@ const routes = [{
     children: [{
       path: "",
       name: "user",
-      component: () => import("../views/user/user.vue")
+      component: resolve => (require(["../views/user/user.vue"], resolve))
+      // component: () => import("../views/user/user.vue")
     }]
   }
 ]
@@ -148,9 +159,6 @@ router.onError((error) => {
 });
 router.beforeEach((to, from, next) => {
   let user = localStorage.getItem("userInfo");
-  // let user = this.$cookies.get("JSESSIONID")
-  // let user = getCookie("JSESSIONID")
-
   if (to.path === "/login") {
     next();
   } else {

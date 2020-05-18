@@ -1,8 +1,10 @@
+// const UglifyJsPlugin = require('uglifyjs-webpack-plugin') //清除所有打印
+// const CompressionPlugin = require("compression-webpack-plugin")
+
 // vue.config.js 配置说明
 //官方vue.config.js 参考文档 https://cli.vuejs.org/zh/config/#css-loaderoptions
 // 这里只列一部分，具体配置参考文档
 module.exports = {
-    // baseUrl: process.env.NODE_ENV === 'production'? '/': '/',
     publicPath: process.env.NODE_ENV === "production" ? "./" : "/",
     outputDir: "pc", // outputDir: 在npm run build 或 yarn build 时 ，生成文件的目录名称（要和baseUrl的生产环境路径一致）
     assetsDir: "assets", //用于放置生成的静态资源 (js、css、img、fonts) 的；（项目打包之后，静态资源会放在这个文件夹下）
@@ -20,19 +22,17 @@ module.exports = {
         proxy: 'http://39.104.70.60:8080/',
         // proxy: 'http://192.168.0.45:8080/',
     },
-    // chainWebpack:config=>{
-    //     //配置部署时的入口文件
-    //     config.when(process.env.NODE_ENV === "production",config=>{
-    //         config.entry("app").clear().add("./src/prod_env.js")
-    //         //配置打包时使用的CDN节点的依赖
-    //         config.set('externals',{
-    //             vue:"vue",
-    //             axios:"axios",
-    //             lodash:"_",
-    //             moment:"moment",
-    //             wangeditor:"wangeditor",
-                
-    //         })
-    //     })
-    // }
+    configureWebpack: {
+        externals: {
+            'vue': 'Vue',
+            'vue-router': 'VueRouter',
+            'vuex': 'Vuex',
+            'axios': 'axios',
+            'element-ui': 'ELEMENT',
+        }
+    },
+    chainWebpack: config => {
+        config.optimization.minimize(true);
+    },
+
 };

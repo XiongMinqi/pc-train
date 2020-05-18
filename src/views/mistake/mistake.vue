@@ -169,10 +169,10 @@ export default {
       this.page = 1;
       this.limit = val;
       this.getErrorList();
-      console.log(`每页 ${val} 条`);
+      // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      // console.log(`当前页: ${val}`);
       this.page = val;
       // console.log(this.offset, this.limit);
       this.getErrorList();
@@ -241,7 +241,7 @@ export default {
             this.major = res.data.data[0]["专业名称"];
             this.department = res.data.data[0]["部门名称"];
             this.getErrorList();
-            console.log(this.department);
+            // console.log(this.department);
           }
         })
         .catch();
@@ -285,7 +285,7 @@ export default {
                 }
               });
             });
-            console.log(this.errorList);
+            // console.log(this.errorList);
           } else {
             this.$message({
               message: res.data.msg,
