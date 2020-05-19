@@ -1,5 +1,8 @@
 <template>
-  <div id="chartLineBox" style="width: 90%;height: 50vh;"></div>
+  <div>
+    <div class="text">最近三十天的考试记录</div>
+    <div id="chartLineBox" style="width: 90%;height: 50vh;"></div>
+  </div>
 </template>
 
 <script>
@@ -74,9 +77,9 @@ export default {
       this.chartLine = echarts.init(document.getElementById("chartLineBox"));
       // 指定图表的配置项和数据
       this.option = {
-        title: {
-          text: "最近三十次考试统计"
-        },
+        // title: {
+        //   text: "最近三十次考试统计"
+        // },
         tooltip: {
           //设置tip提示
           trigger: "axis"
@@ -236,7 +239,9 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-#chartLineBox {
-  // height: 50vh!important;
+.text {
+  padding-left: 200px;
+  font-size: 18px;
+  color:blue;
 }
 </style>

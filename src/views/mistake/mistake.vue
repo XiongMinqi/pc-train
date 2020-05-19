@@ -3,7 +3,7 @@
     <div class="choose">
       <div class="subject">
         <el-select v-model="question" placeholder="请选择问题类型">
-          <el-option value="全部"></el-option>
+          <el-option value="不限"></el-option>
           <el-option v-for="item in questionType" :key="item.key" :value="item.value"></el-option>
         </el-select>
       </div>
@@ -36,7 +36,7 @@
                 </span>
                 |
                 <span style="color:purple">所属专业 : {{item.majorname}}</span> |
-                <span style="color:skyblue">所属部门 : {{item.departname}}</span> |
+                <span style="color:#EE6911">所属部门 : {{item.departname}}</span> |
                 <span style="color:green">分数 ：{{item.defaultScore}}分</span>
               </div>
             </div>
@@ -143,7 +143,7 @@ export default {
     return {
       questionType: [],
       errorList: [], //错题
-      question: "", //问题类型
+      question: "不限", //问题类型
       status: null,
       page: 1,
       limit: 5,
@@ -251,7 +251,7 @@ export default {
       this.currentPage = 1;
       this.page = 1;
       // console.log(this.question);
-      if (this.question === "全部") {
+      if (this.question === "不限") {
         this.status = null;
       }
       this.questionType.map(item => {

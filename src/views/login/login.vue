@@ -58,7 +58,8 @@
 export default {
   data() {
     return {
-      imgLink:"../../assets/icon/bgimg.png",
+      answerList: [],
+      imgLink: "../../assets/icon/bgimg.png",
       username: "",
       passwords: "",
       checked: true,
@@ -125,7 +126,7 @@ export default {
     inputUsername(e) {
       if (e !== this.loginRules.username) {
         this.passwords = "";
-        localStorage.removeItem("userList-afsdfsdafd")
+        localStorage.removeItem("userList-afsdfsdafd");
       }
     },
     //提交登录
@@ -145,12 +146,26 @@ export default {
               message: res.data.msg,
               type: "success"
             });
+            // this.$store.state.answerList = [];
+            // this.answerlist = this.$store.state.answerList;
+            // console.log(this.$store.state.answerList, "答案");
+            // this.answerList = [{ 123: "sf" }, { 12154: "asdfasf" }];
+            // console.log(this.answerlist, "answer");
+            // console.log(this.answerlist, "answerlist");
+            // if (this.answerList.length > 0) {
+            //   console.log("12343212412374231423123");
+            //   // this.$router.push({ path: "/testIng" });
+            //   this.$router.push({ name: "testIng", path: "/testIng" });
+            // } else if (this.answerList.length === 0) {
             // localStorage.setItem("userame",this.username)
             localStorage.setItem("userInfo", JSON.stringify(res.data.data[0]));
             if (this.checked === true) {
               localStorage.setItem("userList-afsdfsdafd", JSON.stringify(data));
+            } else {
+              localStorage.setItem("userList-afsdfsdafd", {});
             }
             this.$router.push({ name: "index", path: "/index" });
+            // }
           }
         })
         .catch(err => {

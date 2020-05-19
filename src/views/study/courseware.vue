@@ -8,7 +8,7 @@
       </div>
       <div class="classname">
         <el-select v-model="classname" placeholder="请选择科目">
-          <el-option key value="全部"></el-option>
+          <el-option key value="不限"></el-option>
           <el-option v-for="item in classList" :key="item.key" :value="item.value"></el-option>
         </el-select>
       </div>
@@ -128,7 +128,7 @@ export default {
       subjectname: "",
       coursewareId: "",
       peopleId: "",
-      classname: "",
+      classname: "不限",
       beginTime: "",
       endTime: "",
       classList: [],
@@ -189,7 +189,7 @@ export default {
     //选择科目
     chooseClass() {
       // console.log(this.classname);
-      if (this.classname == "全部") {
+      if (this.classname == "不限") {
         this.data.object.subjectId = "";
       } else {
         this.classList.map(item => {

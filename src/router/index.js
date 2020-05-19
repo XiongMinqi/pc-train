@@ -128,7 +128,7 @@ const routes = [{
     children: [{
       path: "",
       name: "grade",
-      component: resolve => (require(["../views/testRecords/testRecords.vue"], resolve))
+      component: resolve => (require(["../views/grade/grade.vue"], resolve))
       // component: () => import("../views/testRecords/grade.vue")
     }]
   },
