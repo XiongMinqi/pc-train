@@ -2,15 +2,24 @@
   <div>
     <div v-for="(item,index) in list.options" :key="index" @change="changeCheckbox">
       <el-checkbox-group v-model="checkList">
-        <el-checkbox :label="item.order">
-          <span v-if="index===0">A、</span>
-          <span v-if="index===1">B、</span>
-          <span v-if="index===2">C、</span>
-          <span v-if="index===3">D、</span>
-          <span v-if="index===4">E、</span>
-          <span v-if="index===5">F、</span>
-          {{item.content}}
-        </el-checkbox>
+        <span v-if="index===0">
+          <el-checkbox label="0">A、{{item.content}}</el-checkbox>
+        </span>
+        <span v-if="index===1">
+          <el-checkbox label="1">B、{{item.content}}</el-checkbox>
+        </span>
+        <span v-if="index===2">
+          <el-checkbox label="2">C、{{item.content}}</el-checkbox>
+        </span>
+        <span v-if="index===3">
+          <el-checkbox label="3">D、{{item.content}}</el-checkbox>
+        </span>
+        <span v-if="index===4">
+          <el-checkbox label="4">E、{{item.content}}</el-checkbox>
+        </span>
+        <span v-if="index===5">
+          <el-checkbox label="5">F、{{item.content}}</el-checkbox>
+        </span>
       </el-checkbox-group>
     </div>
   </div>
@@ -26,6 +35,12 @@ export default {
       type: Array,
       default: function() {
         return [];
+      }
+    },
+    answer: {
+      type: Object,
+      default: function() {
+        return {};
       }
     }
   },
@@ -88,7 +103,30 @@ export default {
   mounted() {
     this.options[this.index].checked = true;
     this.list = this.options[this.index];
-    // console.log(this.list);
+    // console.log(this.answer[this.options[this.index].id]);
+    if(this.answer[this.options[this.index].id]){
+      let answerDetail = this.answer[this.options[this.index].id];
+      answerDetail.map(item=>{
+        if(item==="A"){
+          this.checkList.push("0")
+        }
+        if(item==="B"){
+          this.checkList.push("1")
+        }
+        if(item==="C"){
+          this.checkList.push("2")
+        }
+        if(item==="D"){
+          this.checkList.push("3")
+        }
+        if(item==="E"){
+          this.checkList.push("4")
+        }
+        if(item==="F"){
+          this.checkList.push("5")
+        }
+      })
+    }
   },
   watch: {},
   computed: {}

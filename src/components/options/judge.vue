@@ -24,6 +24,12 @@ export default {
       default: function() {
         return [];
       }
+    },
+    answer: {
+      type: Object,
+      default: function() {
+        return {};
+      }
     }
   },
   data() {
@@ -36,7 +42,7 @@ export default {
   components: {},
   methods: {
     changeRadio() {
-    // console.log(this.radio);
+      // console.log(this.radio);
       if (this.radio == "0") {
         this.answerInfo = [];
         this.answerInfo.push("正确");
@@ -53,6 +59,16 @@ export default {
     this.options[this.index].checked = true;
     this.list = this.options[this.index];
     // console.log(this.list);
+    // console.log(this.answer[this.options[this.index].id][0]);
+    if (this.answer[this.options[this.index].id]) {
+      let answerDetail = this.answer[this.options[this.index].id][0];
+      if (answerDetail === "正确") {
+        this.radio = 0;
+      }
+      if (answerDetail === "错误") {
+        this.radio = 1;
+      }
+    }
   },
   watch: {},
   computed: {}
@@ -60,7 +76,7 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-.el-radio{
-    padding-bottom: 10px;
+.el-radio {
+  padding-bottom: 10px;
 }
 </style>

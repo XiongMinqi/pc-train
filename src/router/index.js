@@ -95,7 +95,7 @@ const routes = [{
         },
         {
           path: "/practiseRecord",
-          name: "studyRecord",
+          name: "practiseRecord",
           component: resolve => (require(["../views/study/practiseRecord.vue"], resolve))
           // component: () => import("../views/study/practiseRecord.vue")
         },

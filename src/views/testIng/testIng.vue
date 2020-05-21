@@ -43,27 +43,27 @@
             <div class="answer">
               <!-- 单选 -->
               <div v-if="item.type===0">
-                <radio :options="currentOptions" :index="index" />
+                <radio :options="currentOptions" :index="index" :answer="answer" />
               </div>
               <!-- 多选 -->
               <div v-if="item.type===1">
-                <checkbox :options="currentOptions" :index="index" />
+                <checkbox :options="currentOptions" :index="index" :answer="answer" />
               </div>
               <!-- 填空 -->
               <div v-if="item.type===2">
-                <fillBlanks :options="currentOptions" :index="index" />
+                <fillBlanks :options="currentOptions" :index="index" :answer="answer" />
               </div>
-              <!-- 填空 -->
+              <!-- 判断 -->
               <div v-if="item.type===3">
-                <judge :options="currentOptions" :index="index" />
+                <judge :options="currentOptions" :index="index" :answer="answer" />
               </div>
               <!-- 名词解释 -->
               <div v-if="item.type===4">
-                <nounExplanation :options="currentOptions" :index="index" />
+                <nounExplanation :options="currentOptions" :index="index" :answer="answer" />
               </div>
               <!-- 问答 -->
               <div v-if="item.type===5">
-                <explain :options="currentOptions" :index="index" />
+                <explain :options="currentOptions" :index="index" :answer="answer" />
               </div>
             </div>
           </div>
@@ -117,11 +117,13 @@ import fillBlanks from "../../components/options/fillBlanks";
 import judge from "../../components/options/judge";
 import nounExplanation from "../../components/options/nounExplanation";
 import explain from "../../components/options/explain";
+import loginVue from "../login/login.vue";
 export default {
   data() {
     return {
       currentRadio: [],
       id: "",
+      time: 0,
       currentOptions: {},
       currentIndex: 0,
       testInfo: {},
@@ -132,12 +134,15 @@ export default {
       showDialog: false,
       allAnswer: {},
       answerId: [],
+      answer: {}, //储存从服务器获取的答案
       empty: [],
       ksExamId: "",
       length: 0,
       llqName: "",
       timecount: {},
-      numberes: false
+      numberes: false,
+      data: {},
+      saveMsg: {}
     };
   },
   components: {
@@ -260,7 +265,6 @@ export default {
         ksExamId: this.ksExamId,
         peopleId: userinfo.userId
       };
-      console.log(data);
       this.$onlineTest
         .submitPaper(data)
         .then(res => {
@@ -269,9 +273,23 @@ export default {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
+            this.$message({
+              message:"交卷成功",
+              type:"success"
+            })
+            //清除每分钟存数据到服务器
+            clearInterval(this.saveMsg);
             this.$store.state.answerList = {};
+            this.data = "";
+            //清空缓存在服务器的数据
+            this.$grade.saveExamRunningData(this.data);
             this.$router.push({ name: "onlineTest", path: "/onlineTest" });
           } else {
+            //清除每分钟存数据到服务器
+            clearInterval(this.saveMsg);
+            //清空缓存在服务器的数据
+            this.data = "";
+            this.$grade.saveExamRunningData(this.data);
             this.$message({
               message: res.data.msg,
               type: "warning"
@@ -330,6 +348,10 @@ export default {
           if (res.data.code === 0) {
             //  console.log(res);
             this.testInfo = res.data.data[0];
+            if (this.time === 0) {
+              // console.log("时间为零，赋值时间");
+              this.time = this.testInfo.minutes * 60;
+            }
             this.currentOptions = res.data.data[0].questions;
             //  console.log(this.testInfo);
             this.timeDown();
@@ -343,11 +365,12 @@ export default {
     timeDown() {
       var _this = this;
       var countdown = document.getElementById("countdown");
-      var time = _this.testInfo.minutes * 60; //30分钟换算成1800秒
+      var time = _this.time; //30分钟换算成1800秒
       //  console.log(this.testInfo.minutes);
       var timecount = setInterval(function() {
         time = time - 1;
         if (time >= 0) {
+          _this.time = time;
           var minute = parseInt(time / 60);
           if (minute > 60) {
             var hour = parseInt(time / 60 / 60);
@@ -434,18 +457,75 @@ export default {
       if (_this.numberes) {
         _this.submit();
       }
+    },
+    //每隔一分钟将答案和试卷信息存到数据库
+    saveMsgMinute() {
+      this.saveMsg = setInterval(() => {
+        // console.log("存数据");
+        this.allAnswer = this.$store.state.answerList;
+        this.data = {
+          paperInfo: {
+            id: this.id,
+            ksExamId: this.ksExamId,
+            time: this.time
+          },
+          answerList: this.allAnswer
+        };
+        this.$grade.saveExamRunningData(JSON.stringify(this.data));
+      }, 10000);
     }
   },
   destroyed() {
     clearInterval(this.timecount);
+    clearInterval(this.saveMsg);
   },
   mounted() {
     this.$store.state.answerList = {};
     //进入全屏
     this.handleFullScreen();
-    this.id = this.$route.query.paperId;
-    this.ksExamId = this.$route.query.id;
-    this.getTestMsg();
+    //先从服务器获取储存数据，若有，继续考试，若没有，重新开始考试
+    this.$grade
+      .getExamRunningData()
+      .then(res => {
+        if (res.data.code === 1000) {
+          this.$message({
+            message: res.data.msg,
+            type: "warning"
+          });
+          this.$router.push({ name: "login", path: "/login" });
+        }
+        if (res.data.code === 0) {
+          if (res.data.data[0] === null || res.data.data[0].data === "") {
+            this.id = this.$route.query.paperId;
+            this.ksExamId = this.$route.query.id;
+            this.getTestMsg();
+            this.data = {
+              paperInfo: {
+                id: this.id,
+                ksExamId: this.ksExamId,
+                time: this.time
+              },
+              answerList: {}
+            };
+            this.$grade.saveExamRunningData(JSON.stringify(this.data));
+          } else {
+            // console.log(JSON.parse(res.data.data[0].data));
+            let object = res.data.data[0].data;
+            let paperInfo = JSON.parse(object);
+            this.id = paperInfo.paperInfo.id;
+            this.ksExamId = paperInfo.paperInfo.ksExamId;
+            this.time = paperInfo.paperInfo.time;
+            this.answer = paperInfo.answerList;
+            this.$store.state.answerList = this.answer;
+            // console.log(this.id, this.ksExamId, this.time);
+            // console.log(this.answer);
+            this.getTestMsg();
+          }
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
     document.onkeydown = function() {
       if (window.event.keyCode === 27) {
         window.event.keyCode = 0;
@@ -464,8 +544,16 @@ export default {
         window.event.returnValue = false;
       }
     };
+    //一分钟传一次数据
+    this.saveMsgMinute();
   },
-  watch: {},
+  watch: {
+    time(oldval, newval) {
+      // console.log(this.time);
+      // console.log(oldval);
+      // console.log(oldval, newval);
+    }
+  },
   computed: {}
 };
 </script>

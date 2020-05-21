@@ -82,5 +82,9 @@ export default {
     //保存我的学习记录
     saveMyLog(data) {
         return axios.get(`courseware/saveMyLog?coursewareId=${data.coursewareId}&peopleId=${data.peopleId}&minutes=${data.minutes}`)
+    },
+    //统计在线人数，给后台发信息
+    sendInfo(){
+        return axios.get('heartbeat')
     }
 }

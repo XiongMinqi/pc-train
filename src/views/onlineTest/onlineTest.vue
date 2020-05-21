@@ -129,7 +129,7 @@ export default {
             //   let maxTime = new Date(b.publishTime).getTime();
             //   return maxTime - minTime;
             // });
-            console.log(this.testList);
+            // console.log(this.testList);
           }
         })
         .catch(err => {

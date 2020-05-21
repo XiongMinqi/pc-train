@@ -62,6 +62,7 @@ export default {
             rightNumber: data.rightNumber
         })
     },
+    //获取练习记录(一个月内)
     getPractiseRecord(data) {
         return axios.post("system/getExerciseLogByPage", {
             page: data.page,
@@ -70,5 +71,15 @@ export default {
                 peopleId: data.peopleId
             }
         })
+    },
+    //储存考试数据到服务器
+    saveExamRunningData(str) {
+        return axios.post("me/saveExamRunningData", {
+            data: str
+        })
+    },
+    //获取考试数据
+    getExamRunningData() {
+        return axios.get("me/getExamRunningData")
     }
 }
