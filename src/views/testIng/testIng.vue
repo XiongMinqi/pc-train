@@ -234,7 +234,7 @@ export default {
       this.$store.state.answerList = {};
       this.$router.push({ name: "onlineTest", path: "/onlineTest" });
     },
-    //提交
+    //提交试卷
     submit() {
       this.handleFullScreen();
       let targetTimezone = -8; // 目标时区，东8区
@@ -265,14 +265,22 @@ export default {
         ksExamId: this.ksExamId,
         peopleId: userinfo.userId
       };
+       const loading = this.$loading({
+          lock: true,
+          text: '试卷提交中...',
+          spinner: 'el-icon-loading',
+          background: 'rgba(0, 0, 0, 0.7)'
+        });
       this.$onlineTest
         .submitPaper(data)
         .then(res => {
+           loading.close();
           //  console.log(res);
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
+
             this.$message({
               message:"交卷成功",
               type:"success"
@@ -297,6 +305,7 @@ export default {
           }
         })
         .catch(err => {
+           loading.close();
           //  console.log(err);
         });
     },
@@ -472,7 +481,7 @@ export default {
           answerList: this.allAnswer
         };
         this.$grade.saveExamRunningData(JSON.stringify(this.data));
-      }, 10000);
+      }, 60000);
     }
   },
   destroyed() {
