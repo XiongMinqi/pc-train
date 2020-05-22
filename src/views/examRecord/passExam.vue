@@ -137,6 +137,11 @@ export default {
             this.getTestExam();
             this.subjectName = res.data.data[0]["科目名称"];
             // console.log(this.subjectName);
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch();
@@ -182,6 +187,11 @@ export default {
               this.passScoreData = this.duplicate(this.passScoreData);
               // console.log(this.passScoreData, "passScoreData");
             }
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch(err => {

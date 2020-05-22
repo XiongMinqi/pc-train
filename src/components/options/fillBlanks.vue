@@ -31,6 +31,12 @@ export default {
       default: function() {
         return {};
       }
+    },
+    checkList: {
+      type: Array,
+      default: function() {
+        return [];
+      }
     }
   },
   data() {
@@ -47,6 +53,8 @@ export default {
       if (this.textarea[e] !== "") {
         this.fillList[e] = this.textarea[e];
         this.$store.state.answerList[this.list.id] = this.fillList;
+        this.checkList[this.index].check = true;
+        this.$emit("checkList", this.checkList);
         // console.log(this.$store.state.answerList);
       }
       if (this.textarea[e] === "") {
@@ -55,8 +63,12 @@ export default {
         this.fillList.map(item => {
           if (item !== "") {
             this.$store.state.answerList[this.list.id] = this.fillList;
+            this.checkList[this.index].check = true;
+            this.$emit("checkList", this.checkList);
           } else {
             delete this.$store.state.answerList[this.list.id];
+            this.checkList[this.index].check = false;
+            this.$emit("checkList", this.checkList);
           }
         });
         // console.log(this.$store.state.answerList);
@@ -67,7 +79,11 @@ export default {
     this.options[this.index].checked = true;
     this.list = this.options[this.index];
     //给填空题创建填空个数
-    for (let i = 0; i < this.list.fillCount; i++) {
+    if (this.list.fillCount > 0) {
+      for (let i = 0; i < this.list.fillCount; i++) {
+        this.fillList.push("");
+      }
+    } else if (this.list.fillCount === 0) {
       this.fillList.push("");
     }
     // console.log(this.list);

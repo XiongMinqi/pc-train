@@ -83,6 +83,11 @@ export default {
             this.getTestExam();
             this.subjectName = res.data.data[0]["科目名称"];
             // console.log(this.subjectName);
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch();
@@ -183,6 +188,11 @@ export default {
               this.emptyScoreData = this.duplicate(this.emptyScoreData);
               console.log(this.emptyScoreData, "emptyScoreData");
             }
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch(err => {

@@ -6,7 +6,7 @@ Vue.use(VueRouter)
 
 const routes = [{
     path: '/', // 默认进入路由
-    redirect: '/login' //重定向
+    redirect: '/index' //重定向
   },
   {
     path: '/login',

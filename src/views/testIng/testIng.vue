@@ -20,11 +20,29 @@
             >
               <div>考试时间还剩</div>
               <div id="countdown">00:00</div>
+              <div class="allchecked">
+                <div
+                  class="choosedcheck"
+                  v-for="(item,index) in checkList"
+                  :key="index"
+                  :id="'tchar_nav_'+index"
+                  @click="choosecheck(index)"
+                >
+                  <div v-if="item.check===false" class="checkingfalse">{{index+1}}</div>
+                  <div v-if="item.check===true" class="checkingtrue">{{index+1}}</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
         <div class="content">
-          <div v-for="(item,index) in testInfo.questions" :key="index">
+          <div
+            class="scrollBody"
+            v-for="(item,index) in testInfo.questions"
+            :key="index"
+            :id="'tchar_nav_'+index"
+          >
+            <div :id="'tchar_nav_'+index" class="scrollview"></div>
             <div class="title">
               <div style="width:3%">
                 <div v-if="index<9">0{{index+1}}、</div>
@@ -43,27 +61,63 @@
             <div class="answer">
               <!-- 单选 -->
               <div v-if="item.type===0">
-                <radio :options="currentOptions" :index="index" :answer="answer" />
+                <radio
+                  :options="currentOptions"
+                  :index="index"
+                  :answer="answer"
+                  :checkList="checkList"
+                  @checkList="getcheckList"
+                />
               </div>
               <!-- 多选 -->
               <div v-if="item.type===1">
-                <checkbox :options="currentOptions" :index="index" :answer="answer" />
+                <checkbox
+                  :options="currentOptions"
+                  :index="index"
+                  :answer="answer"
+                  :checkList="checkList"
+                  @checkList="getcheckList"
+                />
               </div>
               <!-- 填空 -->
               <div v-if="item.type===2">
-                <fillBlanks :options="currentOptions" :index="index" :answer="answer" />
+                <fillBlanks
+                  :options="currentOptions"
+                  :index="index"
+                  :answer="answer"
+                  :checkList="checkList"
+                  @checkList="getcheckList"
+                />
               </div>
               <!-- 判断 -->
               <div v-if="item.type===3">
-                <judge :options="currentOptions" :index="index" :answer="answer" />
+                <judge
+                  :options="currentOptions"
+                  :index="index"
+                  :answer="answer"
+                  :checkList="checkList"
+                  @checkList="getcheckList"
+                />
               </div>
               <!-- 名词解释 -->
               <div v-if="item.type===4">
-                <nounExplanation :options="currentOptions" :index="index" :answer="answer" />
+                <nounExplanation
+                  :options="currentOptions"
+                  :index="index"
+                  :answer="answer"
+                  :checkList="checkList"
+                  @checkList="getcheckList"
+                />
               </div>
               <!-- 问答 -->
               <div v-if="item.type===5">
-                <explain :options="currentOptions" :index="index" :answer="answer" />
+                <explain
+                  :options="currentOptions"
+                  :index="index"
+                  :answer="answer"
+                  :checkList="checkList"
+                  @checkList="getcheckList"
+                />
               </div>
             </div>
           </div>
@@ -136,6 +190,7 @@ export default {
       answerId: [],
       answer: {}, //储存从服务器获取的答案
       empty: [],
+      checkList: [], //存放题号
       ksExamId: "",
       length: 0,
       llqName: "",
@@ -205,6 +260,17 @@ export default {
         //  console.log(this.empty);
       }
     },
+    //接收子组件传过来的题号true or false
+    getcheckList(data) {
+      this.checkList = data;
+      console.log(this.checkList);
+    },
+    //点击题号跳转到相应位置
+    choosecheck(index) {
+      // console.log(index);
+      // console.log(item, index);
+      document.getElementById("tchar_nav_" + index).scrollIntoView();
+    },
     //转换时间
     timeFormat(time) {
       var clock = "";
@@ -265,26 +331,25 @@ export default {
         ksExamId: this.ksExamId,
         peopleId: userinfo.userId
       };
-       const loading = this.$loading({
-          lock: true,
-          text: '试卷提交中...',
-          spinner: 'el-icon-loading',
-          background: 'rgba(0, 0, 0, 0.7)'
-        });
+      const loading = this.$loading({
+        lock: true,
+        text: "试卷提交中...",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      });
       this.$onlineTest
         .submitPaper(data)
         .then(res => {
-           loading.close();
+          loading.close();
           //  console.log(res);
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
-
             this.$message({
-              message:"交卷成功",
-              type:"success"
-            })
+              message: "交卷成功",
+              type: "success"
+            });
             //清除每分钟存数据到服务器
             clearInterval(this.saveMsg);
             this.$store.state.answerList = {};
@@ -305,7 +370,7 @@ export default {
           }
         })
         .catch(err => {
-           loading.close();
+          loading.close();
           //  console.log(err);
         });
     },
@@ -357,6 +422,16 @@ export default {
           if (res.data.code === 0) {
             //  console.log(res);
             this.testInfo = res.data.data[0];
+            if (this.checkList.length === 0) {
+              this.checkList = [];
+              this.testInfo.questions.map(item => {
+                let data = {
+                  check: false
+                };
+                this.checkList.push(data);
+              });
+            }
+            // console.log(this.checkList);
             if (this.time === 0) {
               // console.log("时间为零，赋值时间");
               this.time = this.testInfo.minutes * 60;
@@ -364,6 +439,11 @@ export default {
             this.currentOptions = res.data.data[0].questions;
             //  console.log(this.testInfo);
             this.timeDown();
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch(err => {
@@ -390,8 +470,7 @@ export default {
             if (minute < 10) {
               minute = "0" + minute;
             }
-          }
-          if (minute < 10) {
+          } else if (minute < 10) {
             minute = "0" + minute;
           }
           var second = parseInt(time % 60);
@@ -478,7 +557,8 @@ export default {
             ksExamId: this.ksExamId,
             time: this.time
           },
-          answerList: this.allAnswer
+          answerList: this.allAnswer,
+          checkList: this.checkList
         };
         this.$grade.saveExamRunningData(JSON.stringify(this.data));
       }, 60000);
@@ -514,7 +594,8 @@ export default {
                 ksExamId: this.ksExamId,
                 time: this.time
               },
-              answerList: {}
+              answerList: {},
+              checkList: []
             };
             this.$grade.saveExamRunningData(JSON.stringify(this.data));
           } else {
@@ -526,10 +607,17 @@ export default {
             this.time = paperInfo.paperInfo.time;
             this.answer = paperInfo.answerList;
             this.$store.state.answerList = this.answer;
+            this.checkList = [];
+            this.checkList = paperInfo.checkList;
             // console.log(this.id, this.ksExamId, this.time);
-            // console.log(this.answer);
+            // console.log(this.checkList.length,"montent");
             this.getTestMsg();
           }
+        } else {
+          this.$message({
+            message: res.data.msg,
+            type: "warning"
+          });
         }
       })
       .catch(err => {
@@ -605,6 +693,7 @@ span {
   display: flex;
   //   align-items: center;
   padding-bottom: 10px;
+  padding-top: 10px;
 }
 .name {
   width: 9% !important;
@@ -628,5 +717,49 @@ span {
   position: fixed;
   top: 50px;
   right: 50px;
+}
+.allchecked {
+  width: 160px;
+  // background: blueviolet;
+  border: 1px solid #a2a2a2;
+  border-radius: 15px;
+  padding: 10px;
+  padding-top: 20px;
+}
+.choosedcheck {
+  display: inline-block;
+  flex-wrap: nowrap;
+  width: 20%;
+  :hover {
+    cursor: pointer;
+    background: blueviolet;
+  }
+  // padding: 5px;
+}
+.checkingfalse {
+  width: 20px;
+  height: 20px;
+  margin: 0 auto;
+  border: 1px solid black;
+  border-radius: 4px;
+  text-align: center;
+  background: burlywood;
+  margin-bottom: 10px;
+}
+.checkingtrue {
+  width: 20px;
+  height: 20px;
+  margin: 0 auto;
+  border: 1px solid black;
+  border-radius: 4px;
+  text-align: center;
+  background: green;
+  margin-bottom: 10px;
+}
+.scrollBody {
+  position: relative;
+}
+.scrollview {
+  position: absolute;
 }
 </style>

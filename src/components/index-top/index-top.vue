@@ -56,6 +56,11 @@ export default {
           if (res.data.code === 0) {
             // console.log(res);
             this.number = res.data[0];
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch(err => {

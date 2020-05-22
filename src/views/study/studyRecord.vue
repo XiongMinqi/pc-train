@@ -88,6 +88,11 @@ export default {
               });
             });
             // console.log(this.list);
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch();

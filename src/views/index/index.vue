@@ -93,7 +93,7 @@
         </div>
       </div>
     </div>
-    <div style="text-align: center;">版本号:20.05.21.15</div>
+    <div style="text-align: center;">版本号:20.05.22.11</div>
   </div>
 </template>
 <script>
@@ -159,6 +159,11 @@ export default {
             this.pass = res.data.data[0].successCount;
             this.fail = res.data.data[0].failCount;
             this.empty = res.data.data[0].undoCount;
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch();
@@ -182,6 +187,11 @@ export default {
             } else {
               this.totalStudyTime = this.totalStudyTime+"分钟";
             }
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch();
@@ -201,7 +211,12 @@ export default {
         if (res.data.code === 0) {
           this.testInfo = res.data.data[0];
           // console.log(this.testInfo);
-        }
+        } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
+          }
       })
       .catch(err => {
         console.log(err);

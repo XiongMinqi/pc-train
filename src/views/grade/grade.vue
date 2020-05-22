@@ -72,6 +72,11 @@ export default {
           if (res.data.code === 0) {
             this.subjectName = res.data.data[0]["科目名称"];
             // console.log(this.subjectName);
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch(err => {
@@ -118,6 +123,11 @@ export default {
             // console.log(this.statistics);
             this.passScore = res.data.data[0].passScoreStruct;
             // console.log(this.passScore);
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch(err => {

@@ -67,6 +67,11 @@ export default {
               this.score.push(item.score);
               this.totalScore.push(item.totalScore);
             });
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch(err => {

@@ -213,6 +213,11 @@ export default {
             this.getTestExam();
             this.subjectName = res.data.data[0]["科目名称"];
             // console.log(this.subjectName);
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch();
@@ -227,6 +232,11 @@ export default {
             this.pass = res.data.data[0].successCount;
             this.fail = res.data.data[0].failCount;
             this.empty = res.data.data[0].undoCount;
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch();
@@ -250,6 +260,11 @@ export default {
                   this.$set(item, "subjextName", itm.value);
                 }
               });
+            });
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
             });
           }
         })

@@ -30,6 +30,12 @@ export default {
       default: function() {
         return {};
       }
+    },
+    checkList: {
+      type: Array,
+      default: function() {
+        return [];
+      }
     }
   },
   data() {
@@ -52,6 +58,8 @@ export default {
         this.answerInfo.push("错误");
       }
       this.$store.state.answerList[this.list.id] = this.answerInfo;
+      this.checkList[this.index].check = true;
+      this.$emit("checkList", this.checkList);
       // console.log(this.$store.state.answerList);
     }
   },

@@ -21,6 +21,12 @@ export default {
       default: function() {
         return {};
       }
+    },
+    checkList:{
+      type:Array,
+      default: function(){
+        return []
+      }
     }
   },
   data() {
@@ -40,10 +46,14 @@ export default {
         this.answerInfo.push(this.textarea);
         // console.log(this.answerInfo);
         this.$store.state.answerList[this.list.id] = this.answerInfo;
+        this.checkList[this.index].check = true;
+        this.$emit("checkList", this.checkList);
         // console.log(this.$store.state.answerList);
       }
       if (this.textarea === "") {
         delete this.$store.state.answerList[this.list.id];
+        this.checkList[this.index].check = false;
+        this.$emit("checkList", this.checkList);
         // console.log(this.$store.state.answerList);
       }
     }

@@ -130,6 +130,11 @@ export default {
             //   return maxTime - minTime;
             // });
             // console.log(this.testList);
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch(err => {
@@ -192,6 +197,11 @@ export default {
             this.department = res.data.data[0]["部门名称"];
             // console.log(this.major);
             // console.log(this.department);
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch(err => {

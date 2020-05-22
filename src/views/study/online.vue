@@ -330,7 +330,7 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "waring"
+              type: "warning"
             });
           }
         })

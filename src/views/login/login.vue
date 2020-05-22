@@ -186,6 +186,11 @@ export default {
               .catch(error => {
                 console.log(error);
               });
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch(err => {

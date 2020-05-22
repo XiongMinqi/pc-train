@@ -259,6 +259,11 @@ export default {
             this.telNumber = this.userInfo.phoneNumber;
             // console.log(this.userInfo);
             // console.log(this.radio);
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch(err => {
@@ -292,6 +297,11 @@ export default {
             // console.log(this.department);
             // console.log(this.majorName);
             // console.log(this.departmentName);
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch(err => {
@@ -311,6 +321,11 @@ export default {
             });
             localStorage.removeItem("userInfo");
             this.$router.push({ name: "login", path: "/login" });
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch(err => {

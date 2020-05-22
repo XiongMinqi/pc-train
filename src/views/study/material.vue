@@ -244,10 +244,9 @@ export default {
               // window.open(res.data.data[0]);
             }
           } else {
-            console.log(res);
             this.$message({
               message: res.data.msg,
-              type: "error"
+              type: "warning"
             });
           }
         })
@@ -302,6 +301,11 @@ export default {
             this.subjectList = res.data.data[0]["专业名称"];
             // console.log(this.subjectList, "专业");
             // console.log(this.classList, "科目");
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch(err => {
@@ -323,6 +327,11 @@ export default {
               item.fileSize = this.twoNumber(item.fileSize / 1024);
             });
             // console.log(this.allList);
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch();

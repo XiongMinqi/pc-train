@@ -245,6 +245,11 @@ export default {
               }
             });
             this.publicList = this.allList;
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch(err => {

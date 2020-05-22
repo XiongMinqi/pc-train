@@ -29,6 +29,12 @@ export default {
       default: function() {
         return {};
       }
+    },
+    checkList:{
+      type:Array,
+      default: function(){
+        return []
+      }
     }
   },
   data() {
@@ -61,18 +67,19 @@ export default {
         this.answerInfo = [];
         this.answerInfo.push("D");
       }
-      // console.log(this.answerInfo, "答案");
       this.$store.state.answerList[this.list.id] = this.answerInfo;
+      this.checkList[this.index].check = true;
+      this.$emit('checkList',this.checkList)
       // console.log(this.$store.state.answerList);
     }
   },
   mounted() {
-    this.options[this.index].checked = true;
+    // this.options[this.index].checked = true;
     this.list = this.options[this.index];
     this.answerList = this.$store.state.answerList;
     // console.log(this.answerList);
     //将从服务器获取的数据渲染到页面
-    // console.log(this.answer);
+    // console.log(this.options[this.index]);
     // console.log(this.options[index].id);
     // console.log(this.answer[this.options[this.index].id][0]);
     if(this.answer[this.options[this.index].id]){

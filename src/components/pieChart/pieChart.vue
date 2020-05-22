@@ -31,6 +31,11 @@ export default {
             this.passScoreMsg = res.data.data[0].passScoreStruct;
             // console.log(this.passScore);
             this.initData();
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch(err => {

@@ -60,6 +60,11 @@ export default {
             this.pass = res.data.data[0].passExamIds.length;
             this.fail = res.data.data[0].failExamIds.length;
             this.empty = res.data.data[0].emptyExamIds.length;
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
           }
         })
         .catch(err => {
