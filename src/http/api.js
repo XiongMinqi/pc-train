@@ -61,10 +61,6 @@ export default {
     geturl(id) {
         return axios.get(`courseware/getAttachmentURL?coursewareId=${id}`)
     },
-    //获取我的学习记录
-    getStudyRecord(peopleId, page, limit) {
-        return axios.get(`courseware/getMyLogList?peopleId=${peopleId}&page=${page}&limit=${limit}`)
-    },
     // 随机生成题目
     getRandomQuestion(data) {
         return axios.post("tkQuestion/getByRandom", {
@@ -79,12 +75,16 @@ export default {
 
         )
     },
+    //获取我的学习记录
+    getStudyRecord(page, limit) {
+        return axios.get(`me/listCoursewareLog?page=${page}&limit=${limit}`)
+    },
     //保存我的学习记录
     saveMyLog(data) {
-        return axios.get(`courseware/saveMyLog?coursewareId=${data.coursewareId}&peopleId=${data.peopleId}&minutes=${data.minutes}`)
+        return axios.get(`me/saveCoursewareLog?coursewareId=${data.coursewareId}&minutes=${data.minutes}`)
     },
     //统计在线人数，给后台发信息
-    sendInfo(){
+    sendInfo() {
         return axios.get('heartbeat')
     }
 }

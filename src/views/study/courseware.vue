@@ -175,8 +175,7 @@ export default {
       // console.log(duringTime, "差时/分钟");
       if (duringTime >= 1) {
         let data = {
-          coursewareId: this.coursewareId,
-          peopleId: this.peopleId,
+          coursewareId: this.coursewareId,         
           minutes: duringTime
         };
         // console.log(data);

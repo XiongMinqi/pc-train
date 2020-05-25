@@ -58,8 +58,7 @@ export default {
     getStudy() {
       let data = {
         page: this.page,
-        limit: this.limit,
-        peopleId: this.userInfo.userId
+        limit: this.limit
       };
       this.$grade
         .getPractiseRecord(data)

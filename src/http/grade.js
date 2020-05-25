@@ -55,21 +55,18 @@ export default {
     },
     //提交练习
     submitPractise(data) {
-        return axios.post("system/addExerciseLog", {
+        return axios.post("me/addExerciseLog", {
             costSeconds: data.costSeconds,
-            peopleId: data.peopleId,
             questionNumber: data.questionNumber,
             rightNumber: data.rightNumber
         })
     },
     //获取练习记录(一个月内)
     getPractiseRecord(data) {
-        return axios.post("system/getExerciseLogByPage", {
+        return axios.post("me/getExerciseLogByPage", {
             page: data.page,
             limit: data.limit,
-            object: {
-                peopleId: data.peopleId
-            }
+            object: {}
         })
     },
     //储存考试数据到服务器

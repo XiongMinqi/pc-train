@@ -316,7 +316,6 @@ export default {
       let user = JSON.parse(localStorage.getItem("userInfo"));
       let data = {
         costSeconds: duringTime / 1000,
-        peopleId: user.userId,
         questionNumber: this.data.size,
         rightNumber: this.rightQuestionId.length
       };

@@ -124,6 +124,7 @@
         </div>
         <div class="btn">
           <el-button type="primary" @click="checkPaper">提交试卷</el-button>
+          <el-button type="primary" @click="savePaper">测试用保存试卷</el-button>
         </div>
         <el-dialog title="确认提交？" :visible.sync="dialogVisible" width="30%">
           <div>
@@ -424,8 +425,9 @@ export default {
             this.testInfo = res.data.data[0];
             if (this.checkList.length === 0) {
               this.checkList = [];
-              this.testInfo.questions.map(item => {
+              this.testInfo.questions.map((item, index) => {
                 let data = {
+                  value: index,
                   check: false
                 };
                 this.checkList.push(data);
@@ -546,21 +548,26 @@ export default {
         _this.submit();
       }
     },
+    //测试用手动保存试卷
+    savePaper() {
+      this.allAnswer = this.$store.state.answerList;
+      this.data = {
+        paperInfo: {
+          id: this.id,
+          ksExamId: this.ksExamId,
+          time: this.time
+        },
+        answerList: this.allAnswer,
+        checkList: this.checkList
+      };
+      console.log(this.data);
+      this.$grade.saveExamRunningData(JSON.stringify(this.data));
+    },
     //每隔一分钟将答案和试卷信息存到数据库
     saveMsgMinute() {
       this.saveMsg = setInterval(() => {
         // console.log("存数据");
-        this.allAnswer = this.$store.state.answerList;
-        this.data = {
-          paperInfo: {
-            id: this.id,
-            ksExamId: this.ksExamId,
-            time: this.time
-          },
-          answerList: this.allAnswer,
-          checkList: this.checkList
-        };
-        this.$grade.saveExamRunningData(JSON.stringify(this.data));
+        this.savePaper();
       }, 60000);
     }
   },

@@ -61,11 +61,11 @@ export default {
   mounted() {
     this.options[this.index].checked = true;
     this.list = this.options[this.index];
-    // console.log(this.answer[this.options[this.index].id]);
+    console.log(this.answer[this.options[this.index].id]);
     if (this.answer[this.options[this.index].id]) {
       this.textarea = this.answer[this.options[this.index].id];
     }
-    // console.log(this.list);
+    console.log(this.list);
   },
   watch: {},
   computed: {}

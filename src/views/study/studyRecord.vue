@@ -72,7 +72,7 @@ export default {
     //获取我的学习记录
     getStudy() {
       this.$api
-        .getStudyRecord(this.userInfo.userId, this.page, this.limit)
+        .getStudyRecord(this.page, this.limit)
         .then(res => {
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
