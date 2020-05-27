@@ -28,6 +28,7 @@ export default {
     }
   },
   mounted() {
+    
     this.sendMsg();
     if (this._isMobile()) {
       this.$message({

@@ -150,6 +150,7 @@ export default {
               .getExamRunningData()
               .then(reslut => {
                 // console.log(res);
+                this.$api.sendInfo()
                 if (
                   reslut.data.data[0] === null ||
                   reslut.data.data[0].data === ""

@@ -198,7 +198,9 @@ export default {
       timecount: {},
       numberes: false,
       data: {},
-      saveMsg: {}
+      saveMsg: {},
+      beginTestTime: "",
+      noeTime: ""
     };
   },
   components: {
@@ -249,7 +251,6 @@ export default {
       //  console.log(this.answerId);
       this.currentOptions.map((item, index) => {
         if (this.answerId.indexOf(item.id) === -1) {
-          //  console.log(index);
           index += 1;
           this.empty.push(index);
         }
@@ -356,14 +357,14 @@ export default {
             this.$store.state.answerList = {};
             this.data = "";
             //清空缓存在服务器的数据
-            this.$grade.saveExamRunningData(this.data);
+            this.saveTestInfo(this.data);
             this.$router.push({ name: "onlineTest", path: "/onlineTest" });
           } else {
             //清除每分钟存数据到服务器
             clearInterval(this.saveMsg);
             //清空缓存在服务器的数据
             this.data = "";
-            this.$grade.saveExamRunningData(this.data);
+            this.saveTestInfo(this.data);
             this.$message({
               message: res.data.msg,
               type: "warning"
@@ -434,10 +435,15 @@ export default {
               });
             }
             // console.log(this.checkList);
-            if (this.time === 0) {
-              // console.log("时间为零，赋值时间");
-              this.time = this.testInfo.minutes * 60;
-            }
+            let newTime = Date.parse(new Date());
+            console.log(newTime);
+            console.log(this.beginTestTime);
+            console.log(res.data.data[0].minutes * 60000);
+            console.log(
+              this.beginTestTime + res.data.data[0].minutes * 60000 - newTime
+            );
+            this.time =
+              this.beginTestTime + res.data.data[0].minutes * 60000 - newTime;
             this.currentOptions = res.data.data[0].questions;
             //  console.log(this.testInfo);
             this.timeDown();
@@ -456,7 +462,7 @@ export default {
     timeDown() {
       var _this = this;
       var countdown = document.getElementById("countdown");
-      var time = _this.time; //30分钟换算成1800秒
+      var time = _this.time / 1000; //30分钟换算成1800秒
       //  console.log(this.testInfo.minutes);
       var timecount = setInterval(function() {
         time = time - 1;
@@ -530,7 +536,9 @@ export default {
               }
               if (res.data.code === 0) {
                 _this.$store.state.answerList = {};
-                // this.$router.push({ name: "onlineTest", path: "/onlineTest" });
+                this.data = "";
+                //清空缓存在服务器的数据
+                this.saveTestInfo(this.data);
               } else {
                 _this.$message({
                   message: res.data.msg,
@@ -540,6 +548,9 @@ export default {
             })
             .catch(err => {
               //  console.log(err);
+              this.data = "";
+              //清空缓存在服务器的数据
+              this.saveTestInfo(this.data);
             });
         }
       }, 1000);
@@ -548,20 +559,35 @@ export default {
         _this.submit();
       }
     },
+    //存数据
+    saveTestInfo(data) {
+      this.$grade
+        .saveExamRunningData(data)
+        .then(res => {
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+        })
+        .catch(err => {
+          this.$message({
+            message: err.data.msg,
+            type: "warning"
+          });
+        });
+    },
     //测试用手动保存试卷
     savePaper() {
       this.allAnswer = this.$store.state.answerList;
       this.data = {
         paperInfo: {
           id: this.id,
-          ksExamId: this.ksExamId,
-          time: this.time
+          ksExamId: this.ksExamId
         },
         answerList: this.allAnswer,
         checkList: this.checkList
       };
       console.log(this.data);
-      this.$grade.saveExamRunningData(JSON.stringify(this.data));
+      this.saveTestInfo(JSON.stringify(this.data));
     },
     //每隔一分钟将答案和试卷信息存到数据库
     saveMsgMinute() {
@@ -598,20 +624,22 @@ export default {
             this.data = {
               paperInfo: {
                 id: this.id,
-                ksExamId: this.ksExamId,
-                time: this.time
+                ksExamId: this.ksExamId
               },
+              beginTestTime: Date.parse(new Date()),
               answerList: {},
               checkList: []
             };
-            this.$grade.saveExamRunningData(JSON.stringify(this.data));
+            this.beginTestTime = this.data.beginTestTime;
+            this.saveTestInfo(JSON.stringify(this.data));
           } else {
             // console.log(JSON.parse(res.data.data[0].data));
             let object = res.data.data[0].data;
+            console.log(object);
             let paperInfo = JSON.parse(object);
             this.id = paperInfo.paperInfo.id;
             this.ksExamId = paperInfo.paperInfo.ksExamId;
-            this.time = paperInfo.paperInfo.time;
+            this.beginTestTime = paperInfo.beginTestTime;
             this.answer = paperInfo.answerList;
             this.$store.state.answerList = this.answer;
             this.checkList = [];

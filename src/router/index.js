@@ -56,8 +56,14 @@ const routes = [{
     children: [{
       path: "",
       name: "independentTest",
-      component: resolve => (require(["../views/independentTest/independentTest.vue"], resolve))
+      component: resolve => (require(["../views/independentTest/independentTest.vue"], resolve)),
       // component: () => import("../views/independentTest/independentTest.vue")
+      redirect:"classList",
+      children:[{
+        path:"/classList",
+        name:"classList",
+        component: resolve => (require(["../views/course/classList.vue"], resolve))
+      }]
     }]
   },
   {

@@ -179,7 +179,7 @@ export default {
     handleCurrentChange(val) {
       // console.log(`当前页: ${val}`);
       this.offset = val;
-      console.log(this.offset, this.limit);
+      // console.log(this.offset, this.limit);
       this.getTest();
     },
     //获取专业和部门名称

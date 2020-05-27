@@ -15,10 +15,23 @@
             <i class="el-icon-edit-outline"></i>
             <span slot="title">在线考试</span>
           </el-menu-item>
-          <el-menu-item index="8" @click="goTo('/independentTest')" disabled>
+          <!-- <el-menu-item index="8" @click="goTo('/independentTest')">
             <i class="el-icon-edit"></i>
             <span slot="title">我的课程</span>
-          </el-menu-item>
+          </el-menu-item> -->
+          <el-submenu index="8">
+            <template slot="title">
+              <i class="el-icon-s-promotion"></i>
+              <span slot="title">我的课程</span>
+            </template>
+            <el-menu-item-group>
+              <template slot="title">课程</template>
+              <el-menu-item index="8-1" @click="goTo('/classList')">
+                <i class="el-icon-notebook-1"></i>
+                <span slot="title">我的课程表</span>
+              </el-menu-item>
+            </el-menu-item-group>
+          </el-submenu>
           <el-submenu index="4">
             <template slot="title">
               <i class="el-icon-s-promotion"></i>
