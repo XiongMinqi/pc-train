@@ -93,7 +93,7 @@
         </div>
       </div>
     </div>
-    <div style="text-align: center;">版本号:20.06.03.11</div>
+    <div style="text-align: center;">版本号:20.06.03.14</div>
   </div>
 </template>
 <script>
@@ -117,7 +117,7 @@ export default {
       this.$router.push({ name: "onlineStudy", path: "/onlineStudy" });
     },
     classes() {
-      this.$router.push({ name: "independentTest", path: "/independentTest" });
+      this.$router.push({ name: "classList", path: "/classList" });
     },
     myTest() {
       this.$router.push({ name: "onlineTest", path: "/onlineTest" });
@@ -207,6 +207,9 @@ export default {
     this.$api
       .getMyMsg()
       .then(res => {
+        if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
         // console.log(res);
         if (res.data.code === 0) {
           this.testInfo = res.data.data[0];

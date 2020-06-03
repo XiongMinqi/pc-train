@@ -31,6 +31,16 @@ const routes = [{
     }]
   },
   {
+    path: "/news",
+    component: Home,
+    children: [{
+      path: "",
+      name: "news",
+      component: resolve => (require(["../views/news/news.vue"], resolve))
+      // component: () => import('../views/news/news.vue')
+    }]
+  },
+  {
     path: "/score",
     component: Home,
     children: [{

@@ -86,5 +86,9 @@ export default {
     //统计在线人数，给后台发信息
     sendInfo() {
         return axios.get('heartbeat')
+    },
+    //新闻公告
+    getNews(data){
+        return axios.post("news/getAll",data)
     }
 }

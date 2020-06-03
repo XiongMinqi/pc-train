@@ -7,7 +7,11 @@
             <i class="el-icon-menu"></i>
             <span slot="title">首页</span>
           </el-menu-item>
-          <el-menu-item index="2" @click="goTo('/score')">
+          <el-menu-item index="10" @click="goTo('/news')">
+            <i class="el-icon-menu"></i>
+            <span slot="title">新闻公告</span>
+          </el-menu-item>
+          <el-menu-item index="2" @click="goTo('/score')" disabled>
             <i class="el-icon-s-data"></i>
             <span slot="title">我的积分</span>
           </el-menu-item>
