@@ -93,7 +93,7 @@
         </div>
       </div>
     </div>
-    <div style="text-align: center;">版本号:20.05.22.11</div>
+    <div style="text-align: center;">版本号:20.06.03.11</div>
   </div>
 </template>
 <script>

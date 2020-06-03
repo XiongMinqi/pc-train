@@ -2,12 +2,12 @@
   <div class="indexLeft">
     <el-row class="tac">
       <el-col :span="12">
-        <el-menu default-active="1" @open="handleOpen" @close="handleClose" background-color="#d3dce6">
+        <el-menu default-active="1" @open="handleOpen" @close="handleClose" background-color="#d3dce6" unique-opened="true">
           <el-menu-item index="1" @click="goTo('/index')">
             <i class="el-icon-menu"></i>
             <span slot="title">首页</span>
           </el-menu-item>
-          <el-menu-item index="2" @click="goTo('/score')" disabled>
+          <el-menu-item index="2" @click="goTo('/score')">
             <i class="el-icon-s-data"></i>
             <span slot="title">我的积分</span>
           </el-menu-item>

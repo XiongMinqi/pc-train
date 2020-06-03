@@ -1,5 +1,7 @@
 <template>
-  <div>independentTest</div>
+  <div>
+    <router-view />
+  </div>
 </template>
 
 <script>
