@@ -1,7 +1,7 @@
 <template>
   <div class="indexTopContent">
     <div class="title" @click="goTo('/index')">
-      <span>新科电子培训系统</span>
+      <span>新科在线培训系统</span>
     </div>
     <div class="indexTop">
       <el-dropdown>
