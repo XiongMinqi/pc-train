@@ -1,6 +1,8 @@
 // const UglifyJsPlugin = require('uglifyjs-webpack-plugin') //清除所有打印
 // const CompressionPlugin = require("compression-webpack-plugin")
-
+// const CompressionWebpackPlugin = require('compression-webpack-plugin') //导入compression-webpack-plugin
+const CompressionPlugin = require('compression-webpack-plugin')
+// const productionGzipExtensions = ['js', 'css'] //定义压缩文件类型
 // vue.config.js 配置说明
 //官方vue.config.js 参考文档 https://cli.vuejs.org/zh/config/#css-loaderoptions
 // 这里只列一部分，具体配置参考文档
@@ -23,6 +25,15 @@ module.exports = {
         // proxy: 'http://192.168.0.45:8080/',
     },
     configureWebpack: {
+        plugins: [
+            new CompressionPlugin({
+                test: /\.(js|css)?$/i, // 哪些文件要压缩
+                filename: '[path].gz[query]', // 压缩后的文件名
+                algorithm: 'gzip', // 使用gzip压缩
+                minRatio: 0.8, // 压缩率小于1才会压缩
+                deleteOriginalAssets: false // 删除未压缩的文件，谨慎设置，如果希望提供非gzip的资源，可不设置或者设置为false
+            })
+        ],
         externals: {
             'vue': 'Vue',
             'vue-router': 'VueRouter',

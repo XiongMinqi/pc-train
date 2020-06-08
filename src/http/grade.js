@@ -1,9 +1,9 @@
-import axios from 'axios'
+// import axios from 'axios'
 axios.defaults.timeout = 10000
 // axios.defaults.baseURL = "http://39.104.70.60:8080/"
 const isProduction = process.env.NODE_ENV === "production"
 // 接口基础路径
-axios.defaults.baseURL = isProduction ? "http://39.104.70.60:8080" : "http://localhost:8080"
+axios.defaults.baseURL = isProduction ? "http://39.104.70.60:8080" : ""
 export default {
     //获取已提交的考试信息
     submitExam() {
@@ -78,5 +78,36 @@ export default {
     //获取考试数据
     getExamRunningData() {
         return axios.get("me/getExamRunningData")
+    },
+    //获取课程表
+    getCourseList() {
+        return axios.post("planCourse/listByTime", {
+            timeRange: 1
+        })
+    },
+    //根据id获取课程
+    getDetailById(id) {
+        return axios.get(`planCourse/getById?id=${id}`)
+    },
+    //获取人员头像
+    getPicture(id) {
+        return axios.get(`people/getAvatarURL?peopleId=${id}`)
+    },
+    //是否参加过课程
+    isJoinCourse(id) {
+        return axios.get(`me/isAttendedPlanCourse?planCourseId=${id}`)
+    },
+    //是否评论过课程
+    isCommentCourse(id) {
+        return axios.get(`me/isCommentedPlanCourse?planCourseId=${id}`)
+    },
+    //提交评论
+    submitComment(data) {
+        return axios.post("me/commentPlanCourse", {
+            comment: data.comment,
+            planCourseId: data.planCourseId,
+            score: data.score,
+            teacherScore: data.teacherScore
+        })
     }
 }
