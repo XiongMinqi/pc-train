@@ -65,7 +65,21 @@ const routes = [{
       path: "",
       name: "score",
       // component: resolve => (require(["../views/score/score.vue"], resolve))
-      component: () => import( /* webpackChunkName: 'score' */ "../views/score/score.vue")
+      component: () => import( /* webpackChunkName: 'score' */ "../views/score/score.vue"),
+      redirect: "/myScore",
+      children: [{
+          path: "/myScore",
+          name: "myScore",
+          // component: resolve => (require(["../views/study/courseware.vue"], resolve))
+          component: () => import( /* webpackChunkName: 'myScore' */ "../views/score/myScore.vue")
+        },
+        {
+          path: "/scoreList",
+          name: "scoreList",
+          // component: resolve => (require(["../views/study/material.vue"], resolve))
+          component: () => import( /* webpackChunkName: 'scoreList' */ "../views/score/scoreList.vue")
+        }
+      ]
     }]
   },
   {
@@ -114,7 +128,7 @@ const routes = [{
           path: "/material",
           name: "material",
           // component: resolve => (require(["../views/study/material.vue"], resolve))
-          component: () => import( /* webpackChunkName: 'login' */ "../views/study/material.vue")
+          component: () => import( /* webpackChunkName: 'material' */ "../views/study/material.vue")
         },
         {
           path: "/online",

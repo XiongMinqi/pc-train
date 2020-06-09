@@ -80,8 +80,8 @@ export default {
     return {
       detail: {},
       checked: false,
-      value1: null,
-      value2: null,
+      value1: 0,
+      value2: 0,
       textarea: "",
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"] // 等同于 { 2: '#99A9BF', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' }
     };
@@ -89,13 +89,13 @@ export default {
   components: {},
   methods: {
     submitComments() {
-      let data = {
-        comment: this.textarea,
-        planCourseId: this.detail.id,
-        score: this.value2,
-        teacherScore: this.value1
-      };
       if (this.textarea && this.value1 && this.value2) {
+        let data = {
+          comment: this.textarea,
+          planCourseId: this.detail.id,
+          score: this.value2 - 1,
+          teacherScore: this.value1 - 1
+        };
         this.$grade
           .submitComment(data)
           .then(res => {
@@ -121,17 +121,21 @@ export default {
               type: "warning"
             });
           });
-      } else if (this.value2 === null) {
+      }
+      if (this.value2 === 0) {
+        console.log("value2");
         this.$message({
           message: "请对课程打分",
           type: "warning"
         });
-      } else if (this.value1 === null) {
+      } else if (this.value1 === 0) {
+        console.log("value1");
         this.$message({
           message: "请对教师打分",
           type: "warning"
         });
       } else if (this.textarea === "") {
+        console.log("textarea");
         this.$message({
           message: "请输入课程评论",
           type: "warning"
@@ -141,7 +145,6 @@ export default {
   },
   mounted() {
     this.detail = this.$route.query.detail;
-    console.log(this.detail);
   },
   watch: {},
   computed: {}

@@ -19,9 +19,11 @@
               <img src="../../assets/icon/mistake.png" alt />
             </div>
             <div style="margin-left:20px">
-              <div class="name" style="font-weight:bold;padding-bottom:5px">
+              <div class="name">
                 <div class="questiontype" v-for="(itm,idx) in questionType" :key="idx">
-                  <span v-if="item.type == itm.key" style="color:blue;">【{{itm.value}}】</span>
+                  <div v-if="item.type == itm.key" style="padding-bottom:5px;">
+                    <span style="font-weight:bold;color:blue;" >【{{itm.value}}】</span> <span style="color:red">做错次数 ：{{item.wrongCount}}次</span>
+                  </div>
                 </div>
               </div>
               <div class="questioncontent">{{item.content}}</div>
@@ -37,7 +39,8 @@
                 |
                 <span style="color:purple">所属专业 : {{item.majorname}}</span> |
                 <span style="color:#EE6911">所属部门 : {{item.departname}}</span> |
-                <span style="color:green">分数 ：{{item.defaultScore}}分</span>
+                <span style="color:green">分数 ：{{item.defaultScore}}分</span> |
+               
               </div>
             </div>
           </div>

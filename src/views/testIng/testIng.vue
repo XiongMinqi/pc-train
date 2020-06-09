@@ -1,22 +1,22 @@
 <template>
   <div class="btn-fullscreen">
+     <div class="textcenter fontweight testTop">{{testInfo.name}}</div>
     <el-tooltip effect="dark" content="祝您考试顺利" placement="bottom">
       <div class="test">
         <div>
-          <div class="textcenter fontweight testTop">四川新科在线考试系统</div>
-          <div class="textcenter" style="color:blue">{{testInfo.name}}</div>
+         
+          
           <div class="times">
             <div class="explain">
               <div class="grid-content" style="color:green">考试说明</div>
               <div>考试次数:{{testInfo.level}}</div>
               <div>考试限时:{{testInfo.minutes}}分钟</div>
               <div>及格分数:{{testInfo.defaultPassScore}}</div>
-              <div style="color:green">考试规则:允许返回修改答案</div>
-              <div style="color:green">如果考试异常中断，请退出并及时按同样步骤进入，可继续进行考试</div>
+              <!-- <div style="color:green">考试规则:允许返回修改答案</div>
+              <div style="color:green">如果考试异常中断，请退出并及时按同样步骤进入，可继续进行考试</div> -->
             </div>
             <div
               class="fixedTime"
-              style="position: fixed;top: 90px;right: 50px;z-index:99;background:white;padding:10px 30px"
             >
               <div>考试时间还剩</div>
               <div id="countdown">00:00</div>
@@ -121,11 +121,12 @@
               </div>
             </div>
           </div>
-        </div>
-        <div class="btn">
+          <div class="btn">
           <el-button type="primary" @click="checkPaper">提交试卷</el-button>
           <el-button type="primary" @click="savePaper">测试用保存试卷</el-button>
         </div>
+        </div>
+        
         <el-dialog title="确认提交？" :visible.sync="dialogVisible" width="30%">
           <div>
             <div v-if="empty.length>0">
@@ -151,7 +152,10 @@
           :show-close="close"
           :close-on-press-escape="close"
         >
-          <div>时间已到，系统已自动提交试卷</div>
+          <div class="tishiInfo">
+            <div><img class="lightImg" src="../../assets/icon/light-bulb.png" alt=""></div>
+            <div>时间已到，系统已自动提交试卷</div>
+             </div>
           <span slot="footer" class="dialog-footer">
             <el-button type="primary" @click="closePopup">确 定</el-button>
           </span>
@@ -691,6 +695,9 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+.test{
+  display: flex;
+}
 span {
   color: blue;
 }
@@ -715,7 +722,7 @@ span {
   width: 50%;
 }
 .explain {
-  width: 50%;
+  width: 300px;
   div {
     margin-bottom: 10px;
   }
@@ -750,8 +757,12 @@ span {
 }
 .fixedTime {
   position: fixed;
-  top: 50px;
-  right: 50px;
+  width: 200px;
+  top: 240px;
+  left: 0;
+  padding:10px 30px;
+  text-align: center;
+  // right: 50px;
 }
 .allchecked {
   width: 160px;
@@ -759,6 +770,7 @@ span {
   border: 1px solid #a2a2a2;
   border-radius: 15px;
   padding: 10px;
+  margin: 0 auto;
   padding-top: 20px;
 }
 .choosedcheck {
@@ -796,5 +808,14 @@ span {
 }
 .scrollview {
   position: absolute;
+}
+.tishiInfo{
+  display: flex;
+  align-items: center;
+}
+.lightImg{
+  width: 60px;
+  height: 60px;
+  margin-right: 10px;
 }
 </style>

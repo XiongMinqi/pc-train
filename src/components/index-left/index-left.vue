@@ -11,10 +11,25 @@
             <i class="el-icon-menu"></i>
             <span slot="title">新闻公告</span>
           </el-menu-item>
-          <el-menu-item index="2" @click="goTo('/score')" disabled>
-            <i class="el-icon-s-data"></i>
+          <el-submenu index="2">
+            <template slot="title">
+              <i class="el-icon-s-data"></i>
             <span slot="title">我的积分</span>
-          </el-menu-item>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item-group>
+              <template slot="title">积分</template>
+              <el-menu-item index="2-1" @click="goTo('/myScore')">
+                <i class="el-icon-notebook-1"></i>
+                <span slot="title">个人积分</span>
+              </el-menu-item>
+              <el-menu-item index="2-3" @click="goTo('/scoreList')">
+                <i class="el-icon-edit"></i>
+                <span slot="title">积分排行</span>
+              </el-menu-item>
+            </el-menu-item-group>
+            </el-menu-item-group>
+          </el-submenu>
           <el-menu-item index="3" @click="goTo('/onlineTest')">
             <i class="el-icon-edit-outline"></i>
             <span slot="title">在线考试</span>
@@ -32,7 +47,7 @@
               <template slot="title">课程</template>
               <el-menu-item index="8-1" @click="goTo('/classList')">
                 <i class="el-icon-notebook-1"></i>
-                <span slot="title">我的课程表</span>
+                <span slot="title">课程表</span>
               </el-menu-item>
             </el-menu-item-group>
           </el-submenu>

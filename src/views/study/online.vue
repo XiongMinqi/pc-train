@@ -1,43 +1,73 @@
 <template>
   <div>
     <div v-if="showselect===true">
-      <div class="choose">
-        <div class="subject">
-          <el-select v-model="subjectname" placeholder="请选择专业">
-            <el-option key value="不限"></el-option>
-            <el-option v-for="item in subjectList" :key="item.key" :value="item.value"></el-option>
-          </el-select>
+      <div style="display:flex;align-items:center;justify-content: center;">
+        <div class="choose">
+          <div class="classname">
+            <div class="wordes">来源 :</div>
+            <div>
+              <el-select v-model="source" placeholder="请选择题库">
+                <!-- <el-option key=0 value="题库"></el-option> -->
+                <el-option v-for="item in sourceList" :key="item.key" :value="item.value"></el-option>
+              </el-select>
+            </div>
+          </div>
+          <div class="classname">
+            <div class="wordes">专业 :</div>
+            <div>
+              <el-select v-model="subjectname" placeholder="请选择专业">
+                <el-option key value="不限"></el-option>
+                <el-option v-for="item in subjectList" :key="item.key" :value="item.value"></el-option>
+              </el-select>
+            </div>
+          </div>
+          <div class="classname">
+            <div class="wordes">科目 :</div>
+            <div>
+              <el-select v-model="classname" placeholder="请选择科目">
+                <el-option key value="不限"></el-option>
+                <el-option v-for="item in classList" :key="item.key" :value="item.value"></el-option>
+              </el-select>
+            </div>
+          </div>
+          <div class="classname">
+            <div class="wordes">题型 :</div>
+            <div>
+              <el-select v-model="topicType" placeholder="请选择题型">
+                <!-- <el-option key value="不限"></el-option> -->
+                <el-option v-for="item in questionType" :key="item.key" :value="item.value"></el-option>
+              </el-select>
+            </div>
+          </div>
+          <div class="classname">
+            <div class="wordes">难易程度 :</div>
+            <div>
+              <el-select v-model="easyType" placeholder="请选择难易程度">
+                <el-option key value="不限"></el-option>
+                <el-option v-for="item in diffcult" :key="item.key" :value="item.value"></el-option>
+              </el-select>
+            </div>
+          </div>
+          <div class="classname">
+            <div class="wordes">数量 :</div>
+            <div>
+              <el-select v-model="size" placeholder="请选择题目条数">
+                <el-option v-for="item in listSize" :key="item" :value="item"></el-option>
+              </el-select>
+            </div>
+          </div>
+          <div class="btn">
+            <el-button type="primary" @click="chooseClass">开始练习</el-button>
+          </div>
         </div>
-        <div class="classname">
-          <el-select v-model="classname" placeholder="请选择科目">
-            <el-option key value="不限"></el-option>
-            <el-option v-for="item in classList" :key="item.key" :value="item.value"></el-option>
-          </el-select>
+        <div class="info">
+          <div>请选择题型等筛选条件</div>
+          <div style="padding-top:5px">系统默认选择题库</div>
+          <div style="padding-top:5px">系统默认选择单选题</div>
+          <div style="padding-top:5px">系统默认选择十道题</div>
+          <div style="padding-top:5px">其余条件不限</div>
+          <div style="padding-top:5px">若练习中途退出则不计入练习记录</div>
         </div>
-        <div class="subject">
-          <el-select v-model="topicType" placeholder="请选择题型">
-            <!-- <el-option key value="不限"></el-option> -->
-            <el-option v-for="item in questionType" :key="item.key" :value="item.value"></el-option>
-          </el-select>
-        </div>
-        <div class="classname">
-          <el-select v-model="easyType" placeholder="请选择难易程度">
-            <el-option key value="不限"></el-option>
-            <el-option v-for="item in diffcult" :key="item.key" :value="item.value"></el-option>
-          </el-select>
-        </div>
-        <div class="classname">
-          <el-select v-model="size" placeholder="请选择题目条数">
-            <el-option v-for="item in listSize" :key="item" :value="item"></el-option>
-          </el-select>
-        </div>
-        <div class="btn">
-          <el-button type="primary" @click="chooseClass">开始练习</el-button>
-        </div>
-      </div>
-      <div class="info">
-        <div>请选择题型等筛选条件,系统默认选择单选题，默认十道题，其余条件不限</div>
-        <div style="padding-top:5px">若练习中途退出则不计入练习记录</div>
       </div>
     </div>
     <div v-else class="else">
@@ -126,12 +156,18 @@
               提示:
               <span style="color:red;padding-left:10px">暂无提示</span>
             </div>
-            <div style="display:flex;align-items: center;padding-bottom:10px" v-if="choosed">
-              <div>正确答案 :</div>
-              <div style="padding-left:10px;color:green">
-                <span v-for="(item,index) in questionDetail.answers" :key="index">
-                  <span>{{item.content}}</span>
-                </span>
+            <div v-if="choosed">
+              <div style="display:flex;align-items: center;padding-bottom:10px">
+                <div>正确答案 :</div>
+                <div style="padding-left:10px;color:green">
+                  <span v-for="(item,index) in questionDetail.answers" :key="index">
+                    <span>{{item.content}}</span>
+                  </span>
+                </div>
+              </div>
+              <div>
+                <div v-if="result===true" style="color:green">回答正确</div>
+                <div v-else style="color:red">回答错误</div>
               </div>
             </div>
           </div>
@@ -151,7 +187,13 @@
         </div>
       </div>
     </div>
-    <el-dialog title="练习结果" :visible.sync="dialogVisible" width="30%" :close-on-click-modal="false" :show-close="false">
+    <el-dialog
+      title="练习结果"
+      :visible.sync="dialogVisible"
+      width="30%"
+      :close-on-click-modal="false"
+      :show-close="false"
+    >
       <div>
         <div>
           <div class="padding">本次答对题目数: {{data.size}}</div>
@@ -161,7 +203,7 @@
             <div class="w30">正确率: {{rightPercent}}</div>
             <div class="w50">用时: {{trainTime}}</div>
           </div>
-          <div  class="flex justify-between aligh-center">
+          <div class="flex justify-between aligh-center">
             <div class="w30">错题数: {{errorCount}}</div>
             <div class="w50">积分: 1</div>
           </div>
@@ -194,6 +236,7 @@ export default {
       classname: "不限",
       topicType: "单选题",
       easyType: "不限",
+      source: "题库",
       dialogVisible: false,
       classList: [],
       disabled: false, //点击确定后就不能再选择其他答案
@@ -203,6 +246,16 @@ export default {
       choosed: false, //是否已选择选项
       size: "10",
       listSize: ["10", "2", "15", "20", "25", "30"],
+      sourceList: [
+        {
+          key: 0,
+          value: "题库"
+        },
+        {
+          key: 1,
+          value: "错题集"
+        }
+      ],
       data: {
         criteria: {
           level: null,
@@ -210,6 +263,7 @@ export default {
           subjectId: null,
           type: 0
         },
+        fromMyWrongQuestionSet: false,
         size: 10
       },
       diffcult: [
@@ -233,7 +287,7 @@ export default {
       textarea: "",
       judge1: "",
       judge2: "",
-      trainTime:"",
+      trainTime: "",
       index: 0,
       duringTime: "",
       type: false,
@@ -244,8 +298,8 @@ export default {
       result: false,
       beginTime: 0,
       endTime: 0,
-      errorCount:0,
-      rightPercent:""
+      errorCount: 0,
+      rightPercent: ""
     };
   },
   components: {},
@@ -312,7 +366,8 @@ export default {
         this.trainTime = duringTime / 1000 + "秒";
       }
       this.errorCount = this.data.size - this.rightQuestionId.length;
-      this.rightPercent = Math.floor(this.rightQuestionId.length/this.data.size*100)+"%"
+      this.rightPercent =
+        Math.floor((this.rightQuestionId.length / this.data.size) * 100) + "%";
       let user = JSON.parse(localStorage.getItem("userInfo"));
       let data = {
         costSeconds: duringTime / 1000,
@@ -396,6 +451,11 @@ export default {
     //选择科目，专业，题型
     chooseClass() {
       // console.log(this.classname);
+      if (this.source === "题库") {
+        this.data.fromMyWrongQuestionSet = false;
+      } else if (this.source === "错题集") {
+        this.data.fromMyWrongQuestionSet = true;
+      }
       if (this.classname == "" || this.classname == "不限") {
         this.data.criteria.subjectId = null;
       } else {
@@ -441,7 +501,7 @@ export default {
       if (this.size != "") {
         this.data.size = Number(this.size);
       }
-      // console.log(this.data);
+      console.log(this.data);
       if (this.type === true || this.data.type !== null) {
         this.$api
           .getRandomQuestion(this.data)
@@ -583,8 +643,8 @@ export default {
 
 <style scoped lang='scss'>
 .choose {
-  display: flex;
-  align-items: center;
+  // display: flex;
+  // align-items: center;
   padding: 20px 20px;
 }
 .choosesymbol {
@@ -594,7 +654,13 @@ export default {
   margin-right: 20px;
 }
 .classname {
-  margin-right: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  .wordes {
+    width: 80px;
+    padding-right: 10px;
+  }
 }
 .detail {
   display: flex;
@@ -635,6 +701,9 @@ export default {
   margin: 0 auto;
   padding-top: 50px;
 }
+.btn {
+  margin-top: 50px;
+}
 .traincontent {
   padding: 0 20px;
 }
@@ -643,6 +712,7 @@ export default {
 }
 .info {
   text-align: center;
+  margin-left: 100px;
   padding: 50px;
   font-size: 20px;
   color: red;
@@ -656,13 +726,13 @@ export default {
 .aligh-center {
   align-items: center;
 }
-.w30{
+.w30 {
   width: 30%;
 }
-.w50{
+.w50 {
   width: 50%;
 }
-.padding{
+.padding {
   padding: 10px 0;
 }
 </style>

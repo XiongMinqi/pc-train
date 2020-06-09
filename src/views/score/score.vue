@@ -1,5 +1,7 @@
 <template>
-  <div>score</div>
+  <div>
+    <router-view />
+  </div>
 </template>
 
 <script>

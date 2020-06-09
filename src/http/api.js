@@ -63,17 +63,7 @@ export default {
     },
     // 随机生成题目
     getRandomQuestion(data) {
-        return axios.post("tkQuestion/getByRandom", {
-                "criteria": {
-                    "level": data.criteria.level,
-                    "majorId": data.criteria.majorId,
-                    "subjectId": data.criteria.subjectId,
-                    "type": data.criteria.type
-                },
-                "size": data.size
-            }
-
-        )
+        return axios.post("me/listQuestionByRandom", data)
     },
     //获取我的学习记录
     getStudyRecord(page, limit) {

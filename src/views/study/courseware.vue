@@ -17,56 +17,123 @@
       </div>
     </div>
     <div v-if="allList.length>0">
-      <div class="course" v-for="(item,index) in allList" :key="index" @click="checkcourse(item)">
-        <el-popover
-          placement="top-end"
-          :title="item.name"
-          width="200"
-          trigger="hover"
-          :content="item.description"
+      <div v-if="textList.length>0">
+        <div class="words">文档</div>
+        <div
+          class="course"
+          v-for="(item,index) in textList"
+          :key="index"
+          @click="checkcourse(item)"
         >
-          <div class="courseware" slot="reference">
-            <div>
-              <div v-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
-                <img src="../../assets/icon/word.png" alt />
+          <!-- <el-popover
+            placement="top-end"
+            :title="item.name"
+            width="200"
+            trigger="hover"
+            :content="item.description"
+          > -->
+            <div class="courseware" slot="reference">
+              <div>
+                <div v-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
+                  <img src="../../assets/icon/word.png" alt />
+                </div>
+                <div v-else-if="item.fileSuffix == '.xls' || item.fileSuffix == '.xlsx'">
+                  <img src="../../assets/icon/excel.png" alt />
+                </div>
+                <div v-else-if="item.fileSuffix == '.ppt' || item.fileSuffix == '.pptx'">
+                  <img src="../../assets/icon/ppt.png" alt />
+                </div>
+                <div v-else-if="item.fileSuffix == '.mp4'">
+                  <img src="../../assets/icon/movie.png" alt />
+                </div>
+                <div v-else-if="item.fileSuffix == '.pdf'">
+                  <img src="../../assets/icon/pdf.png" alt />
+                </div>
+                <div
+                  v-else-if="item.fileSuffix == '.jpg'||item.fileSuffix == '.png'||item.fileSuffix == '.gif'||item.fileSuffix == '.tif'||item.fileSuffix == '.psd'||item.fileSuffix == '.dng'"
+                >
+                  <img src="../../assets/icon/picture.png" alt />
+                </div>
+                <div v-else>
+                  <img src="../../assets/icon/other.png" alt />
+                </div>
               </div>
-              <div v-else-if="item.fileSuffix == '.xls' || item.fileSuffix == '.xlsx'">
-                <img src="../../assets/icon/excel.png" alt />
-              </div>
-              <div v-else-if="item.fileSuffix == '.ppt' || item.fileSuffix == '.pptx'">
-                <img src="../../assets/icon/ppt.png" alt />
-              </div>
-              <div v-else-if="item.fileSuffix == '.mp4'">
-                <img src="../../assets/icon/movie.png" alt />
-              </div>
-              <div v-else-if="item.fileSuffix == '.pdf'">
-                <img src="../../assets/icon/pdf.png" alt />
-              </div>
-              <div
-                v-else-if="item.fileSuffix == '.jpg'||item.fileSuffix == '.png'||item.fileSuffix == '.gif'||item.fileSuffix == '.tif'||item.fileSuffix == '.psd'||item.fileSuffix == '.dng'"
-              >
-                <img src="../../assets/icon/picture.png" alt />
-              </div>
-              <div v-else>
-                <img src="../../assets/icon/other.png" alt />
+              <div>
+                <div class="msg">
+                  <div>课件名称: {{item.name}}</div>
+                </div>
+                <div style="font-size:14px">
+                  <div>作者: {{item.author}}</div>
+                </div>
+                <div class="desc" style="font-size:14px">
+                  <div>上传时间: {{item.uploadTime}}</div>
+                </div>
+                <div class="desc" style="font-size:14px">
+                  <div>文件大小: {{item.fileSize}}KB</div>
+                </div>
               </div>
             </div>
-            <div>
-              <div class="msg">
-                <div>课件名称: {{item.name}}</div>
+          <!-- </el-popover> -->
+        </div>
+      </div>
+      <div v-if="pictureList.length>0">
+        <div class="words">图片和视频</div>
+        <div
+          class="course"
+          v-for="(item,index) in pictureList"
+          :key="index"
+          @click="checkcourse(item)"
+        >
+          <!-- <el-popover
+            placement="end"
+            :title="item.name"
+            width="200"
+            trigger="hover"
+            :content="item.description"
+          > -->
+            <div class="courseware" slot="reference">
+              <div>
+                <div v-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
+                  <img src="../../assets/icon/word.png" alt />
+                </div>
+                <div v-else-if="item.fileSuffix == '.xls' || item.fileSuffix == '.xlsx'">
+                  <img src="../../assets/icon/excel.png" alt />
+                </div>
+                <div v-else-if="item.fileSuffix == '.ppt' || item.fileSuffix == '.pptx'">
+                  <img src="../../assets/icon/ppt.png" alt />
+                </div>
+                <div v-else-if="item.fileSuffix == '.mp4'">
+                  <img src="../../assets/icon/movie.png" alt />
+                </div>
+                <div v-else-if="item.fileSuffix == '.pdf'">
+                  <img src="../../assets/icon/pdf.png" alt />
+                </div>
+                <div
+                  v-else-if="item.fileSuffix == '.jpg'||item.fileSuffix == '.png'||item.fileSuffix == '.gif'||item.fileSuffix == '.tif'||item.fileSuffix == '.psd'||item.fileSuffix == '.dng'"
+                >
+                  <img src="../../assets/icon/picture.png" alt />
+                </div>
+                <div v-else>
+                  <img src="../../assets/icon/other.png" alt />
+                </div>
               </div>
-              <div style="font-size:14px">
-                <div>作者: {{item.author}}</div>
-              </div>
-              <div class="desc" style="font-size:14px">
-                <div>上传时间: {{item.uploadTime}}</div>
-              </div>
-              <div class="desc" style="font-size:14px">
-                <div>文件大小: {{item.fileSize}}KB</div>
+              <div>
+                <div class="msg">
+                  <div>课件名称: {{item.name}}</div>
+                </div>
+                <div style="font-size:14px">
+                  <div>作者: {{item.author}}</div>
+                </div>
+                <div class="desc" style="font-size:14px">
+                  <div>上传时间: {{item.uploadTime}}</div>
+                </div>
+                <div class="desc" style="font-size:14px">
+                  <div>文件大小: {{item.fileSize}}KB</div>
+                </div>
               </div>
             </div>
-          </div>
-        </el-popover>
+          <!-- </el-popover> -->
+        </div>
       </div>
       <div class="block">
         <el-pagination
@@ -82,7 +149,7 @@
     </div>
     <div v-else>暂无数据</div>
     <el-dialog
-      width="70%"
+      width="90%"
       top="1vh"
       @close="close"
       @open="open"
@@ -93,20 +160,22 @@
       :show-close="false"
       :modal-append-to-body="true"
     >
-      <div v-if="videoPlayer">
-        <vueVideoPlayer :src="videoPlayer" :cover_url="openVideoImg" />
-      </div>
-      <div v-if="pdfUrl">
-        <iframe class="filename" :src="pdfUrl" width="100%" height="400px" frameborder="0"></iframe>
-      </div>
-      <div v-if="wordUrl">
-        <iframe class="filename" :src="wordUrl" width="100%" height="400px" frameborder="0"></iframe>
-      </div>
-      <div v-if="pictureUrl">
-        <img :src="pictureUrl" alt />
-      </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      <div>
+        <div v-if="videoPlayer">
+          <vueVideoPlayer :src="videoPlayer" :cover_url="openVideoImg" />
+        </div>
+        <div v-if="pdfUrl" style="height:74vh">
+          <iframe class="filename" :src="pdfUrl" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+        <div v-if="wordUrl" style="height:74vh">
+          <iframe class="filename" :src="wordUrl" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+        <div v-if="pictureUrl" style="height:74vh">
+          <img :src="pictureUrl" alt />
+        </div>
+        <div slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        </div>
       </div>
     </el-dialog>
   </div>
@@ -141,7 +210,9 @@ export default {
         page: 1
       },
       allList: [],
-      visible: false
+      visible: false,
+      textList: [],
+      pictureList: []
     };
   },
   components: { vueVideoPlayer },
@@ -175,7 +246,7 @@ export default {
       // console.log(duringTime, "差时/分钟");
       if (duringTime >= 1) {
         let data = {
-          coursewareId: this.coursewareId,         
+          coursewareId: this.coursewareId,
           minutes: duringTime
         };
         // console.log(data);
@@ -327,11 +398,28 @@ export default {
           if (res.data.code === 0) {
             this.allList = res.data.data;
             this.total = res.data.count;
+            this.textList = [];
+            this.pictureList = [];
             this.allList.map(item => {
               item.uploadTime = this.timeFormat(item.uploadTime);
               item.fileSize = this.twoNumber(item.fileSize / 1024);
+              if (
+                item.fileSuffix === ".jpg" ||
+                item.fileSuffix === ".png" ||
+                item.fileSuffix === ".jpeg" ||
+                item.fileSuffix === ".bmp" ||
+                item.fileSuffix === ".gif" ||
+                item.fileSuffix === ".psd" ||
+                item.fileSuffix === ".dxf" ||
+                item.fileSuffix === ".pcx" ||
+                item.fileSuffix === ".webp" ||
+                item.fileSuffix === ".mp4"
+              ) {
+                this.pictureList.push(item);
+              } else {
+                this.textList.push(item);
+              }
             });
-            // console.log(this.allList);
           } else {
             this.$message({
               message: res.data.msg,
@@ -408,5 +496,14 @@ export default {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
   box-sizing: border-box;
   width: 90%;
+}
+.dialog-footer {
+  text-align: center;
+  margin-top: 10px;
+}
+.words {
+  font-size: 20px;
+  font-weight: bold;
+  padding: 0 20px;
 }
 </style>

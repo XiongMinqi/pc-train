@@ -44,7 +44,7 @@
             </div>
             <div style="display: flex;align-items: center;justify-content: center;padding-top:80px">
               <el-button round size="mini" @click="commentCurse">评价课程</el-button>
-              <el-button round size="mini">查看课程评价</el-button>
+              <el-button round size="mini" @click="allComments">查看课程评价</el-button>
             </div>
           </div>
         </div>
@@ -502,8 +502,6 @@ export default {
     },
     //评论课程
     commentCurse() {
-      console.log(this.isJoinCourse);
-      console.log(this.isCommentCourse);
       // if(this.isJoinCourse === true){
       //   if(isCommentCourse===true){
       //     this.$message({
@@ -528,6 +526,10 @@ export default {
           detail: this.courseDetail
         }
       });
+    },
+    //查看全部评论
+    allComments(){
+      this.$router.push({name:"allComments",path:"/allComments"})
     },
     //是否参加课程
     isJoin(id) {

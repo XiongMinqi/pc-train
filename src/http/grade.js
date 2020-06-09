@@ -109,5 +109,21 @@ export default {
             score: data.score,
             teacherScore: data.teacherScore
         })
+    },
+    //查看全部评价
+    checkAllComments(data){
+        return axios.post("planCourse/pageCommentByPlanCourse",data)
+    },
+    //查看积分
+    checkScore(){
+        return axios.get("me/sumRewardPoint")
+    },
+    //获取我的积分记录
+    getMyScoreList(data){
+        return axios.post("me/listRewardPointLog",data)
+    },
+    //获取积分排名
+    getScoreRank(){
+        return axios.get("people/getRewardPointRank")
     }
 }
