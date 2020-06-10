@@ -12,6 +12,14 @@
           <el-option v-for="item in classList" :key="item.key" :value="item.value"></el-option>
         </el-select>
       </div>
+      <div class="classname">
+        <el-select v-model="typename" placeholder="请选择文档类型">
+          <el-option v-for="item in typeList" :key="item.key" :value="item.value"></el-option>
+        </el-select>
+      </div>
+      <div class="classname">
+        <el-input v-model="courseName" placeholder="请输入课件名"></el-input>
+      </div>
       <div class="btn">
         <el-button type="primary" @click="chooseClass">开始筛选</el-button>
       </div>
@@ -31,53 +39,53 @@
             width="200"
             trigger="hover"
             :content="item.description"
-          > -->
-            <div class="courseware" slot="reference">
-              <div>
-                <div v-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
-                  <img src="../../assets/icon/word.png" alt />
-                </div>
-                <div v-else-if="item.fileSuffix == '.xls' || item.fileSuffix == '.xlsx'">
-                  <img src="../../assets/icon/excel.png" alt />
-                </div>
-                <div v-else-if="item.fileSuffix == '.ppt' || item.fileSuffix == '.pptx'">
-                  <img src="../../assets/icon/ppt.png" alt />
-                </div>
-                <div v-else-if="item.fileSuffix == '.mp4'">
-                  <img src="../../assets/icon/movie.png" alt />
-                </div>
-                <div v-else-if="item.fileSuffix == '.pdf'">
-                  <img src="../../assets/icon/pdf.png" alt />
-                </div>
-                <div
-                  v-else-if="item.fileSuffix == '.jpg'||item.fileSuffix == '.png'||item.fileSuffix == '.gif'||item.fileSuffix == '.tif'||item.fileSuffix == '.psd'||item.fileSuffix == '.dng'"
-                >
-                  <img src="../../assets/icon/picture.png" alt />
-                </div>
-                <div v-else>
-                  <img src="../../assets/icon/other.png" alt />
-                </div>
+          >-->
+          <div class="courseware" slot="reference">
+            <div>
+              <div v-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
+                <img src="../../assets/icon/word.png" alt />
               </div>
-              <div>
-                <div class="msg">
-                  <div>课件名称: {{item.name}}</div>
-                </div>
-                <div style="font-size:14px">
-                  <div>作者: {{item.author}}</div>
-                </div>
-                <div class="desc" style="font-size:14px">
-                  <div>上传时间: {{item.uploadTime}}</div>
-                </div>
-                <div class="desc" style="font-size:14px">
-                  <div>文件大小: {{item.fileSize}}KB</div>
-                </div>
+              <div v-else-if="item.fileSuffix == '.xls' || item.fileSuffix == '.xlsx'">
+                <img src="../../assets/icon/excel.png" alt />
+              </div>
+              <div v-else-if="item.fileSuffix == '.ppt' || item.fileSuffix == '.pptx'">
+                <img src="../../assets/icon/ppt.png" alt />
+              </div>
+              <div v-else-if="item.fileSuffix == '.mp4'">
+                <img src="../../assets/icon/movie.png" alt />
+              </div>
+              <div v-else-if="item.fileSuffix == '.pdf'">
+                <img src="../../assets/icon/pdf.png" alt />
+              </div>
+              <div
+                v-else-if="item.fileSuffix == '.jpg'||item.fileSuffix == '.png'||item.fileSuffix == '.gif'||item.fileSuffix == '.tif'||item.fileSuffix == '.psd'||item.fileSuffix == '.dng'"
+              >
+                <img src="../../assets/icon/picture.png" alt />
+              </div>
+              <div v-else>
+                <img src="../../assets/icon/other.png" alt />
               </div>
             </div>
+            <div>
+              <div class="msg">
+                <div>课件名称: {{item.name}}</div>
+              </div>
+              <div style="font-size:14px">
+                <div>作者: {{item.author}}</div>
+              </div>
+              <div class="desc" style="font-size:14px">
+                <div>上传时间: {{item.uploadTime}}</div>
+              </div>
+              <div class="desc" style="font-size:14px">
+                <div>文件大小: {{item.fileSize}}KB</div>
+              </div>
+            </div>
+          </div>
           <!-- </el-popover> -->
         </div>
       </div>
       <div v-if="pictureList.length>0">
-        <div class="words">图片和视频</div>
+        <div class="words">图片、视频、音频</div>
         <div
           class="course"
           v-for="(item,index) in pictureList"
@@ -90,48 +98,48 @@
             width="200"
             trigger="hover"
             :content="item.description"
-          > -->
-            <div class="courseware" slot="reference">
-              <div>
-                <div v-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
-                  <img src="../../assets/icon/word.png" alt />
-                </div>
-                <div v-else-if="item.fileSuffix == '.xls' || item.fileSuffix == '.xlsx'">
-                  <img src="../../assets/icon/excel.png" alt />
-                </div>
-                <div v-else-if="item.fileSuffix == '.ppt' || item.fileSuffix == '.pptx'">
-                  <img src="../../assets/icon/ppt.png" alt />
-                </div>
-                <div v-else-if="item.fileSuffix == '.mp4'">
-                  <img src="../../assets/icon/movie.png" alt />
-                </div>
-                <div v-else-if="item.fileSuffix == '.pdf'">
-                  <img src="../../assets/icon/pdf.png" alt />
-                </div>
-                <div
-                  v-else-if="item.fileSuffix == '.jpg'||item.fileSuffix == '.png'||item.fileSuffix == '.gif'||item.fileSuffix == '.tif'||item.fileSuffix == '.psd'||item.fileSuffix == '.dng'"
-                >
-                  <img src="../../assets/icon/picture.png" alt />
-                </div>
-                <div v-else>
-                  <img src="../../assets/icon/other.png" alt />
-                </div>
+          >-->
+          <div class="courseware" slot="reference">
+            <div>
+              <div v-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
+                <img src="../../assets/icon/word.png" alt />
               </div>
-              <div>
-                <div class="msg">
-                  <div>课件名称: {{item.name}}</div>
-                </div>
-                <div style="font-size:14px">
-                  <div>作者: {{item.author}}</div>
-                </div>
-                <div class="desc" style="font-size:14px">
-                  <div>上传时间: {{item.uploadTime}}</div>
-                </div>
-                <div class="desc" style="font-size:14px">
-                  <div>文件大小: {{item.fileSize}}KB</div>
-                </div>
+              <div v-else-if="item.fileSuffix == '.xls' || item.fileSuffix == '.xlsx'">
+                <img src="../../assets/icon/excel.png" alt />
+              </div>
+              <div v-else-if="item.fileSuffix == '.ppt' || item.fileSuffix == '.pptx'">
+                <img src="../../assets/icon/ppt.png" alt />
+              </div>
+              <div v-else-if="item.fileSuffix == '.mp4'">
+                <img src="../../assets/icon/movie.png" alt />
+              </div>
+              <div v-else-if="item.fileSuffix == '.pdf'">
+                <img src="../../assets/icon/pdf.png" alt />
+              </div>
+              <div
+                v-else-if="item.fileSuffix == '.jpg'||item.fileSuffix == '.png'||item.fileSuffix == '.gif'||item.fileSuffix == '.tif'||item.fileSuffix == '.psd'||item.fileSuffix == '.dng'"
+              >
+                <img src="../../assets/icon/picture.png" alt />
+              </div>
+              <div v-else>
+                <img src="../../assets/icon/other.png" alt />
               </div>
             </div>
+            <div>
+              <div class="msg">
+                <div>课件名称: {{item.name}}</div>
+              </div>
+              <div style="font-size:14px">
+                <div>作者: {{item.author}}</div>
+              </div>
+              <div class="desc" style="font-size:14px">
+                <div>上传时间: {{item.uploadTime}}</div>
+              </div>
+              <div class="desc" style="font-size:14px">
+                <div>文件大小: {{item.fileSize}}KB</div>
+              </div>
+            </div>
+          </div>
           <!-- </el-popover> -->
         </div>
       </div>
@@ -147,7 +155,7 @@
         ></el-pagination>
       </div>
     </div>
-    <div v-else>暂无数据</div>
+    <div v-else style="text-align:center;padding:30px">暂无数据</div>
     <el-dialog
       width="90%"
       top="1vh"
@@ -199,12 +207,41 @@ export default {
       peopleId: "",
       classname: "不限",
       beginTime: "",
+      courseName: "",
       endTime: "",
       classList: [],
+      typeList: [
+        {
+          key: null,
+          value: "不限"
+        },
+        {
+          key: 1,
+          value: "文档"
+        },
+        {
+          key: 2,
+          value: "图片"
+        },
+        {
+          key: 3,
+          value: "视频"
+        },
+        {
+          key: 4,
+          value: "音频"
+        }
+      ],
+      typename: "不限",
       subjectList: [],
       data: {
         object: {
-          subjectId: ""
+          subjectId: null,
+          type: null,
+          name: null,
+          majorId: null,
+          authorDepartment: null,
+          author: null
         },
         limit: 9,
         page: 1
@@ -259,6 +296,7 @@ export default {
     //选择科目
     chooseClass() {
       // console.log(this.classname);
+      this.data.page = 1;
       if (this.classname == "不限") {
         this.data.object.subjectId = "";
       } else {
@@ -268,7 +306,16 @@ export default {
           }
         });
       }
-
+      this.typeList.map(item => {
+        if (item.value == this.typename) {
+          this.data.object.type = item.key;
+        }
+      });
+      if (this.courseName !== "") {
+        this.data.object.name = this.courseName;
+      } else if (this.courseName === "") {
+        this.data.object.name = null;
+      }
       this.getAllLearn();
     },
     //查看资料
@@ -409,11 +456,13 @@ export default {
                 item.fileSuffix === ".jpeg" ||
                 item.fileSuffix === ".bmp" ||
                 item.fileSuffix === ".gif" ||
-                item.fileSuffix === ".psd" ||
-                item.fileSuffix === ".dxf" ||
-                item.fileSuffix === ".pcx" ||
-                item.fileSuffix === ".webp" ||
-                item.fileSuffix === ".mp4"
+                item.fileSuffix === ".wmv" ||
+                item.fileSuffix === ".avi" ||
+                item.fileSuffix === ".rm" ||
+                item.fileSuffix === ".flv" ||
+                item.fileSuffix === ".mp4" ||
+                item.fileSuffix === ".wma" ||
+                item.fileSuffix === ".mp3"
               ) {
                 this.pictureList.push(item);
               } else {

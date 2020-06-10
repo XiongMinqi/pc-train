@@ -528,8 +528,15 @@ export default {
       });
     },
     //查看全部评论
-    allComments(){
-      this.$router.push({name:"allComments",path:"/allComments"})
+    allComments() {
+      console.log(this.courseDetail);
+      this.$router.push({
+        name: "allComments",
+        path: "/allComments",
+        query: {
+          planCourseId: this.courseDetail.id
+        }
+      });
     },
     //是否参加课程
     isJoin(id) {

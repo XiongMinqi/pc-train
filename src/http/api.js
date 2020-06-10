@@ -55,7 +55,7 @@ export default {
     },
     //获取在线学习附件
     getLearn(data) {
-        return axios.post('courseware/getAll', data)
+        return axios.post('courseware/page', data)
     },
     //获取课件的url
     geturl(id) {

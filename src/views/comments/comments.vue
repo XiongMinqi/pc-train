@@ -93,8 +93,8 @@ export default {
         let data = {
           comment: this.textarea,
           planCourseId: this.detail.id,
-          score: this.value2 - 1,
-          teacherScore: this.value1 - 1
+          score: this.value2,
+          teacherScore: this.value1
         };
         this.$grade
           .submitComment(data)

@@ -125,5 +125,9 @@ export default {
     //获取积分排名
     getScoreRank(){
         return axios.get("people/getRewardPointRank")
+    },
+    //查看全部评论概况
+    getTotalCommentsRank(id){
+        return axios.get(`planCourse/analyzeComment?planCourseId=${id}`)
     }
 }

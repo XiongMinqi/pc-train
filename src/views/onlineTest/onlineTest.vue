@@ -28,8 +28,14 @@
         </div>
         <div>
           <div>
-            <div v-if="item.status===1||item.status===3||item.status===4" @click="showToast(item)">
-              <el-button type="danger" round>进入考试</el-button>
+            <div v-if="item.status===1" @click="showToast(item)">
+              <el-button type="danger" round>未开始</el-button>
+            </div>
+            <div v-if="item.status===3" @click="showToast(item)">
+              <el-button type="danger" round>审核中</el-button>
+            </div>
+            <div v-if="item.status===4" @click="showToast(item)">
+              <el-button type="danger" round>已结束</el-button>
             </div>
             <div v-if="item.status===2" @click="onlineTest(item)">
               <el-button type="primary" round>进入考试</el-button>
@@ -145,13 +151,19 @@ export default {
       console.log(e);
       if (e.status === 1) {
         this.$message({
-          message: "抱歉，考试时间还未开始，不能进入该场考试",
+          message: "考试还未开始，不能进入该场考试",
           type: "warning"
         });
       }
-      if (e.status === 3 || e.status === 4) {
+      if (e.status === 3) {
         this.$message({
-          message: "抱歉，考试时间已过，不能再进入该场考试",
+          message: "考试正在审核中，不能再次进入该场考试",
+          type: "warning"
+        });
+      }
+      if (e.status === 4) {
+        this.$message({
+          message: "考试已结束，不能再次进入该场考试",
           type: "error"
         });
       }
