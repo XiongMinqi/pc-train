@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div class="userlist">
       <div class="word">用户名</div>
       <div class="input">
@@ -157,7 +157,8 @@ export default {
       departmentName: "",
       originalPassword: "",
       newPassword: "",
-      confirmPassword: ""
+      confirmPassword: "",
+      loading:true
     };
   },
   components: {},
@@ -249,6 +250,7 @@ export default {
       this.$api
         .getUser()
         .then(res => {
+          this.loading=false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -267,6 +269,7 @@ export default {
           }
         })
         .catch(err => {
+          this.loading=false;
           console.log(err);
         });
     },
@@ -275,6 +278,7 @@ export default {
       this.$api
         .getSubject()
         .then(res => {
+          this.loading=false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -305,6 +309,7 @@ export default {
           }
         })
         .catch(err => {
+          this.loading=false;
           console.log(err);
         });
     },

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div class="scorebg">
       <div style="text-align:center">
         <div>总积分</div>
@@ -41,7 +41,8 @@ export default {
       percent: 0,
       scoreList: [],
       total: 0,
-      totalScore: 0
+      totalScore: 0,
+      loading:true
     };
   },
   components: {},
@@ -49,13 +50,12 @@ export default {
     handleSizeChange(val) {
       this.page = 1;
       this.limit = val;
-      console.log(`每页 ${val} 条`);
+      this.loading = true;
       this.checkMyList();
     },
     handleCurrentChange(val) {
       this.page = val;
-      console.log(`当前页: ${val}`);
-      console.log(this.page, this.limit);
+      this.loading = true;
       this.checkMyList();
     },
     //保留两位小数
@@ -80,6 +80,7 @@ export default {
       this.$grade
         .checkScore()
         .then(res => {
+           this.loading = false;
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
@@ -106,6 +107,7 @@ export default {
           }
         })
         .catch(err => {
+           this.loading = false;
           console.log(err);
           this.$message({
             message: err.data.msg,
@@ -123,6 +125,7 @@ export default {
       this.$grade
         .getMyScoreList(data)
         .then(res => {
+           this.loading = false;
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
@@ -151,6 +154,7 @@ export default {
           }
         })
         .catch(err => {
+           this.loading = false;
           console.log(err);
         });
     }

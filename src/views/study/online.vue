@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div v-if="showselect===true">
       <div style="display:flex;align-items:center;justify-content: center;">
         <div class="choose">
@@ -299,7 +299,8 @@ export default {
       beginTime: 0,
       endTime: 0,
       errorCount: 0,
-      rightPercent: ""
+      rightPercent: "",
+      loading: true
     };
   },
   components: {},
@@ -320,6 +321,7 @@ export default {
     },
     //下一题
     after() {
+      this.loading = true;
       this.index += 1;
       if (this.index < this.questionId.length) {
         if (this.result === true) {
@@ -399,6 +401,7 @@ export default {
       this.$grade
         .getdict()
         .then(res => {
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -424,14 +427,17 @@ export default {
           }
         })
         .catch(err => {
+          this.loading = false;
           console.log(err);
         });
     },
     //根据题目id获取详情
     getInfo(e) {
+      this.loading = true;
       this.$grade
         .getErrorDetail(e)
         .then(res => {
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -446,10 +452,17 @@ export default {
             });
           }
         })
-        .catch();
+        .catch(err=>{
+          this.loading = false;
+          this.$message({
+            message:err.data.msg,
+            type:"warning"
+          })
+        });
     },
     //选择科目，专业，题型
     chooseClass() {
+      this.loading = true;
       // console.log(this.classname);
       if (this.source === "题库") {
         this.data.fromMyWrongQuestionSet = false;
@@ -506,6 +519,7 @@ export default {
         this.$api
           .getRandomQuestion(this.data)
           .then(res => {
+            this.loading = false;
             // console.log(res);
             if (res.data.code === 0) {
               this.showselect = !this.showselect;
@@ -522,7 +536,9 @@ export default {
               });
             }
           })
-          .catch();
+          .catch(err=>{
+            this.loading = false;
+          });
       } else {
         this.$message({
           message: "请至少选择一种题型",

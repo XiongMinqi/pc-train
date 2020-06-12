@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div class="choose">
       <div class="subject">
         <el-select disabled v-model="subjectname" placeholder="请选择专业">
@@ -249,18 +249,21 @@ export default {
       allList: [],
       visible: false,
       textList: [],
-      pictureList: []
+      pictureList: [],
+      loading: true
     };
   },
   components: { vueVideoPlayer },
   methods: {
     handleSizeChange(val) {
+      this.loading = true;
       this.data.page = 1;
       this.data.limit = val;
       this.getAllLearn();
       // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
+      this.loading = true;
       // console.log(`当前页: ${val}`);
       this.data.page = val;
       // console.log(this.offset, this.limit);
@@ -439,6 +442,7 @@ export default {
       this.$api
         .getLearn(this.data)
         .then(res => {
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -476,7 +480,9 @@ export default {
             });
           }
         })
-        .catch();
+        .catch(err => {
+          this.loading = false;
+        });
     }
   },
   mounted() {

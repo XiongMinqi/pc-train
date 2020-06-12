@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div class="msg">
       <span style="padding-right:10px">{{date}}</span>
       {{msg}}
     </div>
     <div id="coursesTable" style="text-align:center"></div>
     <el-dialog title="课程详情" :visible.sync="dialogFormVisible" @close="close">
-      <div style="min-height: 50vh;display: flex;justify-content: space-between">
+      <div v-loading="dialogloading" style="min-height: 50vh;display: flex;justify-content: space-between">
         <div>
           <div class="type" style="font-size:20px;font-weight:bold;">{{courseDetail.name}}</div>
           <div class="type">老师 : {{courseDetail.teacherName}}</div>
@@ -454,20 +454,20 @@ export default {
       diachoosed: false,
       choosedItem: "",
       isJoinCourse: false,
-      isCommentCourse: false
+      isCommentCourse: false,
+      loading:true,
+      dialogloading:false
     };
   },
   components: {},
   methods: {
     chooseCourseClose() {
       if (this.choosedItem) {
-        this.$message({
-          message: "正在获取课程详情，请稍后",
-          type: "success"
-        });
+        this.dialogloading=true;
         this.$grade
           .getDetailById(this.choosedItem)
           .then(res => {
+            this.dialogloading=false;
             if (res.data.code === 1000) {
               this.$message({
                 message: res.data.msg,
@@ -487,6 +487,7 @@ export default {
             }
           })
           .catch(err => {
+            this.dialogloading=false;
             this.$message({
               message: err.data.msg,
               type: "warning"
@@ -598,9 +599,12 @@ export default {
     },
     //获取老师头像
     getTeacherImg() {
+      this.dialogFormVisible = true;
+      this.dialogloading = true;
       this.$grade
         .getPicture(this.courseDetail.teacherId)
         .then(res => {
+          this.dialogloading = false;
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
@@ -610,7 +614,7 @@ export default {
           }
           if (res.data.code === 0) {
             this.teacherImg = res.data.data;
-            this.dialogFormVisible = true;
+            
           } else {
             this.$message({
               message: res.data.msg,
@@ -829,13 +833,12 @@ export default {
           // console.log(e.name.indexOf(","));
           // console.log(this.courseIdList[weekDay][e.index]);
           if (e.name && e.name.indexOf(",") === -1) {
-            this.$message({
-              message: "正在获取课程详情，请稍后",
-              type: "success"
-            });
+            this.dialogFormVisible = true;
+            this.dialogloading = true;
             this.$grade
               .getDetailById(this.courseIdList[weekDay][e.index])
               .then(res => {
+                this.dialogloading=false;
                 if (res.data.code === 1000) {
                   this.$message({
                     message: res.data.msg,
@@ -859,6 +862,7 @@ export default {
                 }
               })
               .catch(err => {
+                this.dialogloading=false;
                 this.$message({
                   message: err.data.msg,
                   type: "warning"
@@ -890,6 +894,7 @@ export default {
       this.$grade
         .getCourseList()
         .then(res => {
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
@@ -928,6 +933,7 @@ export default {
           }
         })
         .catch(err => {
+          this.loading = false;
           this.$message({
             message: err.data.msg,
             type: "warning"

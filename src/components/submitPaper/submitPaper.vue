@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <el-row>
       <el-col :span="24">
         <div class="grid-content">
@@ -199,7 +199,8 @@ export default {
       rightList: [],
       errList: [],
       emptyList: [],
-      publicList: []
+      publicList: [],
+      loading:true
     };
   },
   props: {
@@ -218,6 +219,7 @@ export default {
       this.$grade
         .getSubmitPaper(this.submitId)
         .then(res => {
+          this.loading=false;
           console.log(res);
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -253,6 +255,7 @@ export default {
           }
         })
         .catch(err => {
+          this.loading = false;
           console.log(err);
         });
     },
@@ -292,12 +295,14 @@ export default {
       handler(newValue, oldValue) {
         this.submitId = newValue;
         this.getSubmitPaper();
+        this.loading=true;
         console.log(newValue, "submitid");
       },
       deep: true
     },
     paperDetail: {
       handler(newValue, oldValue) {
+        this.loading=true;
         this.paperDetail = newValue;
         console.log(newValue, "paperDetail");
       },

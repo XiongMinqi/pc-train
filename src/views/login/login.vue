@@ -150,7 +150,7 @@ export default {
               .getExamRunningData()
               .then(reslut => {
                 // console.log(res);
-                this.$api.sendInfo()
+                this.$api.sendInfo();
                 if (
                   reslut.data.data[0] === null ||
                   reslut.data.data[0].data === ""
@@ -279,7 +279,7 @@ export default {
         star.x += star.radius / this.speed;
       }
       star.draw(this.context);
-    }
+    },
   },
   mounted() {
     this.canvas = document.getElementById("myCanvas");

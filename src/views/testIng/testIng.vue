@@ -1,167 +1,177 @@
 <template>
-  <div class="btn-fullscreen">
-     <div class="textcenter fontweight testTop">{{testInfo.name}}</div>
-    <el-tooltip effect="dark" content="祝您考试顺利" placement="bottom">
-      <div class="test">
-        <div>
-         
-          
-          <div class="times">
-            <div class="explain">
-              <div class="grid-content" style="color:green">考试说明</div>
-              <div>考试次数:{{testInfo.level}}</div>
-              <div>考试限时:{{testInfo.minutes}}分钟</div>
-              <div>及格分数:{{testInfo.defaultPassScore}}</div>
-              <!-- <div style="color:green">考试规则:允许返回修改答案</div>
-              <div style="color:green">如果考试异常中断，请退出并及时按同样步骤进入，可继续进行考试</div> -->
-            </div>
-            <div
-              class="fixedTime"
-            >
-              <div>考试时间还剩</div>
-              <div id="countdown">00:00</div>
-              <div class="allchecked">
-                <div
-                  class="choosedcheck"
-                  v-for="(item,index) in checkList"
-                  :key="index"
-                  :id="'tchar_nav_'+index"
-                  @click="choosecheck(index)"
-                >
-                  <div v-if="item.check===false" class="checkingfalse">{{index+1}}</div>
-                  <div v-if="item.check===true" class="checkingtrue">{{index+1}}</div>
+  <div class="testIng" v-loading="loading">
+    <el-container>
+      <el-header>
+        <div class="textcenter fontweight testTop">{{testInfo.name}}</div>
+      </el-header>
+      <el-container>
+        <el-aside width="250px">
+          <div>
+            <div class="times">
+              <div class="explain">
+                <div class="grid-content" style="color:green">考试说明</div>
+                <div>考试次数:{{testInfo.level}}</div>
+                <div>考试限时:{{testInfo.minutes}}分钟</div>
+                <div>及格分数:{{testInfo.defaultPassScore}}</div>
+                <!-- <div style="color:green">考试规则:允许返回修改答案</div>
+                <div style="color:green">如果考试异常中断，请退出并及时按同样步骤进入，可继续进行考试</div>-->
+              </div>
+              <div class="fixedTime">
+                <div>考试时间还剩</div>
+                <div id="countdown">00:00</div>
+                <div class="allchecked">
+                  <div
+                    class="choosedcheck"
+                    v-for="(item,index) in checkList"
+                    :key="index"
+                    :id="'tchar_nav_'+index"
+                    @click="choosecheck(index)"
+                  >
+                    <div v-if="item.check===false" class="checkingfalse">{{index+1}}</div>
+                    <div v-if="item.check===true" class="checkingtrue">{{index+1}}</div>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="content">
-          <div
-            class="scrollBody"
-            v-for="(item,index) in testInfo.questions"
-            :key="index"
-            :id="'tchar_nav_'+index"
-          >
-            <div :id="'tchar_nav_'+index" class="scrollview"></div>
-            <div class="title">
-              <div style="width:3%">
-                <div v-if="index<9">0{{index+1}}、</div>
-                <div v-else>{{index+1}}、</div>
+        </el-aside>
+        <el-main>
+          <div class="btn-fullscreen">
+            <el-tooltip effect="dark" content="祝您考试顺利" placement="bottom">
+              <div class="test">
+                <div class="content">
+                  <div
+                    class="scrollBody"
+                    v-for="(item,index) in testInfo.questions"
+                    :key="index"
+                    :id="'tchar_nav_'+index"
+                  >
+                    <div :id="'tchar_nav_'+index" class="scrollview"></div>
+                    <div class="title">
+                      <div style="width:3%">
+                        <div v-if="index<9">0{{index+1}}、</div>
+                        <div v-else>{{index+1}}、</div>
+                      </div>
+                      <div style="width:60px" :class="item.type===4?'name':'public'">
+                        <span v-if="item.type===0">【单选】</span>
+                        <span v-if="item.type===1">【多选】</span>
+                        <span v-if="item.type===2">【填空】</span>
+                        <span v-if="item.type===3">【判断】</span>
+                        <span v-if="item.type===4">【名词解释】</span>
+                        <span v-if="item.type===5">【问答】</span>
+                      </div>
+                      <div style="width:88%">{{item.content}}</div>
+                    </div>
+                    <div class="answer">
+                      <!-- 单选 -->
+                      <div v-if="item.type===0">
+                        <radio
+                          :options="currentOptions"
+                          :index="index"
+                          :answer="answer"
+                          :checkList="checkList"
+                          @checkList="getcheckList"
+                        />
+                      </div>
+                      <!-- 多选 -->
+                      <div v-if="item.type===1">
+                        <checkbox
+                          :options="currentOptions"
+                          :index="index"
+                          :answer="answer"
+                          :checkList="checkList"
+                          @checkList="getcheckList"
+                        />
+                      </div>
+                      <!-- 填空 -->
+                      <div v-if="item.type===2">
+                        <fillBlanks
+                          :options="currentOptions"
+                          :index="index"
+                          :answer="answer"
+                          :checkList="checkList"
+                          @checkList="getcheckList"
+                        />
+                      </div>
+                      <!-- 判断 -->
+                      <div v-if="item.type===3">
+                        <judge
+                          :options="currentOptions"
+                          :index="index"
+                          :answer="answer"
+                          :checkList="checkList"
+                          @checkList="getcheckList"
+                        />
+                      </div>
+                      <!-- 名词解释 -->
+                      <div v-if="item.type===4">
+                        <nounExplanation
+                          :options="currentOptions"
+                          :index="index"
+                          :answer="answer"
+                          :checkList="checkList"
+                          @checkList="getcheckList"
+                        />
+                      </div>
+                      <!-- 问答 -->
+                      <div v-if="item.type===5">
+                        <explain
+                          :options="currentOptions"
+                          :index="index"
+                          :answer="answer"
+                          :checkList="checkList"
+                          @checkList="getcheckList"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="btn">
+                    <el-button type="primary" @click="checkPaper">提交试卷</el-button>
+                    <el-button type="primary" @click="savePaper">测试用保存试卷</el-button>
+                  </div>
+                </div>
+
+                <el-dialog title="确认提交？" :visible.sync="dialogVisible" width="30%">
+                  <div>
+                    <div v-if="empty.length>0">
+                      还有题号
+                      <span v-for="(item,index) in empty" :key="index">
+                        <span v-if="index===empty.length-1">{{item}}</span>
+                        <span v-else>{{item}}、</span>
+                      </span>
+                      等{{length}}道题未做
+                    </div>
+                    <div v-else>确认提交试卷</div>
+                  </div>
+                  <span slot="footer" class="dialog-footer">
+                    <el-button @click="dialogVisible = false">取 消</el-button>
+                    <el-button type="primary" @click="submit">确 定</el-button>
+                  </span>
+                </el-dialog>
+                <el-dialog
+                  title="时间到"
+                  :visible.sync="showDialog"
+                  width="30%"
+                  :close-on-click-modal="close"
+                  :show-close="close"
+                  :close-on-press-escape="close"
+                >
+                  <div class="tishiInfo">
+                    <div>
+                      <img class="lightImg" src="../../assets/icon/light-bulb.png" alt />
+                    </div>
+                    <div>时间已到，系统已自动提交试卷</div>
+                  </div>
+                  <span slot="footer" class="dialog-footer">
+                    <el-button type="primary" @click="closePopup">确 定</el-button>
+                  </span>
+                </el-dialog>
               </div>
-              <div style="width:6%" :class="item.type===4?'name':'public'">
-                <span v-if="item.type===0">【单选】</span>
-                <span v-if="item.type===1">【多选】</span>
-                <span v-if="item.type===2">【填空】</span>
-                <span v-if="item.type===3">【判断】</span>
-                <span v-if="item.type===4">【名词解释】</span>
-                <span v-if="item.type===5">【问答】</span>
-              </div>
-              <div style="width:88%">{{item.content}}</div>
-            </div>
-            <div class="answer">
-              <!-- 单选 -->
-              <div v-if="item.type===0">
-                <radio
-                  :options="currentOptions"
-                  :index="index"
-                  :answer="answer"
-                  :checkList="checkList"
-                  @checkList="getcheckList"
-                />
-              </div>
-              <!-- 多选 -->
-              <div v-if="item.type===1">
-                <checkbox
-                  :options="currentOptions"
-                  :index="index"
-                  :answer="answer"
-                  :checkList="checkList"
-                  @checkList="getcheckList"
-                />
-              </div>
-              <!-- 填空 -->
-              <div v-if="item.type===2">
-                <fillBlanks
-                  :options="currentOptions"
-                  :index="index"
-                  :answer="answer"
-                  :checkList="checkList"
-                  @checkList="getcheckList"
-                />
-              </div>
-              <!-- 判断 -->
-              <div v-if="item.type===3">
-                <judge
-                  :options="currentOptions"
-                  :index="index"
-                  :answer="answer"
-                  :checkList="checkList"
-                  @checkList="getcheckList"
-                />
-              </div>
-              <!-- 名词解释 -->
-              <div v-if="item.type===4">
-                <nounExplanation
-                  :options="currentOptions"
-                  :index="index"
-                  :answer="answer"
-                  :checkList="checkList"
-                  @checkList="getcheckList"
-                />
-              </div>
-              <!-- 问答 -->
-              <div v-if="item.type===5">
-                <explain
-                  :options="currentOptions"
-                  :index="index"
-                  :answer="answer"
-                  :checkList="checkList"
-                  @checkList="getcheckList"
-                />
-              </div>
-            </div>
+            </el-tooltip>
           </div>
-          <div class="btn">
-          <el-button type="primary" @click="checkPaper">提交试卷</el-button>
-          <el-button type="primary" @click="savePaper">测试用保存试卷</el-button>
-        </div>
-        </div>
-        
-        <el-dialog title="确认提交？" :visible.sync="dialogVisible" width="30%">
-          <div>
-            <div v-if="empty.length>0">
-              还有题号
-              <span v-for="(item,index) in empty" :key="index">
-                <span v-if="index===empty.length-1">{{item}}</span>
-                <span v-else>{{item}}、</span>
-              </span>
-              等{{length}}道题未做
-            </div>
-            <div v-else>确认提交试卷</div>
-          </div>
-          <span slot="footer" class="dialog-footer">
-            <el-button @click="dialogVisible = false">取 消</el-button>
-            <el-button type="primary" @click="submit">确 定</el-button>
-          </span>
-        </el-dialog>
-        <el-dialog
-          title="时间到"
-          :visible.sync="showDialog"
-          width="30%"
-          :close-on-click-modal="close"
-          :show-close="close"
-          :close-on-press-escape="close"
-        >
-          <div class="tishiInfo">
-            <div><img class="lightImg" src="../../assets/icon/light-bulb.png" alt=""></div>
-            <div>时间已到，系统已自动提交试卷</div>
-             </div>
-          <span slot="footer" class="dialog-footer">
-            <el-button type="primary" @click="closePopup">确 定</el-button>
-          </span>
-        </el-dialog>
-      </div>
-    </el-tooltip>
+        </el-main>
+      </el-container>
+    </el-container>
   </div>
 </template>
 <script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
@@ -180,6 +190,7 @@ import loginVue from "../login/login.vue";
 export default {
   data() {
     return {
+      loading: true,
       currentRadio: [],
       id: "",
       time: 0,
@@ -269,7 +280,7 @@ export default {
     //接收子组件传过来的题号true or false
     getcheckList(data) {
       this.checkList = data;
-      console.log(this.checkList);
+      // console.log(this.checkList);
     },
     //点击题号跳转到相应位置
     choosecheck(index) {
@@ -309,17 +320,17 @@ export default {
     //提交试卷
     submit() {
       this.handleFullScreen();
-      let targetTimezone = -8; // 目标时区，东8区
-      let _dif = new Date().getTimezoneOffset(); // 当前时区与中时区时差，以min为维度
-      // 本地时区时间 + 时差  = 中时区时间
-      // 目标时区时间 + 时差 = 中时区时间
-      // 目标时区时间 = 本地时区时间 + 本地时区时差 - 目标时区时差
-      // 东8区时间
-      let east8time =
-        new Date().getTime() +
-        _dif * 60 * 1000 -
-        targetTimezone * 60 * 60 * 1000;
-      let nowTime = this.timeFormat(new Date(east8time));
+      // let targetTimezone = -8; // 目标时区，东8区
+      // let _dif = new Date().getTimezoneOffset(); // 当前时区与中时区时差，以min为维度
+      // // 本地时区时间 + 时差  = 中时区时间
+      // // 目标时区时间 + 时差 = 中时区时间
+      // // 目标时区时间 = 本地时区时间 + 本地时区时差 - 目标时区时差
+      // // 东8区时间
+      // let east8time =
+      //   new Date().getTime() +
+      //   _dif * 60 * 1000 -
+      //   targetTimezone * 60 * 60 * 1000;
+      // let nowTime = this.timeFormat(new Date(east8time));
       //  console.log(nowTime);
       this.dialogVisible = false;
       //获取学员peopleId
@@ -331,7 +342,7 @@ export default {
       //  console.log(this.testInfo.id);
       let data = {
         answers: this.allAnswer,
-        beginTime: nowTime,
+        beginTime: this.beginTestTime,
         device: this.llqName,
         ip: ip,
         ksExamId: this.ksExamId,
@@ -421,6 +432,7 @@ export default {
       this.$onlineTest
         .onlineTest(this.id)
         .then(res => {
+          this.loading = false;
           //  console.log(res);
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -440,12 +452,12 @@ export default {
             }
             // console.log(this.checkList);
             let newTime = Date.parse(new Date());
-            console.log(newTime);
-            console.log(this.beginTestTime);
-            console.log(res.data.data[0].minutes * 60000);
-            console.log(
-              this.beginTestTime + res.data.data[0].minutes * 60000 - newTime
-            );
+            // console.log(newTime);
+            // console.log(this.beginTestTime);
+            // console.log(res.data.data[0].minutes * 60000);
+            // console.log(
+            //   this.beginTestTime + res.data.data[0].minutes * 60000 - newTime
+            // );
             this.time =
               this.beginTestTime + res.data.data[0].minutes * 60000 - newTime;
             this.currentOptions = res.data.data[0].questions;
@@ -459,6 +471,7 @@ export default {
           }
         })
         .catch(err => {
+          this.loading = false;
           //  console.log(err);
         });
     },
@@ -639,7 +652,7 @@ export default {
           } else {
             // console.log(JSON.parse(res.data.data[0].data));
             let object = res.data.data[0].data;
-            console.log(object);
+            // console.log(object);
             let paperInfo = JSON.parse(object);
             this.id = paperInfo.paperInfo.id;
             this.ksExamId = paperInfo.paperInfo.ksExamId;
@@ -695,7 +708,27 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-.test{
+.testIng {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+.el-container {
+  height: 90%;
+}
+.el-header,
+.el-footer {
+  text-align: center;
+}
+
+.el-aside {
+  height: 100%;
+}
+
+.el-main {
+  height: 100%;
+}
+.test {
   display: flex;
 }
 span {
@@ -712,17 +745,19 @@ span {
   padding: 20px 0;
 }
 .times {
-  width: 70%;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+  // padding: 0 10px;
+  // width: 70%;
+  // margin: 0 auto;
+  // display: flex;
+  // align-items: center;
+  // justify-content: space-between;
 }
 .shijian {
   width: 50%;
 }
 .explain {
-  width: 300px;
+  // width: 300px;
+  margin-left: 30px;
   div {
     margin-bottom: 10px;
   }
@@ -738,13 +773,14 @@ span {
   padding-top: 10px;
 }
 .name {
-  width: 9% !important;
+  width: 100px !important;
 }
 .public {
-  width: 6%;
+  // width: 7%;
+  width: 60px;
 }
 #countdown {
-  font-size: 50px;
+  font-size: 40px;
   color: red;
 }
 .answer {
@@ -756,11 +792,12 @@ span {
   margin-bottom: 50px;
 }
 .fixedTime {
-  position: fixed;
-  width: 200px;
-  top: 240px;
-  left: 0;
-  padding:10px 30px;
+  // position: fixed;
+  // width: 100%;
+  // margin-left: 30px;
+  // top: 240px;
+  // left: 0;
+  padding: 10px 0;
   text-align: center;
   // right: 50px;
 }
@@ -809,11 +846,11 @@ span {
 .scrollview {
   position: absolute;
 }
-.tishiInfo{
+.tishiInfo {
   display: flex;
   align-items: center;
 }
-.lightImg{
+.lightImg {
   width: 60px;
   height: 60px;
   margin-right: 10px;

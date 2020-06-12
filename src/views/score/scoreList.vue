@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div v-if="scoreList.length>0">
       <div v-for="(item,index) in scoreList" :key="index">
         <div class="flex aligh-center scoreDetail justify-between">
@@ -43,7 +43,8 @@
 export default {
   data() {
     return {
-      scoreList: []
+      scoreList: [],
+      loading:true
     };
   },
   components: {},
@@ -52,6 +53,7 @@ export default {
       this.$grade
         .getScoreRank()
         .then(res => {
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
@@ -69,6 +71,7 @@ export default {
           }
         })
         .catch(err => {
+          this.loading = false;
           console.log(err);
           this.$message({
             message: err.data.msg,

@@ -21,9 +21,25 @@ export default {
             url: `login`
         })
     },
-    //首页请求消息条数
+    //首页请求未读消息
     getNumber() {
-        return axios.get('ksExam/getByMeCount')
+        return axios.post('me/listUnreadNotify')
+    },
+    //一键全读
+    allRead(){
+        return axios.post('me/readAllNotify')
+    },
+    //根据Id获取消息详情
+    newsDetail(id){
+        return axios.get(`system/getNotifyById?id=${id}`)
+    },
+    //标记消息为已读
+    alreadyRead(id){
+        return axios.get(`me/readNotify?notifyId=${id}`)
+    },
+    //查看历史消息
+    checkHistory(data){
+        return axios.post("me/pageNotify",data)
     },
     //查看个人信息
     checkUser(id) {
@@ -79,6 +95,6 @@ export default {
     },
     //新闻公告
     getNews(data){
-        return axios.post("news/getAll",data)
+        return axios.post("me/pageNews",data)
     }
 }

@@ -1,100 +1,102 @@
 <template>
-  <div>
-    <div class="loginmsg">
-      <div>我的登录信息</div>
-      <div>
-        <div class="logintime">
-          <div class="name">我的登录次数 :</div>
-          <div class="content" v-if="userInfo.loginCount">{{userInfo.loginCount}} 次</div>
-          <div class="content" v-else>0 次</div>
-        </div>
-        <div class="logintime">
-          <div class="name">本次登录时间 :</div>
-          <div class="content" v-if="userInfo.lastLoginTime">{{userInfo.lastLoginTime}}</div>
-          <div class="content" v-else>暂时没有上次登录的记录</div>
-        </div>
-        <div class="logintime">
-          <div class="name">我的积分 :</div>
-          <div class="content">0 分</div>
+  <!-- <el-table v-loading="loading" style="width: 100%"> -->
+    <div v-loading="loading">
+      <div class="loginmsg">
+        <div>我的登录信息</div>
+        <div>
+          <div class="logintime">
+            <div class="name">我的登录次数 :</div>
+            <div class="content" v-if="userInfo.loginCount">{{userInfo.loginCount}} 次</div>
+            <div class="content" v-else>0 次</div>
+          </div>
+          <div class="logintime">
+            <div class="name">本次登录时间 :</div>
+            <div class="content" v-if="userInfo.lastLoginTime">{{userInfo.lastLoginTime}}</div>
+            <div class="content" v-else>暂时没有上次登录的记录</div>
+          </div>
+          <div class="logintime">
+            <div class="name">我的积分 :</div>
+            <div class="content">0 分</div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="classes" @click="classes">
-      <div>我的课程进度</div>
-      <div>
-        <div class="logintime">
-          <div class="name">已学习 :</div>
-          <div class="count">6 课</div>
-        </div>
-        <div class="logintime">
-          <div class="name">未学习 :</div>
-          <div class="count">5 课</div>
-        </div>
-        <div style="width:50%;margin-top:20px;padding-left:20px">
-          <el-progress :text-inside="true" :stroke-width="26" :percentage="70"></el-progress>
+      <div class="classes" @click="classes">
+        <div>我的课程进度</div>
+        <div>
+          <div class="logintime">
+            <div class="name">已学习 :</div>
+            <div class="count">6 课</div>
+          </div>
+          <div class="logintime">
+            <div class="name">未学习 :</div>
+            <div class="count">5 课</div>
+          </div>
+          <div style="width:50%;margin-top:20px;padding-left:20px">
+            <el-progress :text-inside="true" :stroke-width="26" :percentage="70"></el-progress>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="test">
-      <div v-if="testInfo.todoExamCount" class="newTest" @click="myTest">
-        <div>我的考试({{testInfo.todoExamCount}})</div>
-        <div class="new">new</div>
-      </div>
-      <div v-else>我的考试</div>
-      <el-row>
-        <el-col :span="6">
-          <div class="grid-content bg-purple" @click="testPaper(1)">
-            <div>
-              <img src="../../assets/img/myscore.svg" alt />
-            </div>
-            <div>{{total}}份</div>
-            <div>全部试卷</div>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple-light" @click="testPaper(2)">
-            <div>
-              <img src="../../assets/img/myscore.svg" alt />
-            </div>
-            <div>{{pass}}份</div>
-            <div>及格试卷</div>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple" @click="testPaper(3)">
-            <div>
-              <img src="../../assets/img/myscore.svg" alt />
-            </div>
-            <div>{{fail}}份</div>
-            <div>不及格试卷</div>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple-light" @click="testPaper(4)">
-            <div>
-              <img src="../../assets/img/myscore.svg" alt />
-            </div>
-            <div>{{empty}}份</div>
-            <div>空白试卷</div>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
-    <div class="classes" @click="study">
-      <div>我的学习记录</div>
-      <div>
-        <div class="logintime">
-          <div class="name">在线学习时长 :</div>
-          <div class="content">{{totalStudyTime}}</div>
+      <div class="test">
+        <div v-if="testInfo.todoExamCount" class="newTest" @click="myTest">
+          <div>我的考试({{testInfo.todoExamCount}})</div>
+          <div class="new">new</div>
         </div>
-        <div class="logintime">
-          <div class="name">在线测试记录 :</div>
-          <div class="content">{{fail+pass}}次</div>
+        <div v-else>我的考试</div>
+        <el-row>
+          <el-col :span="6">
+            <div class="grid-content bg-purple" @click="testPaper(1)">
+              <div>
+                <img src="../../assets/img/myscore.svg" alt />
+              </div>
+              <div>{{total}}份</div>
+              <div>全部试卷</div>
+            </div>
+          </el-col>
+          <el-col :span="6">
+            <div class="grid-content bg-purple-light" @click="testPaper(2)">
+              <div>
+                <img src="../../assets/img/myscore.svg" alt />
+              </div>
+              <div>{{pass}}份</div>
+              <div>及格试卷</div>
+            </div>
+          </el-col>
+          <el-col :span="6">
+            <div class="grid-content bg-purple" @click="testPaper(3)">
+              <div>
+                <img src="../../assets/img/myscore.svg" alt />
+              </div>
+              <div>{{fail}}份</div>
+              <div>不及格试卷</div>
+            </div>
+          </el-col>
+          <el-col :span="6">
+            <div class="grid-content bg-purple-light" @click="testPaper(4)">
+              <div>
+                <img src="../../assets/img/myscore.svg" alt />
+              </div>
+              <div>{{empty}}份</div>
+              <div>空白试卷</div>
+            </div>
+          </el-col>
+        </el-row>
+      </div>
+      <div class="classes" @click="study">
+        <div>我的学习记录</div>
+        <div>
+          <div class="logintime">
+            <div class="name">在线学习时长 :</div>
+            <div class="content">{{totalStudyTime}}</div>
+          </div>
+          <div class="logintime">
+            <div class="name">在线测试记录 :</div>
+            <div class="content">{{fail+pass}}次</div>
+          </div>
         </div>
       </div>
+      <div style="text-align: center;">版本号:20.06.12.18</div>
     </div>
-    <div style="text-align: center;">版本号:20.06.10.17</div>
-  </div>
+  <!-- </el-table> -->
 </template>
 <script>
 export default {
@@ -108,7 +110,8 @@ export default {
       pass: 0,
       fail: 0,
       empty: 0,
-      totalStudyTime: 0
+      totalStudyTime: 0,
+      loading:true
     };
   },
   components: {},
@@ -153,6 +156,7 @@ export default {
       this.$grade
         .gettestNumber()
         .then(res => {
+          this.loading = false;
           if (res.data.code === 0) {
             this.total = res.data.data[0].totalCount;
             this.totalNum = res.data.data[0].totalCount;
@@ -166,13 +170,16 @@ export default {
             });
           }
         })
-        .catch();
+        .catch(err=>{
+          this.loading = false;
+        });
     },
     //获取我的学习记录
     getStudy() {
       this.$api
         .getStudyRecord(this.userInfo.userId, this.page, this.limit)
         .then(res => {
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -183,9 +190,9 @@ export default {
             if (this.totalStudyTime > 60) {
               let hour = Math.floor(this.totalStudyTime / 60);
               let minute = this.totalStudyTime - hour * 60;
-              this.totalStudyTime = hour + "小时" + minute+"分钟";
+              this.totalStudyTime = hour + "小时" + minute + "分钟";
             } else {
-              this.totalStudyTime = this.totalStudyTime+"分钟";
+              this.totalStudyTime = this.totalStudyTime + "分钟";
             }
           } else {
             this.$message({
@@ -194,7 +201,9 @@ export default {
             });
           }
         })
-        .catch();
+        .catch(err=>{
+          this.loading = false;
+        });
     }
   },
   mounted() {
@@ -208,18 +217,18 @@ export default {
       .getMyMsg()
       .then(res => {
         if (res.data.code === 1000) {
-            this.$router.push({ name: "login", path: "/login" });
-          }
+          this.$router.push({ name: "login", path: "/login" });
+        }
         // console.log(res);
         if (res.data.code === 0) {
           this.testInfo = res.data.data[0];
           // console.log(this.testInfo);
         } else {
-            this.$message({
-              message: res.data.msg,
-              type: "warning"
-            });
-          }
+          this.$message({
+            message: res.data.msg,
+            type: "warning"
+          });
+        }
       })
       .catch(err => {
         console.log(err);
@@ -246,7 +255,6 @@ export default {
   padding: 10px 20px;
   border-radius: 20px;
   margin-bottom: 10px;
-  
 }
 .test {
   // background: #efefef;

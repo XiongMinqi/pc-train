@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div class="indexLeft">
       <el-row>
         <el-col :span="6">
@@ -67,7 +67,9 @@
             :visible.sync="dialogTableVisible"
             @close="closeDialog"
           >
-            <submitPaper :submitId="submitId" :paperDetail="paperDetail" />
+            <div v-loading="submitPaperloading">
+              <submitPaper :submitId="submitId" :paperDetail="paperDetail" />
+            </div>
           </el-dialog>
         </div>
         <div class="block">
@@ -107,7 +109,9 @@ export default {
       currentPage: 1,
       total: 0,
       paperDetail: {},
-      subjectName: []
+      subjectName: [],
+      loading:true,
+      submitPaperloading:false
     };
   },
   components: { submitPaper },
@@ -115,7 +119,7 @@ export default {
     closeDialog() {
       // this.submitId = 0;
       // this.paperDetail = {};
-      console.log(this.submitId, this.paperDetail);
+      // console.log(this.submitId, this.paperDetail);
     },
     goTo(e) {
       // console.log(e);
@@ -132,15 +136,18 @@ export default {
         this.totalNum = this.pass;
       }
       this.status = e;
+      this.page = 1;
       this.getTestExam();
     },
     handleSizeChange(val) {
+      this.loading = true;
       this.page = 1;
       this.limit = val;
       this.getTestExam();
       // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
+      this.loading = true;
       // console.log(`当前页: ${val}`);
       this.page = val;
       // console.log(this.offset, this.limit);
@@ -206,6 +213,7 @@ export default {
       this.$grade
         .getdict()
         .then(res => {
+          this.loading=false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -220,12 +228,15 @@ export default {
             });
           }
         })
-        .catch();
+        .catch(err=>{
+          this.loading=false;
+        });
     },
     getTestNumber() {
       this.$grade
         .gettestNumber()
         .then(res => {
+          this.loading=false;
           if (res.data.code === 0) {
             this.total = res.data.data[0].totalCount;
             this.totalNum = res.data.data[0].totalCount;
@@ -239,12 +250,16 @@ export default {
             });
           }
         })
-        .catch();
+        .catch(err=>{
+          this.loading=false;
+        });
     },
     getTestExam() {
+      this.loading = true;
       this.$grade
         .getExam(this.page, this.limit, this.status)
         .then(res => {
+          this.loading=false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -269,6 +284,7 @@ export default {
           }
         })
         .catch(err => {
+          this.loading=false;
           console.log(err);
         });
     }

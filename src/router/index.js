@@ -59,6 +59,24 @@ const routes = [{
     }]
   },
   {
+    path: "/unReadNews",
+    component: Home,
+    children: [{
+      path: "",
+      name: "unReadNews",
+      component: () => import( /* webpackChunkName: 'unReadNews' */ '../views/unReadNews/unReadNews.vue')
+    }]
+  },
+  {
+    path: "/allHistory",
+    component: Home,
+    children: [{
+      path: "",
+      name: "allHistory",
+      component: () => import( /* webpackChunkName: 'allHistory' */ '../views/unReadNews/allHistory.vue')
+    }]
+  },
+  {
     path: "/score",
     component: Home,
     children: [{

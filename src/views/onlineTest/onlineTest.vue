@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div v-if="testList.length>0">
       <div class="flex" v-for="(item,index) in testList" :key="index">
         <div style=" display: flex;align-items: center;">
@@ -69,7 +69,8 @@ export default {
       total: 0,
       testList: [],
       major: [],
-      department: []
+      department: [],
+      loading:true
     };
   },
   components: {},
@@ -102,6 +103,7 @@ export default {
       this.$onlineTest
         .getTestInfo(this.offset, this.limit)
         .then(res => {
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -144,6 +146,7 @@ export default {
           }
         })
         .catch(err => {
+          this.loading = false;
           console.log(err);
         });
     },
@@ -183,12 +186,14 @@ export default {
       });
     },
     handleSizeChange(val) {
+      this.loading = true;
       this.offset = 1;
       this.limit = val;
       this.getTest();
       // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
+      this.loading = true;
       // console.log(`当前页: ${val}`);
       this.offset = val;
       // console.log(this.offset, this.limit);

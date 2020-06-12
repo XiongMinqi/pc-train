@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div class="choose">
       <div class="subject">
         <el-select v-model="question" placeholder="请选择问题类型">
@@ -22,7 +22,8 @@
               <div class="name">
                 <div class="questiontype" v-for="(itm,idx) in questionType" :key="idx">
                   <div v-if="item.type == itm.key" style="padding-bottom:5px;">
-                    <span style="font-weight:bold;color:blue;" >【{{itm.value}}】</span> <span style="color:red">做错次数 ：{{item.wrongCount}}次</span>
+                    <span style="font-weight:bold;color:blue;">【{{itm.value}}】</span>
+                    <span style="color:red">做错次数 ：{{item.wrongCount}}次</span>
                   </div>
                 </div>
               </div>
@@ -39,8 +40,8 @@
                 |
                 <span style="color:purple">所属专业 : {{item.majorname}}</span> |
                 <span style="color:#EE6911">所属部门 : {{item.departname}}</span> |
-                <span style="color:green">分数 ：{{item.defaultScore}}分</span> |
-               
+                <span style="color:green">分数 ：{{item.defaultScore}}分</span>
+                |
               </div>
             </div>
           </div>
@@ -63,79 +64,81 @@
       ></el-pagination>
     </div>
     <el-dialog title="错题详情" :visible.sync="dialogFormVisible" @close="close">
-      <div>
-        <div class="detail">
-          <div class="questiontype" v-for="(itm,idx) in questionType" :key="idx">
-            <span v-if="questionDetail.type == itm.key">【{{itm.value}}】</span>
+      <!-- <div> -->
+        <div v-loading="dialogloading">
+          <div class="detail">
+            <div class="questiontype" v-for="(itm,idx) in questionType" :key="idx">
+              <span v-if="questionDetail.type == itm.key">【{{itm.value}}】</span>
+            </div>
+            <div class="content">{{questionDetail.content}}</div>
           </div>
-          <div class="content">{{questionDetail.content}}</div>
-        </div>
-        <!-- 选项 -->
-        <div>
-          <!-- 单选 -->
-          <div v-if="questionDetail.type==0">
-            <div v-for="(item,index) in questionDetail.options" :key="index">
+          <!-- 选项 -->
+          <div>
+            <!-- 单选 -->
+            <div v-if="questionDetail.type==0">
+              <div v-for="(item,index) in questionDetail.options" :key="index">
+                <el-radio-group v-model="radio">
+                  <el-radio :label="item.order">
+                    <span v-if="item.order === 0">A、</span>
+                    <span v-if="item.order === 1">B、</span>
+                    <span v-if="item.order === 2">C、</span>
+                    <span v-if="item.order === 3">D、</span>
+                    {{item.content}}
+                  </el-radio>
+                </el-radio-group>
+              </div>
+            </div>
+            <!-- 判断 -->
+            <div v-if="questionDetail.type==3">
               <el-radio-group v-model="radio">
-                <el-radio :label="item.order">
-                  <span v-if="item.order === 0">A、</span>
-                  <span v-if="item.order === 1">B、</span>
-                  <span v-if="item.order === 2">C、</span>
-                  <span v-if="item.order === 3">D、</span>
-                  {{item.content}}
-                </el-radio>
+                <div style="padding:0 0 10px 0">
+                  <el-radio label="judge1">正确</el-radio>
+                </div>
+                <div>
+                  <el-radio label="judge2">错误</el-radio>
+                </div>
               </el-radio-group>
             </div>
-          </div>
-          <!-- 判断 -->
-          <div v-if="questionDetail.type==3">
-            <el-radio-group v-model="radio">
-              <div style="padding:0 0 10px 0">
-                <el-radio label="judge1">正确</el-radio>
+            <!-- 多选 -->
+            <div v-if="questionDetail.type==1">
+              <div v-for="(item,index) in questionDetail.options" :key="index">
+                <el-checkbox-group v-model="checkList">
+                  <el-checkbox :label="item.content">
+                    <span v-if="item.order === 0">A、</span>
+                    <span v-if="item.order === 1">B、</span>
+                    <span v-if="item.order === 2">C、</span>
+                    <span v-if="item.order === 3">D、</span>
+                    <span v-if="item.order === 4">E、</span>
+                    <span v-if="item.order === 5">F、</span>
+                    {{item.content}}
+                  </el-checkbox>
+                </el-checkbox-group>
               </div>
-              <div>
-                <el-radio label="judge2">错误</el-radio>
-              </div>
-            </el-radio-group>
-          </div>
-          <!-- 多选 -->
-          <div v-if="questionDetail.type==1">
-            <div v-for="(item,index) in questionDetail.options" :key="index">
-              <el-checkbox-group v-model="checkList">
-                <el-checkbox :label="item.content">
-                  <span v-if="item.order === 0">A、</span>
-                  <span v-if="item.order === 1">B、</span>
-                  <span v-if="item.order === 2">C、</span>
-                  <span v-if="item.order === 3">D、</span>
-                  <span v-if="item.order === 4">E、</span>
-                  <span v-if="item.order === 5">F、</span>
-                  {{item.content}}
-                </el-checkbox>
-              </el-checkbox-group>
+            </div>
+            <div v-if="questionDetail.type==2||questionDetail.type==4||questionDetail.type==5">
+              <el-input
+                type="textarea"
+                :autosize="{ minRows: 2, maxRows: 4}"
+                placeholder="请输入内容"
+                v-model="textarea"
+              ></el-input>
             </div>
           </div>
-          <div v-if="questionDetail.type==2||questionDetail.type==4||questionDetail.type==5">
-            <el-input
-              type="textarea"
-              :autosize="{ minRows: 2, maxRows: 4}"
-              placeholder="请输入内容"
-              v-model="textarea"
-            ></el-input>
+          <div v-if="disappear" style="display:flex;align-items: center;padding-top:20px">
+            <div>正确答案 :</div>
+            <div v-if="questionDetail.type==1" style="padding-left:10px;color:green">
+              <span v-for="(item,index) in questionDetail.answers" :key="index">
+                <span>{{item.content}}</span>
+              </span>
+            </div>
+            <div v-else style="padding-left:10px;color:green">{{questionDetail.answers[0].content}}</div>
           </div>
         </div>
-        <div v-if="disappear" style="display:flex;align-items: center;padding-top:20px">
-          <div>正确答案 :</div>
-          <div v-if="questionDetail.type==1" style="padding-left:10px;color:green">
-            <span v-for="(item,index) in questionDetail.answers" :key="index">
-              <span>{{item.content}}</span>
-            </span>
-          </div>
-          <div v-else style="padding-left:10px;color:green">{{questionDetail.answers[0].content}}</div>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="submit">确 定</el-button>
         </div>
-      </div>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="submit">确 定</el-button>
-      </div>
+      <!-- </div> -->
     </el-dialog>
   </div>
 </template>
@@ -163,18 +166,22 @@ export default {
       judge1: "",
       judge2: "",
       department: [],
-      major: []
+      major: [],
+      loading: true,
+      dialogloading: false
     };
   },
   components: {},
   methods: {
     handleSizeChange(val) {
+      this.loading = true;
       this.page = 1;
       this.limit = val;
       this.getErrorList();
       // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
+      this.loading = true;
       // console.log(`当前页: ${val}`);
       this.page = val;
       // console.log(this.offset, this.limit);
@@ -212,9 +219,11 @@ export default {
     checkDetail(e) {
       // console.log(e);
       this.dialogFormVisible = true;
+      this.dialogloading = true;
       this.$grade
         .getErrorDetail(e.id)
         .then(res => {
+          this.dialogloading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -229,13 +238,16 @@ export default {
             });
           }
         })
-        .catch();
+        .catch(err => {
+          this.dialogloading = false;
+        });
     },
     //获取全部题目类型
     getQuestionType() {
       this.$grade
         .getdict()
         .then(res => {
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -252,10 +264,17 @@ export default {
             });
           }
         })
-        .catch();
+        .catch(err => {
+          this.loading = false;
+          this.$message({
+            message: err.data.msg,
+            type: "warning"
+          });
+        });
     },
     //选择题目类型
     chooseClass() {
+      this.loading = true;
       this.currentPage = 1;
       this.page = 1;
       // console.log(this.question);
@@ -275,6 +294,7 @@ export default {
       this.$grade
         .getMistake(this.page, this.limit, this.status)
         .then(res => {
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -301,7 +321,13 @@ export default {
             });
           }
         })
-        .catch();
+        .catch(err => {
+          this.loading = false;
+          this.$message({
+            message: err.data.msg,
+            type: "warning"
+          });
+        });
     }
   },
   mounted() {
@@ -352,7 +378,7 @@ export default {
   cursor: pointer;
   color: green;
 }
-.questioncontent{
+.questioncontent {
   width: 800px;
   display: inline-block;
   white-space: nowrap;

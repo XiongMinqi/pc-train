@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div v-if="allComments.length>0">
       <div class="totalDetail">
         <div class="flex aligh-center">
@@ -58,18 +58,21 @@ export default {
       total: 0,
       courseGood:"",
       totalDetail: {},
-      planCourseId: 0
+      planCourseId: 0,
+      loading:true
     };
   },
   components: {},
   methods: {
     handleSizeChange(val) {
+      this.loading = true;
       this.page = 1;
       this.limit = val;
       this.getAllCpmments();
       // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
+      this.loading = true;
       // console.log(`当前页: ${val}`);
       this.page = val;
       // console.log(this.offset, this.limit);
@@ -84,6 +87,7 @@ export default {
       this.$grade
         .checkAllComments(data)
         .then(res => {
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
@@ -102,6 +106,7 @@ export default {
           }
         })
         .catch(err => {
+          this.loading = false;
           console.log(err);
           this.$message({
             message: err.data.msg,
@@ -113,6 +118,7 @@ export default {
       this.$grade
         .getTotalCommentsRank(this.planCourseId)
         .then(res => {
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
@@ -132,6 +138,7 @@ export default {
           }
         })
         .catch(err => {
+          this.loading = false;
           console.log(err);
           this.$message({
             message: err.data.msg,

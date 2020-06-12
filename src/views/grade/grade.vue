@@ -1,5 +1,5 @@
 <template>
-  <div class="gradebody">
+  <div class="gradebody" v-loading="loading">
     <div class="flex justify" style="height:280px">
       <div style="width:50%;height:100%">
         <div class="flex list">
@@ -51,7 +51,8 @@ export default {
       subjectName: [],
       statistics: [],
       passScore: {},
-      paperIndex: 0
+      paperIndex: 0,
+      loading:true
     };
   },
   components: {
@@ -65,6 +66,7 @@ export default {
       this.$grade
         .getdict()
         .then(res => {
+          this.loading=false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -80,6 +82,7 @@ export default {
           }
         })
         .catch(err => {
+          this.loading=false;
           // console.log(err);
         });
     },
@@ -105,6 +108,7 @@ export default {
       this.$grade
         .getStatistics()
         .then(res => {
+          this.loading=false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -131,6 +135,7 @@ export default {
           }
         })
         .catch(err => {
+          this.loading=false;
           // console.log(err);
         });
     }

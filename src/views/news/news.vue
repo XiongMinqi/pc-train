@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div class="newsdetail" v-for="(item,index) in newsList" :key="index">
       <div class="flex justify-between aligh-center news">
         <div class="flex aligh-center">
@@ -43,9 +43,7 @@
         <div class="flex aligh-center" style="margin-bottom: 5px;color:#a2a2a2">
           <div style=";padding-right: 10px;">{{newsDetail.createTime}}</div>
           <div>By : {{newsDetail.peopleName}}</div>
-          <div style="color:#a2a2a2;padding-left:10px">
-            浏览次数 : {{newsDetail.readCount}}
-          </div>
+          <div style="color:#a2a2a2;padding-left:10px">浏览次数 : {{newsDetail.readCount}}</div>
         </div>
         <div
           style="text-indent:2em;margin-top:10px;letter-spacing: 0.5px;line-height:2em;"
@@ -64,17 +62,20 @@ export default {
       newsList: [],
       total: 0,
       dialogFormVisible: false,
-      newsDetail: {}
+      newsDetail: {},
+      loading: true
     };
   },
   components: {},
   methods: {
     handleSizeChange(val) {
+      this.loading = true;
       this.page = 1;
       this.limit = val;
       this.getNews();
     },
     handleCurrentChange(val) {
+      this.loading = true;
       this.page = val;
       this.getNews();
     },
@@ -90,6 +91,7 @@ export default {
       this.$api
         .getNews(data)
         .then(res => {
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -104,6 +106,7 @@ export default {
           }
         })
         .catch(err => {
+          this.loading = false;
           this.$message({
             message: err.data.msg,
             type: "warning"

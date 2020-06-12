@@ -1,5 +1,5 @@
 <template>
-  <div class="list">
+  <div class="list" v-loading="loading">
     <el-table :data="list" border style="width: 100%">
       <el-table-column prop="lastTime" label="上次观看时间" width="180"></el-table-column>
       <el-table-column prop="subjectName" label="名称"></el-table-column>
@@ -38,17 +38,20 @@ export default {
         limit: 100,
         page: 1
       },
+      loading:true
     };
   },
   components: {},
   methods: {
     handleSizeChange(val) {
+      this.loading = true;
       this.page = 1;
       this.limit = val;
       this.getStudy();
       // console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
+      this.loading = true;
       // console.log(`当前页: ${val}`);
       this.page = val;
       this.getStudy();
@@ -58,6 +61,7 @@ export default {
       this.$api
         .getLearn(this.data)
         .then(res => {
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -67,13 +71,20 @@ export default {
             // console.log(this.allList);
           }
         })
-        .catch();
+        .catch(err=>{
+          this.loading = false;
+          this.$message({
+              message: err.data.msg,
+              type: "warning"
+            });
+        });
     },
     //获取我的学习记录
     getStudy() {
       this.$api
         .getStudyRecord(this.page, this.limit)
         .then(res => {
+          this.loading=false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -95,7 +106,13 @@ export default {
             });
           }
         })
-        .catch();
+        .catch(err=>{
+          this.loading=false;
+          this.$message({
+              message: err.data.msg,
+              type: "warning"
+            });
+        });
     }
   },
   mounted() {

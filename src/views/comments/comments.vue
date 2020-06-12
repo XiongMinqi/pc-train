@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-loading="loading">
     <div class="flex marginTen" style="border-bottom:5px dotted #c9c9c9">
       <div style="margin-right:40px">
         <img class="maliao" src="../../assets/img/maliao.png" alt />
@@ -82,7 +82,9 @@ export default {
       checked: false,
       value1: 0,
       value2: 0,
+      loading: true,
       textarea: "",
+      timeout: {},
       colors: ["#99A9BF", "#F7BA2A", "#FF9900"] // 等同于 { 2: '#99A9BF', 4: { value: '#F7BA2A', excluded: true }, 5: '#FF9900' }
     };
   },
@@ -145,8 +147,14 @@ export default {
   },
   mounted() {
     this.detail = this.$route.query.detail;
+    this.timeout = setTimeout(() => {
+      this.loading = false;
+    }, 1000);
   },
   watch: {},
+  destroyed() {
+    clearTimeout(this.timeout);
+  },
   computed: {}
 };
 </script>
