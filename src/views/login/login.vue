@@ -134,7 +134,7 @@ export default {
       let data = {
         username: this.username,
         password: this.passwords,
-        "remeber-me": this.checked
+        "remember-me": this.checked
       };
       this.$api
         .login(data)
@@ -142,6 +142,9 @@ export default {
           // console.log(res);
           if (res.data.code === 0) {
             // console.log(res.data[0]);
+            console.log(res);
+            localStorage.setItem('token',res.headers['x-auth-token'])
+            // this.$store.state.header['x-auth-token'] = res.header['x-auth-token']
             this.$message({
               message: res.data.msg,
               type: "success"

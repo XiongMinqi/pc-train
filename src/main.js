@@ -4,10 +4,10 @@ import store from './store/index'
 import api from './http/api'
 import grade from './http/grade'
 import onlineTest from './http/onlineTest'
-
 import VueVideoPlayer from 'vue-video-player'
 import 'video.js/dist/video-js.css'
 Vue.use(VueVideoPlayer)
+
 Vue.prototype.$api = api
 Vue.prototype.$grade = grade
 Vue.prototype.$onlineTest = onlineTest

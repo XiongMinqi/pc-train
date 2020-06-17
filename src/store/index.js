@@ -4,7 +4,10 @@ import Vuex from 'vuex'
 Vue.use(Vuex)
 const state = {
   answerList: {},
-  paperInfo: {}
+  paperInfo: {},
+  header:{
+    'x-auth-token':''
+  }
 }
 
 export default new Vuex.Store({

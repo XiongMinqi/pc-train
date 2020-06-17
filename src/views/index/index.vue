@@ -25,14 +25,14 @@
       <div>
         <div class="logintime">
           <div class="name">已学习 :</div>
-          <div class="count">6 课</div>
+          <div class="count">{{alreadyStudy}} 课</div>
         </div>
         <div class="logintime">
           <div class="name">未学习 :</div>
-          <div class="count">5 课</div>
+          <div class="count">{{unstudy}} 课</div>
         </div>
         <div style="width:50%;margin-top:20px;padding-left:20px">
-          <el-progress :text-inside="true" :stroke-width="26" :percentage="70"></el-progress>
+          <el-progress :text-inside="true" :stroke-width="26" :percentage="studypercent"></el-progress>
         </div>
       </div>
     </div>
@@ -111,7 +111,10 @@ export default {
       fail: 0,
       empty: 0,
       totalStudyTime: 0,
-      loading: true
+      loading: true,
+      alreadyStudy:10,
+      unstudy:3,
+      studypercent:60
     };
   },
   components: {},
@@ -233,16 +236,6 @@ export default {
       .catch(err => {
         console.log(err);
       });
-      var cookie = {
-		  set: function (name,value,exdays) {
-		    var exdate = new Date();
-		    exdate.setDate(exdate.getDate() + exdays);
-		    var value = escape(value) + ((exdays==null) ? "" : "; expires="+exdate.toUTCString());
-		    document.cookie=name + "=" + value;
-		    console.log(document.cookie);
-		  }
-		}		
-		cookie.set('123','123',2);
   },
   watch: {},
   computed: {}

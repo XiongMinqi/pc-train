@@ -21,8 +21,8 @@ module.exports = {
         port: 8080, // 端口号
         https: false, // https:{type:Boolean}
         // open: true, //配置自动启动浏览器
-        proxy: 'http://39.104.70.60:8080/',
-        // proxy: 'http://192.168.0.45:8080/',
+        // proxy: 'http://39.104.70.60:8080/',
+        proxy: 'http://192.168.0.45:8080/',
     },
     configureWebpack: {
         plugins: [

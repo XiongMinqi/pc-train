@@ -18,7 +18,7 @@ service.interceptors.request.use(
         let token = localStorage.getItem("token")
             // 每次请求 都在请求头带上token
         if (token) {
-            config.headers["Authorization"] = "Bearer " + token
+            config.headers['x-auth-token'] = "Bearer " + token
         }
         return config
     },

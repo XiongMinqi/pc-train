@@ -161,10 +161,6 @@ export default {
           }
         })
         .catch(err => {
-          this.$message({
-            message: err.data.msg,
-            type: "warning"
-          });
           console.log(err);
         });
     },
