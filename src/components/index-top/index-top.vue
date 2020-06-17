@@ -36,52 +36,6 @@
           </div>
         </div>
       </el-popover>
-      <!-- <el-dropdown>
-        <span class="el-dropdown-link">
-          <div v-if="unReadList.length>0">
-            <el-badge :value="unReadList.length" class="item">
-              <div class="callImg">
-                <img src="../../assets/icon/call.png" alt />
-              </div>
-            </el-badge>
-          </div>
-          <div v-else>
-            <div class="callImg">
-              <img src="../../assets/icon/call.png" alt />
-            </div>
-          </div>
-        </span>
-        <el-dropdown-menu slot="dropdown">
-          <div v-if="unReadList.length>0" style="width:300px;height:50vh;overflow-y:auto">
-            <div v-for="(item,index) in unReadList" :key="index" @click="checkUnRead(item,index)">
-              <el-dropdown-item>
-                <div class="newsItem">
-                  <div class="newsTitle">{{item.title}}</div>
-                  <div class="newsTime">{{item.createTime}}</div>
-                </div>
-              </el-dropdown-item>
-            </div>
-            <div class="doIt">
-              <div class="checkHistory">
-                <span @click="checkHistory">查看历史消息</span>
-              </div>
-              <div class="readAll">
-                <span @click="readAll">一键全读</span>
-              </div>
-            </div>
-          </div>
-          <div v-else>
-            <el-dropdown-item>
-              <div style="width:300px;text-align:center;">暂无未读消息</div>
-            </el-dropdown-item>
-            <div>
-              <div class="emptyHistory">
-                <span @click="checkHistory">查看历史消息</span>
-              </div>
-            </div>
-          </div>
-        </el-dropdown-menu>
-      </el-dropdown>-->
       <el-dropdown>
         <div class="topLeft">
           <div>
@@ -133,7 +87,7 @@ export default {
         console.log(msg.data);
         if (msg.data) {
           let data = JSON.parse(msg.data);
-          this.unReadList.push(data);
+          this.unReadList.unshift(data);
         }
         //发现消息进入    开始处理前端触发逻辑
       };
@@ -159,7 +113,7 @@ export default {
       this.$router.push({
         name: "unReadNews",
         path: "/unReadNews",
-        query: { id: e.id }
+        query: { id: e.id, flag: true }
       });
     },
     //一键全读

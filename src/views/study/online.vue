@@ -6,7 +6,7 @@
           <div class="classname">
             <div class="wordes">来源 :</div>
             <div>
-              <el-select v-model="source" placeholder="请选择题库">
+              <el-select v-model="source" :disabled="choosedisabled" placeholder="请选择题库">
                 <!-- <el-option key=0 value="题库"></el-option> -->
                 <el-option v-for="item in sourceList" :key="item.key" :value="item.value"></el-option>
               </el-select>
@@ -300,7 +300,9 @@ export default {
       endTime: 0,
       errorCount: 0,
       rightPercent: "",
-      loading: true
+      loading: true,
+      choosedisabled: false,
+      flag: false
     };
   },
   components: {},
@@ -452,12 +454,12 @@ export default {
             });
           }
         })
-        .catch(err=>{
+        .catch(err => {
           this.loading = false;
           this.$message({
-            message:err.data.msg,
-            type:"warning"
-          })
+            message: err.data.msg,
+            type: "warning"
+          });
         });
     },
     //选择科目，专业，题型
@@ -536,7 +538,7 @@ export default {
               });
             }
           })
-          .catch(err=>{
+          .catch(err => {
             this.loading = false;
           });
       } else {
@@ -651,6 +653,15 @@ export default {
   },
   mounted() {
     this.getdict();
+    console.log(this.$route.query);
+    this.flag = this.$route.query.flag;
+    if (this.flag === true) {
+      this.source = "错题集";
+      this.choosedisabled = true;
+    } else {
+      this.source = "题库";
+      this.choosedisabled = false;
+    }
   },
   watch: {},
   computed: {}

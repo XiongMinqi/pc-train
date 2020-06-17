@@ -6,7 +6,10 @@
     </div>
     <div id="coursesTable" style="text-align:center"></div>
     <el-dialog title="课程详情" :visible.sync="dialogFormVisible" @close="close">
-      <div v-loading="dialogloading" style="min-height: 50vh;display: flex;justify-content: space-between">
+      <div
+        v-loading="dialogloading"
+        style="min-height: 50vh;display: flex;justify-content: space-between"
+      >
         <div>
           <div class="type" style="font-size:20px;font-weight:bold;">{{courseDetail.name}}</div>
           <div class="type">老师 : {{courseDetail.teacherName}}</div>
@@ -455,19 +458,19 @@ export default {
       choosedItem: "",
       isJoinCourse: false,
       isCommentCourse: false,
-      loading:true,
-      dialogloading:false
+      loading: true,
+      dialogloading: false
     };
   },
   components: {},
   methods: {
     chooseCourseClose() {
       if (this.choosedItem) {
-        this.dialogloading=true;
+        this.dialogloading = true;
         this.$grade
           .getDetailById(this.choosedItem)
           .then(res => {
-            this.dialogloading=false;
+            this.dialogloading = false;
             if (res.data.code === 1000) {
               this.$message({
                 message: res.data.msg,
@@ -487,7 +490,7 @@ export default {
             }
           })
           .catch(err => {
-            this.dialogloading=false;
+            this.dialogloading = false;
             this.$message({
               message: err.data.msg,
               type: "warning"
@@ -503,30 +506,30 @@ export default {
     },
     //评论课程
     commentCurse() {
-      // if(this.isJoinCourse === true){
-      //   if(isCommentCourse===true){
-      //     this.$message({
-      //         message: "本课程您已经评论过了，不能再次评论",
-      //         type: "warning"
-      //       });
-      //   }else{
-      //     this.$message({
-      //         message: "正在为您跳转到评论页",
-      //         type: "success"
-      //       });
-      //   }
-      // }else{
-      //   this.$message({
-      //         message: "本课程您尚未参加，无法评论",
-      //         type: "error"
-      //       });
-      // }
-      this.$router.push({
-        path: "/comments",
-        query: {
-          detail: this.courseDetail
+      if (this.isJoinCourse === true) {
+        if (isCommentCourse === true) {
+          this.$message({
+            message: "本课程您已经评论过了，不能再次评论",
+            type: "warning"
+          });
+        } else {
+          this.$message({
+            message: "正在为您跳转到评论页",
+            type: "success"
+          });
+          this.$router.push({
+            path: "/comments",
+            query: {
+              detail: this.courseDetail
+            }
+          });
         }
-      });
+      } else {
+        this.$message({
+          message: "本课程您尚未参加，无法评论",
+          type: "error"
+        });
+      }
     },
     //查看全部评论
     allComments() {
@@ -614,7 +617,6 @@ export default {
           }
           if (res.data.code === 0) {
             this.teacherImg = res.data.data;
-            
           } else {
             this.$message({
               message: res.data.msg,
@@ -838,7 +840,7 @@ export default {
             this.$grade
               .getDetailById(this.courseIdList[weekDay][e.index])
               .then(res => {
-                this.dialogloading=false;
+                this.dialogloading = false;
                 if (res.data.code === 1000) {
                   this.$message({
                     message: res.data.msg,
@@ -862,7 +864,7 @@ export default {
                 }
               })
               .catch(err => {
-                this.dialogloading=false;
+                this.dialogloading = false;
                 this.$message({
                   message: err.data.msg,
                   type: "warning"

@@ -145,7 +145,7 @@ export default {
               }
               this.$set(item, "source", source);
             });
-            console.log(this.scoreList);
+            // console.log(this.scoreList);
           } else {
             this.$message({
               message: res.data.msg,

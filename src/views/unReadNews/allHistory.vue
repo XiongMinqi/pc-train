@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loading">
     <div v-if="newsList.length>0">
-      <div v-for="(item,index) in newsList" :key="index">
+      <div v-for="(item,index) in newsList" :key="index" @click="checkNewsDetail(item)">
         <div class="flex newsDetail">
           <div>
             <div class="unvoice">
@@ -66,6 +66,13 @@ export default {
       this.page = val;
       // console.log(this.offset, this.limit);
       this.getAllList();
+    },
+    checkNewsDetail(e) {
+      this.$router.push({
+        name: "unReadNews",
+        path: "/unReadNews",
+        query: { id: e.id, flag: false }
+      });
     },
     //时间处理
     changTime(e) {

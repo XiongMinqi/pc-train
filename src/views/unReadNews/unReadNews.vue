@@ -1,7 +1,13 @@
 <template>
   <div class="newsDetail" v-loading="loading">
     <div class="newsTitle text-center">{{newsDetail.title}}</div>
-    <div class="newsTime">{{newsDetail.createTime}}</div>
+    <div class="flex aligh-center justify-between newsTime">
+      <div>
+        <div v-if="newsDetail.type<=1000">系统通知</div>
+        <div v-else>其他通知</div>
+      </div>
+      <div>{{newsDetail.createTime}}</div>
+    </div>
     <div class="newsContent">
       <div v-if="newsDetail.content">{{newsDetail.content}}</div>
       <div v-else>此消息无内容</div>
@@ -15,7 +21,8 @@ export default {
     return {
       id: "",
       newsDetail: {},
-      loading: true
+      loading: true,
+      flag: false
     };
   },
   components: {},
@@ -31,7 +38,9 @@ export default {
           }
           if (res.data.code === 0) {
             this.newsDetail = res.data.data[0];
-            this.readNews();
+            if (this.flag === true) {
+              this.readNews();
+            }
           } else {
             this.$message({
               message: res.data.msg,
@@ -60,16 +69,17 @@ export default {
   },
   mounted() {
     this.id = this.$route.query.id;
+    this.flag = this.$route.query.flag;
     this.getNewaDetail();
   },
   watch: {
-    $route:{
-        handler() {
-            this.id = this.$route.query.id;
-            this.getNewaDetail();
-        },
-        //深度监听，同时也可监听到param参数变化
-        deep: true,
+    $route: {
+      handler() {
+        this.id = this.$route.query.id;
+        this.getNewaDetail();
+      },
+      //深度监听，同时也可监听到param参数变化
+      deep: true
     }
   },
   computed: {}
@@ -99,8 +109,7 @@ export default {
 .newsTime {
   font-size: 12px;
   color: #a2a2a2;
-  text-align: end;
-  margin-bottom: 50px;
+  margin: 20px 0;
 }
 .newsContent {
   text-indent: 2em;

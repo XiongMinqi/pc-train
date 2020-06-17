@@ -10,6 +10,9 @@
       <div class="btn">
         <el-button type="primary" @click="chooseClass">开始筛选</el-button>
       </div>
+      <div class="btn">
+        <el-button type="primary" @click="wrongQuestion">错题练习</el-button>
+      </div>
     </div>
     <div v-if="errorList.length>0">
       <div v-for="(item,index) in errorList" :key="index">
@@ -65,79 +68,79 @@
     </div>
     <el-dialog title="错题详情" :visible.sync="dialogFormVisible" @close="close">
       <!-- <div> -->
-        <div v-loading="dialogloading">
-          <div class="detail">
-            <div class="questiontype" v-for="(itm,idx) in questionType" :key="idx">
-              <span v-if="questionDetail.type == itm.key">【{{itm.value}}】</span>
-            </div>
-            <div class="content">{{questionDetail.content}}</div>
+      <div v-loading="dialogloading">
+        <div class="detail">
+          <div class="questiontype" v-for="(itm,idx) in questionType" :key="idx">
+            <span v-if="questionDetail.type == itm.key">【{{itm.value}}】</span>
           </div>
-          <!-- 选项 -->
-          <div>
-            <!-- 单选 -->
-            <div v-if="questionDetail.type==0">
-              <div v-for="(item,index) in questionDetail.options" :key="index">
-                <el-radio-group v-model="radio">
-                  <el-radio :label="item.order">
-                    <span v-if="item.order === 0">A、</span>
-                    <span v-if="item.order === 1">B、</span>
-                    <span v-if="item.order === 2">C、</span>
-                    <span v-if="item.order === 3">D、</span>
-                    {{item.content}}
-                  </el-radio>
-                </el-radio-group>
-              </div>
-            </div>
-            <!-- 判断 -->
-            <div v-if="questionDetail.type==3">
+          <div class="content">{{questionDetail.content}}</div>
+        </div>
+        <!-- 选项 -->
+        <div>
+          <!-- 单选 -->
+          <div v-if="questionDetail.type==0">
+            <div v-for="(item,index) in questionDetail.options" :key="index">
               <el-radio-group v-model="radio">
-                <div style="padding:0 0 10px 0">
-                  <el-radio label="judge1">正确</el-radio>
-                </div>
-                <div>
-                  <el-radio label="judge2">错误</el-radio>
-                </div>
+                <el-radio :label="item.order">
+                  <span v-if="item.order === 0">A、</span>
+                  <span v-if="item.order === 1">B、</span>
+                  <span v-if="item.order === 2">C、</span>
+                  <span v-if="item.order === 3">D、</span>
+                  {{item.content}}
+                </el-radio>
               </el-radio-group>
             </div>
-            <!-- 多选 -->
-            <div v-if="questionDetail.type==1">
-              <div v-for="(item,index) in questionDetail.options" :key="index">
-                <el-checkbox-group v-model="checkList">
-                  <el-checkbox :label="item.content">
-                    <span v-if="item.order === 0">A、</span>
-                    <span v-if="item.order === 1">B、</span>
-                    <span v-if="item.order === 2">C、</span>
-                    <span v-if="item.order === 3">D、</span>
-                    <span v-if="item.order === 4">E、</span>
-                    <span v-if="item.order === 5">F、</span>
-                    {{item.content}}
-                  </el-checkbox>
-                </el-checkbox-group>
+          </div>
+          <!-- 判断 -->
+          <div v-if="questionDetail.type==3">
+            <el-radio-group v-model="radio">
+              <div style="padding:0 0 10px 0">
+                <el-radio label="judge1">正确</el-radio>
               </div>
-            </div>
-            <div v-if="questionDetail.type==2||questionDetail.type==4||questionDetail.type==5">
-              <el-input
-                type="textarea"
-                :autosize="{ minRows: 2, maxRows: 4}"
-                placeholder="请输入内容"
-                v-model="textarea"
-              ></el-input>
+              <div>
+                <el-radio label="judge2">错误</el-radio>
+              </div>
+            </el-radio-group>
+          </div>
+          <!-- 多选 -->
+          <div v-if="questionDetail.type==1">
+            <div v-for="(item,index) in questionDetail.options" :key="index">
+              <el-checkbox-group v-model="checkList">
+                <el-checkbox :label="item.content">
+                  <span v-if="item.order === 0">A、</span>
+                  <span v-if="item.order === 1">B、</span>
+                  <span v-if="item.order === 2">C、</span>
+                  <span v-if="item.order === 3">D、</span>
+                  <span v-if="item.order === 4">E、</span>
+                  <span v-if="item.order === 5">F、</span>
+                  {{item.content}}
+                </el-checkbox>
+              </el-checkbox-group>
             </div>
           </div>
-          <div v-if="disappear" style="display:flex;align-items: center;padding-top:20px">
-            <div>正确答案 :</div>
-            <div v-if="questionDetail.type==1" style="padding-left:10px;color:green">
-              <span v-for="(item,index) in questionDetail.answers" :key="index">
-                <span>{{item.content}}</span>
-              </span>
-            </div>
-            <div v-else style="padding-left:10px;color:green">{{questionDetail.answers[0].content}}</div>
+          <div v-if="questionDetail.type==2||questionDetail.type==4||questionDetail.type==5">
+            <el-input
+              type="textarea"
+              :autosize="{ minRows: 2, maxRows: 4}"
+              placeholder="请输入内容"
+              v-model="textarea"
+            ></el-input>
           </div>
         </div>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="submit">确 定</el-button>
+        <div v-if="disappear" style="display:flex;align-items: center;padding-top:20px">
+          <div>正确答案 :</div>
+          <div v-if="questionDetail.type==1" style="padding-left:10px;color:green">
+            <span v-for="(item,index) in questionDetail.answers" :key="index">
+              <span>{{item.content}}</span>
+            </span>
+          </div>
+          <div v-else style="padding-left:10px;color:green">{{questionDetail.answers[0].content}}</div>
         </div>
+      </div>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <el-button type="primary" @click="submit">确 定</el-button>
+      </div>
       <!-- </div> -->
     </el-dialog>
   </div>
@@ -214,6 +217,14 @@ export default {
       } else {
         this.dialogFormVisible = false;
       }
+    },
+    //错题组卷
+    wrongQuestion() {
+      this.$router.push({
+        name: "online",
+        path: "/online",
+        query: { flag: true }
+      });
     },
     //查看错题具体详情
     checkDetail(e) {
@@ -413,5 +424,8 @@ export default {
   padding: 20px 0;
   font-size: 17px;
   color: red;
+}
+.btn {
+  margin-right: 20px;
 }
 </style>
