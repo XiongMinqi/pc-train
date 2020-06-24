@@ -14,77 +14,88 @@
           <el-submenu index="2">
             <template slot="title">
               <i class="el-icon-s-data"></i>
+              <span slot="title">学习任务</span>
+            </template>
+            <el-menu-item-group>
+              <el-menu-item-group>
+                <template slot="title">任务</template>
+                <el-menu-item index="2-1" @click="goTo('/undoMission')">
+                  <i class="el-icon-notebook-1"></i>
+                  <span slot="title">待完成任务</span>
+                </el-menu-item>
+                <el-menu-item index="2-3" @click="goTo('/historyMission')">
+                  <i class="el-icon-edit"></i>
+                  <span slot="title">历史记录</span>
+                </el-menu-item>
+              </el-menu-item-group>
+            </el-menu-item-group>
+          </el-submenu>
+          <el-submenu index="3">
+            <template slot="title">
+              <i class="el-icon-s-data"></i>
             <span slot="title">我的积分</span>
             </template>
             <el-menu-item-group>
               <el-menu-item-group>
               <template slot="title">积分</template>
-              <el-menu-item index="2-1" @click="goTo('/myScore')">
+              <el-menu-item index="3-1" @click="goTo('/myScore')">
                 <i class="el-icon-notebook-1"></i>
                 <span slot="title">个人积分</span>
               </el-menu-item>
-              <el-menu-item index="2-3" @click="goTo('/scoreList')">
+              <el-menu-item index="3-2" @click="goTo('/scoreList')">
                 <i class="el-icon-edit"></i>
                 <span slot="title">积分排行</span>
               </el-menu-item>
             </el-menu-item-group>
             </el-menu-item-group>
           </el-submenu>
-          <el-menu-item index="3" @click="goTo('/onlineTest')">
+          <el-menu-item index="4" @click="goTo('/onlineTest')">
             <i class="el-icon-edit-outline"></i>
             <span slot="title">在线考试</span>
           </el-menu-item>
-          <!-- <el-menu-item index="8" @click="goTo('/independentTest')">
-            <i class="el-icon-edit"></i>
-            <span slot="title">我的课程</span>
-          </el-menu-item> -->
-          <el-submenu index="8">
+          <el-submenu index="5">
             <template slot="title">
               <i class="el-icon-s-promotion"></i>
               <span slot="title">我的课程</span>
             </template>
             <el-menu-item-group>
               <template slot="title">课程</template>
-              <el-menu-item index="8-1" @click="goTo('/classList')">
+              <el-menu-item index="5-1" @click="goTo('/classList')">
                 <i class="el-icon-notebook-1"></i>
                 <span slot="title">课程表</span>
               </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
-          <el-submenu index="4">
+          <el-submenu index="6">
             <template slot="title">
               <i class="el-icon-s-promotion"></i>
               <span slot="title">在线学习</span>
             </template>
             <el-menu-item-group>
               <template slot="title">学习</template>
-              <el-menu-item index="4-1" @click="goTo('/courseware')">
+              <el-menu-item index="6-1" @click="goTo('/courseware')">
                 <i class="el-icon-notebook-1"></i>
                 <span slot="title">电子课件</span>
               </el-menu-item>
-              <!-- <el-menu-item index="4-2" @click="goTo('/material')">
-                <i class="el-icon-notebook-2"></i>
-                <span slot="title">电子教材</span>
-              </el-menu-item> -->
-              <el-menu-item index="4-3" @click="goTo('/online')">
+              <el-menu-item index="6-3" @click="goTo('/online')">
                 <i class="el-icon-edit"></i>
                 <span slot="title">在线练习</span>
               </el-menu-item>
-              <el-menu-item index="4-4" @click="goTo('/studyRecord')">
+              <el-menu-item index="6-4" @click="goTo('/studyRecord')">
                 <i class="el-icon-tickets"></i>
                 <span slot="title">学习记录</span>
               </el-menu-item>
-              <el-menu-item index="4-5" @click="goTo('/practiseRecord')">
+              <el-menu-item index="6-5" @click="goTo('/practiseRecord')">
                 <i class="el-icon-document"></i>
                 <span slot="title">练习记录</span>
               </el-menu-item>
             </el-menu-item-group>
           </el-submenu>
-          <el-menu-item index="5" @click="goTo('/mistake')">
+          <el-menu-item index="7" @click="goTo('/mistake')">
             <i class="el-icon-document"></i>
             <span slot="title">错题集选</span>
           </el-menu-item>
-          <el-menu-item index="6" @click="goTo('/grade')">
+          <el-menu-item index="8" @click="goTo('/grade')">
             <i class="el-icon-document-copy"></i>
             <span slot="title">成绩统计</span>
           </el-menu-item>

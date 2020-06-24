@@ -101,6 +101,32 @@ const routes = [{
     }]
   },
   {
+    path: "/mission",
+    component: Home,
+    children: [{
+      path: "",
+      name: "mission",
+      component: () => import( /* webpackChunkName: 'mission' */ "../views/mission/mission.vue"),
+      redirect: "/undoMission",
+      children: [{
+          path: "/undoMission",
+          name: "undoMission",
+          component: () => import( /* webpackChunkName: 'undoMission' */ "../views/mission/undoMission.vue")
+        },
+        {
+          path: "/historyMission",
+          name: "historyMission",
+          component: () => import( /* webpackChunkName: 'historyMission' */ "../views/mission/historyMission.vue")
+        },
+        {
+          path: "/doMission",
+          name: "doMission",
+          component: () => import( /* webpackChunkName: 'doMission' */ "../views/mission/doMission.vue")
+        }
+      ]
+    }]
+  },
+  {
     path: "/onlineTest",
     component: Home,
     children: [{

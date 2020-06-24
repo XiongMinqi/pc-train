@@ -1,7 +1,16 @@
 <template>
   <div>
-    <div class="text">最近三十天的考试记录</div>
-    <div id="chartLineBox" style="width: 90%;height: 50vh;"></div>
+    <div class="flex aligh-center">
+      <div>
+        <el-select v-model="type" placeholder="请选择时间范围">
+          <el-option v-for="item in listType" :key="item.key" :value="item.value"></el-option>
+        </el-select>
+      </div>
+      <div class="btn">
+        <el-button type="primary" @click="getlist">开始筛选</el-button>
+      </div>
+    </div>
+    <div id="chartLineBox" style="width: 90%;height: 49vh;"></div>
   </div>
 </template>
 
@@ -19,6 +28,57 @@ export default {
       time: [],
       score: [],
       totalScore: [],
+      type: "本月",
+      listType: [
+        {
+          key: 1,
+          value: "今天"
+        },
+        {
+          key: 2,
+          value: "昨天"
+        },
+        {
+          key: 3,
+          value: "近7天"
+        },
+        {
+          key: 4,
+          value: "近30天"
+        },
+        {
+          key: 5,
+          value: "本月"
+        },
+        {
+          key: 6,
+          value: "上一月"
+        },
+        {
+          key: 7,
+          value: "本季度"
+        },
+        {
+          key: 8,
+          value: "上季度"
+        },
+        {
+          key: 9,
+          value: "本年"
+        },
+        {
+          key: 10,
+          value: "上年"
+        },
+        {
+          key: 11,
+          value: "本周"
+        },
+        {
+          key: 12,
+          value: "上周"
+        }
+      ],
       page: 1,
       limit: 30,
       option: {}
@@ -26,47 +86,37 @@ export default {
   },
   components: {},
   methods: {
-    //转换时间
-    timeFormat(time) {
-      var clock = "";
-      var d = new Date(time);
-      var year = d.getFullYear(); //年
-      var month = d.getMonth() + 1; //月
-      var day = d.getDate(); //日
-      var hh = d.getHours(); //时
-      var mm = d.getMinutes(); //分
-      var ss = d.getSeconds(); //秒
-      clock += year + "/";
-      if (month < 10) clock += "0";
-      clock += month + "/";
-      if (day < 10) clock += "0";
-      clock += day + " ";
-      if (hh < 10) clock += "0";
-      clock += hh + ":";
-      if (mm < 10) clock += "0";
-      clock += mm + ":";
-      if (ss < 10) clock += "0";
-      clock += ss;
-      return clock;
-    },
-    getTestExam() {
+    getlist() {
+      let data = {
+        timeRange: this.type
+      };
       this.$grade
-        .getExam(this.page, this.limit, this.status)
+        .getTongji(data)
         .then(res => {
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
             this.setOption();
-            // console.log(res);
-            // this.allTestList = res.data.data;
-            res.data.data.map(item => {
-              item.beginTime = this.timeFormat(item.beginTime);
-              this.paperName.push(item.paperName);
-              this.time.push(item.beginTime);
-              this.score.push(item.score);
-              this.totalScore.push(item.totalScore);
-            });
+            if (res.data.data.length > 0) {
+              this.paperName = [];
+              this.score = [];
+              this.totalScore = [];
+              res.data.data.map(item => {
+                this.paperName.push(item.paperName);
+                this.score.push(item.actualScore);
+                this.totalScore.push(item.totalScore);
+              });
+            } else {
+              this.paperName = [];
+              this.score = [];
+              this.totalScore = [];
+              this.$message({
+                message: this.type + "暂无考试数据",
+                type: "warning"
+              });
+            }
           } else {
             this.$message({
               message: res.data.msg,
@@ -75,7 +125,8 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          this.loading = false;
+          // console.log(err);
         });
     },
     setOption() {
@@ -193,7 +244,8 @@ export default {
     }
   },
   mounted() {
-    this.getTestExam();
+    // this.getTestExam();
+    this.getlist();
   },
   watch: {
     //观察option的变化
@@ -244,9 +296,16 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-.text {
-  padding-left: 200px;
-  font-size: 18px;
-  color:blue;
+.flex {
+  display: flex;
+}
+.aligh-center {
+  align-items: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.btn {
+  margin-left: 20px;
 }
 </style>

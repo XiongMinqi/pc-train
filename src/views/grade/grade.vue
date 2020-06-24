@@ -138,11 +138,35 @@ export default {
           this.loading=false;
           // console.log(err);
         });
+    },
+    getlist(){
+      let data = {
+        timeRange:"本月"
+      }
+      this.$grade.getTongji(data)
+       .then(res => {
+          this.loading=false;
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
+          }
+        })
+        .catch(err => {
+          this.loading=false;
+          // console.log(err);
+        });
     }
   },
   mounted() {
     this.getSubjectName();
     this.getStatistics();
+    this.getlist();
   },
   watch: {},
   computed: {}

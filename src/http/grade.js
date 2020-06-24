@@ -143,5 +143,9 @@ export default {
     //查看全部评论概况
     getTotalCommentsRank(id){
         return axios.get(`planCourse/analyzeComment?planCourseId=${id}`)
+    },
+    //获取考试统计数据
+    getTongji(data){
+        return axios.post('me/listMyScoreLineChartItem',data)
     }
 }

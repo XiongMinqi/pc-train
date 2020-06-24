@@ -16,12 +16,12 @@
         </div>
         <div class="logintime">
           <div class="name">我的积分 :</div>
-          <div class="content">0 分</div>
+          <div class="content">{{totalScore}} 分</div>
         </div>
       </div>
     </div>
     <div class="classes" @click="classes">
-      <div>我的课程进度</div>
+      <div>我的课程进度(本周)</div>
       <div>
         <div class="logintime">
           <div class="name">已学习 :</div>
@@ -94,7 +94,7 @@
         </div>
       </div>
     </div>
-    <div style="text-align: center;">版本号:20.06.16.15</div>
+    <div style="text-align: center;">版本号:20.06.23.18</div>
   </div>
   <!-- </el-table> -->
 </template>
@@ -112,9 +112,10 @@ export default {
       empty: 0,
       totalStudyTime: 0,
       loading: true,
-      alreadyStudy:10,
-      unstudy:3,
-      studypercent:60
+      alreadyStudy: 10,
+      unstudy: 3,
+      studypercent: 0,
+      totalScore: 0
     };
   },
   components: {},
@@ -160,6 +161,9 @@ export default {
         .gettestNumber()
         .then(res => {
           this.loading = false;
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
           if (res.data.code === 0) {
             this.total = res.data.data[0].totalCount;
             this.totalNum = res.data.data[0].totalCount;
@@ -207,10 +211,66 @@ export default {
         .catch(err => {
           this.loading = false;
         });
+    },
+    //获取我的课程进度
+    getCourse() {
+      let data = {
+        timeRange: 1
+      };
+      this.$api
+        .getCouese(data)
+        .then(res => {
+          this.loading = false;
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            let total = res.data.data[0].total;
+            this.alreadyStudy = res.data.data[0].done;
+            this.unstudy = total - res.data.data[0].done;
+            if (this.alreadyStudy > 0 && total > 0) {
+              this.studypercent = Math.ceil((this.alreadyStudy / total) * 100);
+            } else {
+              this.studypercent = 0;
+            }
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
+          }
+        })
+        .catch(err => {
+          this.loading = false;
+        });
+    },
+    //获取总积分
+    getTotalScore() {
+      this.$api
+        .getTotalScore()
+        .then(res => {
+          this.loading = false;
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            this.totalScore = res.data.data[0].point;
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
+          }
+        })
+        .catch(err => {
+          this.loading = false;
+        });
     }
   },
   mounted() {
     this.getTestNumber();
+    this.getCourse();
+    this.getTotalScore();
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     this.userInfo.lastLoginTime = this.timeFormat(this.userInfo.lastLoginTime);
     if (this.userInfo !== {}) {
@@ -222,10 +282,8 @@ export default {
         if (res.data.code === 1000) {
           this.$router.push({ name: "login", path: "/login" });
         }
-        // console.log(res);
         if (res.data.code === 0) {
           this.testInfo = res.data.data[0];
-          // console.log(this.testInfo);
         } else {
           this.$message({
             message: res.data.msg,

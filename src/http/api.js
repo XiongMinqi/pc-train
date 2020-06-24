@@ -108,5 +108,25 @@ export default {
     //新闻公告
     getNews(data){
         return axios.post("me/pageNews",data)
-    }
+    },
+    //首页课程进度
+    getCouese(data){
+        return axios.post('me/countTodoPlanCourse',data)
+    },
+    //首页获取总积分
+    getTotalScore(){
+        return axios.get("me/sumRewardPoint")
+    },
+    //待完成学习任务
+    getUndoMission(data){
+        return axios.post('me/listAssignment',data)
+    },
+    //获取课件
+    getCourseware(id){
+        return axios.get(`assignment/listCourseware?assignmentId=${id}`)
+    },
+    //获取练习题
+    getQuestion(id){
+        return axios.get(`assignment/listQuestion?assignmentId=${id}`)
+    },
 }
