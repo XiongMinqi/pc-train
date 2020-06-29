@@ -257,7 +257,7 @@ export default {
           if (res.data.code === 0) {
             this.$message({
               message: "练习提交成功",
-              type: "warning"
+              type: "success"
             });
             this.$router.push({ name: "undoMission", path: "/undoMission" });
           } else {
