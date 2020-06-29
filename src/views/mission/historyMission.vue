@@ -1,11 +1,82 @@
 <template>
-  <div>
-       <el-table :data="missionList" border style="width: 100%">
-      <el-table-column prop="requireLearnTime" label="要求学习时长" width="180"></el-table-column>
-      <el-table-column prop="requireRightCount" label="要求答对数量" width="180"></el-table-column>
-      <el-table-column prop="publishTime" label="发布时间"></el-table-column>
+  <div v-loading="loading">
+    <el-table :data="missionList" border style="width: 100%">
+      <el-table-column prop="name" label="任务名称" width="300"></el-table-column>
+      <el-table-column prop="requireLearnTime" label="要求学习时长/分钟" width="180"></el-table-column>
+      <el-table-column prop="requireRightCount" label="要求答对数量/道" width="180"></el-table-column>
+      <el-table-column prop="lastSubmitTime" label="最后提交时间"></el-table-column>
       <el-table-column prop="description" label="描述"></el-table-column>
+      <el-table-column fixed="right" label="操作" width="180">
+        <template slot-scope="scope">
+          <el-button @click="handleClick(scope.row)" type="primary">查看练习</el-button>
+        </template>
+      </el-table-column>
     </el-table>
+    <div>
+      <el-dialog
+        width="90%"
+        top="1vh"
+        class="dialogVisible"
+        title="练习详情"
+        :visible.sync="dialogVisible"
+        :modal-append-to-body="true"
+      >
+        <div v-loading="dialogLoading" class="paperInfo">
+          <div v-for="(item,index) in practiseList" :key="index">
+            <div class="title">
+              <div>
+                <div v-if="index<9">0{{index+1}}、</div>
+                <div v-else>{{index+1}}、</div>
+              </div>
+              <div style="width:60px" :class="item.type===4?'name':'public'">
+                <span v-if="item.type===0">【单选】</span>
+                <span v-if="item.type===1">【多选】</span>
+                <span v-if="item.type===2">【填空】</span>
+                <span v-if="item.type===3">【判断】</span>
+                <span v-if="item.type===4">【名词解释】</span>
+                <span v-if="item.type===5">【问答】</span>
+              </div>
+              <div style="width:88%">{{item.content}}</div>
+            </div>
+            <div>
+              <div class="flex aligh-center">
+                <div>学员答案</div>
+                <div class="answerDetail">
+                  <div v-if="answerList.length>0">{{answerList[index].content}}</div>
+                  <div v-else>该题暂未作答</div>
+                </div>
+              </div>
+              <div class="flex aligh-center">
+                <div>正确答案</div>
+                <div class="answerDetail">{{item.standardAnswerStr}}</div>
+              </div>
+              <div class="flex aligh-center">
+                <div>练习结果</div>
+                <div class="answerDetail" v-if="answerList.length>0">
+                  <div v-if="answerList[index].isRight===false" style="color:red">回答错误</div>
+                  <div v-if="answerList[index].isRight===true" style="color:green">回答正确</div>
+                </div>
+                <div class="answerDetail" v-else>暂无结果</div>
+              </div>
+            </div>
+          </div>
+          <div slot="footer" class="dialog-footer Btn">
+            <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+          </div>
+        </div>
+      </el-dialog>
+    </div>
+    <div class="block">
+      <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page="currentPage"
+        :page-sizes="[10,15,20,25,30]"
+        :page-size="100"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="total"
+      ></el-pagination>
+    </div>
   </div>
 </template>
 
@@ -17,17 +88,92 @@ export default {
       page: 1,
       limit: 10,
       missionList: [],
-      total: 0
+      total: 0,
+      dialogVisible: false,
+      dialogLoading: true,
+      practiseList: [],
+      answerList: []
     };
   },
   components: {},
   methods: {
+    handleClick(e) {
+      console.log(e);
+      this.dialogVisible = true;
+      this.dialogLoading = true;
+      this.getAnswer(e.id);
+      this.getQuestiones(e.id);
+    },
+    handleSizeChange(val) {
+      this.loading = true;
+      this.page = 1;
+      this.limit = val;
+      this.getUndoMission();
+      // console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
+      this.loading = true;
+      // console.log(`当前页: ${val}`);
+      this.page = val;
+      // console.log(this.offset, this.limit);
+      this.getUndoMission();
+    },
+    getAnswer(e) {
+      this.$api
+        .getAnswer(e)
+        .then(res => {
+          this.dialogLoading = false;
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            this.answerList = res.data.data;
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
+          }
+        })
+        .catch(err => {
+          this.dialogLoading = false;
+          this.$message({
+            message: "获取失败",
+            type: "warning"
+          });
+        });
+    },
+    getQuestiones(e) {
+      this.$api
+        .getQuestion(e)
+        .then(res => {
+          this.dialogLoading = false;
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            this.practiseList = res.data.data;
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
+          }
+        })
+        .catch(err => {
+          this.dialogLoading = false;
+          this.$message({
+            message: "获取失败",
+            type: "warning"
+          });
+        });
+    },
     getUndoMission() {
       let data = {
         limit: this.limit,
         page: this.page,
         object: {
-          isRunning: null
+          isRunning: false
         }
       };
       this.$api
@@ -65,8 +211,36 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-.else{
+.flex {
+  display: flex;
+}
+.aligh-center {
+  align-items: center;
+}
+.justify-between {
+  justify-content: space-between;
+}
+.else {
   text-align: center;
   padding: 20px;
+}
+.block {
+  text-align: center;
+  margin-top: 20px;
+}
+.title {
+  display: flex;
+  padding-bottom: 10px;
+  padding-top: 10px;
+}
+.paperInfo {
+  min-height: 50vh;
+}
+.Btn {
+  margin-top: 50px;
+  text-align: center;
+}
+.answerDetail {
+  margin-left: 20px;
 }
 </style>

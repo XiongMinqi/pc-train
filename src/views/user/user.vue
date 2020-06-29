@@ -158,7 +158,7 @@ export default {
       originalPassword: "",
       newPassword: "",
       confirmPassword: "",
-      loading:true
+      loading: true
     };
   },
   components: {},
@@ -223,11 +223,12 @@ export default {
       console.log(this.originalPassword);
       console.log(this.newPassword);
       console.log(this.confirmPassword);
-      this.$axios
-        .post("/people/resetMyPassword", {
-          newPassword: this.newPassword,
-          oldPassword: this.originalPassword
-        })
+      let data = {
+        newPassword: this.newPassword,
+        oldPassword: this.originalPassword
+      };
+      this.$api
+        .changePassword(data)
         .then(res => {
           console.log(res);
           if (res.data.code === 1000) {
@@ -250,7 +251,7 @@ export default {
       this.$api
         .getUser()
         .then(res => {
-          this.loading=false;
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -269,7 +270,7 @@ export default {
           }
         })
         .catch(err => {
-          this.loading=false;
+          this.loading = false;
           console.log(err);
         });
     },
@@ -278,7 +279,7 @@ export default {
       this.$api
         .getSubject()
         .then(res => {
-          this.loading=false;
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -309,7 +310,7 @@ export default {
           }
         })
         .catch(err => {
-          this.loading=false;
+          this.loading = false;
           console.log(err);
         });
     },

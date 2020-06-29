@@ -23,9 +23,13 @@
                   <i class="el-icon-notebook-1"></i>
                   <span slot="title">待完成任务</span>
                 </el-menu-item>
-                <el-menu-item index="2-3" @click="goTo('/historyMission')">
+                <el-menu-item index="2-2" @click="goTo('/historyMission')">
                   <i class="el-icon-edit"></i>
                   <span slot="title">历史记录</span>
+                </el-menu-item>
+                <el-menu-item index="2-3" @click="goTo('/statistMission')">
+                  <i class="el-icon-s-data"></i>
+                  <span slot="title">任务统计</span>
                 </el-menu-item>
               </el-menu-item-group>
             </el-menu-item-group>
@@ -95,8 +99,8 @@
             <i class="el-icon-document"></i>
             <span slot="title">错题集选</span>
           </el-menu-item>
-          <el-menu-item index="8" @click="goTo('/grade')">
-            <i class="el-icon-document-copy"></i>
+          <el-menu-item index="8" @click="goTo('/grade')">           
+            <i class="el-icon-s-data"></i>
             <span slot="title">成绩统计</span>
           </el-menu-item>
           <el-menu-item index="9" @click="goTo('/testRecords')">

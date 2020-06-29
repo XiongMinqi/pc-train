@@ -247,6 +247,7 @@ export default {
               }
             });
             this.publicList = this.allList;
+            console.log(this.publicList);
           } else {
             this.$message({
               message: res.data.msg,

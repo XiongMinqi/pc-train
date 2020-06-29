@@ -33,13 +33,6 @@
           :key="index"
           @click="checkcourse(item)"
         >
-          <!-- <el-popover
-            placement="top-end"
-            :title="item.name"
-            width="200"
-            trigger="hover"
-            :content="item.description"
-          >-->
           <div class="courseware" slot="reference">
             <div>
               <div v-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
@@ -81,7 +74,6 @@
               </div>
             </div>
           </div>
-          <!-- </el-popover> -->
         </div>
       </div>
       <div v-if="pictureList.length>0">
@@ -92,13 +84,6 @@
           :key="index"
           @click="checkcourse(item)"
         >
-          <!-- <el-popover
-            placement="end"
-            :title="item.name"
-            width="200"
-            trigger="hover"
-            :content="item.description"
-          >-->
           <div class="courseware" slot="reference">
             <div>
               <div v-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
@@ -510,8 +495,6 @@ export default {
 }
 .classname {
   margin-right: 20px;
-}
-.btn {
 }
 .course {
   display: inline-block;

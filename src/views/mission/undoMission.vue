@@ -55,80 +55,7 @@ export default {
       limit: 6,
       dialogVisible: false,
       missiondetail: {},
-      missionList: [
-        {
-          createTime: "2020-06-22T02:55:28.315Z",
-          description: "description",
-          id: 5,
-          lastTime: 2345,
-          name: "作业1",
-          planId: 0,
-          publishTime: "2020-06-22T02:55:28.315Z",
-          requireLearnTime: 20,
-          requireRightCount: 10,
-          running: false
-        },
-        {
-          createTime: "2020-06-22T02:55:28.315Z",
-          description: "description",
-          id: 5,
-          lastTime: 1056,
-          name: "作业2",
-          planId: 0,
-          publishTime: "2020-06-22T02:55:28.315Z",
-          requireLearnTime: 20,
-          requireRightCount: 10,
-          running: true
-        },
-        {
-          createTime: "2020-06-22T02:55:28.315Z",
-          description: "description",
-          id: 5,
-          lastTime: 30,
-          name: "作业3",
-          planId: 0,
-          publishTime: "2020-06-22T02:55:28.315Z",
-          requireLearnTime: 20,
-          requireRightCount: 10,
-          running: true
-        },
-        {
-          createTime: "2020-06-22T02:55:28.315Z",
-          description: "description",
-          id: 5,
-          lastTime: 1056,
-          name: "作业2",
-          planId: 0,
-          publishTime: "2020-06-22T02:55:28.315Z",
-          requireLearnTime: 20,
-          requireRightCount: 10,
-          running: false
-        },
-        {
-          createTime: "2020-06-22T02:55:28.315Z",
-          description: "description",
-          id: 5,
-          lastTime: 30,
-          name: "作业3",
-          planId: 0,
-          publishTime: "2020-06-22T02:55:28.315Z",
-          requireLearnTime: 20,
-          requireRightCount: 10,
-          running: false
-        },
-        {
-          createTime: "2020-06-22T02:55:28.315Z",
-          description: "description",
-          id: 5,
-          lastTime: 5210,
-          name: "作业4",
-          planId: 0,
-          publishTime: "2020-06-22T02:55:28.315Z",
-          requireLearnTime: 20,
-          requireRightCount: 10,
-          running: true
-        }
-      ],
+      missionList: [],
       total: 0
     };
   },
@@ -204,7 +131,7 @@ export default {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
-            // this.missionList = res.data.data;
+            this.missionList = res.data.data;
             this.total = res.data.count;
             this.missionList.map(item => {
               let msg = this.timeChange(item.lastTime);
@@ -260,7 +187,7 @@ export default {
   border-left: 3px solid green;
 }
 .border-false {
-  border-left: 3px solid red;
+  border-left: 3px solid grey;
 }
 .cardsDetail {
   display: inline-block;

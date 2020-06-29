@@ -73,6 +73,10 @@ export default {
     logout() {
         return axios.post('logout')
     },
+    //修改密码
+    changePassword(data){
+        return axios.post("people/resetMyPassword",data)
+    },
     //手机号是否重复
     checkNumber() {
         return axios.get('people/isPhoneNumberDuplicate')
@@ -129,4 +133,20 @@ export default {
     getQuestion(id){
         return axios.get(`assignment/listQuestion?assignmentId=${id}`)
     },
+    //提交学习任务课件时长
+    submitTime(data){
+        return axios.post("me/learnAssignmentCourseware",data)
+    },
+    //提交练习题
+    submitPratise(data){
+        return axios.post("me/submitAssignmentAnswer",data)
+    },
+    //获取提交练习答案
+    getAnswer(id){
+        return axios.get(`me/listAssignmentAnswers?assignmentId=${id}`)
+    },
+    //任务统计
+    statistmission(data){
+        return axios.post("me/listMyAssignmentLineChartItem",data)
+    }
 }
