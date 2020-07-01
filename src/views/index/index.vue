@@ -46,7 +46,7 @@
         <el-col :span="6">
           <div class="grid-content bg-purple" @click="testPaper(1)">
             <div>
-              <img src="../../assets/img/myscore.svg" alt />
+              <img src="../../assets/img/all.png" alt />
             </div>
             <div>{{total}}份</div>
             <div>全部试卷</div>
@@ -55,7 +55,7 @@
         <el-col :span="6">
           <div class="grid-content bg-purple-light" @click="testPaper(2)">
             <div>
-              <img src="../../assets/img/myscore.svg" alt />
+              <img src="../../assets/img/pass.png" alt />
             </div>
             <div>{{pass}}份</div>
             <div>及格试卷</div>
@@ -64,7 +64,7 @@
         <el-col :span="6">
           <div class="grid-content bg-purple" @click="testPaper(3)">
             <div>
-              <img src="../../assets/img/myscore.svg" alt />
+              <img src="../../assets/img/fail.png" alt />
             </div>
             <div>{{fail}}份</div>
             <div>不及格试卷</div>
@@ -73,7 +73,7 @@
         <el-col :span="6">
           <div class="grid-content bg-purple-light" @click="testPaper(4)">
             <div>
-              <img src="../../assets/img/myscore.svg" alt />
+              <img src="../../assets/img/cry.png" alt />
             </div>
             <div>{{empty}}份</div>
             <div>空白试卷</div>

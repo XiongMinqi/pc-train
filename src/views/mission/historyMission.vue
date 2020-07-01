@@ -38,6 +38,23 @@
               </div>
               <div style="width:88%">{{item.content}}</div>
             </div>
+            <div v-if="item.type===0||item.type===1" style="padding-bottom:10px">
+                <div v-for="(itm,idx) in item.options" :key="idx">
+                  <div class="flex aligh-center" style="padding-left:10px">
+                    <div v-if="itm.order===0">A.</div>
+                    <div v-if="itm.order===1">B.</div>
+                    <div v-if="itm.order===2">C.</div>
+                    <div v-if="itm.order===3">D.</div>
+                    <div v-if="itm.order===4">E.</div>
+                    <div v-if="itm.order===5">F.</div>
+                    <div>{{itm.content}}</div>
+                  </div>
+                </div>
+            </div>
+            <div v-if="item.type===3" style="padding-bottom:10px">
+                <div style="padding-left:10px">正确</div>
+                <div style="padding-left:10px">错误</div>
+            </div>
             <div>
               <div class="flex aligh-center">
                 <div>学员答案</div>

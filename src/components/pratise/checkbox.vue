@@ -104,7 +104,7 @@ export default {
   mounted() {
     this.list = this.options[this.index];
     let answerDetail = this.answer[this.index];
-    if (answerDetail) {
+    if (answerDetail.content) {
       this.$store.state.practiseList[this.list.assignmentQuestionId] =
         answerDetail.content;
       let arr = answerDetail.content.split("");
