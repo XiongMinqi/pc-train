@@ -174,12 +174,6 @@ const routes = [{
           component: () => import( /* webpackChunkName: 'courseware' */ "../views/study/courseware.vue")
         },
         {
-          path: "/material",
-          name: "material",
-          // component: resolve => (require(["../views/study/material.vue"], resolve))
-          component: () => import( /* webpackChunkName: 'material' */ "../views/study/material.vue")
-        },
-        {
           path: "/online",
           name: "online",
           // component: resolve => (require(["../views/study/online.vue"], resolve))

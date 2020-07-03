@@ -116,6 +116,7 @@ export default {
   methods: {
     handleClick(e) {
       console.log(e);
+      this.practiseList = [];
       this.dialogVisible = true;
       this.dialogLoading = true;
       this.getAnswer(e.id);

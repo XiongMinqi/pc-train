@@ -7,6 +7,7 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
+    "@liripeng/vue-audio-player": "^1.0.6",
     "axios": "^0.19.2",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "core-js": "^3.6.4",

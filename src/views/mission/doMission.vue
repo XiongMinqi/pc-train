@@ -14,27 +14,30 @@
               <div class="courseware" slot="reference">
                 <div>
                   <div v-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
-                    <img src="../../assets/icon/word.png" alt />
+                    <img src="../../assets/img/word.png" alt />
                   </div>
                   <div v-else-if="item.fileSuffix == '.xls' || item.fileSuffix == '.xlsx'">
-                    <img src="../../assets/icon/excel.png" alt />
+                    <img src="../../assets/img/excel.png" alt />
                   </div>
                   <div v-else-if="item.fileSuffix == '.ppt' || item.fileSuffix == '.pptx'">
-                    <img src="../../assets/icon/ppt.png" alt />
+                    <img src="../../assets/img/ppt.png" alt />
                   </div>
                   <div v-else-if="item.fileSuffix == '.mp4'">
-                    <img src="../../assets/icon/movie.png" alt />
+                    <img src="../../assets/img/movie.png" alt />
                   </div>
                   <div v-else-if="item.fileSuffix == '.pdf'">
-                    <img src="../../assets/icon/pdf.png" alt />
+                    <img src="../../assets/img/pdf.png" alt />
+                  </div>
+                  <div v-else-if="item.fileSuffix == '.mp3'|| item.fileSuffix == '.wma'">
+                    <img src="../../assets/img/audio.png" alt />
                   </div>
                   <div
                     v-else-if="item.fileSuffix == '.jpg'||item.fileSuffix == '.png'||item.fileSuffix == '.gif'||item.fileSuffix == '.tif'||item.fileSuffix == '.psd'||item.fileSuffix == '.dng'"
                   >
-                    <img src="../../assets/icon/picture.png" alt />
+                    <img src="../../assets/img/picture.png" alt />
                   </div>
                   <div v-else>
-                    <img src="../../assets/icon/other.png" alt />
+                    <img src="../../assets/img/other.png" alt />
                   </div>
                 </div>
                 <div>
@@ -65,27 +68,30 @@
               <div class="courseware" slot="reference">
                 <div>
                   <div v-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
-                    <img src="../../assets/icon/word.png" alt />
+                    <img src="../../assets/img/word.png" alt />
                   </div>
                   <div v-else-if="item.fileSuffix == '.xls' || item.fileSuffix == '.xlsx'">
-                    <img src="../../assets/icon/excel.png" alt />
+                    <img src="../../assets/img/excel.png" alt />
                   </div>
                   <div v-else-if="item.fileSuffix == '.ppt' || item.fileSuffix == '.pptx'">
-                    <img src="../../assets/icon/ppt.png" alt />
+                    <img src="../../assets/img/ppt.png" alt />
                   </div>
                   <div v-else-if="item.fileSuffix == '.mp4'">
-                    <img src="../../assets/icon/movie.png" alt />
+                    <img src="../../assets/img/movie.png" alt />
+                  </div>
+                  <div v-else-if="item.fileSuffix == '.mp3'|| item.fileSuffix == '.wma'">
+                    <img src="../../assets/img/audio.png" alt />
                   </div>
                   <div v-else-if="item.fileSuffix == '.pdf'">
-                    <img src="../../assets/icon/pdf.png" alt />
+                    <img src="../../assets/img/pdf.png" alt />
                   </div>
                   <div
                     v-else-if="item.fileSuffix == '.jpg'||item.fileSuffix == '.png'||item.fileSuffix == '.gif'||item.fileSuffix == '.tif'||item.fileSuffix == '.psd'||item.fileSuffix == '.dng'"
                   >
-                    <img src="../../assets/icon/picture.png" alt />
+                    <img src="../../assets/img/picture.png" alt />
                   </div>
                   <div v-else>
-                    <img src="../../assets/icon/other.png" alt />
+                    <img src="../../assets/img/other.png" alt />
                   </div>
                 </div>
                 <div>

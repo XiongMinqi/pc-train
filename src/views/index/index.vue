@@ -94,7 +94,7 @@
         </div>
       </div>
     </div>
-    <div style="text-align: center;">版本号:20.06.29.17</div>
+    <div style="text-align: center;">版本号:20.07.03.18</div>
   </div>
   <!-- </el-table> -->
 </template>
@@ -112,8 +112,8 @@ export default {
       empty: 0,
       totalStudyTime: 0,
       loading: true,
-      alreadyStudy: 10,
-      unstudy: 3,
+      alreadyStudy: 0,
+      unstudy: 0,
       studypercent: 0,
       totalScore: 0
     };

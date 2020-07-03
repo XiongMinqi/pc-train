@@ -17,7 +17,7 @@ axios.interceptors.request.use(
 )
 const isProduction = process.env.NODE_ENV === "production"
 // 接口基础路径
-axios.defaults.baseURL = isProduction ? "http://39.104.70.60:8080" : ""
+axios.defaults.baseURL = isProduction ? "./" : ""
 export default {
     //获取已提交的考试信息
     submitExam() {
@@ -147,5 +147,9 @@ export default {
     //获取考试统计数据
     getTongji(data){
         return axios.post('me/listMyScoreLineChartItem',data)
+    },
+    //删除错题
+    deleteMistake(id){
+        return axios.get(`me/deleteWrongQuestionSet?questionId=${id}`)
     }
 }

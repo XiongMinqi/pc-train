@@ -49,7 +49,8 @@
             </div>
           </div>
           <div>
-            <el-button type="primary" round @click="checkDetail(item)">错题重做</el-button>
+            <div style="margin-bottom:10px"><el-button type="primary" round size="mini" @click="checkDetail(item)">错题重做</el-button></div>
+            <div><el-button type="danger" round size="mini" @click="deleteQuestion(item)">删除错题</el-button></div>
           </div>
         </div>
       </div>
@@ -217,6 +218,34 @@ export default {
       } else {
         this.dialogFormVisible = false;
       }
+    },
+    //删除错题
+    deleteQuestion(e){
+      this.$grade.deleteMistake(e.id)
+      .then(res => {
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            this.$message({
+              message:"删除成功",
+              type:"success"
+            })
+             this.loading = true;
+            this.getErrorList();
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
+          }
+        })
+        .catch(err => {
+          this.$message({
+            message:"获取失败",
+            type:"warning"
+          })
+        });
     },
     //错题组卷
     wrongQuestion() {

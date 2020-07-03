@@ -4,7 +4,7 @@
       <el-col :span="12">
         <el-menu default-active="1" @open="handleOpen" @close="handleClose" background-color="#d3dce6" unique-opened="true">
           <el-menu-item index="1" @click="goTo('/index')">
-            <i class="el-icon-menu"></i>
+            <i class="el-icon-s-home"></i>
             <span slot="title">首页</span>
           </el-menu-item>
           <el-menu-item index="10" @click="goTo('/news')">
@@ -13,7 +13,7 @@
           </el-menu-item>
           <el-submenu index="2">
             <template slot="title">
-              <i class="el-icon-s-data"></i>
+              <i class="el-icon-s-help"></i>
               <span slot="title">学习任务</span>
             </template>
             <el-menu-item-group>
@@ -24,7 +24,7 @@
                   <span slot="title">待完成任务</span>
                 </el-menu-item>
                 <el-menu-item index="2-2" @click="goTo('/historyMission')">
-                  <i class="el-icon-edit"></i>
+                  <i class="el-icon-tickets"></i>
                   <span slot="title">历史记录</span>
                 </el-menu-item>
                 <el-menu-item index="2-3" @click="goTo('/statistMission')">
@@ -36,7 +36,7 @@
           </el-submenu>
           <el-submenu index="3">
             <template slot="title">
-              <i class="el-icon-s-data"></i>
+              <i class="el-icon-cherry"></i>
             <span slot="title">我的积分</span>
             </template>
             <el-menu-item-group>
@@ -47,7 +47,7 @@
                 <span slot="title">个人积分</span>
               </el-menu-item>
               <el-menu-item index="3-2" @click="goTo('/scoreList')">
-                <i class="el-icon-edit"></i>
+                <i class="el-icon-s-data"></i>
                 <span slot="title">积分排行</span>
               </el-menu-item>
             </el-menu-item-group>
@@ -72,7 +72,7 @@
           </el-submenu>
           <el-submenu index="6">
             <template slot="title">
-              <i class="el-icon-s-promotion"></i>
+              <i class="el-icon-edit"></i>
               <span slot="title">在线学习</span>
             </template>
             <el-menu-item-group>
@@ -100,7 +100,7 @@
             <span slot="title">错题集选</span>
           </el-menu-item>
           <el-menu-item index="8" @click="goTo('/grade')">           
-            <i class="el-icon-s-data"></i>
+            <i class="el-icon-medal"></i>
             <span slot="title">成绩统计</span>
           </el-menu-item>
           <el-menu-item index="9" @click="goTo('/testRecords')">

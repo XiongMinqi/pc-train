@@ -157,6 +157,7 @@ export default {
     checkDetail(e) {
       if (e.submitId) {
         this.submitId = e.submitId;
+        this.paperDetail = {};
         this.paperDetail = e;
         console.log(this.submitId, this.paperDetail);
         // console.log("允许查看");
