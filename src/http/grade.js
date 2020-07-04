@@ -17,7 +17,7 @@ axios.interceptors.request.use(
 )
 const isProduction = process.env.NODE_ENV === "production"
 // 接口基础路径
-axios.defaults.baseURL = isProduction ? "./" : ""
+axios.defaults.baseURL = isProduction ? "../" : ""
 export default {
     //获取已提交的考试信息
     submitExam() {

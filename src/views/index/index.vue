@@ -94,7 +94,7 @@
         </div>
       </div>
     </div>
-    <div style="text-align: center;">版本号:20.07.03.18</div>
+    <div style="text-align: center;">版本号:20.07.04.10</div>
   </div>
   <!-- </el-table> -->
 </template>

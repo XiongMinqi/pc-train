@@ -52,7 +52,7 @@
                         <div v-if="index<9">0{{index+1}}、</div>
                         <div v-else>{{index+1}}、</div>
                       </div>
-                      <div style="width:60px" :class="item.type===4?'name':'public'">
+                      <div style="width:70px" :class="item.type===4?'name':'public'">
                         <span v-if="item.type===0">【单选】</span>
                         <span v-if="item.type===1">【多选】</span>
                         <span v-if="item.type===2">【填空】</span>
@@ -127,7 +127,7 @@
                   </div>
                   <div class="btn">
                     <el-button type="primary" @click="checkPaper">提交试卷</el-button>
-                    <el-button type="primary" @click="savePaper">测试用保存试卷</el-button>
+                    <!-- <el-button type="primary" @click="savePaper">测试用保存试卷</el-button> -->
                   </div>
                 </div>
 
