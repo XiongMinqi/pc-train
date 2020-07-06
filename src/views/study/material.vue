@@ -251,7 +251,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          //console.log(err);
         });
     },
     //转换时间
@@ -309,7 +309,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          //console.log(err);
         });
     },
     getAllLearn() {

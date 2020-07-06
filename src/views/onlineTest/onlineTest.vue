@@ -147,11 +147,11 @@ export default {
         })
         .catch(err => {
           this.loading = false;
-          console.log(err);
+          //console.log(err);
         });
     },
     showToast(e) {
-      console.log(e);
+      //console.log(e);
       if (e.status === 1) {
         this.$message({
           message: "考试还未开始，不能进入该场考试",

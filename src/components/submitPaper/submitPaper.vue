@@ -220,7 +220,6 @@ export default {
         .getSubmitPaper(this.submitId)
         .then(res => {
           this.loading=false;
-          console.log(res);
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -247,7 +246,6 @@ export default {
               }
             });
             this.publicList = this.allList;
-            console.log(this.publicList);
           } else {
             this.$message({
               message: res.data.msg,
@@ -257,7 +255,7 @@ export default {
         })
         .catch(err => {
           this.loading = false;
-          console.log(err);
+          //console.log(err);
         });
     },
     //查看全部
@@ -287,7 +285,6 @@ export default {
   },
   mounted() {
     this.getSubmitPaper();
-    console.log(this.paperDetail);
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     // console.log(this.userInfo);
   },
@@ -297,7 +294,7 @@ export default {
         this.submitId = newValue;
         this.getSubmitPaper();
         this.loading=true;
-        console.log(newValue, "submitid");
+        //console.log(newValue, "submitid");
       },
       deep: true
     },
@@ -305,7 +302,7 @@ export default {
       handler(newValue, oldValue) {
         this.loading=true;
         this.paperDetail = newValue;
-        console.log(newValue, "paperDetail");
+        //console.log(newValue, "paperDetail");
       },
       deep: true
     }
@@ -359,7 +356,7 @@ span {
   color: white;
 }
 .infinite-list {
-  height: 340px;
+  height: 50vh;
 }
 .title {
   display: flex;

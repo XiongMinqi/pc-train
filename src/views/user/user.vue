@@ -167,9 +167,9 @@ export default {
       this.imageUrl = URL.createObjectURL(file.raw);
     },
     handleAvatarFail(err, file, fileList) {
-      console.log(err);
-      console.log(file);
-      console.log(fileList);
+      // console.log(err);
+      // console.log(file);
+      // console.log(fileList);
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";
@@ -193,11 +193,11 @@ export default {
         id: this.userInfo.id,
         phoneNumber: this.telNumber
       };
-      console.log(data);
+      // console.log(data);
       this.$api
         .resetPersonalMsg(data)
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -215,14 +215,14 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     //重置密码
     submitPass() {
-      console.log(this.originalPassword);
-      console.log(this.newPassword);
-      console.log(this.confirmPassword);
+      // console.log(this.originalPassword);
+      // console.log(this.newPassword);
+      // console.log(this.confirmPassword);
       let data = {
         newPassword: this.newPassword,
         oldPassword: this.originalPassword
@@ -230,7 +230,7 @@ export default {
       this.$api
         .changePassword(data)
         .then(res => {
-          console.log(res);
+          // console.log(res);
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -243,7 +243,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     },
     //获取个人信息
@@ -271,7 +271,7 @@ export default {
         })
         .catch(err => {
           this.loading = false;
-          console.log(err);
+          // console.log(err);
         });
     },
     //获取专业和部门名称
@@ -311,7 +311,7 @@ export default {
         })
         .catch(err => {
           this.loading = false;
-          console.log(err);
+          // console.log(err);
         });
     },
     //退出登录
@@ -335,7 +335,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          // console.log(err);
         });
     }
   },

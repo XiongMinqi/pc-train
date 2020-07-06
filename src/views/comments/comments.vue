@@ -117,7 +117,7 @@ export default {
             }
           })
           .catch(err => {
-            console.log(err);
+            //console.log(err);
             this.$message({
               message: err.data.msg,
               type: "warning"
@@ -125,19 +125,19 @@ export default {
           });
       }
       if (this.value2 === 0) {
-        console.log("value2");
+        //console.log("value2");
         this.$message({
           message: "请对课程打分",
           type: "warning"
         });
       } else if (this.value1 === 0) {
-        console.log("value1");
+        //console.log("value1");
         this.$message({
           message: "请对教师打分",
           type: "warning"
         });
       } else if (this.textarea === "") {
-        console.log("textarea");
+        //console.log("textarea");
         this.$message({
           message: "请输入课程评论",
           type: "warning"

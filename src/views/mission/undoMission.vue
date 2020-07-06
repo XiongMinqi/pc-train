@@ -73,7 +73,7 @@ export default {
       this.getUndoMission();
     },
     checkDetail(e) {
-      console.log(e);
+      //console.log(e);
       this.missiondetail = e;
       this.dialogVisible = true;
     },

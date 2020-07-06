@@ -337,7 +337,7 @@ export default {
       let userinfo = JSON.parse(localStorage.getItem("userInfo"));
       //获取ip地址
       let ip = localStorage.getItem("Ip");
-      ip = ip.toString();
+      // ip = ip.toString();
       this.getBrowser();
       //  console.log(this.testInfo.id);
       let data = {
@@ -543,7 +543,7 @@ export default {
             ksExamId: _this.ksExamId,
             peopleId: userinfo.userId
           };
-          console.log(data);
+          //console.log(data);
           _this.$onlineTest
             .submitPaper(data)
             .then(res => {
@@ -603,7 +603,7 @@ export default {
         answerList: this.allAnswer,
         checkList: this.checkList
       };
-      console.log(this.data);
+      //console.log(this.data);
       this.saveTestInfo(JSON.stringify(this.data));
     },
     //每隔一分钟将答案和试卷信息存到数据库
@@ -673,7 +673,7 @@ export default {
         }
       })
       .catch(err => {
-        console.log(err);
+        //console.log(err);
       });
     document.onkeydown = function() {
       if (window.event.keyCode === 27) {

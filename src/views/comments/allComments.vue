@@ -107,7 +107,7 @@ export default {
         })
         .catch(err => {
           this.loading = false;
-          console.log(err);
+          //console.log(err);
           this.$message({
             message: err.data.msg,
             type: "warning"
@@ -129,7 +129,7 @@ export default {
           if (res.data.code === 0) {
             this.totalDetail = res.data.data[0];
             this.courseGood = Math.ceil(this.totalDetail.goodCount/this.totalDetail.commentPeopleCount*100);
-            console.log(this.courseGood);
+            //console.log(this.courseGood);
           } else {
             this.$message({
               message: res.data.msg,
@@ -139,7 +139,7 @@ export default {
         })
         .catch(err => {
           this.loading = false;
-          console.log(err);
+          //console.log(err);
           this.$message({
             message: err.data.msg,
             type: "warning"

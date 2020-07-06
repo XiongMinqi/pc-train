@@ -115,7 +115,7 @@ export default {
   components: {},
   methods: {
     handleClick(e) {
-      console.log(e);
+      //e);
       this.practiseList = [];
       this.dialogVisible = true;
       this.dialogLoading = true;

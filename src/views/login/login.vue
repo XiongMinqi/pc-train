@@ -142,7 +142,7 @@ export default {
           // console.log(res);
           if (res.data.code === 0) {
             // console.log(res.data[0]);
-            console.log(res);
+            //console.log(res);
             localStorage.setItem('token',res.headers['x-auth-token'])
             // this.$store.state.header['x-auth-token'] = res.header['x-auth-token']
             this.$message({
@@ -188,7 +188,7 @@ export default {
                 }
               })
               .catch(error => {
-                console.log(error);
+                //console.log(error);
               });
           } else {
             this.$message({
@@ -198,7 +198,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          //console.log(err);
         });
     },
     //重复动画

@@ -186,7 +186,7 @@ export default {
                 return maxTime - minTime;
               });
               this.emptyScoreData = this.duplicate(this.emptyScoreData);
-              console.log(this.emptyScoreData, "emptyScoreData");
+              //console.log(this.emptyScoreData, "emptyScoreData");
             }
           } else {
             this.$message({
@@ -196,7 +196,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          //console.log(err);
         });
     }
   },

@@ -124,7 +124,7 @@ export default {
               let msg = this.changTime(item.createTime);
               this.$set(item, "msg", msg);
             });
-            console.log(this.newsList);
+            //console.log(this.newsList);
           } else {
             this.$message({
               message: res.data.msg,
@@ -134,7 +134,7 @@ export default {
         })
         .catch(err => {
           this.loading = false;
-          console.log(err);
+          //console.log(err);
         });
     }
   },

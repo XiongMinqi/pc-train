@@ -141,7 +141,7 @@ export default {
             message: err.data.msg,
             type: "warning"
           });
-          console.log(err);
+          //console.log(err);
         });
     },
     //获取未读消息
@@ -163,7 +163,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          //console.log(err);
         });
     },
     //退出登录
@@ -182,7 +182,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          //console.log(err);
         });
     }
   },

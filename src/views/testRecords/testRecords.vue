@@ -159,7 +159,6 @@ export default {
         this.submitId = e.submitId;
         this.paperDetail = {};
         this.paperDetail = e;
-        console.log(this.submitId, this.paperDetail);
         // console.log("允许查看");
         this.dialogTableVisible = true;
       } else {
@@ -286,7 +285,7 @@ export default {
         })
         .catch(err => {
           this.loading=false;
-          console.log(err);
+          //console.log(err);
         });
     }
   },

@@ -358,7 +358,7 @@ export default {
                 "https://view.officeapps.live.com/op/view.aspx?src=" +
                 encodeURIComponent(res.data.data[0]);
               this.dialogVisible = true;
-              console.log(this.wordUrl);
+              //console.log(this.wordUrl);
             } else if (e.fileSuffix === ".mp4") {
               this.videoPlayer = res.data.data[0];
               this.dialogVisible = true;
@@ -389,7 +389,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          //console.log(err);
         });
     },
     //转换时间
@@ -433,12 +433,12 @@ export default {
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
-          //   console.log(res);
+          //console.log(res);
           if (res.data.code === 0) {
             this.classList = res.data.data[0]["科目名称"];
             this.subjectList = res.data.data[0]["专业名称"];
-            // console.log(this.subjectList, "专业");
-            // console.log(this.classList, "科目");
+            //console.log(this.subjectList, "专业");
+            //console.log(this.classList, "科目");
           } else {
             this.$message({
               message: res.data.msg,
@@ -447,7 +447,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          //console.log(err);
         });
     },
     getAllLearn() {

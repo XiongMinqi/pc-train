@@ -329,7 +329,7 @@ export default {
         if (this.result === true) {
           this.rightQuestionId.push(this.questionDetail.id);
         }
-        console.log(this.rightQuestionId);
+        //console.log(this.rightQuestionId);
         this.disabled = false;
         this.showAnswer = false;
         this.choosed = false;
@@ -393,7 +393,7 @@ export default {
           }
         })
         .catch();
-      console.log(this.rightQuestionId);
+      //console.log(this.rightQuestionId);
     },
     //查看正确答案
     checkRightAnswer() {
@@ -430,7 +430,7 @@ export default {
         })
         .catch(err => {
           this.loading = false;
-          console.log(err);
+          //console.log(err);
         });
     },
     //根据题目id获取详情
@@ -516,7 +516,7 @@ export default {
       if (this.size != "") {
         this.data.size = Number(this.size);
       }
-      console.log(this.data);
+      //console.log(this.data);
       if (this.type === true || this.data.type !== null) {
         this.$api
           .getRandomQuestion(this.data)
@@ -653,7 +653,7 @@ export default {
   },
   mounted() {
     this.getdict();
-    console.log(this.$route.query);
+    //console.log(this.$route.query);
     this.flag = this.$route.query.flag;
     if (this.flag === true) {
       this.source = "错题集";

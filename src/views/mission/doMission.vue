@@ -188,6 +188,15 @@
         <div v-if="wordUrl" style="height:74vh">
           <iframe class="filename" :src="wordUrl" width="100%" height="100%" frameborder="0"></iframe>
         </div>
+        <div v-if="audioUrl.length>0" style="height:60vh">
+          <AudioPlayer
+            :audio-list="audioUrl"
+            :show-prev-button="false"
+            :show-next-button="false"
+            :isLoop="false"
+            progressInterval="10"
+          />
+        </div>
         <div v-if="pictureUrl" style="height:74vh">
           <img :src="pictureUrl" alt />
         </div>
@@ -206,6 +215,9 @@ import fillBlanks from "../../components/pratise/fillBlanks";
 import judge from "../../components/pratise/judge";
 import nounExplanation from "../../components/pratise/nounExplanation";
 import explain from "../../components/pratise/explain";
+import vueVideoPlayer from "../../components/video";
+import { AudioPlayer } from "@liripeng/vue-audio-player";
+import "@liripeng/vue-audio-player/lib/vue-audio-player.css";
 export default {
   data() {
     return {
@@ -215,7 +227,9 @@ export default {
       coursewareList: [],
       practiseList: [],
       videoPlayer: "",
+      audioUrl: [],
       pdfUrl: "",
+      openVideoImg: "",
       wordUrl: "",
       pictureUrl: "",
       dialogVisible: false,
@@ -230,7 +244,9 @@ export default {
     fillBlanks,
     judge,
     nounExplanation,
-    explain
+    explain,
+    vueVideoPlayer,
+    AudioPlayer
   },
   methods: {
     handleClick(tab, event) {
@@ -252,7 +268,7 @@ export default {
         answerMap: this.$store.state.practiseList,
         assignmentId: Number(this.id)
       };
-      console.log(data);
+      //console.log(data);
       this.$api
         .submitPratise(data)
         .then(res => {
@@ -296,7 +312,7 @@ export default {
         minutes: Math.ceil(duringTime)
       };
       this.$api.submitTime(data);
-      console.log(data);
+      //console.log(data);
     },
     handleSizeChange(val) {
       this.loading = true;
@@ -318,6 +334,7 @@ export default {
       this.pdfUrl = "";
       this.videoPlayer = "";
       this.pictureUrl = "";
+      this.audioUrl = [];
       this.$api
         .geturl(e.id)
         .then(res => {
@@ -338,9 +355,13 @@ export default {
                 "https://view.officeapps.live.com/op/view.aspx?src=" +
                 encodeURIComponent(res.data.data[0]);
               this.dialogVisible = true;
-              console.log(this.wordUrl);
+              //console.log(this.wordUrl);
             } else if (e.fileSuffix === ".mp4") {
               this.videoPlayer = res.data.data[0];
+              console.log(this.videoPlayer);
+              this.dialogVisible = true;
+            } else if (e.fileSuffix === ".mp3") {
+              this.audioUrl.push(res.data.data[0]);
               this.dialogVisible = true;
             } else if (e.fileSuffix === ".pdf") {
               this.pdfUrl = res.data.data[0];
@@ -366,7 +387,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          //console.log(err);
         });
     },
     //转换时间

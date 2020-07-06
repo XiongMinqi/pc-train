@@ -94,7 +94,7 @@
         </div>
       </div>
     </div>
-    <div style="text-align: center;">版本号:20.07.04.10</div>
+    <div style="text-align: center;">版本号:20.07.06.17</div>
   </div>
   <!-- </el-table> -->
 </template>
@@ -292,7 +292,7 @@ export default {
         }
       })
       .catch(err => {
-        console.log(err);
+        //console.log(err);
       });
   },
   watch: {},

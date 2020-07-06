@@ -50,7 +50,7 @@ export default {
         })
         .catch(err => {
           this.loading = false;
-          console.log(err);
+          //console.log(err);
         });
     },
     //标记消息为已读
@@ -63,7 +63,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          //console.log(err);
         });
     }
   },

@@ -72,7 +72,7 @@ export default {
         })
         .catch(err => {
           this.loading = false;
-          console.log(err);
+          //console.log(err);
           this.$message({
             message: err.data.msg,
             type: "warning"

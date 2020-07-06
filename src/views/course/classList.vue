@@ -533,7 +533,7 @@ export default {
     },
     //查看全部评论
     allComments() {
-      console.log(this.courseDetail);
+      //console.log(this.courseDetail);
       this.$router.push({
         name: "allComments",
         path: "/allComments",
@@ -564,7 +564,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          //console.log(err);
           this.$message({
             message: err.data.msg,
             type: "warning"
@@ -593,7 +593,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          //console.log(err);
           this.$message({
             message: err.data.msg,
             type: "warning"
@@ -625,7 +625,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          //console.log(err);
           this.$message({
             message: err.data.msg,
             type: "warning"
