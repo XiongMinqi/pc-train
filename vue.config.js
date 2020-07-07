@@ -34,13 +34,13 @@ module.exports = {
                 deleteOriginalAssets: false // 删除未压缩的文件，谨慎设置，如果希望提供非gzip的资源，可不设置或者设置为false
             })
         ],
-        externals: {
-            'vue': 'Vue',
-            'vue-router': 'VueRouter',
-            'vuex': 'Vuex',
-            'axios': 'axios',
-            'element-ui': 'ELEMENT',
-        }
+        // externals: {
+        //     'vue': 'Vue',
+        //     'vue-router': 'VueRouter',
+        //     'vuex': 'Vuex',
+        //     'axios': 'axios',
+        //     'element-ui': 'ELEMENT',
+        // }
     },
     chainWebpack: config => {
         config.optimization.minimize(true);

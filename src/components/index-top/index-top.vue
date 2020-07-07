@@ -52,6 +52,9 @@
           <el-dropdown-item>
             <div @click="goTo('/user')">个人信息</div>
           </el-dropdown-item>
+          <el-dropdown-item>
+            <div @click="goTo('/help')">帮助中心</div>
+          </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
 

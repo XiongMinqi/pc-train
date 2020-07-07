@@ -174,11 +174,6 @@
     </el-container>
   </div>
 </template>
-<script src="http://pv.sohu.com/cityjson?ie=utf-8"></script>
-<script type="text/javascript">
-//  console.log(returnCitySN["cip"]);
-// document.write(returnCitySN["cip"]+','+returnCitySN["cname"])
-</script>
 <script>
 import radio from "../../components/options/radio";
 import checkbox from "../../components/options/checkbox";
@@ -336,7 +331,8 @@ export default {
       //获取学员peopleId
       let userinfo = JSON.parse(localStorage.getItem("userInfo"));
       //获取ip地址
-      let ip = localStorage.getItem("Ip");
+      // let ip = localStorage.getItem("Ip");
+      let ip = "0.0.0.0";
       // ip = ip.toString();
       this.getBrowser();
       //  console.log(this.testInfo.id);
@@ -405,6 +401,9 @@ export default {
           //  console.log(userAgent.match(rule)[1]);
           res.push(userAgent.match(rule)[1]);
           this.llqName = res[0];
+          if (!this.llqName) {
+            this.llqName = "chrome";
+          }
           //  console.log(this.llqName);
           //  console.log(res);
         }
@@ -531,8 +530,9 @@ export default {
           //获取学员peopleId
           let userinfo = JSON.parse(localStorage.getItem("userInfo"));
           //获取ip地址
-          let ip = localStorage.getItem("Ip");
-          ip = ip.toString();
+          // let ip = localStorage.getItem("Ip");
+          // ip = ip.toString();
+          let ip = "0.0.0.0";
           _this.getBrowser();
           //  console.log(this.testInfo.id);
           let data = {

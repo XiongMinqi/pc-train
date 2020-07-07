@@ -1,22 +1,8 @@
-// import axios from "axios"
+import axios from "axios"
+
+
 axios.defaults.timeout = 10000
-// axios.defaults.headers.common['x-auth-token'] = localStorage.getItem('token')
 const isProduction = process.env.NODE_ENV === "production"
-// axios.defaults.headers.common['x-auth-token'] = localStorage.getItem('token')
-// axios.interceptors.request.use(
-//     config => {
-//         let token = localStorage.getItem("token")
-//             // 每次请求 都在请求头带上token
-//         if (token) {
-//             config.headers['x-auth-token'] = token
-//         }
-//         return config
-//     },
-//     err => {
-//         console.log(err)
-//         return Promise.reject(err)
-//     }
-// )
 // 接口基础路径
 axios.defaults.baseURL = isProduction ? "../" : ""
 export default {

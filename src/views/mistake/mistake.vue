@@ -204,7 +204,7 @@ export default {
     submit() {
       if (
         this.textarea != "" ||
-        this.radio != "" ||
+        this.radio !== "" ||
         this.checkList.length > 0 ||
         this.judge1 != "" ||
         this.judge2 != ""

@@ -1,5 +1,8 @@
-// import Vue from 'vue'
-// import VueRouter from 'vue-router'
+import Vue from 'vue'
+import VueRouter from 'vue-router'
+
+
+
 import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
@@ -38,6 +41,15 @@ const routes = [{
       name: "news",
       // component: resolve => (require(["../views/news/news.vue"], resolve))
       component: () => import( /* webpackChunkName: 'news' */ '../views/news/news.vue')
+    }]
+  },
+  {
+    path: "/help",
+    component: Home,
+    children: [{
+      path: "",
+      name: "help",
+      component: () => import( /* webpackChunkName: 'help' */ '../views/help/help.vue')
     }]
   },
   {
