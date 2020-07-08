@@ -55,6 +55,7 @@ export default {
       page: 1,
       limit: 4,
       allComments: [],
+      currentPage:1,
       total: 0,
       courseGood:"",
       totalDetail: {},

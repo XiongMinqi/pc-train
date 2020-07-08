@@ -70,7 +70,7 @@ export default {
   data() {
     return {
       userInfo: {},
-      unReadList: 0,
+      unReadList: [],
       popup: false,
       user: {}
     };
@@ -78,10 +78,7 @@ export default {
   components: {},
   methods: {
     webscoket() {
-      // const isProduction = process.env.NODE_ENV === "production";
-      // var socket = isProduction ? new WebSocket("ws://39.104.70.60:8080/imserver") : new WebSocket("ws://192.168.0.45:8080/imserver");
       var socket = new WebSocket("ws://39.104.70.60:8080/imserver");
-      // var socket = new WebSocket("ws://192.168.0.45:8080/imserver");
       //打开事件
       socket.onopen = function() {
         console.log("websocket已打开");

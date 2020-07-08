@@ -105,6 +105,7 @@ export default {
       page: 1,
       limit: 10,
       missionList: [],
+      currentPage:1,
       total: 0,
       dialogVisible: false,
       dialogLoading: true,

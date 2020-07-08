@@ -52,5 +52,8 @@ export default {
 };
 </script>
 
-<style scoped>
+<style scoped lang='scss'>
+#vueVideoPlayer{
+  position: relative;
+}
 </style>

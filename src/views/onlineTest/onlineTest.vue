@@ -55,7 +55,7 @@
         ></el-pagination>
       </div>
     </div>
-    <div v-else style="padding:30px">暂无考试</div>
+    <div v-else class="else">暂无考试</div>
   </div>
 </template>
 
@@ -281,5 +281,10 @@ export default {
 .name {
   padding-bottom: 10px;
   font-size: 17px;
+}
+.else{
+  padding: 30px;
+  text-align: center;
+  color: red;
 }
 </style>

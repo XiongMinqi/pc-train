@@ -16,8 +16,19 @@
           <div class="text item">持续时间 : {{item.msg}}</div>
         </el-card>
       </div>
+      <div class="block">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[6, 10, 15, 20, 30, 40]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+        ></el-pagination>
+      </div>
     </div>
-    <div v-else>暂无数据</div>
+    <div v-else class="else">暂无数据</div>
     <div>
       <el-dialog :title="missiondetail.name" :visible.sync="dialogVisible" width="60%">
         <div style="min-height:40vh">
@@ -32,17 +43,6 @@
         </span>
       </el-dialog>
     </div>
-    <div class="block">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[6, 10, 15, 20, 30, 40]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      ></el-pagination>
-    </div>
   </div>
 </template>
 
@@ -54,6 +54,7 @@ export default {
       page: 1,
       limit: 6,
       dialogVisible: false,
+      currentPage:1,
       missiondetail: {},
       missionList: [],
       total: 0
@@ -197,5 +198,10 @@ export default {
 .block {
   text-align: center;
   margin-top: 10px;
+}
+.else{
+  padding: 30px;
+  text-align: center;
+  color: red;
 }
 </style>

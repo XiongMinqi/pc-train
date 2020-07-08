@@ -61,6 +61,7 @@ export default {
       limit: 5,
       newsList: [],
       total: 0,
+      currentPage:1,
       dialogFormVisible: false,
       newsDetail: {},
       loading: true
@@ -115,8 +116,29 @@ export default {
     },
     checkNews(e) {
       //   console.log(e);
-      this.newsDetail = e;
-      this.dialogFormVisible = true;
+
+      this.$api
+        .checkNewsDetail(e.id)
+        .then(res => {
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            this.newsDetail = res.data.data[0];
+            this.dialogFormVisible = true;
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
+          }
+        })
+        .catch(err => {
+          this.$message({
+            message: err.data.msg,
+            type: "warning"
+          });
+        });
     }
   },
   mounted() {

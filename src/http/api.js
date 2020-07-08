@@ -103,6 +103,10 @@ export default {
     getCouese(data){
         return axios.post('me/countTodoPlanCourse',data)
     },
+    //查看新闻详情
+    checkNewsDetail(id){
+        return axios.get(`news/getById?id=${id}`)
+    },
     //首页获取总积分
     getTotalScore(){
         return axios.get("me/sumRewardPoint")

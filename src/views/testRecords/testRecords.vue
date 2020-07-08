@@ -395,6 +395,10 @@ span {
 }
 .block {
   margin: 0 auto;
+  margin-top: 20px;
   text-align: center;
+}
+.indexLeft{
+  margin-bottom: 20px;
 }
 </style>

@@ -160,13 +160,13 @@
       :modal-append-to-body="true"
     >
       <div>
-        <div v-if="videoPlayer">
+        <div v-if="videoPlayer" class="vueVideoPlayer">
           <vueVideoPlayer :src="videoPlayer" :cover_url="openVideoImg" />
         </div>
-        <div v-if="pdfUrl" style="height:74vh">
+        <div v-if="pdfUrl" style="height:70vh">
           <iframe class="filename" :src="pdfUrl" width="100%" height="100%" frameborder="0"></iframe>
         </div>
-        <div v-if="wordUrl" style="height:74vh">
+        <div v-if="wordUrl" style="height:70vh">
           <iframe class="filename" :src="wordUrl" width="100%" height="100%" frameborder="0"></iframe>
         </div>
         <div v-if="audioUrl.length>0" style="height:60vh">
@@ -175,10 +175,10 @@
             :show-prev-button="false"
             :show-next-button="false"
             :isLoop="false"
-            progressInterval="10"
+            :progressInterval="10"
           />
         </div>
-        <div v-if="pictureUrl" style="height:74vh">
+        <div v-if="pictureUrl" style="height:70vh">
           <img :src="pictureUrl" alt />
         </div>
         <div slot="footer" class="dialog-footer">
@@ -191,6 +191,7 @@
 
 <script>
 import vueVideoPlayer from "../../components/video";
+import 'video.js/dist/video-js.css'
 import { AudioPlayer } from "@liripeng/vue-audio-player";
 import "@liripeng/vue-audio-player/lib/vue-audio-player.css";
 export default {
@@ -570,5 +571,12 @@ export default {
   font-size: 20px;
   font-weight: bold;
   padding: 0 20px;
+}
+.vueVideoPlayer{
+  // height: 50vh;
+  // z-index: 9999;
+  // div{
+  //   height: 100%;
+  // }
 }
 </style>

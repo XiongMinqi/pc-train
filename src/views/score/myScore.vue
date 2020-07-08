@@ -40,6 +40,7 @@ export default {
       limit: 5,
       percent: 0,
       scoreList: [],
+      currentPage:1,
       total: 0,
       totalScore: 0,
       loading:true

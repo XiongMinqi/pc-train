@@ -9,6 +9,8 @@ import grade from './http/grade'
 import onlineTest from './http/onlineTest'
 import VueVideoPlayer from 'vue-video-player'
 import 'video.js/dist/video-js.css'
+import "./assets/common.css"
+import 'vue-video-player/src/custom-theme.css'
 
 //
 import Axios from 'axios'

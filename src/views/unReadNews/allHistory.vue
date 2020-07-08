@@ -48,6 +48,7 @@ export default {
       limit: 10,
       loading: true,
       total: 0,
+      currentPage:1,
       newsList: []
     };
   },
