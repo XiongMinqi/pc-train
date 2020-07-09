@@ -66,14 +66,17 @@
               <div class="msg">
                 <div>课件名称: {{item.name}}</div>
               </div>
-              <div style="font-size:14px">
+              <div style="font-size:12px">
                 <div>作者: {{item.author}}</div>
               </div>
-              <div class="desc" style="font-size:14px">
+              <div class="desc" style="font-size:12px">
                 <div>上传时间: {{item.uploadTime}}</div>
               </div>
-              <div class="desc" style="font-size:14px">
+              <div class="desc" style="font-size:12px">
                 <div>文件大小: {{item.fileSize}}KB</div>
+              </div>
+              <div class="desc" style="font-size:12px">
+                <div>{{item.majorName}}/{{item.subjectName}}</div>
               </div>
             </div>
           </div>
@@ -120,14 +123,17 @@
               <div class="msg">
                 <div>课件名称: {{item.name}}</div>
               </div>
-              <div style="font-size:14px">
+              <div style="font-size:12px">
                 <div>作者: {{item.author}}</div>
               </div>
-              <div class="desc" style="font-size:14px">
+              <div class="desc" style="font-size:12px">
                 <div>上传时间: {{item.uploadTime}}</div>
               </div>
-              <div class="desc" style="font-size:14px">
+              <div class="desc" style="font-size:12px">
                 <div>文件大小: {{item.fileSize}}KB</div>
+              </div>
+              <div class="desc" style="font-size:12px">
+                <div>{{item.majorName}}/{{item.subjectName}}</div>
               </div>
             </div>
           </div>
@@ -146,7 +152,7 @@
         ></el-pagination>
       </div>
     </div>
-    <div v-else style="text-align:center;padding:30px">暂无数据</div>
+    <div v-else class="else">暂无数据</div>
     <el-dialog
       width="90%"
       top="1vh"
@@ -440,6 +446,7 @@ export default {
             this.subjectList = res.data.data[0]["专业名称"];
             //console.log(this.subjectList, "专业");
             //console.log(this.classList, "科目");
+            this.getAllLearn();
           } else {
             this.$message({
               message: res.data.msg,
@@ -467,6 +474,16 @@ export default {
             this.allList.map(item => {
               item.uploadTime = this.timeFormat(item.uploadTime);
               item.fileSize = this.twoNumber(item.fileSize / 1024);
+              this.subjectList.map(itm=>{
+                if(item.majorId===Number(itm.key)){
+                  this.$set(item,"majorName",itm.value)
+                }
+              })
+              this.classList.map(itm=>{
+                if(item.subjectId===Number(itm.key)){
+                  this.$set(item,"subjectName",itm.value)
+                }
+              })
               if (
                 item.fileSuffix === ".jpg" ||
                 item.fileSuffix === ".png" ||
@@ -486,6 +503,7 @@ export default {
                 this.textList.push(item);
               }
             });
+            console.log(this.allList);
           } else {
             this.$message({
               message: res.data.msg,
@@ -500,7 +518,6 @@ export default {
   },
   mounted() {
     this.getdict();
-    this.getAllLearn();
     let userinfo = JSON.parse(localStorage.getItem("userInfo"));
     this.peopleId = userinfo.userId;
   },

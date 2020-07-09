@@ -46,13 +46,13 @@
     <div class="userlist">
       <div class="word">部门</div>
       <div class="input">
-        <el-input size="mini" disabled v-model="majorName" placeholder="部门"></el-input>
+        <el-input size="mini" disabled v-model="departmentName" placeholder="部门"></el-input>
       </div>
     </div>
     <div class="userlist">
       <div class="word">专业</div>
       <div class="input">
-        <el-input size="mini" disabled v-model="departmentName" placeholder="专业"></el-input>
+        <el-input size="mini" disabled v-model="majorName" placeholder="专业"></el-input>
       </div>
     </div>
     <div class="userlist">

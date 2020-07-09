@@ -1,40 +1,43 @@
 <template>
   <div v-loading="loading">
-    <div class="newsdetail" v-for="(item,index) in newsList" :key="index">
-      <div class="flex justify-between aligh-center news">
-        <div class="flex aligh-center">
-          <div>
-            <img src="../../assets/icon/news.png" alt />
+    <div v-if="newsList.length>0">
+      <div class="newsdetail" v-for="(item,index) in newsList" :key="index">
+        <div class="flex justify-between aligh-center news">
+          <div class="flex aligh-center">
+            <div>
+              <img src="../../assets/icon/news.png" alt />
+            </div>
+            <div>
+              <div class="title">{{item.title}}</div>
+              <div style="margin-bottom: 5px;color:#a2a2a2">
+                <span style=";padding-right: 10px;">By : {{item.peopleName}}</span>
+                <span>{{item.createTime}}</span>
+              </div>
+              <div style="color:#a2a2a2">
+                浏览次数 :
+                <span style="color:red">{{item.readCount}}</span>
+              </div>
+            </div>
           </div>
           <div>
-            <div class="title">{{item.title}}</div>
-            <div style="margin-bottom: 5px;color:#a2a2a2">
-              <span style=";padding-right: 10px;">By : {{item.peopleName}}</span>
-              <span>{{item.createTime}}</span>
-            </div>
-            <div style="color:#a2a2a2">
-              浏览次数 :
-              <span style="color:red">{{item.readCount}}</span>
-            </div>
+            <!-- <button @click="checkNews(item)">查看新闻</button> -->
+            <el-button type="primary" round @click="checkNews(item)">查看新闻</el-button>
           </div>
-        </div>
-        <div>
-          <!-- <button @click="checkNews(item)">查看新闻</button> -->
-          <el-button type="primary" round @click="checkNews(item)">查看新闻</el-button>
         </div>
       </div>
+      <div style="text-align:center">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[5, 10, 15, 20, 30, 40]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+        ></el-pagination>
+      </div>
     </div>
-    <div style="text-align:center">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[5, 10, 15, 20, 30, 40]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      ></el-pagination>
-    </div>
+    <div v-else class="else">暂无新闻</div>
     <el-dialog title="新闻详情" :visible.sync="dialogFormVisible" @close="close">
       <div class="newsMsg">
         <div
@@ -61,7 +64,7 @@ export default {
       limit: 5,
       newsList: [],
       total: 0,
-      currentPage:1,
+      currentPage: 1,
       dialogFormVisible: false,
       newsDetail: {},
       loading: true
@@ -179,15 +182,7 @@ img {
   border: 1px solid #f2f2f2;
   margin-bottom: 5px;
   border-radius: 15px;
-  :hover {
-    cursor: pointer;
-  }
 }
-// .newsdetail {
-//   :hover {
-//     background: #f2f2f2;
-//   }
-// }
 .newsMsg {
   min-height: 50vh;
 }

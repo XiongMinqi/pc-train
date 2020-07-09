@@ -26,7 +26,7 @@
                 <div class="questiontype" v-for="(itm,idx) in questionType" :key="idx">
                   <div v-if="item.type == itm.key" style="padding-bottom:5px;">
                     <span style="font-weight:bold;color:blue;">【{{itm.value}}】</span>
-                    <span style="color:red">做错次数 ：{{item.wrongCount}}次</span>
+                    <span style="color:red;font-size:12px">做错次数 ：{{item.wrongCount}}次</span>
                   </div>
                 </div>
               </div>
@@ -44,7 +44,6 @@
                 <span style="color:purple">所属专业 : {{item.majorname}}</span> |
                 <span style="color:#EE6911">所属部门 : {{item.departname}}</span> |
                 <span style="color:green">分数 ：{{item.defaultScore}}分</span>
-                |
               </div>
             </div>
           </div>

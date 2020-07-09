@@ -10,7 +10,7 @@
           <div class="content" v-else>0 次</div>
         </div>
         <div class="logintime">
-          <div class="name">本次登录时间 :</div>
+          <div class="name">上次登录时间 :</div>
           <div class="content" v-if="userInfo.lastLoginTime">{{userInfo.lastLoginTime}}</div>
           <div class="content" v-else>暂时没有上次登录的记录</div>
         </div>
@@ -94,7 +94,7 @@
         </div>
       </div>
     </div>
-    <div style="text-align: center;">版本号:20.07.08.17</div>
+    <div style="text-align: center;">版本号:20.07.09.13</div>
   </div>
   <!-- </el-table> -->
 </template>

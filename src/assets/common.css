@@ -48,3 +48,8 @@
   .video-js .vjs-control-bar button{
     outline: none;
   }
+  .else{
+    text-align: center;
+    padding: 30px;
+    color: red;
+  }
