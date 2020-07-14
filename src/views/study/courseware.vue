@@ -76,7 +76,10 @@
                 <div>文件大小: {{item.fileSize}}KB</div>
               </div>
               <div class="desc" style="font-size:12px">
-                <div>{{item.majorName}}/{{item.subjectName}}</div>
+                <div>
+                  {{item.majorName}}/{{item.subjectName}}/浏览
+                  <span style="color:blue;padding:0 4px;">{{item.readCount}}</span>次
+                </div>
               </div>
             </div>
           </div>
@@ -133,7 +136,10 @@
                 <div>文件大小: {{item.fileSize}}KB</div>
               </div>
               <div class="desc" style="font-size:12px">
-                <div>{{item.majorName}}/{{item.subjectName}}</div>
+                <div>
+                  {{item.majorName}}/{{item.subjectName}}/浏览
+                  <span style="color:blue;padding:0 4px;">{{item.readCount}}</span>次
+                </div>
               </div>
             </div>
           </div>
@@ -197,7 +203,7 @@
 
 <script>
 import vueVideoPlayer from "../../components/video";
-import 'video.js/dist/video-js.css'
+import "video.js/dist/video-js.css";
 import { AudioPlayer } from "@liripeng/vue-audio-player";
 import "@liripeng/vue-audio-player/lib/vue-audio-player.css";
 export default {
@@ -362,8 +368,10 @@ export default {
               e.fileSuffix === ".pptx"
             ) {
               this.wordUrl =
-                "https://view.officeapps.live.com/op/view.aspx?src=" +
-                encodeURIComponent(res.data.data[0]);
+                // "http://192.168.0.45:8012/onlinePreview?url=" +
+                // encodeURIComponent(res.data.data[0]);
+              "https://view.officeapps.live.com/op/view.aspx?src=" +
+              encodeURIComponent(res.data.data[0]);
               this.dialogVisible = true;
               //console.log(this.wordUrl);
             } else if (e.fileSuffix === ".mp4") {
@@ -474,16 +482,16 @@ export default {
             this.allList.map(item => {
               item.uploadTime = this.timeFormat(item.uploadTime);
               item.fileSize = this.twoNumber(item.fileSize / 1024);
-              this.subjectList.map(itm=>{
-                if(item.majorId===Number(itm.key)){
-                  this.$set(item,"majorName",itm.value)
+              this.subjectList.map(itm => {
+                if (item.majorId === Number(itm.key)) {
+                  this.$set(item, "majorName", itm.value);
                 }
-              })
-              this.classList.map(itm=>{
-                if(item.subjectId===Number(itm.key)){
-                  this.$set(item,"subjectName",itm.value)
+              });
+              this.classList.map(itm => {
+                if (item.subjectId === Number(itm.key)) {
+                  this.$set(item, "subjectName", itm.value);
                 }
-              })
+              });
               if (
                 item.fileSuffix === ".jpg" ||
                 item.fileSuffix === ".png" ||
@@ -503,7 +511,6 @@ export default {
                 this.textList.push(item);
               }
             });
-            console.log(this.allList);
           } else {
             this.$message({
               message: res.data.msg,
@@ -589,7 +596,7 @@ export default {
   font-weight: bold;
   padding: 0 20px;
 }
-.vueVideoPlayer{
+.vueVideoPlayer {
   // height: 50vh;
   // z-index: 9999;
   // div{

@@ -217,6 +217,16 @@ const routes = [{
     }]
   },
   {
+    path: "/mistakePractise",
+    component: Home,
+    children: [{
+      path: "",
+      name: "mistakePractise",
+      // component: resolve => (require(["../views/mistake/mistake.vue"], resolve))
+      component: () => import( /* webpackChunkName: 'mistakePractise' */ "../views/mistake/mistakePractise.vue")
+    }]
+  },
+  {
     path: "/testRecords",
     component: Home,
     children: [{

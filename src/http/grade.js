@@ -19,14 +19,8 @@ export default {
         return axios.get('ksExam/getMyStatistics')
     },
     //获取考试记录
-    getExam(page, pageSize, status) {
-        return axios.post(`ksExam/getMySubmitExam`, {
-            page: page,
-            limit: pageSize,
-            object: {
-                status: status
-            }
-        })
+    getExam(data) {
+        return axios.post(`ksExam/getMySubmitExam`, data)
     },
     //获取考试记录数目
     gettestNumber() {
@@ -37,14 +31,8 @@ export default {
         return axios.get(`ksExam/getSubmitPaper?submitId=${id}`)
     },
     //获取错题集
-    getMistake(page, limit, questionType) {
-        return axios.post("ksExam/getMyWrongQuestion", {
-            page: page,
-            limit: limit,
-            object: {
-                questionType: questionType
-            }
-        })
+    getMistake(data) {
+        return axios.post("ksExam/getMyWrongQuestion", data)
     },
     //获取所有题目类型
     getAllQuestionType() {
@@ -112,31 +100,31 @@ export default {
         })
     },
     //查看全部评价
-    checkAllComments(data){
-        return axios.post("planCourse/pageCommentByPlanCourse",data)
+    checkAllComments(data) {
+        return axios.post("planCourse/pageCommentByPlanCourse", data)
     },
     //查看积分
-    checkScore(){
+    checkScore() {
         return axios.get("me/sumRewardPoint")
     },
     //获取我的积分记录
-    getMyScoreList(data){
-        return axios.post("me/listRewardPointLog",data)
+    getMyScoreList(data) {
+        return axios.post("me/listRewardPointLog", data)
     },
     //获取积分排名
-    getScoreRank(){
+    getScoreRank() {
         return axios.get("people/getRewardPointRank")
     },
     //查看全部评论概况
-    getTotalCommentsRank(id){
+    getTotalCommentsRank(id) {
         return axios.get(`planCourse/analyzeComment?planCourseId=${id}`)
     },
     //获取考试统计数据
-    getTongji(data){
-        return axios.post('me/listMyScoreLineChartItem',data)
+    getTongji(data) {
+        return axios.post('me/listMyScoreLineChartItem', data)
     },
     //删除错题
-    deleteMistake(id){
+    deleteMistake(id) {
         return axios.get(`me/deleteWrongQuestionSet?questionId=${id}`)
     }
 }

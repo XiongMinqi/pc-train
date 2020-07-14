@@ -141,7 +141,8 @@ export default {
     },
     getlist(){
       let data = {
-        timeRange:"本月"
+        timeRange:"本月",
+        subjectId: null
       }
       this.$grade.getTongji(data)
        .then(res => {
@@ -166,7 +167,7 @@ export default {
   mounted() {
     this.getSubjectName();
     this.getStatistics();
-    this.getlist();
+    // this.getlist();
   },
   watch: {},
   computed: {}

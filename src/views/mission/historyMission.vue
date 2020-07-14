@@ -1,14 +1,15 @@
 <template>
   <div v-loading="loading">
     <el-table :data="missionList" border style="width: 100%">
-      <el-table-column prop="name" label="任务名称" width="300"></el-table-column>
-      <el-table-column prop="requireLearnTime" label="要求学习时长/分钟" width="180"></el-table-column>
-      <el-table-column prop="requireRightCount" label="要求答对数量/道" width="180"></el-table-column>
-      <el-table-column prop="lastSubmitTime" label="最后提交时间"></el-table-column>
-      <el-table-column prop="description" label="描述"></el-table-column>
+      <el-table-column prop="name" label="任务名称"></el-table-column>
+      <el-table-column prop="requireLearnTime" label="要求学习时长/分钟"></el-table-column>
+      <el-table-column prop="requireRightCount" label="要求答对数量/道"></el-table-column>
+      <el-table-column prop="learnTime" label="学习时长/分钟"></el-table-column>
+      <el-table-column prop="lastSubmitTime" label="最后提交练习时间"></el-table-column>
+      <el-table-column prop="endTime" label="截止时间"></el-table-column>
       <el-table-column fixed="right" label="操作" width="180">
         <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="primary">查看练习</el-button>
+          <el-button @click="handleClick(scope.row)" type="primary" size="mini">查看练习</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -22,23 +23,28 @@
         :modal-append-to-body="true"
       >
         <div v-loading="dialogLoading" class="paperInfo">
-          <div v-for="(item,index) in practiseList" :key="index">
-            <div class="title">
-              <div>
-                <div v-if="index<9">0{{index+1}}、</div>
-                <div v-else>{{index+1}}、</div>
-              </div>
-              <div style="width:60px" :class="item.type===4?'name':'public'">
-                <span v-if="item.type===0">【单选】</span>
-                <span v-if="item.type===1">【多选】</span>
-                <span v-if="item.type===2">【填空】</span>
-                <span v-if="item.type===3">【判断】</span>
-                <span v-if="item.type===4">【名词解释】</span>
-                <span v-if="item.type===5">【问答】</span>
-              </div>
-              <div style="width:88%">{{item.content}}</div>
+          <div class="paperDetail">
+            <div class="rightCount">
+              <div>答对数量 : </div>
+              <div class="count"> {{rightCount}}</div>
             </div>
-            <div v-if="item.type===0||item.type===1" style="padding-bottom:10px">
+            <div v-for="(item,index) in practiseList" :key="index">
+              <div class="title">
+                <div>
+                  <div v-if="index<9">0{{index+1}}、</div>
+                  <div v-else>{{index+1}}、</div>
+                </div>
+                <div style="width:60px" :class="item.type===4?'name':'public'">
+                  <span v-if="item.type===0">【单选】</span>
+                  <span v-if="item.type===1">【多选】</span>
+                  <span v-if="item.type===2">【填空】</span>
+                  <span v-if="item.type===3">【判断】</span>
+                  <span v-if="item.type===4">【名词解释】</span>
+                  <span v-if="item.type===5">【问答】</span>
+                </div>
+                <div style="width:88%">{{item.content}}</div>
+              </div>
+              <div v-if="item.type===0||item.type===1" style="padding-bottom:10px">
                 <div v-for="(itm,idx) in item.options" :key="idx">
                   <div class="flex aligh-center" style="padding-left:10px">
                     <div v-if="itm.order===0">A.</div>
@@ -50,30 +56,31 @@
                     <div>{{itm.content}}</div>
                   </div>
                 </div>
-            </div>
-            <div v-if="item.type===3" style="padding-bottom:10px">
+              </div>
+              <div v-if="item.type===3" style="padding-bottom:10px">
                 <div style="padding-left:10px">正确</div>
                 <div style="padding-left:10px">错误</div>
-            </div>
-            <div>
-              <div class="flex aligh-center">
-                <div>学员答案</div>
-                <div class="answerDetail">
-                  <div v-if="answerList.length>0">{{answerList[index].content}}</div>
-                  <div v-else>该题暂未作答</div>
-                </div>
               </div>
-              <div class="flex aligh-center">
-                <div>正确答案</div>
-                <div class="answerDetail">{{item.standardAnswerStr}}</div>
-              </div>
-              <div class="flex aligh-center">
-                <div>练习结果</div>
-                <div class="answerDetail" v-if="answerList.length>0">
-                  <div v-if="answerList[index].isRight===false" style="color:red">回答错误</div>
-                  <div v-if="answerList[index].isRight===true" style="color:green">回答正确</div>
+              <div>
+                <div class="flex aligh-center">
+                  <div>学员答案</div>
+                  <div class="answerDetail" style="color:darkcyan">
+                    <div v-if="answerList.length>0">{{answerList[index].content}}</div>
+                    <div v-else>该题暂未作答</div>
+                  </div>
                 </div>
-                <div class="answerDetail" v-else>暂无结果</div>
+                <div class="flex aligh-center">
+                  <div>正确答案</div>
+                  <div class="answerDetail" style="color: darkolivegreen">{{item.standardAnswerStr}}</div>
+                </div>
+                <div class="flex aligh-center">
+                  <div>练习结果</div>
+                  <div class="answerDetail" v-if="answerList.length>0">
+                    <div v-if="answerList[index].isRight===false" style="color:red">回答错误</div>
+                    <div v-if="answerList[index].isRight===true" style="color:green">回答正确</div>
+                  </div>
+                  <div class="answerDetail" v-else style="color:red">暂无结果</div>
+                </div>
               </div>
             </div>
           </div>
@@ -105,12 +112,13 @@ export default {
       page: 1,
       limit: 10,
       missionList: [],
-      currentPage:1,
+      currentPage: 1,
       total: 0,
       dialogVisible: false,
       dialogLoading: true,
       practiseList: [],
-      answerList: []
+      answerList: [],
+      rightCount: 0
     };
   },
   components: {},
@@ -147,6 +155,13 @@ export default {
           }
           if (res.data.code === 0) {
             this.answerList = res.data.data;
+            this.rightCount = 0;
+            this.rightMsg = "";
+            this.answerList.map(item => {
+              if (item.isRight === true) {
+                this.rightCount += 1;
+              }
+            });
           } else {
             this.$message({
               message: res.data.msg,
@@ -187,6 +202,29 @@ export default {
           });
         });
     },
+    //转换时间
+    timeFormat(time) {
+      var clock = "";
+      var d = new Date(time);
+      var year = d.getFullYear(); //年
+      var month = d.getMonth() + 1; //月
+      var day = d.getDate(); //日
+      var hh = d.getHours(); //时
+      var mm = d.getMinutes(); //分
+      var ss = d.getSeconds(); //秒
+      clock += year + "-";
+      if (month < 10) clock += "0";
+      clock += month + "-";
+      if (day < 10) clock += "0";
+      clock += day + " ";
+      if (hh < 10) clock += "0";
+      clock += hh + ":";
+      if (mm < 10) clock += "0";
+      clock += mm + ":";
+      if (ss < 10) clock += "0";
+      clock += ss;
+      return clock;
+    },
     getUndoMission() {
       let data = {
         limit: this.limit,
@@ -205,6 +243,11 @@ export default {
           if (res.data.code === 0) {
             this.missionList = res.data.data;
             this.total = res.data.count;
+            this.missionList.map(item => {
+              let times = Date.parse(item.publishTime) + item.lastTime * 60000;
+              let endTime = this.timeFormat(times);
+              this.$set(item, "endTime", endTime);
+            });
           } else {
             this.$message({
               message: res.data.msg,
@@ -253,7 +296,6 @@ export default {
   padding-top: 10px;
 }
 .paperInfo {
-  min-height: 50vh;
 }
 .Btn {
   margin-top: 50px;
@@ -261,5 +303,27 @@ export default {
 }
 .answerDetail {
   margin-left: 20px;
+}
+.paperDetail {
+  height: 65vh;
+  overflow: auto;
+  position: relative;
+}
+.rightCount {
+  position: fixed;
+  top: 3vh;
+  left: 30vh;
+  background: #f2f2f2;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  text-align: center;
+  border-radius: 10px;
+  border: 1px solid #a2a2a2;
+  .count {
+    color: green;
+    font-size: 20px;
+    padding-left: 10px;
+  }
 }
 </style>

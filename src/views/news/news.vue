@@ -21,7 +21,7 @@
           </div>
           <div>
             <!-- <button @click="checkNews(item)">查看新闻</button> -->
-            <el-button type="primary" round @click="checkNews(item)">查看新闻</el-button>
+            <el-button type="primary" round @click="checkNews(item,index)">查看新闻</el-button>
           </div>
         </div>
       </div>
@@ -117,9 +117,7 @@ export default {
           });
         });
     },
-    checkNews(e) {
-      //   console.log(e);
-
+    checkNews(e, index) {
       this.$api
         .checkNewsDetail(e.id)
         .then(res => {
@@ -129,6 +127,11 @@ export default {
           if (res.data.code === 0) {
             this.newsDetail = res.data.data[0];
             this.dialogFormVisible = true;
+            this.$set(
+              this.newsList[index],
+              "readCount",
+              this.newsList[index].readCount + 1
+            );
           } else {
             this.$message({
               message: res.data.msg,

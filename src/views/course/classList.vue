@@ -863,12 +863,13 @@ export default {
   border-radius: 50%;
   margin-right: 50px;
   box-shadow: 0 0 10px 30px #c6c6c6;
+  img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+  }
 }
-img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-}
+
 .choosedBtn {
   position: absolute;
   bottom: 50px;

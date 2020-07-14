@@ -122,7 +122,7 @@
                 <div v-if="index<9">0{{index+1}}、</div>
                 <div v-else>{{index+1}}、</div>
               </div>
-              <div style="width:60px" :class="item.type===4?'name':'public'">
+              <div>
                 <span v-if="item.type===0">【单选】</span>
                 <span v-if="item.type===1">【多选】</span>
                 <span v-if="item.type===2">【填空】</span>
@@ -259,7 +259,6 @@ export default {
       } else if (value == "练习题") {
         this.loading = true;
         this.getAnswer();
-        this.getQuestiones();
       }
     },
     //提交练习
@@ -508,6 +507,7 @@ export default {
           }
           if (res.data.code === 0) {
             this.answerList = res.data.data;
+            this.getQuestiones();
           } else {
             this.$message({
               message: res.data.msg,
@@ -601,13 +601,6 @@ export default {
   //   align-items: center;
   padding-bottom: 10px;
   padding-top: 10px;
-}
-.name {
-  width: 100px !important;
-}
-.public {
-  // width: 7%;
-  width: 60px;
 }
 span {
   color: blue;

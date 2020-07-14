@@ -1,5 +1,19 @@
 <template>
   <div v-loading="loading">
+    <div class="choose">
+      <div class="classname">
+        <el-input
+          v-model="paperName"
+          maxlength="30"
+          show-word-limit
+          clearable
+          placeholder="请输入试卷名称"
+        ></el-input>
+      </div>
+      <div class="btn">
+        <el-button type="primary" @click="getTest">开始筛选</el-button>
+      </div>
+    </div>
     <div v-if="testList.length>0">
       <div class="flex" v-for="(item,index) in testList" :key="index">
         <div style=" display: flex;align-items: center;">
@@ -56,10 +70,16 @@
       </div>
     </div>
     <div v-else class="else">暂无考试</div>
+    <el-dialog width="80%" title="试卷明细" top="1vh" :visible.sync="dialogTableVisible">
+      <div v-loading="submitPaperloading">
+        <submitPaper :submitId="submitId" :paperDetail="paperDetail" />
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import submitPaper from "../../components/submitPaper/onlineTestPaper";
 export default {
   data() {
     return {
@@ -69,12 +89,45 @@ export default {
       total: 0,
       testList: [],
       major: [],
+      paperName: "",
       department: [],
-      loading:true
+      loading: true,
+      dialogTableVisible: false,
+      submitPaperloading: false,
+      submitId: "",
+      paperDetail: {},
+      subjectName: []
     };
   },
-  components: {},
+  components: { submitPaper },
   methods: {
+    //获取科目名称
+    getSubjectName() {
+      this.$grade
+        .getdict()
+        .then(res => {
+          this.loading = false;
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            this.getTest();
+            this.subjectName = res.data.data[0]["科目名称"];
+            this.major = res.data.data[0]["专业名称"];
+            this.department = res.data.data[0]["部门名称"];
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
+          }
+        })
+        .catch(err => {
+          this.loading = false;
+        });
+    },
+    //开始筛选
+    getlist() {},
     //转换时间
     timeFormat(time) {
       var clock = "";
@@ -100,8 +153,15 @@ export default {
     },
     //获取考试信息
     getTest() {
+      let data = {
+        page: this.offset,
+        limit: this.limit,
+        object: {
+          examName: this.paperName
+        }
+      };
       this.$onlineTest
-        .getTestInfo(this.offset, this.limit)
+        .getTestInfo(data)
         .then(res => {
           this.loading = false;
           if (res.data.code === 1000) {
@@ -151,7 +211,7 @@ export default {
         });
     },
     showToast(e) {
-      //console.log(e);
+      console.log(e);
       if (e.status === 1) {
         this.$message({
           message: "考试还未开始，不能进入该场考试",
@@ -159,31 +219,51 @@ export default {
         });
       }
       if (e.status === 3) {
-        this.$message({
-          message: "考试正在审核中，不能再次进入该场考试",
-          type: "warning"
-        });
+        if (e.totalScore > 0) {
+          this.submitId = e.paperId;
+          this.paperDetail = {};
+          this.paperDetail = e;
+          this.dialogTableVisible = true;
+        } else {
+          this.$message({
+            message: "发生错误",
+            type: "warning"
+          });
+        }
       }
       if (e.status === 4) {
-        this.$message({
-          message: "考试已结束，不能再次进入该场考试",
-          type: "error"
-        });
+        if (e.totalScore > 0) {
+          this.submitId = e.paperId;
+          this.paperDetail = {};
+          this.paperDetail = e;
+          this.dialogTableVisible = true;
+        } else {
+          this.$message({
+            message: "发生错误",
+            type: "warning"
+          });
+        }
       }
     },
     onlineTest(e) {
-      this.$message({
-        message: "即将进入考试，祝您考试顺利",
-        type: "success"
-      });
-      // console.log(e);
-      this.$router.push({
-        path: "/testIng",
-        query: {
-          paperId: e.paperId,
-          id: e.id
-        }
-      });
+      if (e.totalScore > 0) {
+        this.$message({
+          message: "即将进入考试，祝您考试顺利",
+          type: "success"
+        });
+        this.$router.push({
+          path: "/testIng",
+          query: {
+            paperId: e.paperId,
+            id: e.id
+          }
+        });
+      } else {
+        this.$message({
+          message: "发生错误",
+          type: "warning"
+        });
+      }
     },
     handleSizeChange(val) {
       this.loading = true;
@@ -227,7 +307,8 @@ export default {
     }
   },
   mounted() {
-    this.getSubjectDetail();
+    // this.getSubjectDetail();
+    this.getSubjectName();
   },
   watch: {},
   computed: {}
@@ -282,9 +363,21 @@ export default {
   padding-bottom: 10px;
   font-size: 17px;
 }
-.else{
+.else {
   padding: 30px;
   text-align: center;
   color: red;
+}
+.words {
+  padding-bottom: 10px;
+  padding-left: 10px;
+}
+.choose {
+  display: flex;
+  align-items: center;
+  padding-bottom: 5px;
+}
+.classname {
+  margin-right: 20px;
 }
 </style>

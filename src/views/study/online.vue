@@ -6,7 +6,7 @@
           <div class="classname">
             <div class="wordes">来源 :</div>
             <div>
-              <el-select v-model="source" :disabled="choosedisabled" placeholder="请选择题库">
+              <el-select v-model="source" placeholder="请选择题库">
                 <!-- <el-option key=0 value="题库"></el-option> -->
                 <el-option v-for="item in sourceList" :key="item.key" :value="item.value"></el-option>
               </el-select>
@@ -70,7 +70,7 @@
         </div>
       </div>
     </div>
-    <div v-else class="else">
+    <div v-else class="prictise">
       <div>
         <div>
           <div>
@@ -244,8 +244,8 @@ export default {
       questionType: [],
       showBtn: true,
       choosed: false, //是否已选择选项
-      size: "10",
-      listSize: ["10", "2", "15", "20", "25", "30"],
+      size: "5",
+      listSize: ["5", "10", "15", "20", "25", "30"],
       sourceList: [
         {
           key: 0,
@@ -653,15 +653,7 @@ export default {
   },
   mounted() {
     this.getdict();
-    //console.log(this.$route.query);
     this.flag = this.$route.query.flag;
-    if (this.flag === true) {
-      this.source = "错题集";
-      this.choosedisabled = true;
-    } else {
-      this.source = "题库";
-      this.choosedisabled = false;
-    }
   },
   watch: {},
   computed: {}
@@ -734,7 +726,7 @@ export default {
 .traincontent {
   padding: 0 20px;
 }
-.else {
+.prictise {
   margin-top: 50px;
 }
 .info {

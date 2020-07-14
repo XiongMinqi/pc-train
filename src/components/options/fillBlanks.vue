@@ -5,6 +5,8 @@
         <el-input
           type="textarea"
           :rows="1"
+          maxlength="30"
+          show-word-limit
           placeholder="请输入内容"
           v-model="textarea[index]"
           @input="inputInfo(index)"

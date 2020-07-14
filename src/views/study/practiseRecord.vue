@@ -1,8 +1,8 @@
 <template>
   <div class="list" v-loading="loading">
     <el-table :data="list" border style="width: 100%">
-      <el-table-column prop="rightNumber" label="答对" width="180"></el-table-column>
-      <el-table-column prop="questionNumber" label="全部" width="180"></el-table-column>
+      <el-table-column prop="rightNumber" label="答对/道" width="180"></el-table-column>
+      <el-table-column prop="questionNumber" label="全部/道" width="180"></el-table-column>
       <el-table-column prop="createTime" label="提交练习时间"></el-table-column>
       <el-table-column prop="costSeconds" label="练习时长" width="180"></el-table-column>
       <el-table-column prop="score" label="积分" width="180"></el-table-column>

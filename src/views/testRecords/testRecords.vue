@@ -1,5 +1,25 @@
 <template>
   <div v-loading="loading">
+    <div class="choose">
+      <div class="classname">
+        <el-select v-model="subname" placeholder="请选择科目">
+          <el-option key value="不限"></el-option>
+          <el-option v-for="item in subjectName" :key="item.key" :value="item.value"></el-option>
+        </el-select>
+      </div>
+      <div class="classname">
+        <el-input
+          v-model="paperName"
+          maxlength="30"
+          show-word-limit
+          clearable
+          placeholder="请输入考试名称"
+        ></el-input>
+      </div>
+      <div class="btn">
+        <el-button type="primary" @click="getTestExam">开始筛选</el-button>
+      </div>
+    </div>
     <div class="indexLeft">
       <el-row>
         <el-col :span="6">
@@ -29,11 +49,14 @@
         <div>
           <div class="flex">
             <div class="index">序号</div>
-            <div class="testName">试卷</div>
+            <!-- <div class="testName">试卷</div> -->
+            <div class="testName">考试名称</div>
             <div class="subject">科目</div>
-            <div class="testTime">发布考试时间</div>
+            <div class="testTime">开始答题时间</div>
             <div class="duringTime">考试用时</div>
+            <div class="score">总分</div>
             <div class="score">得分</div>
+            <div class="duringTime">及格情况</div>
             <div class="operation">操作</div>
           </div>
           <div>
@@ -41,15 +64,22 @@
               <div class="flex">
                 <div class="index" v-if="index>=9">{{index+1}}</div>
                 <div class="index" v-if="index<9">0{{index+1}}</div>
-                <div class="testName">{{item.paperName}}</div>
+                <!-- <div class="testName">{{item.paperName}}</div> -->
+                <div class="testName">{{item.examName}}</div>
                 <div class="subject">
                   <span v-if="item.subjectId">{{item.subjextName}}</span>
                   <span v-else>---</span>
                 </div>
-                <div class="testTime">{{item.beginTime}}</div>
+                <div class="testTime">{{item.beginWriteTime}}</div>
                 <div class="duringTime" v-if="item.costMinutes">{{item.costMinutes}}</div>
                 <div class="duringTime" v-else>---</div>
+                <div class="score">{{item.totalScore}}</div>
                 <div class="score">{{item.score}}</div>
+                <div class="duringTime">
+                  <div v-if="item.isPass===true" style="color:green">及格</div>
+                  <div v-else-if="item.isPass===null" style="color:#aaaaaa">未交卷</div>
+                  <div v-else style="color:red">不及格</div>
+                </div>
                 <div
                   class="operation"
                   :class="item.submitId?'bgblue':'bggray'"
@@ -60,13 +90,7 @@
               </div>
             </div>
           </div>
-          <el-dialog
-            width="80%"
-            title="试卷明细"
-            top="1vh"
-            :visible.sync="dialogTableVisible"
-            @close="closeDialog"
-          >
+          <el-dialog width="80%" title="试卷明细" top="1vh" :visible.sync="dialogTableVisible">
             <div v-loading="submitPaperloading">
               <submitPaper :submitId="submitId" :paperDetail="paperDetail" />
             </div>
@@ -110,31 +134,15 @@ export default {
       total: 0,
       paperDetail: {},
       subjectName: [],
-      loading:true,
-      submitPaperloading:false
+      loading: true,
+      submitPaperloading: false,
+      paperName: "",
+      subname: "不限"
     };
   },
   components: { submitPaper },
   methods: {
-    closeDialog() {
-      // this.submitId = 0;
-      // this.paperDetail = {};
-      // console.log(this.submitId, this.paperDetail);
-    },
     goTo(e) {
-      // console.log(e);
-      if (e == null) {
-        this.totalNum = this.total;
-      }
-      if (e == 1) {
-        this.totalNum = this.fail;
-      }
-      if (e == 2) {
-        this.totalNum = this.empty;
-      }
-      if (e == 0) {
-        this.totalNum = this.pass;
-      }
       this.status = e;
       this.page = 1;
       this.getTestExam();
@@ -148,9 +156,7 @@ export default {
     },
     handleCurrentChange(val) {
       this.loading = true;
-      // console.log(`当前页: ${val}`);
       this.page = val;
-      // console.log(this.offset, this.limit);
       this.getTestExam();
     },
     //查看明细
@@ -213,7 +219,7 @@ export default {
       this.$grade
         .getdict()
         .then(res => {
-          this.loading=false;
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -228,15 +234,15 @@ export default {
             });
           }
         })
-        .catch(err=>{
-          this.loading=false;
+        .catch(err => {
+          this.loading = false;
         });
     },
     getTestNumber() {
       this.$grade
         .gettestNumber()
         .then(res => {
-          this.loading=false;
+          this.loading = false;
           if (res.data.code === 0) {
             this.total = res.data.data[0].totalCount;
             this.totalNum = res.data.data[0].totalCount;
@@ -250,22 +256,41 @@ export default {
             });
           }
         })
-        .catch(err=>{
-          this.loading=false;
+        .catch(err => {
+          this.loading = false;
         });
     },
     getTestExam() {
       this.loading = true;
+      if (this.subname === "不限") {
+        this.subjectId = null;
+      } else {
+        this.subjectName.map(item => {
+          if (this.subname === item.value) {
+            this.subjectId = Number(item.key);
+          }
+        });
+      }
+      let data = {
+        page: this.page,
+        limit: this.limit,
+        object: {
+          examName: this.paperName,
+          status: this.status,
+          subjectId: this.subjectId
+        }
+      };
       this.$grade
-        .getExam(this.page, this.limit, this.status)
+        .getExam(data)
         .then(res => {
-          this.loading=false;
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
             // console.log(res);
             this.allTestList = res.data.data;
+            this.totalNum = res.data.count;
             this.allTestList.map(item => {
               item.beginTime = this.timeFormat(item.beginTime);
               item.endWriteTime = this.timeFormat(item.endWriteTime);
@@ -284,7 +309,7 @@ export default {
           }
         })
         .catch(err => {
-          this.loading=false;
+          this.loading = false;
           //console.log(err);
         });
     }
@@ -354,7 +379,7 @@ span {
   margin-top: 1vh !important;
 }
 .scroll {
-  height: 550px;
+  height: 72vh;
 }
 .flex {
   display: flex;
@@ -363,25 +388,25 @@ span {
   text-align: center;
   margin-bottom: 20px;
   .index {
-    width: 5%;
+    width: 3%;
   }
   .testName {
-    width: 24%;
+    width: 16%;
   }
   .subject {
     width: 8%;
   }
   .testTime {
-    width: 23%;
+    width: 15%;
   }
   .duringTime {
-    width: 10%;
+    width: 7%;
   }
   .score {
-    width: 10%;
+    width: 3%;
   }
   .operation {
-    width: 20%;
+    width: 10%;
     :hover {
       cursor: pointer;
     }
@@ -398,7 +423,15 @@ span {
   margin-top: 20px;
   text-align: center;
 }
-.indexLeft{
+.indexLeft {
   margin-bottom: 20px;
+}
+.choose {
+  display: flex;
+  align-items: center;
+  padding-bottom: 8px;
+}
+.classname {
+  margin-right: 20px;
 }
 </style>

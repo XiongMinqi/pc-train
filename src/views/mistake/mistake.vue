@@ -1,6 +1,12 @@
 <template>
   <div v-loading="loading">
     <div class="choose">
+      <div class="classname">
+        <el-select v-model="subname" placeholder="请选择科目">
+          <el-option key value="不限"></el-option>
+          <el-option v-for="item in subjectName" :key="item.key" :value="item.value"></el-option>
+        </el-select>
+      </div>
       <div class="subject">
         <el-select v-model="question" placeholder="请选择问题类型">
           <el-option value="不限"></el-option>
@@ -48,24 +54,29 @@
             </div>
           </div>
           <div>
-            <div style="margin-bottom:10px"><el-button type="primary" round size="mini" @click="checkDetail(item)">错题重做</el-button></div>
-            <div><el-button type="danger" round size="mini" @click="deleteQuestion(item)">删除错题</el-button></div>
+            <div style="margin-bottom:10px">
+              <el-button type="primary" round size="mini" @click="checkDetail(item)">错题重做</el-button>
+            </div>
+            <div>
+              <el-button type="danger" round size="mini" @click="deleteQuestion(item)">删除错题</el-button>
+            </div>
           </div>
         </div>
       </div>
+      <div class="block">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[5, 10, 15, 20, 30, 40]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+        ></el-pagination>
+      </div>
     </div>
     <div v-else class="else">暂无数据</div>
-    <div class="block">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[5, 10, 15, 20, 30, 40]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      ></el-pagination>
-    </div>
+
     <el-dialog title="错题详情" :visible.sync="dialogFormVisible" @close="close">
       <!-- <div> -->
       <div v-loading="dialogloading">
@@ -127,6 +138,18 @@
             ></el-input>
           </div>
         </div>
+        <div class="checkRightAnswer">
+          <div @click="checkRightAnswer">
+            <img src="../../assets/icon/light-bulb.png" alt />
+          </div>
+          <div @click="checkRightAnswer" v-if="showAnswer">关闭提示</div>
+          <div @click="checkRightAnswer" v-else>查看提示</div>
+        </div>
+        <div v-if="showAnswer">
+          答题提示 :
+          <span v-if="questionDetail.answerResolve">{{questionDetail.answerResolve}}</span>
+          <span v-else>暂无提示</span>
+        </div>
         <div v-if="disappear" style="display:flex;align-items: center;padding-top:20px">
           <div>正确答案 :</div>
           <div v-if="questionDetail.type==1" style="padding-left:10px;color:green">
@@ -150,10 +173,12 @@
 export default {
   data() {
     return {
+      subname: "不限",
       questionType: [],
       errorList: [], //错题
       question: "不限", //问题类型
       status: null,
+      subjectName: [],
       page: 1,
       limit: 5,
       disappear: false,
@@ -171,11 +196,16 @@ export default {
       department: [],
       major: [],
       loading: true,
-      dialogloading: false
+      dialogloading: false,
+      showAnswer: false,
+      subjectId: -1
     };
   },
   components: {},
   methods: {
+    checkRightAnswer() {
+      this.showAnswer = !this.showAnswer;
+    },
     handleSizeChange(val) {
       this.loading = true;
       this.page = 1;
@@ -219,18 +249,19 @@ export default {
       }
     },
     //删除错题
-    deleteQuestion(e){
-      this.$grade.deleteMistake(e.id)
-      .then(res => {
+    deleteQuestion(e) {
+      this.$grade
+        .deleteMistake(e.id)
+        .then(res => {
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
             this.$message({
-              message:"删除成功",
-              type:"success"
-            })
-             this.loading = true;
+              message: "删除成功",
+              type: "success"
+            });
+            this.loading = true;
             this.getErrorList();
           } else {
             this.$message({
@@ -241,17 +272,16 @@ export default {
         })
         .catch(err => {
           this.$message({
-            message:"获取失败",
-            type:"warning"
-          })
+            message: "获取失败",
+            type: "warning"
+          });
         });
     },
     //错题组卷
     wrongQuestion() {
       this.$router.push({
-        name: "online",
-        path: "/online",
-        query: { flag: true }
+        name: "mistakePractise",
+        path: "/mistakePractise"
       });
     },
     //查看错题具体详情
@@ -259,6 +289,7 @@ export default {
       // console.log(e);
       this.dialogFormVisible = true;
       this.dialogloading = true;
+      this.showAnswer = false;
       this.$grade
         .getErrorDetail(e.id)
         .then(res => {
@@ -294,6 +325,7 @@ export default {
             this.questionType = res.data.data[0]["题目类型"];
             this.major = res.data.data[0]["专业名称"];
             this.department = res.data.data[0]["部门名称"];
+            this.subjectName = res.data.data[0]["科目名称"];
             this.getErrorList();
             // console.log(this.department);
           } else {
@@ -330,8 +362,25 @@ export default {
     },
     //获取错题
     getErrorList() {
+      if (this.subname === "不限") {
+        this.subjectId = null;
+      } else {
+        this.subjectName.map(item => {
+          if (this.subname === item.value) {
+            this.subjectId = Number(item.key);
+          }
+        });
+      }
+      let data = {
+        page: this.page,
+        limit: this.limit,
+        object: {
+          questionType: this.status,
+          subjectId: this.subjectId
+        }
+      };
       this.$grade
-        .getMistake(this.page, this.limit, this.status)
+        .getMistake(data)
         .then(res => {
           this.loading = false;
           if (res.data.code === 1000) {
@@ -454,6 +503,23 @@ export default {
   color: red;
 }
 .btn {
+  margin-right: 20px;
+}
+.checkRightAnswer {
+  color: #d56f2b;
+  display: flex;
+  align-items: center;
+  font-size: 13px;
+  padding: 10px 0;
+  :hover {
+    cursor: pointer;
+  }
+  img {
+    width: 15px;
+    height: 15px;
+  }
+}
+.classname {
   margin-right: 20px;
 }
 </style>

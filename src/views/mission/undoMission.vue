@@ -13,7 +13,9 @@
           </div>
           <div class="text item">要求学习时长 : {{item.requireLearnTime}}分钟</div>
           <div class="text item">要求答对数量 : {{item.requireRightCount}}道</div>
-          <div class="text item">持续时间 : {{item.msg}}</div>
+          <div class="text item">发布时间 : {{item.publishTime}}</div>
+          <div class="text item">截至时间 : {{item.endTime}}</div>
+          <!-- <div class="text item">持续时间 : {{item.msg}}</div> -->
         </el-card>
       </div>
       <div class="block">
@@ -34,13 +36,23 @@
         <div style="min-height:40vh">
           <div class="text item">要求学习时长 : {{missiondetail.requireLearnTime}}分钟</div>
           <div class="text item">要求答对数量 : {{missiondetail.requireRightCount}}道</div>
-          <div class="text item">持续时间 : {{missiondetail.msg}}</div>
+          <div class="text item">目前学习时长 : {{missiondetail.learnTime}}分钟</div>
+          <div
+            class="text item"
+            v-if="missiondetail.lastSubmitTime"
+          >上次提交练习时间 : {{missiondetail.lastSubmitTime}}</div>
+          <div class="text item" v-else>上次提交练习时间 : 暂时无提交记录</div>
           <div class="text item">发布时间 : {{missiondetail.publishTime}}</div>
+          <div class="text item">截至时间 : {{missiondetail.endTime}}</div>
+          <div class="text item">持续时间 : {{missiondetail.msg}}</div>
+
           <div class="text item">作业描述 : {{missiondetail.description}}</div>
         </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="joinMisson">进入作业</el-button>
-        </span>
+        <div slot="footer" style="text-align: center;">
+          <span>
+            <el-button type="primary" @click="joinMisson">进入作业</el-button>
+          </span>
+        </div>
       </el-dialog>
     </div>
   </div>
@@ -54,7 +66,7 @@ export default {
       page: 1,
       limit: 6,
       dialogVisible: false,
-      currentPage:1,
+      currentPage: 1,
       missiondetail: {},
       missionList: [],
       total: 0
@@ -108,6 +120,29 @@ export default {
         return msg;
       }
     },
+    //转换时间
+    timeFormat(time) {
+      var clock = "";
+      var d = new Date(time);
+      var year = d.getFullYear(); //年
+      var month = d.getMonth() + 1; //月
+      var day = d.getDate(); //日
+      var hh = d.getHours(); //时
+      var mm = d.getMinutes(); //分
+      var ss = d.getSeconds(); //秒
+      clock += year + "-";
+      if (month < 10) clock += "0";
+      clock += month + "-";
+      if (day < 10) clock += "0";
+      clock += day + " ";
+      if (hh < 10) clock += "0";
+      clock += hh + ":";
+      if (mm < 10) clock += "0";
+      clock += mm + ":";
+      if (ss < 10) clock += "0";
+      clock += ss;
+      return clock;
+    },
     joinMisson() {
       this.dialogVisible = false;
       this.$router.push({
@@ -137,6 +172,9 @@ export default {
             this.missionList.map(item => {
               let msg = this.timeChange(item.lastTime);
               this.$set(item, "msg", msg);
+              let times = Date.parse(item.publishTime) + item.lastTime * 60000;
+              let endTime = this.timeFormat(times);
+              this.$set(item, "endTime", endTime);
             });
           } else {
             this.$message({
@@ -147,8 +185,9 @@ export default {
         })
         .catch(err => {
           this.loading = false;
+          console.log(err);
           this.$message({
-            message: err.data.msg,
+            message: "获取失败",
             type: "warning"
           });
         });
@@ -199,7 +238,7 @@ export default {
   text-align: center;
   margin-top: 10px;
 }
-.else{
+.else {
   padding: 30px;
   text-align: center;
   color: red;

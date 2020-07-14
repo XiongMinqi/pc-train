@@ -1,6 +1,12 @@
 <template>
   <div>
     <div class="flex aligh-center">
+      <div class="classname">
+        <el-select v-model="subname" placeholder="请选择科目">
+          <el-option key value="不限"></el-option>
+          <el-option v-for="item in subjectName" :key="item.key" :value="item.value"></el-option>
+        </el-select>
+      </div>
       <div>
         <el-select v-model="type" placeholder="请选择时间范围">
           <el-option v-for="item in listType" :key="item.key" :value="item.value"></el-option>
@@ -28,6 +34,8 @@ export default {
       time: [],
       score: [],
       totalScore: [],
+      subname: "不限",
+      subjectName: [],
       type: "本月",
       listType: [
         {
@@ -81,14 +89,47 @@ export default {
       ],
       page: 1,
       limit: 30,
-      option: {}
+      option: {},
+      subjectId: -1
     };
   },
   components: {},
   methods: {
+    //获取科目名称
+    getSubjectName() {
+      this.$grade
+        .getdict()
+        .then(res => {
+          this.loading = false;
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            this.subjectName = res.data.data[0]["科目名称"];
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning"
+            });
+          }
+        })
+        .catch(err => {
+          this.loading = false;
+        });
+    },
     getlist() {
+      if (this.subname === "不限") {
+        this.subjectId = null;
+      } else {
+        this.subjectName.map(item => {
+          if (this.subname === item.value) {
+            this.subjectId = Number(item.key);
+          }
+        });
+      }
       let data = {
-        timeRange: this.type
+        timeRange: this.type,
+        subjectId: this.subjectId
       };
       this.$grade
         .getTongji(data)
@@ -104,7 +145,7 @@ export default {
               this.score = [];
               this.totalScore = [];
               res.data.data.map(item => {
-                this.paperName.push(item.paperName);
+                this.paperName.push(item.examName);
                 this.score.push(item.actualScore);
                 this.totalScore.push(item.totalScore);
               });
@@ -112,10 +153,17 @@ export default {
               this.paperName = [];
               this.score = [];
               this.totalScore = [];
-              this.$message({
-                message: this.type + "暂无考试数据",
-                type: "warning"
-              });
+              if (this.subname !== "不限") {
+                this.$message({
+                  message: "科目" + this.subname + this.type + "暂无考试数据",
+                  type: "warning"
+                });
+              } else {
+                this.$message({
+                  message: this.type + "暂无考试数据",
+                  type: "warning"
+                });
+              }
             }
           } else {
             this.$message({
@@ -152,7 +200,7 @@ export default {
           boundaryGap: false, //坐标轴两边不留白
           data: this.paperName,
           // data: ["2020-1-1", "2020-2-1", "2020-3-1", "2020-4-1", "2020-5-1"],
-          name: "试卷名称", //X轴 name
+          name: "考试名称", //X轴 name
           nameTextStyle: {
             //坐标轴名称的文字样式
             color: "#FA6F53",
@@ -246,6 +294,7 @@ export default {
   mounted() {
     // this.getTestExam();
     this.getlist();
+    this.getSubjectName();
   },
   watch: {
     //观察option的变化
@@ -307,5 +356,13 @@ export default {
 }
 .btn {
   margin-left: 20px;
+}
+.choose {
+  display: flex;
+  align-items: center;
+  padding: 20px 20px;
+}
+.classname {
+  margin-right: 20px;
 }
 </style>

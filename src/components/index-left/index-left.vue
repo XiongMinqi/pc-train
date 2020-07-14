@@ -55,7 +55,7 @@
           </el-submenu>
           <el-menu-item index="4" @click="goTo('/onlineTest')">
             <i class="el-icon-edit-outline"></i>
-            <span slot="title">在线考试</span>
+            <span slot="title">我的考试</span>
           </el-menu-item>
           <el-submenu index="5">
             <template slot="title">

@@ -173,6 +173,10 @@
                   style="color: #007AFF;"
                   v-else
                 >{{item.answer.score}}/{{item.question.defaultScore}}</div>
+                <div class="result">
+                  <div v-if="item.answer.right===true"><img src="../../assets/icon/right.png" alt=""></div>
+                  <div v-if="item.answer.right===false"><img src="../../assets/icon/error.png" alt=""></div>
+                </div>
               </div>
             </div>
             <div class="jiexi-text" style="margin-bottom: 70rpx;">
@@ -183,7 +187,7 @@
           </div>
         </div>
       </div>
-      <div v-else>暂无数据</div>
+      <div v-else style="text-align:center;padding:20px;color:red;font-size:18px">暂无数据</div>
     </div>
   </div>
 </template>
@@ -390,5 +394,12 @@ span {
 
 .score {
   padding-bottom: 10px;
+}
+.result{
+  padding-left: 10px;
+  img{
+    width: 20px;
+    height: 20px;
+  }
 }
 </style>

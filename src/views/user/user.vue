@@ -69,6 +69,7 @@
           action="people/setMyAvatar"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
+          :on-progress="onProgress"
           :on-error="handleAvatarFail"
           :before-upload="beforeAvatarUpload"
         >
@@ -165,11 +166,19 @@ export default {
   methods: {
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
+      this.loading = false;
     },
     handleAvatarFail(err, file, fileList) {
+      this.loading = false
       // console.log(err);
       // console.log(file);
       // console.log(fileList);
+    },
+    onProgress(event, file, fileList){
+        // this.$message({
+        //   message:"头像上传中"
+        // })
+        this.loading=true;
     },
     beforeAvatarUpload(file) {
       const isJPG = file.type === "image/jpeg";

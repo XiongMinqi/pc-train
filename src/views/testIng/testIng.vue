@@ -32,6 +32,10 @@
                   </div>
                 </div>
               </div>
+              <div class="btn">
+                <el-button type="primary" @click="checkPaper">提交试卷</el-button>
+                <!-- <el-button type="primary" @click="savePaper">测试用保存试卷</el-button> -->
+              </div>
             </div>
           </div>
         </el-aside>
@@ -124,10 +128,6 @@
                         />
                       </div>
                     </div>
-                  </div>
-                  <div class="btn">
-                    <el-button type="primary" @click="checkPaper">提交试卷</el-button>
-                    <!-- <el-button type="primary" @click="savePaper">测试用保存试卷</el-button> -->
                   </div>
                 </div>
 

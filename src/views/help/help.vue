@@ -68,6 +68,10 @@
           <div class="title">5、右上角头像不显示?</div>
           <div class="content">解决办法 ：退出重新登录</div>
         </div>
+        <div class="problem">
+          <div class="title">6、考试记录中开始答题时间为1970/01/01 08:00:00?</div>
+          <div class="content">原因 : 此时间为空，系统默认设置为1970/01/01 08:00:00</div>
+        </div>
       </el-collapse-item>
     </el-collapse>
   </div>
