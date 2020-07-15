@@ -138,5 +138,9 @@ export default {
     //任务统计
     statistmission(data){
         return axios.post("me/listMyAssignmentLineChartItem",data)
+    },
+    //查看人员
+    checkPeople(id){
+        return axios.get(`people/getById?id=${id}`)
     }
 }

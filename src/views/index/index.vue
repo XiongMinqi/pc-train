@@ -31,7 +31,7 @@
           <div class="name">未学习 :</div>
           <div class="count">{{unstudy}} 课</div>
         </div>
-        <div style="width:50%;margin-top:20px;padding-left:20px">
+        <div style="width:77%;margin-top:20px;padding-left:20px">
           <el-progress :text-inside="true" :stroke-width="26" :percentage="studypercent"></el-progress>
         </div>
       </div>
@@ -94,7 +94,7 @@
         </div>
       </div>
     </div>
-    <div style="text-align: center;">版本号:20.07.14.18</div>
+    <div style="text-align: center;">版本号:20.07.15.15</div>
   </div>
   <!-- </el-table> -->
 </template>
@@ -323,7 +323,6 @@ export default {
   font-weight: bold;
   padding: 10px 20px;
   border-radius: 20px;
-  margin-bottom: 10px;
 }
 .classes:hover {
   background: #e2e2e2;
