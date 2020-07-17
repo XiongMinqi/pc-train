@@ -78,7 +78,9 @@
               <div class="desc" style="font-size:12px">
                 <div>
                   {{item.majorName}}/{{item.subjectName}}/浏览
-                  <span style="color:blue;padding:0 4px;">{{item.readCount}}</span>次
+                  <span
+                    style="color:blue;padding:0 4px;"
+                  >{{item.readCount}}</span>次
                 </div>
               </div>
             </div>
@@ -138,7 +140,9 @@
               <div class="desc" style="font-size:12px">
                 <div>
                   {{item.majorName}}/{{item.subjectName}}/浏览
-                  <span style="color:blue;padding:0 4px;">{{item.readCount}}</span>次
+                  <span
+                    style="color:blue;padding:0 4px;"
+                  >{{item.readCount}}</span>次
                 </div>
               </div>
             </div>
@@ -370,8 +374,8 @@ export default {
               this.wordUrl =
                 // "http://192.168.0.45:8012/onlinePreview?url=" +
                 // encodeURIComponent(res.data.data[0]);
-              "https://view.officeapps.live.com/op/view.aspx?src=" +
-              encodeURIComponent(res.data.data[0]);
+                "https://view.officeapps.live.com/op/view.aspx?src=" +
+                encodeURIComponent(res.data.data[0]);
               this.dialogVisible = true;
               //console.log(this.wordUrl);
             } else if (e.fileSuffix === ".mp4") {
@@ -554,6 +558,7 @@ export default {
   :hover {
     cursor: pointer;
     color: #cc4820;
+    background-color: #f2f2f2;
     img {
       transform: scale(1.1);
     }

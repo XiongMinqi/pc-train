@@ -1,29 +1,29 @@
 <template>
   <div v-loading="loading">
     <div class="choose">
-      <div class="classname">
-        <el-select v-model="subname" placeholder="请选择科目">
-          <el-option key value="不限"></el-option>
-          <el-option v-for="item in subjectName" :key="item.key" :value="item.value"></el-option>
-        </el-select>
+        <div class="classname">
+          <el-select v-model="subname" placeholder="请选择科目">
+            <el-option key value="不限"></el-option>
+            <el-option v-for="item in subjectName" :key="item.key" :value="item.value"></el-option>
+          </el-select>
+        </div>
+        <div class="subject">
+          <el-select v-model="question" placeholder="请选择问题类型">
+            <el-option value="不限"></el-option>
+            <el-option v-for="item in questionType" :key="item.key" :value="item.value"></el-option>
+          </el-select>
+        </div>
+        <div class="btn">
+          <el-button type="primary" @click="chooseClass">开始筛选</el-button>
+        </div>
+        <div class="btn">
+          <el-button type="primary" @click="wrongQuestion">错题练习</el-button>
+        </div>
       </div>
-      <div class="subject">
-        <el-select v-model="question" placeholder="请选择问题类型">
-          <el-option value="不限"></el-option>
-          <el-option v-for="item in questionType" :key="item.key" :value="item.value"></el-option>
-        </el-select>
-      </div>
-      <div class="btn">
-        <el-button type="primary" @click="chooseClass">开始筛选</el-button>
-      </div>
-      <div class="btn">
-        <el-button type="primary" @click="wrongQuestion">错题练习</el-button>
-      </div>
-    </div>
-    <div v-if="errorList.length>0">
+    <div v-if="errorList.length>0">      
       <div v-for="(item,index) in errorList" :key="index">
         <div class="mistake">
-          <div style="display: flex; align-items: center">
+          <div style="display: flex; align-items: center;width: 90%;">
             <div class="userImg">
               <img src="../../assets/icon/mistake.png" alt />
             </div>
@@ -467,7 +467,7 @@ export default {
   color: green;
 }
 .questioncontent {
-  width: 800px;
+  max-width: 900px;
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;

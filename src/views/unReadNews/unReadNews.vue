@@ -1,16 +1,21 @@
 <template>
-  <div class="newsDetail" v-loading="loading">
-    <div class="newsTitle text-center">{{newsDetail.title}}</div>
-    <div class="flex aligh-center justify-between newsTime">
-      <div>
-        <div v-if="newsDetail.type<=1000">系统通知</div>
-        <div v-else>其他通知</div>
-      </div>
-      <div>{{newsDetail.createTime}}</div>
+  <div v-loading="loading">
+    <div class="backLastPage" @click="backLastPage">
+      <i class="el-icon-arrow-left"></i>返回
     </div>
-    <div class="newsContent">
-      <div v-if="newsDetail.content">{{newsDetail.content}}</div>
-      <div v-else>此消息无内容</div>
+    <div class="newsDetail">
+      <div class="newsTitle text-center">{{newsDetail.title}}</div>
+      <div class="flex aligh-center justify-between newsTime">
+        <div>
+          <div v-if="newsDetail.type<=1000">系统通知</div>
+          <div v-else>其他通知</div>
+        </div>
+        <div>{{newsDetail.createTime}}</div>
+      </div>
+      <div class="newsContent">
+        <div v-if="newsDetail.content">{{newsDetail.content}}</div>
+        <div v-else>此消息无内容</div>
+      </div>
     </div>
   </div>
 </template>
@@ -27,6 +32,9 @@ export default {
   },
   components: {},
   methods: {
+    backLastPage() {
+      this.$router.go(-1);
+    },
     //未读消息详情
     getNewaDetail() {
       this.$api

@@ -94,7 +94,7 @@
                 </el-menu-item>
                 <el-menu-item index="10" @click="goTo('/news')">
                   <i class="el-icon-menu"></i>
-                  <span slot="title">新闻公告</span>
+                  <span slot="title">系统公告</span>
                 </el-menu-item>
                 <el-submenu index="2">
                   <template slot="title">
@@ -153,7 +153,7 @@
                 </el-submenu>
                 <el-submenu index="6">
                   <template slot="title">
-                    <i class="el-icon-edit"></i>
+                    <i class="el-icon-video-camera"></i>
                     <span slot="title">在线学习</span>
                   </template>
                   <el-menu-item-group>
@@ -406,7 +406,7 @@ export default {
 .title {
   padding-left: 20px;
   font-size: 25px;
-  font-weight: bold;
+  // font-weight: bold;
 }
 .title:hover {
   cursor: pointer;

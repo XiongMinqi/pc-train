@@ -38,9 +38,9 @@ export default {
       }
     },
     answer: {
-      type: Object,
+      type: Array,
       default: function() {
-        return {};
+        return [];
       }
     }
   },
@@ -104,7 +104,7 @@ export default {
   mounted() {
     this.list = this.options[this.index];
     let answerDetail = this.answer[this.index];
-    if (answerDetail.content) {
+    if (answerDetail.content !== "") {
       this.$store.state.practiseList[this.list.assignmentQuestionId] =
         answerDetail.content;
       let arr = answerDetail.content.split("");

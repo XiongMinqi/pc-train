@@ -17,9 +17,9 @@ export default {
       }
     },
     answer: {
-      type: Object,
+      type: Array,
       default: function() {
-        return {};
+        return [];
       }
     }
   },

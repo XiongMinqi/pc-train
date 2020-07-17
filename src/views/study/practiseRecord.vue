@@ -1,22 +1,25 @@
 <template>
-  <div class="list" v-loading="loading">
-    <el-table :data="list" border style="width: 100%">
-      <el-table-column prop="rightNumber" label="答对/道" width="180"></el-table-column>
-      <el-table-column prop="questionNumber" label="全部/道" width="180"></el-table-column>
-      <el-table-column prop="createTime" label="提交练习时间"></el-table-column>
-      <el-table-column prop="costSeconds" label="练习时长" width="180"></el-table-column>
-      <el-table-column prop="score" label="积分" width="180"></el-table-column>
-    </el-table>
-    <div class="block">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[10,20,30]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      ></el-pagination>
+  <div v-loading="loading">
+    <div class="historyRecord">在线练习记录</div>
+    <div class="list">
+      <el-table :data="list" border style="width: 100%">
+        <el-table-column prop="rightNumber" label="答对/道" width="180"></el-table-column>
+        <el-table-column prop="questionNumber" label="全部/道" width="180"></el-table-column>
+        <el-table-column prop="createTime" label="提交练习时间"></el-table-column>
+        <el-table-column prop="costSeconds" label="练习时长" width="180"></el-table-column>
+        <el-table-column prop="score" label="积分" width="180"></el-table-column>
+      </el-table>
+      <div class="block">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10,20,30]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+        ></el-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -39,7 +42,7 @@ export default {
         limit: 100,
         page: 1
       },
-      loading:true
+      loading: true
     };
   },
   components: {},
@@ -66,7 +69,7 @@ export default {
       this.$grade
         .getPractiseRecord(data)
         .then(res => {
-          this.loading=false;
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -95,12 +98,12 @@ export default {
             });
           }
         })
-        .catch(err=>{
-          this.loading=false;
+        .catch(err => {
+          this.loading = false;
           this.$message({
-              message: err.data.msg,
-              type: "warning"
-            });
+            message: err.data.msg,
+            type: "warning"
+          });
         });
     }
   },

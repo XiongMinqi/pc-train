@@ -480,6 +480,8 @@ export default {
             }
             if (res.data.code === 0) {
               this.courseDetail = res.data.data[0];
+              this.isJoin(this.courseDetail.id);
+              this.isComment(this.courseDetail.id);
               this.getTeacherImg();
               // this.dialogFormVisible = true;
             } else {
@@ -507,16 +509,12 @@ export default {
     //评论课程
     commentCurse() {
       if (this.isJoinCourse === true) {
-        if (isCommentCourse === true) {
+        if (this.isCommentCourse === true) {
           this.$message({
             message: "本课程您已经评论过了，不能再次评论",
             type: "warning"
           });
         } else {
-          this.$message({
-            message: "正在为您跳转到评论页",
-            type: "success"
-          });
           this.$router.push({
             path: "/comments",
             query: {
@@ -574,7 +572,7 @@ export default {
     //是否评论课程
     isComment(id) {
       this.$grade
-        .isJoinCourse(id)
+        .isCommentCourse(id)
         .then(res => {
           if (res.data.code === 1000) {
             this.$message({
@@ -666,7 +664,7 @@ export default {
       var styles = {
         Gheight: 50,
         leftHandWidth: 50,
-        palette: ["#ff6633", "#dddddd"]
+        palette: ["#ff6633", "#99CC33", "#666699", "#CCCCFF", "#0099CC"]
       };
       // 实例化(初始化课表)
       this.Timetable = new Timetables({
@@ -700,13 +698,14 @@ export default {
             weekDay = 6;
           }
           // console.log(e);
-          // console.log(e.name.indexOf(","));
-          // console.log(this.courseIdList[weekDay][e.index]);
+          // console.log(this.courseIdList);
+          // console.log(this.courseIdList[weekDay]);
+          // console.log(this.courseIdList[weekDay][e.index-1]);
           if (e.name && e.name.indexOf(",") === -1) {
             this.dialogFormVisible = true;
             this.dialogloading = true;
             this.$grade
-              .getDetailById(this.courseIdList[weekDay][e.index])
+              .getDetailById(this.courseIdList[weekDay][e.index - 1])
               .then(res => {
                 this.dialogloading = false;
                 if (res.data.code === 1000) {
@@ -741,7 +740,7 @@ export default {
           } else if (e.name && e.name.indexOf(",") !== -1) {
             this.courseChooseList = [];
             let arr = e.name.split(",");
-            let arrId = this.courseIdList[weekDay][e.index].split(",");
+            let arrId = this.courseIdList[weekDay][e.index - 1].split(",");
             arr.map((item, index) => {
               let data = {
                 key: arrId[index],

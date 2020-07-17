@@ -94,7 +94,7 @@
         </div>
       </div>
     </div>
-    <div style="text-align: center;">版本号:20.07.15.15</div>
+    <div style="text-align: center;">版本号:20.07.17.10</div>
   </div>
   <!-- </el-table> -->
 </template>
@@ -121,7 +121,7 @@ export default {
   components: {},
   methods: {
     study() {
-      this.$router.push({ name: "onlineStudy", path: "/onlineStudy" });
+      this.$router.push({ name: "studyRecord", path: "/studyRecord" });
     },
     classes() {
       this.$router.push({ name: "classList", path: "/classList" });
@@ -307,7 +307,7 @@ export default {
   font-weight: bold;
   padding: 10px 20px;
   border-radius: 20px;
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 .classes {
   // background: #efefef;

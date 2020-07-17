@@ -1,6 +1,9 @@
 <template>
   <div v-loading="loading">
-    <el-tabs v-model="activeName" stretch="true" @tab-click="handleClick">
+    <div class="backLastPage" @click="backLastPage">
+      <i class="el-icon-arrow-left"></i>返回
+    </div>
+    <el-tabs v-model="activeName" :stretch="true" @tab-click="handleClick">
       <el-tab-pane label="课件" name="first">
         <div v-if="coursewareList.length>0">
           <div v-if="textList.length>0">
@@ -249,6 +252,9 @@ export default {
     AudioPlayer
   },
   methods: {
+    backLastPage() {
+      this.$router.go(-1);
+    },
     handleClick(tab, event) {
       // console.log(tab.$options.propsData.label);
       // console.log(event);
@@ -554,6 +560,7 @@ export default {
   :hover {
     cursor: pointer;
     color: #cc4820;
+    background-color: #f2f2f2;
     img {
       transform: scale(1.1);
     }

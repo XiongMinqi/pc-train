@@ -72,6 +72,10 @@
           <div class="title">6、考试记录中开始答题时间为1970/01/01 08:00:00?</div>
           <div class="content">原因 : 此时间为空，系统默认设置为1970/01/01 08:00:00</div>
         </div>
+        <div class="problem">
+          <div class="title">7、左侧导航栏缩小了?</div>
+          <div class="content">解决办法 : 点击左上角图标就会展开或者缩小左侧导航栏</div>
+        </div>
       </el-collapse-item>
     </el-collapse>
   </div>

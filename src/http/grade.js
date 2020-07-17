@@ -70,7 +70,7 @@ export default {
     },
     //获取课程表
     getCourseList() {
-        return axios.post("planCourse/listByTime", {
+        return axios.post("me/listPlanCourseByTime", {
             timeRange: 1
         })
     },

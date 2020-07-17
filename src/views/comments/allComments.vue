@@ -1,5 +1,8 @@
 <template>
   <div v-loading="loading">
+    <div class="backLastPage" @click="backLastPage">
+      <i class="el-icon-arrow-left"></i>返回
+    </div>
     <div v-if="allComments.length>0">
       <div class="totalDetail">
         <div class="flex aligh-center">
@@ -65,6 +68,9 @@ export default {
   },
   components: {},
   methods: {
+    backLastPage() {
+      this.$router.go(-1);
+    },
     handleSizeChange(val) {
       this.loading = true;
       this.page = 1;

@@ -53,3 +53,16 @@
     padding: 30px;
     color: red;
   }
+  .backLastPage{
+    margin-bottom: 10px;
+    width: 60px;
+  }
+  .backLastPage:hover{
+    cursor: pointer;
+  }
+  .el-icon-arrow-left{
+    padding-right: 5px;
+  }
+  .historyRecord{
+    margin-bottom: 10px;
+  }

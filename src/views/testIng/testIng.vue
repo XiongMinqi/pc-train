@@ -339,7 +339,8 @@ export default {
       let data = {
         answers: this.allAnswer,
         beginTime: this.beginTestTime,
-        device: this.llqName,
+        // device: this.llqName,
+        device: "chrome",
         ip: ip,
         ksExamId: this.ksExamId,
         peopleId: userinfo.userId

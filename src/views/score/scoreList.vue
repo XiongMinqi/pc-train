@@ -215,12 +215,13 @@ export default {
 }
 .scoreDetail {
   background: #f2f2f2;
-  width: 80%;
+  // width: 80%;
   padding: 5px 30px 5px 0;
   border-radius: 10px;
   margin-bottom: 5px;
 }
 .userImg {
+  height: 50px;
   border-radius: 50%;
   margin-right: 15px;
   :hover {

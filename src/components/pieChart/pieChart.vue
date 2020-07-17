@@ -95,3 +95,8 @@ export default {
   }
 };
 </script>
+<style lang="scss" scope>
+  #main1{
+    height: 200px!important;
+  }
+</style>

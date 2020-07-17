@@ -1,21 +1,24 @@
 <template>
-  <div class="list" v-loading="loading">
-    <el-table :data="list" border style="width: 100%">
-      <el-table-column prop="lastTime" label="上次观看时间" width="180"></el-table-column>
-      <el-table-column prop="subjectName" label="名称"></el-table-column>
-      <el-table-column prop="totalMinutes" label="总时长/分钟" width="180"></el-table-column>
-      <el-table-column prop="times" label="次数/次" width="180"></el-table-column>
-    </el-table>
-    <div class="block">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="currentPage"
-        :page-sizes="[10,20,30]"
-        :page-size="100"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-      ></el-pagination>
+  <div v-loading="loading">
+    <div class="historyRecord">课件学习记录</div>
+    <div class="list">
+      <el-table :data="list" border style="width: 100%">
+        <el-table-column prop="lastTime" label="上次观看时间" width="180"></el-table-column>
+        <el-table-column prop="subjectName" label="名称"></el-table-column>
+        <el-table-column prop="totalMinutes" label="总时长/分钟" width="180"></el-table-column>
+        <el-table-column prop="times" label="次数/次" width="180"></el-table-column>
+      </el-table>
+      <div class="block">
+        <el-pagination
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+          :current-page="currentPage"
+          :page-sizes="[10,20,30]"
+          :page-size="100"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="total"
+        ></el-pagination>
+      </div>
     </div>
   </div>
 </template>
@@ -38,7 +41,7 @@ export default {
         limit: 100,
         page: 1
       },
-      loading:true
+      loading: true
     };
   },
   components: {},
@@ -66,17 +69,17 @@ export default {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
-            this.getStudy()
+            this.getStudy();
             this.allList = res.data.data;
             // console.log(this.allList);
           }
         })
-        .catch(err=>{
+        .catch(err => {
           this.loading = false;
           this.$message({
-              message: err.data.msg,
-              type: "warning"
-            });
+            message: err.data.msg,
+            type: "warning"
+          });
         });
     },
     //获取我的学习记录
@@ -84,7 +87,7 @@ export default {
       this.$api
         .getStudyRecord(this.page, this.limit)
         .then(res => {
-          this.loading=false;
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -93,8 +96,8 @@ export default {
             this.list = res.data.data;
             this.list.map(item => {
               this.allList.map(itm => {
-                if(item.coursewareId===itm.id){
-                  this.$set(item,"subjectName",itm.name)
+                if (item.coursewareId === itm.id) {
+                  this.$set(item, "subjectName", itm.name);
                 }
               });
             });
@@ -106,12 +109,12 @@ export default {
             });
           }
         })
-        .catch(err=>{
-          this.loading=false;
+        .catch(err => {
+          this.loading = false;
           this.$message({
-              message: err.data.msg,
-              type: "warning"
-            });
+            message: err.data.msg,
+            type: "warning"
+          });
         });
     }
   },

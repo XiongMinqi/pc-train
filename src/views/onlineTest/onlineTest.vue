@@ -15,7 +15,7 @@
       </div>
     </div>
     <div v-if="testList.length>0">
-      <div class="flex" v-for="(item,index) in testList" :key="index">
+      <div class="flex testDetail" v-for="(item,index) in testList" :key="index">
         <div style=" display: flex;align-items: center;">
           <div class="userImg">
             <img src="../../assets/icon/testlist.png" alt />
@@ -211,7 +211,6 @@ export default {
         });
     },
     showToast(e) {
-      console.log(e);
       if (e.status === 1) {
         this.$message({
           message: "考试还未开始，不能进入该场考试",
@@ -219,30 +218,16 @@ export default {
         });
       }
       if (e.status === 3) {
-        if (e.totalScore > 0) {
-          this.submitId = e.paperId;
-          this.paperDetail = {};
-          this.paperDetail = e;
-          this.dialogTableVisible = true;
-        } else {
           this.$message({
-            message: "发生错误",
+            message: "考试正在审核，不能再次进入该场考试",
             type: "warning"
           });
-        }
       }
       if (e.status === 4) {
-        if (e.totalScore > 0) {
-          this.submitId = e.paperId;
-          this.paperDetail = {};
-          this.paperDetail = e;
-          this.dialogTableVisible = true;
-        } else {
           this.$message({
-            message: "发生错误",
+            message: "考试已结束，不能再次进入该场考试",
             type: "warning"
           });
-        }
       }
     },
     onlineTest(e) {
@@ -319,7 +304,6 @@ export default {
 .flex {
   display: flex;
   align-items: center;
-  // text-align: center;
   justify-content: space-between;
   margin-bottom: 5px;
   padding: 10px 10px;

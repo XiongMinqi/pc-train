@@ -1,5 +1,6 @@
 <template>
   <div v-loading="loading">
+    <div class="historyRecord">学习任务记录</div>
     <el-table :data="missionList" border style="width: 100%">
       <el-table-column prop="name" label="任务名称"></el-table-column>
       <el-table-column prop="requireLearnTime" label="要求学习时长/分钟"></el-table-column>
@@ -305,7 +306,7 @@ export default {
   margin-left: 20px;
 }
 .paperDetail {
-  height: 65vh;
+  height: 60vh;
   overflow: auto;
   position: relative;
 }

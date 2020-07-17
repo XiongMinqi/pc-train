@@ -21,7 +21,7 @@
           </div>
           <div>
             <!-- <button @click="checkNews(item)">查看新闻</button> -->
-            <el-button type="primary" round @click="checkNews(item,index)">查看新闻</el-button>
+            <el-button type="primary" round @click="checkNews(item,index)">查看公告</el-button>
           </div>
         </div>
       </div>
@@ -37,8 +37,8 @@
         ></el-pagination>
       </div>
     </div>
-    <div v-else class="else">暂无新闻</div>
-    <el-dialog title="新闻详情" :visible.sync="dialogFormVisible" @close="close">
+    <div v-else class="else">暂无公告</div>
+    <el-dialog title="公告详情" :visible.sync="dialogFormVisible" @close="close">
       <div class="newsMsg">
         <div
           style="font-size: 18px;margin-bottom: 10px;letter-spacing: 1px;line-height:1.5em;"

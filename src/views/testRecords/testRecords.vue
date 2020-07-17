@@ -379,7 +379,7 @@ span {
   margin-top: 1vh !important;
 }
 .scroll {
-  height: 72vh;
+  height: 70vh;
 }
 .flex {
   display: flex;

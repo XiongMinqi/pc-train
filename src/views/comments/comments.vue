@@ -1,5 +1,8 @@
 <template>
   <div v-loading="loading">
+    <div class="backLastPage" @click="backLastPage">
+      <i class="el-icon-arrow-left"></i>返回
+    </div>
     <div class="flex marginTen" style="border-bottom:5px dotted #c9c9c9">
       <div style="margin-right:40px">
         <img class="maliao" src="../../assets/img/maliao.png" alt />
@@ -90,6 +93,9 @@ export default {
   },
   components: {},
   methods: {
+    backLastPage() {
+      this.$router.go(-1);
+    },
     submitComments() {
       if (this.textarea && this.value1 && this.value2) {
         let data = {
@@ -109,6 +115,11 @@ export default {
               this.$router.push({ name: "login", path: "/login" });
             }
             if (res.data.code === 0) {
+              this.$message({
+                message: "评论成功",
+                type: "success"
+              });
+              this.$router.go(-1);
             } else {
               this.$message({
                 message: res.data.msg,
