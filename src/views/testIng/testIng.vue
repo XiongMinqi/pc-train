@@ -310,7 +310,8 @@ export default {
     closePopup() {
       this.showDialog = false;
       this.$store.state.answerList = {};
-      this.$router.push({ name: "onlineTest", path: "/onlineTest" });
+      this.$router.go(-1);
+      // this.$router.push({ name: "onlineTest", path: "/onlineTest" });
     },
     //提交试卷
     submit() {
@@ -370,7 +371,8 @@ export default {
             this.data = "";
             //清空缓存在服务器的数据
             this.saveTestInfo(this.data);
-            this.$router.push({ name: "onlineTest", path: "/onlineTest" });
+            this.$router.go(-1);
+            // this.$router.push({ name: "onlineTest", path: "/onlineTest" });
           } else {
             //清除每分钟存数据到服务器
             clearInterval(this.saveMsg);

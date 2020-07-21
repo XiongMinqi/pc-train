@@ -142,5 +142,9 @@ export default {
     //查看人员
     checkPeople(id){
         return axios.get(`people/getById?id=${id}`)
+    },
+    //获取正在运行的考试
+    getRunningTest(){
+        return axios.post("me/listMyTodoExam2")
     }
 }

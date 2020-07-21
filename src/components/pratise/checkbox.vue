@@ -104,35 +104,37 @@ export default {
   mounted() {
     this.list = this.options[this.index];
     let answerDetail = this.answer[this.index];
-    if (answerDetail.content !== "") {
-      this.$store.state.practiseList[this.list.assignmentQuestionId] =
-        answerDetail.content;
-      let arr = answerDetail.content.split("");
-      arr.map((item, index) => {
-        if (item === "|") {
-          arr.splice(index, 1);
-        }
-      });
-      arr.map(item => {
-        if (item === "A") {
-          this.checkBoxList.push("0");
-        }
-        if (item === "B") {
-          this.checkBoxList.push("1");
-        }
-        if (item === "C") {
-          this.checkBoxList.push("2");
-        }
-        if (item === "D") {
-          this.checkBoxList.push("3");
-        }
-        if (item === "E") {
-          this.checkBoxList.push("4");
-        }
-        if (item === "F") {
-          this.checkBoxList.push("5");
-        }
-      });
+    if (answerDetail) {
+      if (answerDetail.content !== "") {
+        this.$store.state.practiseList[this.list.assignmentQuestionId] =
+          answerDetail.content;
+        let arr = answerDetail.content.split("");
+        arr.map((item, index) => {
+          if (item === "|") {
+            arr.splice(index, 1);
+          }
+        });
+        arr.map(item => {
+          if (item === "A") {
+            this.checkBoxList.push("0");
+          }
+          if (item === "B") {
+            this.checkBoxList.push("1");
+          }
+          if (item === "C") {
+            this.checkBoxList.push("2");
+          }
+          if (item === "D") {
+            this.checkBoxList.push("3");
+          }
+          if (item === "E") {
+            this.checkBoxList.push("4");
+          }
+          if (item === "F") {
+            this.checkBoxList.push("5");
+          }
+        });
+      }
     }
   },
   watch: {},
