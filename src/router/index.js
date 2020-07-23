@@ -108,6 +108,11 @@ const routes = [{
           name: "scoreList",
           // component: resolve => (require(["../views/study/material.vue"], resolve))
           component: () => import( /* webpackChunkName: 'scoreList' */ "../views/score/scoreList.vue")
+        },
+        {
+          path: "/exsercise",
+          name: "exsercise",
+          component: () => import( /* webpackChunkName: 'exsercise' */ "../views/score/exsercise.vue")
         }
       ]
     }]

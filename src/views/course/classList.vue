@@ -875,4 +875,7 @@ export default {
   left: 50%;
   transform: translateX(-50%);
 }
+.stage_1 {
+  border-bottom: 1px solid #f2f2f2!important;
+}
 </style>

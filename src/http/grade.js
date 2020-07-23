@@ -74,6 +74,9 @@ export default {
             timeRange: 1
         })
     },
+    getCourseByTime(data) {
+        return axios.post("me/listPlanCourseByTime",data)
+    },
     //根据id获取课程
     getDetailById(id) {
         return axios.get(`planCourse/getById?id=${id}`)

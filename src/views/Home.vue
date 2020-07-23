@@ -96,6 +96,10 @@
                   <i class="el-icon-menu"></i>
                   <span slot="title">系统公告</span>
                 </el-menu-item>
+                <el-menu-item index="5" @click="goTo('/classList')">
+                  <i class="el-icon-s-promotion"></i>
+                  <span slot="title">我的课程</span>
+                </el-menu-item>
                 <el-submenu index="2">
                   <template slot="title">
                     <i class="el-icon-s-help"></i>
@@ -132,13 +136,39 @@
                       <i class="el-icon-s-data"></i>
                       <span slot="title">积分排行</span>
                     </el-menu-item>
+                    <el-menu-item index="3-3" @click="goTo('/exsercise')">
+                      <i class="el-icon-tickets"></i>
+                      <span slot="title">培训经历</span>
+                    </el-menu-item>
                   </el-menu-item-group>
                 </el-submenu>
-                <el-menu-item index="4" @click="goTo('/onlineTest')">
+                <el-submenu index="4">
+                  <template slot="title">
+                    <i class="el-icon-edit-outline"></i>
+                    <span slot="title">在线考试</span>
+                  </template>
+                  <el-menu-item-group>
+                    <template slot="title">考试</template>
+                    <el-menu-item index="4-1" @click="goTo('/onlineTest')">
+                      <i class="el-icon-edit"></i>
+                      <span slot="title">我的考试</span>
+                    </el-menu-item>
+                    <el-menu-item index="4-2" @click="goTo('/testRecords')">
+                      <i class="el-icon-s-data"></i>
+                      <span slot="title">考试记录</span>
+                    </el-menu-item>
+                    <el-menu-item index="4-3" @click="goTo('/grade')">
+                      <i class="el-icon-medal"></i>
+                      <span slot="title">成绩统计</span>
+                    </el-menu-item>
+                  </el-menu-item-group>
+                </el-submenu>
+                <!-- <el-menu-item index="4" @click="goTo('/onlineTest')">
                   <i class="el-icon-edit-outline"></i>
                   <span slot="title">我的考试</span>
-                </el-menu-item>
-                <el-submenu index="5">
+                </el-menu-item>-->
+
+                <!-- <el-submenu index="5">
                   <template slot="title">
                     <i class="el-icon-s-promotion"></i>
                     <span slot="title">我的课程</span>
@@ -150,7 +180,7 @@
                       <span slot="title">课程表</span>
                     </el-menu-item>
                   </el-menu-item-group>
-                </el-submenu>
+                </el-submenu>-->
                 <el-submenu index="6">
                   <template slot="title">
                     <i class="el-icon-video-camera"></i>
@@ -180,14 +210,14 @@
                   <i class="el-icon-document"></i>
                   <span slot="title">错题集选</span>
                 </el-menu-item>
-                <el-menu-item index="8" @click="goTo('/grade')">
+                <!-- <el-menu-item index="8" @click="goTo('/grade')">
                   <i class="el-icon-medal"></i>
                   <span slot="title">成绩统计</span>
-                </el-menu-item>
-                <el-menu-item index="9" @click="goTo('/testRecords')">
+                </el-menu-item>-->
+                <!-- <el-menu-item index="9" @click="goTo('/testRecords')">
                   <i class="el-icon-document-copy"></i>
                   <span slot="title">考试记录</span>
-                </el-menu-item>
+                </el-menu-item>-->
               </el-menu>
             </el-row>
           </div>
@@ -363,7 +393,7 @@ export default {
 .mainContent {
   width: 95%;
   height: 100%;
-  margin:0 auto;
+  margin: 0 auto;
   // background-image: linear-gradient(to right, rgb(0, 183, 255), rgb(236, 236, 220));
   // opacity: 0.6;
 }

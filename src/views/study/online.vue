@@ -60,7 +60,7 @@
             <el-button type="primary" @click="chooseClass">开始练习</el-button>
           </div>
         </div>
-        <div class="info">
+        <div class="info bg-warning">
           <div>请选择题型等筛选条件</div>
           <div style="padding-top:5px">系统默认选择题库</div>
           <div style="padding-top:5px">系统默认选择单选题</div>
@@ -734,7 +734,7 @@ export default {
   margin-left: 100px;
   padding: 50px;
   font-size: 20px;
-  color: red;
+  // color: red;
 }
 .flex {
   display: flex;

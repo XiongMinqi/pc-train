@@ -1,9 +1,10 @@
 <template>
   <div v-loading="loading">
+    <div>积分排行</div>
     <div v-if="scoreList.length>0">
       <div v-for="(item,index) in scoreList" :key="index">
         <div class="flex aligh-center scoreDetail justify-between">
-          <div class="flex aligh-center">
+          <div class="flex aligh-center scoreListIndex">
             <div class="index">
               <div v-if="index===0">
                 <img src="../../assets/icon/gold.png" alt />
@@ -27,10 +28,12 @@
               </div>
               <div>{{item.peopleName}}</div>
             </div>
+            <div class="object">{{item.departmentName}} / {{item.majorName}}</div>
           </div>
-          <div>
-            <div v-if="item.rewardPoint">{{item.rewardPoint}}</div>
-            <div v-else>0</div>
+          
+          <div class="scoreCount">
+            <div v-if="item.rewardPoint">{{item.rewardPoint}} 积分</div>
+            <div v-else>0 积分</div>
           </div>
         </div>
       </div>
@@ -241,5 +244,18 @@ export default {
     border: 1px solid #a1a1a1;
     border-radius: 50%;
   }
+}
+.scoreListIndex{
+  // width: 350px;
+}
+.object{
+  color: #aaaaaa;
+  font-size: 12px;
+  margin-left: 10px;
+}
+.scoreCount{
+  width: 20%;
+  text-align: end;
+  color: #409eff;
 }
 </style>

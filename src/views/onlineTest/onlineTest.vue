@@ -13,46 +13,59 @@
       <div class="btn">
         <el-button type="primary" @click="getTest">开始筛选</el-button>
       </div>
+      <div class="explain">显示30天内，您需要参加的考试</div>
     </div>
     <div v-if="testList.length>0">
-      <div class="flex testDetail" v-for="(item,index) in testList" :key="index">
+      <div
+        class="flex testDetail"
+        v-for="(item,index) in testList"
+        :key="index"
+        @click="onlineTest(item)"
+      >
         <div style=" display: flex;align-items: center;">
           <div class="userImg">
-            <img src="../../assets/icon/testlist.png" alt />
+            <!-- <img src="../../assets/icon/testlist.png" alt /> -->
+            <img src="../../assets/img/icon.png" alt />
           </div>
-          <div style="margin-left:20px">
+          <div style="margin-left:30px">
             <div class="name" style="font-weight:bold">{{item.name}}</div>
             <div>
               专业 : {{item.majorname}} |
               部门 : {{item.departname}} |
               总分 ： {{item.totalScore}}分 |
               及格分数:
-              <span
-                style="color:#3C3CC4"
+              <span class="bg-primary"
               >{{item.passScore}}分</span>
             </div>
 
             <div>
               创建时间 : {{item.publishTime}} |
-              <span
-                style="color:#CC3352"
+              <span class="bg-primary"
               >截止时间 : {{item.expirationTime}}</span>
             </div>
           </div>
         </div>
         <div>
           <div>
-            <div v-if="item.status===1" @click="showToast(item)">
-              <el-button type="danger" round>未开始</el-button>
+            <div v-if="item.status===1">
+              <div class="wordsedeed unbegin">未开始</div>
+              <!-- <el-tag effect="dark">未开始</el-tag> -->
+              <!-- <el-button type="danger" round>未开始</el-button> -->
             </div>
-            <div v-if="item.status===3" @click="showToast(item)">
-              <el-button type="danger" round>审核中</el-button>
+            <div v-if="item.status===3">
+              <!-- <el-tag type="info">审核中</el-tag> -->
+              <div class="wordsedeed doshenhe">审核中</div>
+              <!-- <el-button type="danger" round>审核中</el-button> -->
             </div>
-            <div v-if="item.status===4" @click="showToast(item)">
-              <el-button type="danger" round>已结束</el-button>
+            <div v-if="item.status===4">
+              <div class="wordsedeed finished">已结束</div>
+              <!-- <el-tag type="danger">已结束</el-tag> -->
+              <!-- <el-button type="danger" round>已结束</el-button> -->
             </div>
-            <div v-if="item.status===2" @click="onlineTest(item)">
-              <el-button type="primary" round>进入考试</el-button>
+            <div v-if="item.status===2">
+              <div class="wordsedeed doing">运行中</div>
+              <!-- <el-tag type="success" effect="dark">运行中</el-tag> -->
+              <!-- <el-button type="primary" round>进入考试</el-button> -->
             </div>
           </div>
         </div>
@@ -218,36 +231,56 @@ export default {
         });
       }
       if (e.status === 3) {
-          this.$message({
-            message: "考试正在审核，不能再次进入该场考试",
-            type: "warning"
-          });
+        this.$message({
+          message: "考试正在审核，不能再次进入该场考试",
+          type: "warning"
+        });
       }
       if (e.status === 4) {
-          this.$message({
-            message: "考试已结束，不能再次进入该场考试",
-            type: "warning"
-          });
+        this.$message({
+          message: "考试已结束，不能再次进入该场考试",
+          type: "warning"
+        });
       }
     },
     onlineTest(e) {
-      if (e.totalScore > 0) {
+      if (e.status === 1) {
         this.$message({
-          message: "即将进入考试，祝您考试顺利",
-          type: "success"
-        });
-        this.$router.push({
-          path: "/testIng",
-          query: {
-            paperId: e.paperId,
-            id: e.id
-          }
-        });
-      } else {
-        this.$message({
-          message: "发生错误",
+          message: "考试还未开始，不能进入该场考试",
           type: "warning"
         });
+      }
+      if (e.status === 3) {
+        this.$message({
+          message: "考试正在审核，不能再次进入该场考试",
+          type: "warning"
+        });
+      }
+      if (e.status === 4) {
+        this.$message({
+          message: "考试已结束，不能再次进入该场考试",
+          type: "warning"
+        });
+      }
+      if (e.status === 2) {
+        if (e.totalScore > 0) {
+          this.$message({
+            message: "即将进入考试，祝您考试顺利",
+            type: "success"
+          });
+          this.$router.push({
+            path: "/testIng",
+            query: {
+              paperId: e.paperId,
+              id: e.id
+            }
+          });
+        } else {
+          this.$message({
+            message: "发生错误",
+            type: "warning"
+          });
+        }
       }
     },
     handleSizeChange(val) {
@@ -306,9 +339,9 @@ export default {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 5px;
-  padding: 10px 10px;
-  border: 1px solid #e9e9e9;
-  border-radius: 10px;
+  // padding-right: 50px;
+  // border: 1px solid #e9e9e9;
+  border-radius: 6px;
   .index {
     width: 5%;
   }
@@ -336,8 +369,8 @@ export default {
   text-align: center;
 }
 .userImg {
-  width: 80px;
-  height: 90px;
+  width: 150px;
+    height: 110px;
   img {
     width: 100%;
     height: 100%;
@@ -363,5 +396,36 @@ export default {
 }
 .classname {
   margin-right: 20px;
+}
+.testDetail {
+  box-shadow: 5px 5px 10px #c2c2c2;
+  margin-bottom: 10px;
+  &:hover {
+    cursor: pointer;
+  }
+}
+.explain {
+  margin-left: 30px;
+  color: #aaaaaa;
+}
+.wordsedeed{
+  background-color: #F2F6FC;
+  width: 100px;
+  height: 110px;
+  line-height: 110px;
+  text-align: center;
+}
+.finished{
+  color: #F56C6C;
+  // background-color:#aaaaaa;
+}
+.doshenhe{
+  color: #E6A23C;
+}
+.doing{
+  color: #67C23A;
+}
+.unbegin{
+  color: #909399;
 }
 </style>

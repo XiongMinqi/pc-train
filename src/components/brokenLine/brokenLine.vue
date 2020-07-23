@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div class="flex aligh-center">
+    <div class="titleWords">分数走势折线图</div>
+    <div class="flex aligh-center chooseItem">
       <div class="classname">
         <el-select v-model="subname" placeholder="请选择科目">
           <el-option key value="不限"></el-option>
@@ -364,5 +365,13 @@ export default {
 }
 .classname {
   margin-right: 20px;
+  margin-left: 95px;
+}
+.titleWords {
+  padding: 10px;
+  text-align: center;
+}
+.chooseItem{
+  margin-bottom: 10px;
 }
 </style>

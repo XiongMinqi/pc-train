@@ -52,26 +52,32 @@
           <div class="title">1、无法评论课程?</div>
           <div class="content">原因 ：未参加该课程或已评论过该课程</div>
         </div>
+        <el-divider></el-divider>
         <div class="problem">
           <div class="title">2、后台发布了新试卷，客户端未显示?</div>
           <div class="content">解决办法 ：退出重新登录</div>
         </div>
+        <el-divider></el-divider>
         <div class="problem">
           <div class="title">3、更改了头像，右上角头像显示未改变?</div>
           <div class="content">解决办法 ：退出重新登录</div>
         </div>
+        <el-divider></el-divider>
         <div class="problem">
           <div class="title">4、修改了个人信息刷新页面数据未改变?</div>
           <div class="content">解决办法 ：退出重新登录</div>
         </div>
+        <el-divider></el-divider>
         <div class="problem">
           <div class="title">5、右上角头像不显示?</div>
           <div class="content">解决办法 ：退出重新登录</div>
         </div>
+        <el-divider></el-divider>
         <div class="problem">
           <div class="title">6、考试记录中开始答题时间为1970/01/01 08:00:00?</div>
           <div class="content">原因 : 此时间为空，系统默认设置为1970/01/01 08:00:00</div>
         </div>
+        <el-divider></el-divider>
         <div class="problem">
           <div class="title">7、左侧导航栏缩小了?</div>
           <div class="content">解决办法 : 点击左上角图标就会展开或者缩小左侧导航栏</div>

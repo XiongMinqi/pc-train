@@ -5,7 +5,8 @@
     </div>
     <div class="flex marginTen" style="border-bottom:5px dotted #c9c9c9">
       <div style="margin-right:40px">
-        <img class="maliao" src="../../assets/img/maliao.png" alt />
+        <!-- <img class="maliao" src="../../assets/img/maliao.png" alt /> -->
+        <img class="maliao" src="../../assets/img/train.png" alt />
       </div>
       <div class="marginTen" style="margin-right:150px">
         <div class="marginTen" style="font-size:20px;font-weight:bold">{{detail.name}}</div>

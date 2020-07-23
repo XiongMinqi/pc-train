@@ -17,11 +17,30 @@
         ></el-input>
       </div>
       <div class="btn">
-        <el-button type="primary" @click="getTestExam">开始筛选</el-button>
+        <el-button type="primary" @click="getTestExam" plain>开始筛选</el-button>
       </div>
     </div>
+    <el-divider>考试记录</el-divider>
     <div class="indexLeft">
-      <el-row>
+      <el-radio-group v-model="choosetype" @change="chooseradio">
+        <el-radio-button label="all">
+          <i class="el-icon-plus iconfont"></i>
+          全部试卷({{total}})
+        </el-radio-button>
+        <el-radio-button label="pass">
+          <i class="el-icon-check iconfont"></i>
+          及格试卷({{pass}})
+        </el-radio-button>
+        <el-radio-button label="fail">
+          <i class="el-icon-close iconfont"></i>
+          不及格试卷({{fail}})
+        </el-radio-button>
+        <el-radio-button label="empty">
+          <i class="el-icon-minus iconfont"></i>
+          未做试卷({{empty}})
+        </el-radio-button>
+      </el-radio-group>
+      <!-- <el-row>
         <el-col :span="6">
           <div class="grid-content bg-purple-all" @click="goTo(null)">
             <span>全部试卷({{total}})</span>
@@ -42,7 +61,7 @@
             <span>未做试卷({{empty}})</span>
           </div>
         </el-col>
-      </el-row>
+      </el-row>-->
     </div>
     <div class="scroll" v-if="allTestList.length>=0">
       <div v-if="allTestList.length>0" class="infinite-list" style="overflow:auto">
@@ -61,13 +80,15 @@
           </div>
           <div>
             <div v-for="(item,index) in allTestList" :key="index">
-              <div class="flex">
+              <div class="flex formTextWords indexText">
                 <div class="index" v-if="index>=9">{{index+1}}</div>
                 <div class="index" v-if="index<9">0{{index+1}}</div>
                 <!-- <div class="testName">{{item.paperName}}</div> -->
                 <div class="testName">{{item.examName}}</div>
                 <div class="subject">
-                  <span v-if="item.subjectId">{{item.subjextName}}</span>
+                  <span v-if="item.subjectId">
+                    <el-tag type="success">{{item.subjextName}}</el-tag>
+                  </span>
                   <span v-else>---</span>
                 </div>
                 <div class="testTime">{{item.beginWriteTime}}</div>
@@ -76,13 +97,19 @@
                 <div class="score">{{item.totalScore}}</div>
                 <div class="score">{{item.score}}</div>
                 <div class="duringTime">
-                  <div v-if="item.isPass===true" style="color:green">及格</div>
-                  <div v-else-if="item.isPass===null" style="color:#aaaaaa">未交卷</div>
-                  <div v-else style="color:red">不及格</div>
+                  <div v-if="item.isPass===true" class="bg-success">
+                    <el-tag>已通过</el-tag>
+                  </div>
+                  <div v-else-if="item.isPass===null" class="bg-info">
+                    <el-tag type="info">未交卷</el-tag>
+                  </div>
+                  <div v-else class="bg-danger">
+                    <el-tag type="danger">不及格</el-tag>
+                  </div>
                 </div>
                 <div
                   class="operation"
-                  :class="item.submitId?'bgblue':'bggray'"
+                  :class="item.submitId?'bg-primary':'bg-info'"
                   @click="checkDetail(item)"
                 >
                   <span>查看明细</span>
@@ -120,6 +147,7 @@ export default {
     return {
       examList: [],
       allTestList: [],
+      choosetype: "all",
       page: 1,
       limit: 5,
       status: null,
@@ -137,11 +165,34 @@ export default {
       loading: true,
       submitPaperloading: false,
       paperName: "",
-      subname: "不限"
+      subname: "不限",
     };
   },
   components: { submitPaper },
   methods: {
+    chooseradio() {
+      console.log(this.choosetype);
+      if (this.choosetype === "all") {
+        this.status = null;
+        this.page = 1;
+        this.getTestExam();
+      }
+      if (this.choosetype === "pass") {
+        this.status = 0;
+        this.page = 1;
+        this.getTestExam();
+      }
+      if (this.choosetype === "fail") {
+        this.status = 1;
+        this.page = 1;
+        this.getTestExam();
+      }
+      if (this.choosetype === "empty") {
+        this.status = 2;
+        this.page = 1;
+        this.getTestExam();
+      }
+    },
     goTo(e) {
       this.status = e;
       this.page = 1;
@@ -170,7 +221,7 @@ export default {
       } else {
         this.$message({
           message: "抱歉，暂时无法查看明细",
-          type: "warning"
+          type: "warning",
         });
       }
     },
@@ -218,7 +269,7 @@ export default {
     getSubjectName() {
       this.$grade
         .getdict()
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -230,18 +281,18 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
         });
     },
     getTestNumber() {
       this.$grade
         .gettestNumber()
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 0) {
             this.total = res.data.data[0].totalCount;
@@ -252,11 +303,11 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
         });
     },
@@ -265,7 +316,7 @@ export default {
       if (this.subname === "不限") {
         this.subjectId = null;
       } else {
-        this.subjectName.map(item => {
+        this.subjectName.map((item) => {
           if (this.subname === item.value) {
             this.subjectId = Number(item.key);
           }
@@ -277,12 +328,12 @@ export default {
         object: {
           examName: this.paperName,
           status: this.status,
-          subjectId: this.subjectId
-        }
+          subjectId: this.subjectId,
+        },
       };
       this.$grade
         .getExam(data)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -291,11 +342,11 @@ export default {
             // console.log(res);
             this.allTestList = res.data.data;
             this.totalNum = res.data.count;
-            this.allTestList.map(item => {
+            this.allTestList.map((item) => {
               item.beginTime = this.timeFormat(item.beginTime);
               item.endWriteTime = this.timeFormat(item.endWriteTime);
               item.beginWriteTime = this.timeFormat(item.beginWriteTime);
-              this.subjectName.map(itm => {
+              this.subjectName.map((itm) => {
                 if (itm.key == item.subjectId) {
                   this.$set(item, "subjextName", itm.value);
                 }
@@ -304,22 +355,22 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           //console.log(err);
         });
-    }
+    },
   },
   mounted() {
     this.getTestNumber();
     this.getSubjectName();
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 
@@ -330,10 +381,6 @@ export default {
 .grid-content {
   padding: 10px 0;
   border-radius: 10px;
-}
-span :hover {
-  color: red;
-  cursor: pointer;
 }
 
 .bg-purple-all {
@@ -364,11 +411,6 @@ span :hover {
     cursor: pointer;
   }
 }
-span {
-  :hover {
-    cursor: pointer;
-  }
-}
 .bgblue {
   color: blue;
 }
@@ -386,7 +428,8 @@ span {
   align-items: center;
   justify-content: space-around;
   text-align: center;
-  margin-bottom: 20px;
+  // margin-bottom: 10px;
+  padding-top: 10px;
   .index {
     width: 3%;
   }
@@ -407,13 +450,10 @@ span {
   }
   .operation {
     width: 10%;
-    :hover {
+    &:hover {
       cursor: pointer;
     }
   }
-  // :hover {
-  //   cursor: pointer;
-  // }
   div {
     overflow: hidden;
   }
@@ -433,5 +473,12 @@ span {
 }
 .classname {
   margin-right: 20px;
+}
+.indexText {
+  border-bottom: 1px solid #f2f2f2;
+  padding-bottom: 10px;
+  &:hover{
+    background: #f2f2f2;
+  }
 }
 </style>

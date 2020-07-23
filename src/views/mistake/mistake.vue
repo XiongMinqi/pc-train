@@ -1,44 +1,45 @@
 <template>
   <div v-loading="loading">
     <div class="choose">
-        <div class="classname">
-          <el-select v-model="subname" placeholder="请选择科目">
-            <el-option key value="不限"></el-option>
-            <el-option v-for="item in subjectName" :key="item.key" :value="item.value"></el-option>
-          </el-select>
-        </div>
-        <div class="subject">
-          <el-select v-model="question" placeholder="请选择问题类型">
-            <el-option value="不限"></el-option>
-            <el-option v-for="item in questionType" :key="item.key" :value="item.value"></el-option>
-          </el-select>
-        </div>
-        <div class="btn">
-          <el-button type="primary" @click="chooseClass">开始筛选</el-button>
-        </div>
-        <div class="btn">
-          <el-button type="primary" @click="wrongQuestion">错题练习</el-button>
-        </div>
+      <div class="classname">
+        <el-select v-model="subname" placeholder="请选择科目">
+          <el-option key value="不限"></el-option>
+          <el-option v-for="item in subjectName" :key="item.key" :value="item.value"></el-option>
+        </el-select>
       </div>
-    <div v-if="errorList.length>0">      
+      <div class="subject">
+        <el-select v-model="question" placeholder="请选择问题类型">
+          <el-option value="不限"></el-option>
+          <el-option v-for="item in questionType" :key="item.key" :value="item.value"></el-option>
+        </el-select>
+      </div>
+      <div class="btn">
+        <el-button type="primary" @click="chooseClass">开始筛选</el-button>
+      </div>
+      <div class="btn">
+        <el-button type="primary" @click="wrongQuestion">错题练习</el-button>
+      </div>
+    </div>
+    <div v-if="errorList.length>0">
       <div v-for="(item,index) in errorList" :key="index">
         <div class="mistake">
           <div style="display: flex; align-items: center;width: 90%;">
             <div class="userImg">
-              <img src="../../assets/icon/mistake.png" alt />
+              <!-- <img src="../../assets/icon/mistake.png" alt /> -->
+              <img src="../../assets/icon/pencil.png" alt />
             </div>
             <div style="margin-left:20px">
               <div class="name">
                 <div class="questiontype" v-for="(itm,idx) in questionType" :key="idx">
-                  <div v-if="item.type == itm.key" style="padding-bottom:5px;">
-                    <span style="font-weight:bold;color:blue;">【{{itm.value}}】</span>
-                    <span style="color:red;font-size:12px">做错次数 ：{{item.wrongCount}}次</span>
+                  <div v-if="item.type == itm.key"  style="padding-bottom:5px;">
+                    <span style="font-weight:bold;margin-right:5px"><el-tag size="mini" effect="dark">{{itm.value}}</el-tag></span>
+                    <span class="bg-warning" style="font-size:12px">做错次数 ：{{item.wrongCount}}次</span>
                   </div>
                 </div>
               </div>
               <div class="questioncontent">{{item.content}}</div>
               <div style="font-size:12px;color:#a5a5a5;padding-left:6px">
-                <span style="color:rgb(204, 51, 82)">
+                <span class="promptWords">
                   困难程度:
                   <span>
                     <span v-if="item.level===0">简单</span>
@@ -47,9 +48,9 @@
                   </span>
                 </span>
                 |
-                <span style="color:purple">所属专业 : {{item.majorname}}</span> |
-                <span style="color:#EE6911">所属部门 : {{item.departname}}</span> |
-                <span style="color:green">分数 ：{{item.defaultScore}}分</span>
+                <span class="promptWords">所属专业 : {{item.majorname}}</span> |
+                <span class="promptWords">所属部门 : {{item.departname}}</span> |
+                <span class="promptWords">分数 ：{{item.defaultScore}}分</span>
               </div>
             </div>
           </div>
@@ -467,7 +468,7 @@ export default {
   color: green;
 }
 .questioncontent {
-  max-width: 900px;
+  max-width: 800px;
   display: inline-block;
   white-space: nowrap;
   overflow: hidden;
@@ -479,8 +480,8 @@ export default {
   padding: 0 0 15px 25px;
 }
 .userImg {
-  width: 70px;
-  height: 80px;
+  width: 130px;
+  height: 100px;
   img {
     width: 100%;
     height: 100%;
@@ -491,10 +492,11 @@ export default {
   align-items: center;
   // text-align: center;
   justify-content: space-between;
-  margin-bottom: 5px;
-  padding: 5px 10px;
-  border: 1px solid #e9e9e9;
-  border-radius: 10px;
+  margin-bottom: 10px;
+  padding-right: 20px;
+  // border: 1px solid #e9e9e9;
+  border-radius: 6px;
+  box-shadow: 5px 5px 10px #c2c2c2;
 }
 .else {
   text-align: center;

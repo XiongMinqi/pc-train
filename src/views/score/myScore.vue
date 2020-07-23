@@ -1,16 +1,20 @@
 <template>
   <div v-loading="loading">
-    <div class="scorebg">
-      <div style="text-align:center">
+    <div class="scorebg bg-white">
+      <div style="text-align:center; display: flex;align-items: center;">
         <div>总积分</div>
-        <div v-if="totalScore.point" style="font-size:20px;font-weight:bold">{{totalScore.point}}</div>
+        <div
+          v-if="totalScore.point"
+          style="font-size:45px;font-weight:bold;margin-left:5px"
+        >{{totalScore.point}}</div>
         <div v-else style="font-size:20px;font-weight:bold">0</div>
       </div>
       <div v-if="totalScore.point>0">
         领先
-        <span style="font-size:18px;font-weight:bold;padding:0 10px">{{percent}}%</span>的用户
+        <span style="font-size:35px;font-weight:bold;padding:0 10px">{{percent}}%</span>的用户
       </div>
     </div>
+    <div class="words">积分明细</div>
     <div>
       <el-table :data="scoreList" border style="width: 100%">
         <el-table-column prop="createTime" label="时间" width="180"></el-table-column>
@@ -40,10 +44,10 @@ export default {
       limit: 5,
       percent: 0,
       scoreList: [],
-      currentPage:1,
+      currentPage: 1,
       total: 0,
       totalScore: 0,
-      loading:true
+      loading: true
     };
   },
   components: {},
@@ -81,7 +85,7 @@ export default {
       this.$grade
         .checkScore()
         .then(res => {
-           this.loading = false;
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
@@ -108,7 +112,7 @@ export default {
           }
         })
         .catch(err => {
-           this.loading = false;
+          this.loading = false;
           //console.log(err);
           this.$message({
             message: err.data.msg,
@@ -126,7 +130,7 @@ export default {
       this.$grade
         .getMyScoreList(data)
         .then(res => {
-           this.loading = false;
+          this.loading = false;
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
@@ -155,7 +159,7 @@ export default {
           }
         })
         .catch(err => {
-           this.loading = false;
+          this.loading = false;
           //console.log(err);
         });
     }
@@ -171,17 +175,24 @@ export default {
 
 <style scoped lang='scss'>
 .scorebg {
-  background: url("../../assets/img/score.png");
-  height: 100px;
-  color: white;
+  background: url("../../assets/img/score.png") no-repeat;
+  background-size: cover;
+  background-position: center 0;
+  height: 200px;
+  // color: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px 200px;
   margin-bottom: 20px;
 }
+.wordsadfs {
+}
 .block {
   text-align: center;
   margin-top: 20px;
+}
+.words {
+  margin-bottom: 20px;
 }
 </style>

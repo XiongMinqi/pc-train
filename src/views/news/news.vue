@@ -1,11 +1,17 @@
 <template>
   <div v-loading="loading">
     <div v-if="newsList.length>0">
-      <div class="newsdetail" v-for="(item,index) in newsList" :key="index">
+      <div
+        class="newsdetail"
+        v-for="(item,index) in newsList"
+        :key="index"
+        @click="checkNews(item,index)"
+      >
         <div class="flex justify-between aligh-center news">
           <div class="flex aligh-center">
-            <div>
-              <img src="../../assets/icon/news.png" alt />
+            <div class="newsImg">
+              <!-- <img src="../../assets/icon/news.png" alt /> -->
+              <img src="../../assets/icon/gonggao.png" alt />
             </div>
             <div>
               <div class="title">{{item.title}}</div>
@@ -15,7 +21,7 @@
               </div>
               <div style="color:#a2a2a2">
                 浏览次数 :
-                <span style="color:red">{{item.readCount}}</span>
+                <span class="bg-primary">{{item.readCount}}</span>
               </div>
             </div>
           </div>
@@ -38,14 +44,14 @@
       </div>
     </div>
     <div v-else class="else">暂无公告</div>
-    <el-dialog title="公告详情" :visible.sync="dialogFormVisible" @close="close">
+    <el-dialog :title="newsDetail.title" :visible.sync="dialogFormVisible" @close="close">
       <div class="newsMsg">
-        <div
+        <!-- <div
           style="font-size: 18px;margin-bottom: 10px;letter-spacing: 1px;line-height:1.5em;"
-        >{{newsDetail.title}}</div>
-        <div class="flex aligh-center" style="margin-bottom: 5px;color:#a2a2a2">
-          <div style=";padding-right: 10px;">{{newsDetail.createTime}}</div>
-          <div>By : {{newsDetail.peopleName}}</div>
+        >{{newsDetail.title}}</div> -->
+        <div class="flex aligh-center newsDetailInfo" style="margin-bottom: 5px;color:#a2a2a2">
+          <div style=";padding-right: 10px;">发布时间 : {{newsDetail.createTime}}</div>
+          <div>发布人员 : {{newsDetail.peopleName}}</div>
           <div style="color:#a2a2a2;padding-left:10px">浏览次数 : {{newsDetail.readCount}}</div>
         </div>
         <div
@@ -165,11 +171,16 @@ export default {
 .aligh-center {
   align-items: center;
 }
-img {
-  width: 60px;
-  height: 80px;
-  margin-right: 10px;
+.newsImg {
+  width: 150px;
+  height: 110px;
+  margin-right: 15px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
+
 .title {
   font-size: 18px;
   margin-bottom: 5px;
@@ -181,12 +192,24 @@ img {
   text-overflow: ellipsis;
 }
 .news {
-  padding: 10px;
-  border: 1px solid #f2f2f2;
-  margin-bottom: 5px;
-  border-radius: 15px;
+  padding-right: 15px;
+  // border: 1px solid #f2f2f2;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  box-shadow: 5px 5px 10px #c2c2c2;
+  &:hover {
+    cursor: pointer;
+  }
 }
 .newsMsg {
   min-height: 50vh;
+}
+.newsDetailInfo{
+  border: 1px solid #f2f2f2;
+  background-color: #f9f9f9;
+  padding: 10px;
+}
+.el-dialog__title{
+  border-left: 2px solid palegreen;
 }
 </style>

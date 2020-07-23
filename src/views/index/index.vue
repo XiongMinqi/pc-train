@@ -29,7 +29,9 @@
         </div>
         <div>
           <div class="box-shadow" style="border: 1px solid #e2e2e2;">
-            <div style="padding:5px 0 0 5px">最近考试</div>
+            <div style="padding:10px">
+              <i class="el-icon-s-data iconfont"></i>最近考试
+            </div>
             <div class="testrecord" v-if="allTestList.length>0">
               <el-timeline :reverse="false">
                 <el-timeline-item
@@ -46,45 +48,71 @@
       <div class="grade">
         <div class="flex aligh-center justify-between">
           <div class="flex aligh-center numberCount box-shadow numcou" @click="testPaper(1)">
-            <img class="numberImg" src="../../assets/img/all.png" alt />
-            <div class="text-center">
-              <countTo :startVal="startVal" :endVal="total" :duration="duration"></countTo>
-              <div>全部试卷</div>
+            <div class="iconLeft">
+              <div class="numberImg back-primary">
+                <img src="../../assets/img/allpaper.png" alt />
+              </div>
+            </div>
+            <div class="text-center wordsRight">
+              <div class="bg-primary ftsize">
+                <countTo :startVal="startVal" :endVal="total" :duration="duration"></countTo>
+              </div>
+              <div class="bg-info">全部试卷</div>
             </div>
           </div>
           <div class="flex aligh-center numberCount box-shadow numcou" @click="testPaper(2)">
-            <img class="numberImg" src="../../assets/img/pass.png" alt />
-            <div class="text-center">
-              <countTo :startVal="startVal" :endVal="pass" :duration="duration"></countTo>
-              <div>及格试卷</div>
+            <div class="indexLeft">
+              <div class="numberImg back-success">
+                <img src="../../assets/img/eglass-pass.png" alt />
+              </div>
+            </div>
+            <div class="text-center wordsRight">
+              <div class="bg-success ftsize">
+                <countTo :startVal="startVal" :endVal="pass" :duration="duration"></countTo>
+              </div>
+              <div class="bg-info">及格试卷</div>
             </div>
           </div>
           <div class="flex aligh-center numberCount box-shadow numcou" @click="testPaper(3)">
-            <img class="numberImg" src="../../assets/img/fail.png" alt />
-            <div class="text-center">
-              <countTo :startVal="startVal" :endVal="fail" :duration="duration"></countTo>
-              <div>不及格试卷</div>
+            <div class="indexLeft">
+              <div class="numberImg back-warning">
+                <img src="../../assets/img/failure.png" alt />
+              </div>
+            </div>
+            <div class="text-center wordsRight">
+              <div class="bg-warning ftsize">
+                <countTo :startVal="startVal" :endVal="fail" :duration="duration"></countTo>
+              </div>
+              <div class="bg-info">不及格试卷</div>
             </div>
           </div>
           <div class="flex aligh-center numberCount box-shadow numcou" @click="testPaper(4)">
-            <img class="numberImg" src="../../assets/img/cry.png" alt />
-            <div class="text-center">
-              <countTo :startVal="startVal" :endVal="empty" :duration="duration"></countTo>
-              <div>空白试卷</div>
+            <div class="indexLeft">
+              <div class="numberImg back-info">
+                <img src="../../assets/img/file-empty.png" alt />
+              </div>
+            </div>
+            <div class="text-center wordsRight">
+              <div class="bg-info ftsize">
+                <countTo :startVal="startVal" :endVal="empty" :duration="duration"></countTo>
+              </div>
+              <div class="bg-info">空白试卷</div>
             </div>
           </div>
         </div>
         <div class="flex justify-between">
           <div class="classes box-shadow" @click="classes">
-            <div>我的课程进度(本周)</div>
+            <div>
+              <i class="el-icon-s-promotion iconfont"></i>我的课程进度(本周)
+            </div>
             <div>
               <div class="logintime">
                 <div class="name">已学习 :</div>
-                <div class="count">{{alreadyStudy}} 课</div>
+                <div class="bg-primary">{{alreadyStudy}} 课</div>
               </div>
               <div class="logintime">
                 <div class="name">未学习 :</div>
-                <div class="count">{{unstudy}} 课</div>
+                <div class="bg-primary">{{unstudy}} 课</div>
               </div>
               <div style="width:90%;margin-top:10px;padding-left:20px">
                 <el-progress :percentage="studypercent"></el-progress>
@@ -92,7 +120,9 @@
             </div>
           </div>
           <div class="record box-shadow" @click="study">
-            <div>我的学习记录</div>
+            <div>
+              <i class="el-icon-tickets iconfont"></i>我的学习记录
+            </div>
             <div>
               <div class="logintime">
                 <div class="names">在线学习时长 :</div>
@@ -106,8 +136,10 @@
           </div>
         </div>
         <div class="courseList box-shadow">
-          <div>学习任务</div>
-          <el-table :data="missionList" style="width: 100%" height="270">
+          <div>
+            <i class="el-icon-s-help iconfont"></i>学习任务
+          </div>
+          <el-table :data="missionList" style="width: 100%" height="300">
             <el-table-column prop="name" label="任务名称" width="180"></el-table-column>
             <el-table-column prop="requireLearnTime" label="要求学习时长" width="180"></el-table-column>
             <el-table-column prop="learnTime" label="已学习时长" width="180"></el-table-column>
@@ -116,8 +148,16 @@
         </div>
       </div>
     </div>
+    <div class="broken box-shadow">
+      <div>
+        <i class="el-icon-medal iconfont" style="margin-bottom:10px"></i>成绩统计
+      </div>
+      <brokenLine />
+    </div>
     <div class="runningTestList box-shadow">
-      <div>学习任务</div>
+      <div>
+        <i class="el-icon-edit iconfont"></i>我的考试
+      </div>
       <el-table :data="testList" style="width: 100%" height="150">
         <el-table-column prop="name" label="考试名称" width="180"></el-table-column>
         <el-table-column prop="passScore" label="通过分数" width="180"></el-table-column>
@@ -130,11 +170,13 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="vision" style="text-align: center;">版本号:20.07.21.16</div>
+
+    <div class="vision" style="text-align: center;">版本号:20.07.23.17</div>
   </div>
 </template>
 <script>
 import countTo from "vue-count-to";
+import brokenLine from "../../components/brokenLine/indexBrokenLine";
 export default {
   data() {
     return {
@@ -156,22 +198,22 @@ export default {
       duration: 2000,
       allTestList: [],
       missionList: [],
-      testList: []
+      testList: [],
     };
   },
-  components: { countTo },
+  components: { countTo, brokenLine },
   methods: {
     handleEdit(index, row) {
       this.$message({
         message: "即将进入考试，祝您考试顺利",
-        type: "success"
+        type: "success",
       });
       this.$router.push({
         path: "/testIng",
         query: {
           paperId: row.paperId,
-          id: row.id
-        }
+          id: row.id,
+        },
       });
     },
     study() {
@@ -213,12 +255,11 @@ export default {
     getTestNumber() {
       this.$grade
         .gettestNumber()
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
-          }
-          if (res.data.code === 0) {
+          } else if (res.data.code === 0) {
             this.total = res.data.data[0].totalCount;
             this.totalNum = res.data.data[0].totalCount;
             this.pass = res.data.data[0].successCount;
@@ -227,11 +268,11 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
         });
     },
@@ -239,13 +280,12 @@ export default {
     getStudy() {
       this.$api
         .getStudyRecord(this.userInfo.userId, this.page, this.limit)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
-          }
-          if (res.data.code === 0) {
-            res.data.data.map(item => {
+          } else if (res.data.code === 0) {
+            res.data.data.map((item) => {
               this.totalStudyTime += item.totalMinutes;
             });
             if (this.totalStudyTime > 60) {
@@ -258,27 +298,26 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
         });
     },
     //获取我的课程进度
     getCourse() {
       let data = {
-        timeRange: 1
+        timeRange: 1,
       };
       this.$api
         .getCouese(data)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
-          }
-          if (res.data.code === 0) {
+          } else if (res.data.code === 0) {
             let total = res.data.data[0].total;
             this.alreadyStudy = res.data.data[0].done;
             this.unstudy = total - res.data.data[0].done;
@@ -290,11 +329,11 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
         });
     },
@@ -302,21 +341,20 @@ export default {
     getTotalScore() {
       this.$api
         .getTotalScore()
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
-          }
-          if (res.data.code === 0) {
+          } else if (res.data.code === 0) {
             this.totalScore = res.data.data[0].point;
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
         });
     },
@@ -324,21 +362,20 @@ export default {
     getRunningTest() {
       this.$api
         .getRunningTest()
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
-          }
-          if (res.data.code === 0) {
+          } else if (res.data.code === 0) {
             this.testList = res.data.data;
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
         });
     },
@@ -349,26 +386,25 @@ export default {
         object: {
           examName: "",
           status: null,
-          subjectId: null
-        }
+          subjectId: null,
+        },
       };
       this.$grade
         .getExam(data)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
-          }
-          if (res.data.code === 0) {
+          } else if (res.data.code === 0) {
             this.allTestList = res.data.data;
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           //console.log(err);
         });
@@ -378,34 +414,33 @@ export default {
         limit: 10,
         page: 1,
         object: {
-          isRunning: true
-        }
+          isRunning: true,
+        },
       };
       this.$api
         .getUndoMission(data)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
-          }
-          if (res.data.code === 0) {
+          } else if (res.data.code === 0) {
             this.missionList = res.data.data;
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           console.log(err);
           this.$message({
             message: "获取失败",
-            type: "warning"
+            type: "warning",
           });
         });
-    }
+    },
   },
   mounted() {
     this.getTestNumber();
@@ -422,25 +457,24 @@ export default {
     }
     this.$api
       .getMyMsg()
-      .then(res => {
+      .then((res) => {
         if (res.data.code === 1000) {
           this.$router.push({ name: "login", path: "/login" });
-        }
-        if (res.data.code === 0) {
+        } else if (res.data.code === 0) {
           this.testInfo = res.data.data[0];
         } else {
           this.$message({
             message: res.data.msg,
-            type: "warning"
+            type: "warning",
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
       });
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 
@@ -482,14 +516,14 @@ export default {
   justify-content: space-between;
 }
 .record {
-  width: 40%;
+  width: 45%;
   height: 132px;
   border: 1px solid #e2e2e2;
-  padding: 10px 20px;
+  padding: 10px;
   margin: 10px 0 10px 10px;
 }
 .record:hover {
-  color: green;
+  // color: green;
   cursor: pointer;
 }
 .classes {
@@ -497,7 +531,7 @@ export default {
   height: 132px;
   margin-top: 10px;
   border: 1px solid #e2e2e2;
-  padding: 10px 20px;
+  padding: 10px;
   margin-bottom: 10px;
 }
 .test {
@@ -521,9 +555,6 @@ export default {
   .content {
     padding-left: 8px;
   }
-}
-.count {
-  color: red;
 }
 .el-col {
   // border: 0.5px solid #e2e2e2;
@@ -598,8 +629,18 @@ export default {
 .numberCount {
   border: 1px solid #e2e2e2;
   .numberImg {
-    width: 70px;
+    width: 80px;
     height: 80px;
+    // margin-right: 8%;
+    position: relative;
+    img {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translateX(-50%) translateY(-50%);
+      width: 50px;
+      height: 50px;
+    }
   }
 }
 .numcou {
@@ -618,12 +659,31 @@ export default {
   margin-bottom: 10px;
 }
 .courseList {
-  height: 289px;
+  height: 323px;
   border: 1px solid #e2e2e2;
-  padding: 20px;
+  padding: 10px;
 }
 .runningTestList {
   margin-top: 10px;
   padding: 10px;
+}
+.iconfont {
+  color: #409eff;
+  margin-right: 10px;
+}
+.broken {
+  margin-top: 10px;
+  padding-top: 10px;
+  padding-left: 10px;
+}
+.ftsize {
+  font-size: 20px;
+  font-weight: bold;
+}
+.iconLeft {
+  width: 40%;
+}
+.wordsRight {
+  width: 60%;
 }
 </style>

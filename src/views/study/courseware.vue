@@ -66,7 +66,7 @@
               <div class="msg">
                 <div>课件名称: {{item.name}}</div>
               </div>
-              <div style="font-size:12px">
+              <div class="desc" style="font-size:12px">
                 <div>作者: {{item.author}}</div>
               </div>
               <div class="desc" style="font-size:12px">
@@ -79,7 +79,7 @@
                 <div>
                   {{item.majorName}}/{{item.subjectName}}/浏览
                   <span
-                    style="color:blue;padding:0 4px;"
+                    style="padding:0 4px;"
                   >{{item.readCount}}</span>次
                 </div>
               </div>
@@ -128,7 +128,7 @@
               <div class="msg">
                 <div>课件名称: {{item.name}}</div>
               </div>
-              <div style="font-size:12px">
+              <div class="desc" style="font-size:12px">
                 <div>作者: {{item.author}}</div>
               </div>
               <div class="desc" style="font-size:12px">
@@ -141,7 +141,7 @@
                 <div>
                   {{item.majorName}}/{{item.subjectName}}/浏览
                   <span
-                    style="color:blue;padding:0 4px;"
+                    style="padding:0 4px;"
                   >{{item.readCount}}</span>次
                 </div>
               </div>
@@ -554,10 +554,15 @@ export default {
 }
 .course {
   display: inline-block;
-  width: 33%;
-  :hover {
+  width: 32%;
+  margin-right: 10px;
+  padding-bottom: 20px;
+  margin-bottom: 30px;
+  border: 1px solid #f2f2f2;
+  box-shadow: 1px 1px 2px #c2c2c2;
+  &:hover {
     cursor: pointer;
-    color: #cc4820;
+    // color: #cc4820;
     background-color: #f2f2f2;
     img {
       transform: scale(1.1);
@@ -568,7 +573,7 @@ export default {
   padding: 10px 0 0 20px;
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  // margin-bottom: 20px;
   img {
     width: 90px;
     height: 90px;
@@ -578,7 +583,7 @@ export default {
 .msg {
   display: flex;
   align-items: center;
-  color: blue;
+  color: #303133;
 }
 .block {
   margin: 0 auto;
@@ -601,11 +606,10 @@ export default {
   font-weight: bold;
   padding: 0 20px;
 }
-.vueVideoPlayer {
-  // height: 50vh;
-  // z-index: 9999;
-  // div{
-  //   height: 100%;
-  // }
+.desc {
+  color: #606266;
+  span{
+    color: #409eff;
+  }
 }
 </style>
