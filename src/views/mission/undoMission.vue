@@ -30,7 +30,7 @@
         ></el-pagination>
       </div>
     </div>
-    <div v-else class="else">暂无数据</div>
+    <div v-else class="else"></div>
     <div>
       <el-dialog :title="missiondetail.name" :visible.sync="dialogVisible" width="60%">
         <div style="min-height:40vh">

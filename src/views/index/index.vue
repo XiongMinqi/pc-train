@@ -124,11 +124,11 @@
               <i class="el-icon-tickets iconfont"></i>我的学习记录
             </div>
             <div>
-              <div class="logintime">
+              <div class="logintime learnRecord">
                 <div class="names">在线学习时长 :</div>
                 <div class="content">{{totalStudyTime}}</div>
               </div>
-              <div class="logintime">
+              <div class="logintime learnRecord">
                 <div class="names">在线测试记录 :</div>
                 <div class="content">{{fail+pass}}次</div>
               </div>
@@ -140,6 +140,15 @@
             <i class="el-icon-s-help iconfont"></i>学习任务
           </div>
           <el-table :data="missionList" style="width: 100%" height="300">
+            <template slot="empty">
+              <div>
+                <img
+                  style="width:250px;height:200px"
+                  src="../../assets/icon/kong.png"
+                  alt
+                />
+              </div>
+            </template>
             <el-table-column prop="name" label="任务名称" width="180"></el-table-column>
             <el-table-column prop="requireLearnTime" label="要求学习时长" width="180"></el-table-column>
             <el-table-column prop="learnTime" label="已学习时长" width="180"></el-table-column>
@@ -158,7 +167,16 @@
       <div>
         <i class="el-icon-edit iconfont"></i>我的考试
       </div>
-      <el-table :data="testList" style="width: 100%" height="150">
+      <el-table :data="testList" style="width: 100%" height="300">
+        <template slot="empty">
+          <div>
+            <img
+              style="width:250px;height:200px;"
+              src="../../assets/icon/kong.png"
+              alt
+            />
+          </div>
+        </template>
         <el-table-column prop="name" label="考试名称" width="180"></el-table-column>
         <el-table-column prop="passScore" label="通过分数" width="180"></el-table-column>
         <el-table-column prop="totalScore" label="总分数" width="180"></el-table-column>
@@ -171,7 +189,7 @@
       </el-table>
     </div>
 
-    <div class="vision" style="text-align: center;">版本号:20.07.23.17</div>
+    <div class="vision" style="text-align: center;">版本号:20.07.24.18</div>
   </div>
 </template>
 <script>
@@ -479,6 +497,9 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+li{
+  border: 0;
+}
 .flex {
   display: flex;
 }
@@ -546,7 +567,7 @@ export default {
   cursor: pointer;
 }
 .logintime {
-  padding: 10px 20px 0 20px;
+  padding: 18px 20px 0 20px;
   display: flex;
   align-items: center;
   .name {
@@ -645,8 +666,9 @@ export default {
 }
 .numcou {
   width: 24%;
-  :hover {
+  &:hover {
     cursor: pointer;
+    // background: #f2f2f2;
   }
 }
 .grade {
@@ -685,5 +707,8 @@ export default {
 }
 .wordsRight {
   width: 60%;
+}
+.learnRecord{
+  padding-top: 18px;
 }
 </style>

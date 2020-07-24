@@ -2,7 +2,7 @@
   <div>
     <el-collapse v-model="activeNames">
       <el-collapse-item title="如何参加考试" name="1">
-        <div class="">
+        <div class>
           <div>
             <div>第一步、点击左侧导航栏（在线考试）</div>
             <div class="text-center">
@@ -25,7 +25,7 @@
         </div>
       </el-collapse-item>
       <el-collapse-item title="如何查看考试成绩" name="2">
-        <div class="">
+        <div class>
           <div>
             <div>第一步、点击左侧导航栏（考试记录）</div>
             <div class="text-center">
@@ -83,6 +83,18 @@
           <div class="content">解决办法 : 点击左上角图标就会展开或者缩小左侧导航栏</div>
         </div>
       </el-collapse-item>
+      <el-collapse-item title="安卓app下载" name="4">
+        <div>
+          <div>下载二维码</div>
+          <div>
+            <img src="../../assets/img/download.png" alt />
+          </div>
+        </div>
+        <div>
+          <div>下载地址</div>
+          <div>https://bucket20200417.oss-cn-huhehaote.aliyuncs.com/other/xinke.apk</div>
+        </div>
+      </el-collapse-item>
     </el-collapse>
   </div>
 </template>
@@ -91,14 +103,14 @@
 export default {
   data() {
     return {
-      activeNames: []
+      activeNames: [],
     };
   },
   components: {},
   methods: {},
   mounted() {},
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 
@@ -112,29 +124,29 @@ export default {
 .justify-between {
   justify-content: space-between;
 }
-.text-center{
+.text-center {
   text-align: center;
 }
-.margin-center{
+.margin-center {
   margin: 0 auto;
 }
 .testimg {
   width: 200px;
   height: 400px;
 }
-.testIngimg{
+.testIngimg {
   width: 150px;
   height: 400px;
 }
-.test{
+.test {
   width: 800px;
   height: 400px;
   border: 1px solid #f2f2f2;
 }
-.content{
+.content {
   text-indent: 1.5em;
 }
-.problem{
+.problem {
   margin-bottom: 10px;
 }
 </style>

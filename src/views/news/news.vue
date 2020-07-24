@@ -11,7 +11,7 @@
           <div class="flex aligh-center">
             <div class="newsImg">
               <!-- <img src="../../assets/icon/news.png" alt /> -->
-              <img src="../../assets/icon/gonggao.png" alt />
+              <img src="../../assets/img/newsImg.png" alt />
             </div>
             <div>
               <div class="title">{{item.title}}</div>
@@ -43,7 +43,7 @@
         ></el-pagination>
       </div>
     </div>
-    <div v-else class="else">暂无公告</div>
+    <div v-else class="else"></div>
     <el-dialog :title="newsDetail.title" :visible.sync="dialogFormVisible" @close="close">
       <div class="newsMsg">
         <!-- <div
@@ -174,7 +174,7 @@ export default {
 .newsImg {
   width: 150px;
   height: 110px;
-  margin-right: 15px;
+  margin-right: 35px;
   img {
     width: 100%;
     height: 100%;

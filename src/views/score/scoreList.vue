@@ -38,7 +38,7 @@
         </div>
       </div>
     </div>
-    <div class="else" v-else>暂无数据</div>
+    <div class="else" v-else></div>
     <el-dialog
       :title="peopleDetail.nickName"
       :visible.sync="dialogVisible"

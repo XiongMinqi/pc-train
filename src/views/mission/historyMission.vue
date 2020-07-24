@@ -2,6 +2,11 @@
   <div v-loading="loading">
     <div class="historyRecord">学习任务记录</div>
     <el-table :data="missionList" border style="width: 100%">
+      <template slot="empty">
+        <div>
+          <img style="width:300px;height:200px;" src="../../assets/icon/kong.png" alt />
+        </div>
+      </template>
       <el-table-column prop="name" label="任务名称"></el-table-column>
       <el-table-column prop="requireLearnTime" label="要求学习时长/分钟"></el-table-column>
       <el-table-column prop="requireRightCount" label="要求答对数量/道"></el-table-column>
@@ -26,8 +31,8 @@
         <div v-loading="dialogLoading" class="paperInfo">
           <div class="paperDetail">
             <div class="rightCount">
-              <div>答对数量 : </div>
-              <div class="count"> {{rightCount}}</div>
+              <div>答对数量 :</div>
+              <div class="count">{{rightCount}}</div>
             </div>
             <div v-for="(item,index) in practiseList" :key="index">
               <div class="title">
@@ -119,7 +124,7 @@ export default {
       dialogLoading: true,
       practiseList: [],
       answerList: [],
-      rightCount: 0
+      rightCount: 0,
     };
   },
   components: {},
@@ -149,7 +154,7 @@ export default {
     getAnswer(e) {
       this.$api
         .getAnswer(e)
-        .then(res => {
+        .then((res) => {
           this.dialogLoading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -158,7 +163,7 @@ export default {
             this.answerList = res.data.data;
             this.rightCount = 0;
             this.rightMsg = "";
-            this.answerList.map(item => {
+            this.answerList.map((item) => {
               if (item.isRight === true) {
                 this.rightCount += 1;
               }
@@ -166,22 +171,22 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.dialogLoading = false;
           this.$message({
             message: "获取失败",
-            type: "warning"
+            type: "warning",
           });
         });
     },
     getQuestiones(e) {
       this.$api
         .getQuestion(e)
-        .then(res => {
+        .then((res) => {
           this.dialogLoading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -191,15 +196,15 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.dialogLoading = false;
           this.$message({
             message: "获取失败",
-            type: "warning"
+            type: "warning",
           });
         });
     },
@@ -231,12 +236,12 @@ export default {
         limit: this.limit,
         page: this.page,
         object: {
-          isRunning: false
-        }
+          isRunning: false,
+        },
       };
       this.$api
         .getUndoMission(data)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -244,7 +249,7 @@ export default {
           if (res.data.code === 0) {
             this.missionList = res.data.data;
             this.total = res.data.count;
-            this.missionList.map(item => {
+            this.missionList.map((item) => {
               let times = Date.parse(item.publishTime) + item.lastTime * 60000;
               let endTime = this.timeFormat(times);
               this.$set(item, "endTime", endTime);
@@ -252,24 +257,24 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.$message({
             message: err.data.msg,
-            type: "warning"
+            type: "warning",
           });
         });
-    }
+    },
   },
   mounted() {
     this.getUndoMission();
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 

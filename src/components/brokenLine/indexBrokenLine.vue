@@ -16,7 +16,7 @@
       <div class="btn">
         <el-button type="primary" @click="getlist">开始筛选</el-button>
       </div>
-    </div> -->
+    </div>-->
     <div id="chartLineBox" style="width: 90%;height: 49vh;"></div>
   </div>
 </template>
@@ -41,57 +41,57 @@ export default {
       listType: [
         {
           key: 1,
-          value: "今天"
+          value: "今天",
         },
         {
           key: 2,
-          value: "昨天"
+          value: "昨天",
         },
         {
           key: 3,
-          value: "近7天"
+          value: "近7天",
         },
         {
           key: 4,
-          value: "近30天"
+          value: "近30天",
         },
         {
           key: 5,
-          value: "本月"
+          value: "本月",
         },
         {
           key: 6,
-          value: "上一月"
+          value: "上一月",
         },
         {
           key: 7,
-          value: "本季度"
+          value: "本季度",
         },
         {
           key: 8,
-          value: "上季度"
+          value: "上季度",
         },
         {
           key: 9,
-          value: "本年"
+          value: "本年",
         },
         {
           key: 10,
-          value: "上年"
+          value: "上年",
         },
         {
           key: 11,
-          value: "本周"
+          value: "本周",
         },
         {
           key: 12,
-          value: "上周"
-        }
+          value: "上周",
+        },
       ],
       page: 1,
       limit: 30,
       option: {},
-      subjectId: -1
+      subjectId: -1,
     };
   },
   components: {},
@@ -100,21 +100,20 @@ export default {
     getSubjectName() {
       this.$grade
         .getdict()
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
-          }
-          if (res.data.code === 0) {
+          } else if (res.data.code === 0) {
             this.subjectName = res.data.data[0]["科目名称"];
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
         });
     },
@@ -122,7 +121,7 @@ export default {
       if (this.subname === "不限") {
         this.subjectId = null;
       } else {
-        this.subjectName.map(item => {
+        this.subjectName.map((item) => {
           if (this.subname === item.value) {
             this.subjectId = Number(item.key);
           }
@@ -130,22 +129,21 @@ export default {
       }
       let data = {
         timeRange: this.type,
-        subjectId: this.subjectId
+        subjectId: this.subjectId,
       };
       this.$grade
         .getTongji(data)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
-          }
-          if (res.data.code === 0) {
+          } else if (res.data.code === 0) {
             this.setOption();
             if (res.data.data.length > 0) {
               this.paperName = [];
               this.score = [];
               this.totalScore = [];
-              res.data.data.map(item => {
+              res.data.data.map((item) => {
                 this.paperName.push(item.examName);
                 this.score.push(item.actualScore);
                 this.totalScore.push(item.totalScore);
@@ -157,23 +155,23 @@ export default {
               if (this.subname !== "不限") {
                 this.$message({
                   message: "科目" + this.subname + this.type + "暂无考试数据",
-                  type: "warning"
+                  type: "warning",
                 });
               } else {
                 this.$message({
                   message: this.type + "暂无考试数据",
-                  type: "warning"
+                  type: "warning",
                 });
               }
             }
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           // console.log(err);
         });
@@ -187,12 +185,12 @@ export default {
         // },
         tooltip: {
           //设置tip提示
-          trigger: "axis"
+          trigger: "axis",
         },
 
         legend: {
           //设置区分（哪条线属于什么）
-          data: ["总分", "得分", "时间"]
+          data: ["总分", "得分", "时间"],
         },
         color: ["#8AE09F", "#FA6F53", "#fddeca"], //设置区分（每条线是什么颜色，和 legend 一一对应）
         xAxis: {
@@ -206,14 +204,14 @@ export default {
             //坐标轴名称的文字样式
             color: "#FA6F53",
             fontSize: 16,
-            padding: [0, 0, 0, 20]
+            padding: [0, 0, 0, 20],
           },
           axisLine: {
             //坐标轴轴线相关设置。
             lineStyle: {
-              color: "#000000"
-            }
-          }
+              color: "#000000",
+            },
+          },
         },
         // xAxis: {
         //   //设置x轴
@@ -240,14 +238,14 @@ export default {
           nameTextStyle: {
             color: "#FA6F53",
             fontSize: 16,
-            padding: [0, 0, 10, 0]
+            padding: [0, 0, 10, 0],
           },
           axisLine: {
             lineStyle: {
-              color: "#000000"
-            }
+              color: "#000000",
+            },
           },
-          type: "value"
+          type: "value",
         },
         series: [
           {
@@ -258,9 +256,9 @@ export default {
             lineStyle: {
               // 线条样式 => 必须使用normal属性
               normal: {
-                color: "#8AE09F"
-              }
-            }
+                color: "#8AE09F",
+              },
+            },
           },
           // {
           //   name: "考试时间",
@@ -281,16 +279,16 @@ export default {
             type: "line",
             lineStyle: {
               normal: {
-                color: "#FA6F53"
-              }
-            }
-          }
-        ]
+                color: "#FA6F53",
+              },
+            },
+          },
+        ],
       };
 
       // 使用刚指定的配置项和数据显示图表。
       this.chartLine.setOption(this.option);
-    }
+    },
   },
   mounted() {
     // this.getTestExam();
@@ -307,7 +305,7 @@ export default {
           // console.log(newVal);
         }
       },
-      deep: true //对象内部属性的监听，关键。
+      deep: true, //对象内部属性的监听，关键。
     },
     time: {
       handler(newVal, oldVal) {
@@ -317,7 +315,7 @@ export default {
           // console.log(newVal);
         }
       },
-      deep: true //对象内部属性的监听，关键。
+      deep: true, //对象内部属性的监听，关键。
     },
     score: {
       handler(newVal, oldVal) {
@@ -327,7 +325,7 @@ export default {
           // console.log(newVal);
         }
       },
-      deep: true //对象内部属性的监听，关键。
+      deep: true, //对象内部属性的监听，关键。
     },
     totalScore: {
       handler(newVal, oldVal) {
@@ -337,11 +335,11 @@ export default {
           // console.log(newVal);
         }
       },
-      deep: true //对象内部属性的监听，关键。
-    }
+      deep: true, //对象内部属性的监听，关键。
+    },
   },
 
-  computed: {}
+  computed: {},
 };
 </script>
 
@@ -371,7 +369,7 @@ export default {
   padding: 10px;
   text-align: center;
 }
-.chooseItem{
+.chooseItem {
   margin-bottom: 10px;
 }
 </style>

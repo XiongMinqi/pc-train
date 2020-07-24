@@ -387,15 +387,11 @@ export default {
   position: absolute;
   width: 100%;
   height: 100%;
-  // background-image: linear-gradient(to right, rgb(228, 233, 235), rgb(245, 245, 243));
-  // opacity: 0.6;
 }
 .mainContent {
   width: 95%;
   height: 100%;
   margin: 0 auto;
-  // background-image: linear-gradient(to right, rgb(0, 183, 255), rgb(236, 236, 220));
-  // opacity: 0.6;
 }
 .el-container {
   height: 100%;
@@ -412,7 +408,7 @@ export default {
 
 .el-aside {
   background-color: #3b4141;
-  height: 100%;
+  // height: 100%;
   color: #333;
 }
 

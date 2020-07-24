@@ -76,7 +76,7 @@
         ></el-pagination>
       </div>
     </div>
-    <div v-else class="else">暂无数据</div>
+    <div v-else class="else"></div>
 
     <el-dialog title="错题详情" :visible.sync="dialogFormVisible" @close="close">
       <!-- <div> -->

@@ -115,7 +115,7 @@
             </div>
           </div>
         </div>
-        <div v-else class="else">暂无数据</div>
+        <div v-else class="else"></div>
       </el-tab-pane>
       <el-tab-pane label="练习题" name="second">
         <div v-if="practiseList.length>0">
@@ -166,7 +166,7 @@
             <el-button type="primary" round @click="submit">提交练习</el-button>
           </div>
         </div>
-        <div v-else class="else">暂无数据</div>
+        <div v-else class="else"></div>
       </el-tab-pane>
     </el-tabs>
     <el-dialog
@@ -556,10 +556,14 @@ export default {
 }
 .course {
   display: inline-block;
-  width: 33%;
-  :hover {
+  width: 32%;
+  margin-right: 10px;
+  margin-bottom: 30px;
+  border: 1px solid #f2f2f2;
+  box-shadow: 1px 1px 2px #c2c2c2;
+  &:hover {
     cursor: pointer;
-    color: #cc4820;
+    // color: #cc4820;
     background-color: #f2f2f2;
     img {
       transform: scale(1.1);

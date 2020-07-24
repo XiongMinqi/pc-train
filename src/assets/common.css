@@ -55,6 +55,14 @@
   text-align: center;
   padding: 30px;
   color: #F56C6C;
+  background: url("../assets/icon/kong.png");
+  border: 1ps solid #f9f9f9;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
 }
 
 .backLastPage {

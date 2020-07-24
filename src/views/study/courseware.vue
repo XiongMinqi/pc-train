@@ -162,7 +162,7 @@
         ></el-pagination>
       </div>
     </div>
-    <div v-else class="else">暂无数据</div>
+    <div v-else class="else"></div>
     <el-dialog
       width="90%"
       top="1vh"

@@ -633,7 +633,7 @@ export default {
     //渲染页面
     getCourse() {
       // 对于 vue、react，可以在能够获取到真实dom节点的生命周期中进行实例化
-      var timetableType = [
+      let timetableType = [
         [{ index: "1", name: "00:00" }, 1],
         [{ index: "2", name: "01:00" }, 1],
         [{ index: "3", name: "02:00" }, 1],
@@ -659,15 +659,15 @@ export default {
         [{ index: "23", name: "22:00" }, 1],
         [{ index: "24", name: "23:00" }, 1]
       ];
-      var week = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
-      var highlightWeek = new Date().getDay();
-      var styles = {
+      let week = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+      let highlightWeek = new Date().getDay();
+      let styles = {
         Gheight: 50,
         leftHandWidth: 50,
         palette: ["#ff6633", "#99CC33", "#666699", "#CCCCFF", "#0099CC"]
       };
       // 实例化(初始化课表)
-      this.Timetable = new Timetables({
+      let Timetable = new Timetables({
         el: "#coursesTable",
         timetables: this.courselist,
         week: week,
@@ -814,13 +814,13 @@ export default {
       //  a = d = 当前日期
       // b = 6 - w = 当前周的还有几天过完(不算今天)
       // a + b 的和在除以7 就是当天是当前月份的第几周
-      var date = new Date(a, parseInt(b) - 1, c),
+      let date = new Date(a, parseInt(b) - 1, c),
         w = date.getDay(),
         d = date.getDate();
       if (w == 0) {
         w = 7;
       }
-      var config = {
+      let config = {
         getMonth: date.getMonth() + 1,
         getYear: date.getFullYear(),
         getWeek: Math.ceil((d + 6 - w) / 7)
@@ -833,7 +833,7 @@ export default {
     let year = new Date().getFullYear();
     let month = new Date().getMonth() + 1;
     let day = new Date().getDate();
-    var getDate = this.getMonthWeek(year, month, day);
+    let getDate = this.getMonthWeek(year, month, day);
 
     this.date = year + "/" + month + "/" + day;
     this.msg =
@@ -845,6 +845,14 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+/deep/li {
+  border-top: 1px dashed  rgb(219, 219, 219);
+  border-left: 1px dashed  rgb(219, 219, 219);
+  // border-right: 1px solid rgb(59, 65, 65);
+}
+/deep/.course-hasContent{
+  border-radius: 10px;
+}
 .msg {
   margin-bottom: 10px;
   text-align: center;

@@ -30,7 +30,7 @@
             </el-timeline>
           </div>
         </div>
-        <div v-else class="else">暂无数据</div>
+        <div v-else class="else"></div>
       </el-tab-pane>
       <el-tab-pane label="考试记录" name="second">
         <div class="flex">
@@ -61,7 +61,7 @@
             </el-timeline>
           </div>
         </div>
-        <div v-else class="else">暂无数据</div>
+        <div v-else class="else"></div>
       </el-tab-pane>
     </el-tabs>
   </div>

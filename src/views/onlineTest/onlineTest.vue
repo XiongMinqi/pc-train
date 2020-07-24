@@ -82,7 +82,7 @@
         ></el-pagination>
       </div>
     </div>
-    <div v-else class="else">暂无考试</div>
+    <div v-else class="else"></div>
     <el-dialog width="80%" title="试卷明细" top="1vh" :visible.sync="dialogTableVisible">
       <div v-loading="submitPaperloading">
         <submitPaper :submitId="submitId" :paperDetail="paperDetail" />

@@ -135,7 +135,7 @@
           ></el-pagination>
         </div>
       </div>
-      <div v-else class="else">暂无数据</div>
+      <div v-else class="else"></div>
     </div>
   </div>
 </template>

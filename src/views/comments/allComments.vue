@@ -36,7 +36,7 @@
         </div>
       </div>
     </div>
-    <div class="else" v-else>暂无评论</div>
+    <div class="else" v-else></div>
     <div class="block">
       <el-pagination
         @size-change="handleSizeChange"
