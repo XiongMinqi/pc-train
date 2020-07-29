@@ -59,7 +59,7 @@
               </div>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item>
-                  <div @click="goTo('/user')">个人信息</div>
+                  <div @click="goTo('/userDetail')">个人信息</div>
                 </el-dropdown-item>
                 <el-dropdown-item>
                   <div @click="goTo('/help')">帮助中心</div>

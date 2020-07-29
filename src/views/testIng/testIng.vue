@@ -10,7 +10,13 @@
             <div class="times">
               <div class="explain">
                 <div class="grid-content" style="color:green">考试说明</div>
-                <div>考试次数:{{testInfo.level}}</div>
+                <div>若考试时间超过了截止交卷时间，倒计时将以截止交卷时间为准</div>
+                <div>
+                  考试难度:
+                  <span v-if="testInfo.level===0">简单</span>
+                  <span v-if="testInfo.level===1">普通</span>
+                  <span v-if="testInfo.level===2">困难</span>
+                </div>
                 <div>考试限时:{{testInfo.minutes}}分钟</div>
                 <div>及格分数:{{testInfo.defaultPassScore}}</div>
                 <!-- <div style="color:green">考试规则:允许返回修改答案</div>
@@ -210,7 +216,7 @@ export default {
       data: {},
       saveMsg: {},
       beginTestTime: "",
-      noeTime: ""
+      noeTime: "",
     };
   },
   components: {
@@ -219,7 +225,7 @@ export default {
     fillBlanks,
     judge,
     nounExplanation,
-    explain
+    explain,
   },
   methods: {
     handleFullScreen() {
@@ -311,32 +317,15 @@ export default {
       this.showDialog = false;
       this.$store.state.answerList = {};
       // this.$router.go(-1);
-      this.$router.push({ name: "index", path: "/index" });
+      this.$router.push({ name: "result", path: "/result" });
     },
     //提交试卷
     submit() {
       this.handleFullScreen();
-      // let targetTimezone = -8; // 目标时区，东8区
-      // let _dif = new Date().getTimezoneOffset(); // 当前时区与中时区时差，以min为维度
-      // // 本地时区时间 + 时差  = 中时区时间
-      // // 目标时区时间 + 时差 = 中时区时间
-      // // 目标时区时间 = 本地时区时间 + 本地时区时差 - 目标时区时差
-      // // 东8区时间
-      // let east8time =
-      //   new Date().getTime() +
-      //   _dif * 60 * 1000 -
-      //   targetTimezone * 60 * 60 * 1000;
-      // let nowTime = this.timeFormat(new Date(east8time));
-      //  console.log(nowTime);
       this.dialogVisible = false;
-      //获取学员peopleId
       let userinfo = JSON.parse(localStorage.getItem("userInfo"));
-      //获取ip地址
-      // let ip = localStorage.getItem("Ip");
       let ip = "0.0.0.0";
-      // ip = ip.toString();
       this.getBrowser();
-      //  console.log(this.testInfo.id);
       let data = {
         answers: this.allAnswer,
         beginTime: this.beginTestTime,
@@ -344,27 +333,23 @@ export default {
         device: "chrome",
         ip: ip,
         ksExamId: this.ksExamId,
-        peopleId: userinfo.userId
+        peopleId: userinfo.userId,
       };
       const loading = this.$loading({
         lock: true,
         text: "试卷提交中...",
         spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)"
+        background: "rgba(0, 0, 0, 0.7)",
       });
       this.$onlineTest
         .submitPaper(data)
-        .then(res => {
+        .then((res) => {
           loading.close();
           //  console.log(res);
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
-            this.$message({
-              message: "交卷成功",
-              type: "success"
-            });
             //清除每分钟存数据到服务器
             clearInterval(this.saveMsg);
             this.$store.state.answerList = {};
@@ -372,7 +357,7 @@ export default {
             //清空缓存在服务器的数据
             this.saveTestInfo(this.data);
             // this.$router.go(-1);
-            this.$router.push({ name: "index", path: "/index" });
+            this.$router.push({ name: "result", path: "/result" });
           } else {
             //清除每分钟存数据到服务器
             clearInterval(this.saveMsg);
@@ -381,11 +366,11 @@ export default {
             this.saveTestInfo(this.data);
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           loading.close();
           //  console.log(err);
         });
@@ -395,7 +380,7 @@ export default {
       let types = ["edge", "firefox", "chrome", "safari", "opera "];
       let userAgent = navigator.userAgent.toLocaleLowerCase();
       var res = [];
-      types.forEach(element => {
+      types.forEach((element) => {
         //  console.log(element);
         if (userAgent.indexOf(element) > 0) {
           let rule = `${element}` + "\\/([\\d.]+)";
@@ -433,7 +418,7 @@ export default {
     getTestMsg() {
       this.$onlineTest
         .onlineTest(this.id)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           //  console.log(res);
           if (res.data.code === 1000) {
@@ -447,32 +432,33 @@ export default {
               this.testInfo.questions.map((item, index) => {
                 let data = {
                   value: index,
-                  check: false
+                  check: false,
                 };
                 this.checkList.push(data);
               });
             }
             // console.log(this.checkList);
             let newTime = Date.parse(new Date());
-            // console.log(newTime);
-            // console.log(this.beginTestTime);
-            // console.log(res.data.data[0].minutes * 60000);
-            // console.log(
-            //   this.beginTestTime + res.data.data[0].minutes * 60000 - newTime
-            // );
-            this.time =
-              this.beginTestTime + res.data.data[0].minutes * 60000 - newTime;
+            let finishTimeing = this.$route.query.finishTime;
+            let finishTime = Date.parse(new Date(finishTimeing));
+            console.log(finishTime);
+            if (finishTime - newTime <= res.data.data[0].minutes * 60000) {
+              this.time = this.beginTestTime + finishTime - newTime - newTime;
+            } else {
+              this.time =
+                this.beginTestTime + res.data.data[0].minutes * 60000 - newTime;
+            }
             this.currentOptions = res.data.data[0].questions;
             //  console.log(this.testInfo);
             this.timeDown();
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           //  console.log(err);
         });
@@ -483,7 +469,7 @@ export default {
       var countdown = document.getElementById("countdown");
       var time = _this.time / 1000; //30分钟换算成1800秒
       //  console.log(this.testInfo.minutes);
-      var timecount = setInterval(function() {
+      var timecount = setInterval(function () {
         time = time - 1;
         if (time >= 0) {
           _this.time = time;
@@ -544,29 +530,30 @@ export default {
             device: _this.llqName,
             ip: ip,
             ksExamId: _this.ksExamId,
-            peopleId: userinfo.userId
+            peopleId: userinfo.userId,
           };
           //console.log(data);
           _this.$onlineTest
             .submitPaper(data)
-            .then(res => {
+            .then((res) => {
               //  console.log(res);
               if (res.data.code === 1000) {
                 _this.$router.push({ name: "login", path: "/login" });
               }
               if (res.data.code === 0) {
                 _this.$store.state.answerList = {};
-                this.data = "";
+                _this.data = "";
                 //清空缓存在服务器的数据
-                this.saveTestInfo(this.data);
+                _this.saveTestInfo(this.data);
+                _this.$router.push({ name: "result", path: "/result" });
               } else {
                 _this.$message({
                   message: res.data.msg,
-                  type: "warning"
+                  type: "warning",
                 });
               }
             })
-            .catch(err => {
+            .catch((err) => {
               //  console.log(err);
               this.data = "";
               //清空缓存在服务器的数据
@@ -583,15 +570,15 @@ export default {
     saveTestInfo(data) {
       this.$grade
         .saveExamRunningData(data)
-        .then(res => {
+        .then((res) => {
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.$message({
             message: err.data.msg,
-            type: "warning"
+            type: "warning",
           });
         });
     },
@@ -601,10 +588,10 @@ export default {
       this.data = {
         paperInfo: {
           id: this.id,
-          ksExamId: this.ksExamId
+          ksExamId: this.ksExamId,
         },
         answerList: this.allAnswer,
-        checkList: this.checkList
+        checkList: this.checkList,
       };
       //console.log(this.data);
       this.saveTestInfo(JSON.stringify(this.data));
@@ -615,7 +602,7 @@ export default {
         // console.log("存数据");
         this.savePaper();
       }, 60000);
-    }
+    },
   },
   destroyed() {
     clearInterval(this.timecount);
@@ -628,11 +615,11 @@ export default {
     //先从服务器获取储存数据，若有，继续考试，若没有，重新开始考试
     this.$grade
       .getExamRunningData()
-      .then(res => {
+      .then((res) => {
         if (res.data.code === 1000) {
           this.$message({
             message: res.data.msg,
-            type: "warning"
+            type: "warning",
           });
           this.$router.push({ name: "login", path: "/login" });
         }
@@ -644,11 +631,11 @@ export default {
             this.data = {
               paperInfo: {
                 id: this.id,
-                ksExamId: this.ksExamId
+                ksExamId: this.ksExamId,
               },
               beginTestTime: Date.parse(new Date()),
               answerList: {},
-              checkList: []
+              checkList: [],
             };
             this.beginTestTime = this.data.beginTestTime;
             this.saveTestInfo(JSON.stringify(this.data));
@@ -671,14 +658,14 @@ export default {
         } else {
           this.$message({
             message: res.data.msg,
-            type: "warning"
+            type: "warning",
           });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         //console.log(err);
       });
-    document.onkeydown = function() {
+    document.onkeydown = function () {
       if (window.event.keyCode === 27) {
         window.event.keyCode = 0;
         window.event.returnValue = false;
@@ -704,9 +691,9 @@ export default {
       // console.log(this.time);
       // console.log(oldval);
       // console.log(oldval, newval);
-    }
+    },
   },
-  computed: {}
+  computed: {},
 };
 </script>
 

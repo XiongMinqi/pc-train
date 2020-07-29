@@ -375,6 +375,9 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+/deep/.el-divider--horizontal{
+  margin: 14px 0;
+}
 .el-col {
   text-align: center;
 }

@@ -1,5 +1,8 @@
 <template>
   <div v-loading="loading">
+    <div class="backLastPage" @click="backLastPage">
+      <i class="el-icon-arrow-left"></i>返回
+    </div>
     <div class="userlist">
       <div class="word">用户名</div>
       <div class="input">
@@ -159,33 +162,36 @@ export default {
       originalPassword: "",
       newPassword: "",
       confirmPassword: "",
-      loading: true
+      loading: true,
     };
   },
   components: {},
   methods: {
+    backLastPage() {
+      this.$router.go(-1);
+    },
     handleAvatarSuccess(res, file) {
       this.imageUrl = URL.createObjectURL(file.raw);
       this.loading = false;
     },
     handleAvatarFail(err, file, fileList) {
-      this.loading = false
+      this.loading = false;
       // console.log(err);
       // console.log(file);
       // console.log(fileList);
     },
-    onProgress(event, file, fileList){
-        // this.$message({
-        //   message:"头像上传中"
-        // })
-        this.loading=true;
+    onProgress(event, file, fileList) {
+      // this.$message({
+      //   message:"头像上传中"
+      // })
+      this.loading = true;
     },
     beforeAvatarUpload(file) {
-      const isJPG = file.type === "image/jpeg";
+      const isJPG = file.type === "image/jpeg" || file.type === "image/png";
       const isLt2M = file.size / 1024 / 1024 < 2;
 
       if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG 格式!");
+        this.$message.error("上传头像图片只能是 JPG 格式或者 png 格式!");
       }
       if (!isLt2M) {
         this.$message.error("上传头像图片大小不能超过 2MB!");
@@ -200,30 +206,30 @@ export default {
     submit() {
       let data = {
         id: this.userInfo.id,
-        phoneNumber: this.telNumber
+        phoneNumber: this.telNumber,
       };
       // console.log(data);
       this.$api
         .resetPersonalMsg(data)
-        .then(res => {
+        .then((res) => {
           // console.log(res);
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
             this.$message({
-              message: "个人信息修改成功",
-              type: "success"
+              message: "个人信息修改成功,请重新登录以更新个人信息",
+              type: "success",
             });
             this.$router.push({ name: "login", path: "/login" });
           } else {
             this.$message({
               message: res.data.msg,
-              type: "error"
+              type: "error",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           // console.log(err);
         });
     },
@@ -234,11 +240,11 @@ export default {
       // console.log(this.confirmPassword);
       let data = {
         newPassword: this.newPassword,
-        oldPassword: this.originalPassword
+        oldPassword: this.originalPassword,
       };
       this.$api
         .changePassword(data)
-        .then(res => {
+        .then((res) => {
           // console.log(res);
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -246,12 +252,12 @@ export default {
           if (res.data.code == 0) {
             this.$message({
               message: "密码修改成功",
-              type: "success"
+              type: "success",
             });
             this.$router.push({ name: "login", path: "/login" });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           // console.log(err);
         });
     },
@@ -259,7 +265,7 @@ export default {
     getUserList() {
       this.$api
         .getUser()
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -274,11 +280,11 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           // console.log(err);
         });
@@ -287,7 +293,7 @@ export default {
     getSubjectDetail() {
       this.$api
         .getSubject()
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -296,13 +302,13 @@ export default {
             // console.log(res);
             this.major = res.data.data[0]["专业名称"];
             // console.log(this.userInfo.majorId,"majorId");
-            this.major.map(item => {
+            this.major.map((item) => {
               if (this.userInfo.majorId == item.key) {
                 this.majorName = item.value;
               }
             });
             this.department = res.data.data[0]["部门名称"];
-            this.department.map(item => {
+            this.department.map((item) => {
               if (item.key == this.userInfo.departmentId) {
                 this.departmentName = item.value;
               }
@@ -314,11 +320,11 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           // console.log(err);
         });
@@ -327,26 +333,26 @@ export default {
     logout() {
       this.$api
         .logout()
-        .then(res => {
+        .then((res) => {
           // console.log(res);
           if (res.data.code === 0) {
             this.$message({
               message: "退出登录成功",
-              type: "success"
+              type: "success",
             });
             localStorage.removeItem("userInfo");
             this.$router.push({ name: "login", path: "/login" });
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           // console.log(err);
         });
-    }
+    },
   },
   mounted() {
     this.userMsg = JSON.parse(localStorage.getItem("userInfo"));
@@ -356,7 +362,7 @@ export default {
     this.getSubjectDetail();
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 

@@ -22,7 +22,7 @@
     </div>
     <div v-if="errorList.length>0">
       <div v-for="(item,index) in errorList" :key="index">
-        <div class="mistake">
+        <div class="mistake" @click="checkDetail(item)">
           <div style="display: flex; align-items: center;width: 90%;">
             <div class="userImg">
               <!-- <img src="../../assets/icon/mistake.png" alt /> -->
@@ -490,13 +490,15 @@ export default {
 .mistake {
   display: flex;
   align-items: center;
-  // text-align: center;
   justify-content: space-between;
   margin-bottom: 10px;
   padding-right: 20px;
-  // border: 1px solid #e9e9e9;
+  border: 1px solid #e9e9e9;
   border-radius: 6px;
   box-shadow: 5px 5px 10px #c2c2c2;
+  &:hover{
+    cursor: pointer;
+  }
 }
 .else {
   text-align: center;

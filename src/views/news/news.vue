@@ -1,5 +1,13 @@
 <template>
   <div v-loading="loading">
+    <div class="choose">
+      <div class="classname">
+        <el-input v-model="title" maxlength="30" show-word-limit clearable placeholder="请输入公告名称"></el-input>
+      </div>
+      <div class="btn">
+        <el-button type="primary" @click="getNews">开始筛选</el-button>
+      </div>
+    </div>
     <div v-if="newsList.length>0">
       <div
         class="newsdetail"
@@ -48,7 +56,7 @@
       <div class="newsMsg">
         <!-- <div
           style="font-size: 18px;margin-bottom: 10px;letter-spacing: 1px;line-height:1.5em;"
-        >{{newsDetail.title}}</div> -->
+        >{{newsDetail.title}}</div>-->
         <div class="flex aligh-center newsDetailInfo" style="margin-bottom: 5px;color:#a2a2a2">
           <div style=";padding-right: 10px;">发布时间 : {{newsDetail.createTime}}</div>
           <div>发布人员 : {{newsDetail.peopleName}}</div>
@@ -71,9 +79,10 @@ export default {
       newsList: [],
       total: 0,
       currentPage: 1,
+      title: "",
       dialogFormVisible: false,
       newsDetail: {},
-      loading: true
+      loading: true,
     };
   },
   components: {},
@@ -96,11 +105,13 @@ export default {
       let data = {
         page: this.page,
         limit: this.limit,
-        object: {}
+        object: {
+          title: this.title,
+        },
       };
       this.$api
         .getNews(data)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -111,22 +122,22 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.$message({
             message: err.data.msg,
-            type: "warning"
+            type: "warning",
           });
         });
     },
     checkNews(e, index) {
       this.$api
         .checkNewsDetail(e.id)
-        .then(res => {
+        .then((res) => {
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -141,23 +152,23 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.$message({
             message: err.data.msg,
-            type: "warning"
+            type: "warning",
           });
         });
-    }
+    },
   },
   mounted() {
     this.getNews();
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 
@@ -204,12 +215,21 @@ export default {
 .newsMsg {
   min-height: 50vh;
 }
-.newsDetailInfo{
+.newsDetailInfo {
   border: 1px solid #f2f2f2;
   background-color: #f9f9f9;
   padding: 10px;
 }
-.el-dialog__title{
+.el-dialog__title {
   border-left: 2px solid palegreen;
+}
+.choose {
+  display: flex;
+  align-items: center;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+}
+.classname {
+  margin-right: 20px;
 }
 </style>

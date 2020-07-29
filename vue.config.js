@@ -1,6 +1,6 @@
 // const UglifyJsPlugin = require('uglifyjs-webpack-plugin') //清除所有打印
 // const CompressionPlugin = require("compression-webpack-plugin")
-// const CompressionWebpackPlugin = require('compression-webpack-plugin') //导入compression-webpack-plugin
+// const CompressionWebpackPlugin = require('compression-webpack-plugin') //导入compression-webpack-pluginz
 const CompressionPlugin = require('compression-webpack-plugin')
 // const productionGzipExtensions = ['js', 'css'] //定义压缩文件类型
 // vue.config.js 配置说明

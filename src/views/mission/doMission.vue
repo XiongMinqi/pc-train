@@ -7,7 +7,8 @@
       <el-tab-pane label="课件" name="first">
         <div v-if="coursewareList.length>0">
           <div v-if="textList.length>0">
-            <div class="words">文档</div>
+             <el-divider>文档</el-divider>
+            <!-- <div class="words">文档</div> -->
             <div
               class="course"
               v-for="(item,index) in textList"
@@ -61,7 +62,8 @@
             </div>
           </div>
           <div v-if="pictureList.length>0">
-            <div class="words">图片、视频、音频</div>
+             <el-divider>图片、视频、音频</el-divider>
+            <!-- <div class="words">图片、视频、音频</div> -->
             <div
               class="course"
               v-for="(item,index) in pictureList"
@@ -541,6 +543,9 @@ export default {
 </script>
 
 <style scoped lang='scss'>
+/deep/.el-divider--horizontal{
+  margin: 14px 0;
+}
 .flex {
   display: flex;
 }
@@ -558,13 +563,14 @@ export default {
   display: inline-block;
   width: 32%;
   margin-right: 10px;
-  margin-bottom: 30px;
+  margin-bottom: 15px;
   border: 1px solid #f2f2f2;
   box-shadow: 1px 1px 2px #c2c2c2;
   &:hover {
     cursor: pointer;
     // color: #cc4820;
-    background-color: #f2f2f2;
+    box-shadow: 0 0  20px #c2c2c2;
+    // background-color: #f2f2f2;
     img {
       transform: scale(1.1);
     }
@@ -584,7 +590,7 @@ export default {
 .msg {
   display: flex;
   align-items: center;
-  color: blue;
+  // color: blue;
 }
 .block {
   margin: 20px auto;

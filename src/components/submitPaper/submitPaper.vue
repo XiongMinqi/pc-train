@@ -187,7 +187,7 @@
           </div>
         </div>
       </div>
-      <div v-else style="text-align:center;padding:20px;color:red;font-size:18px">暂无数据</div>
+      <div v-else class="else"></div>
     </div>
   </div>
 </template>

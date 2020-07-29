@@ -26,7 +26,8 @@
     </div>
     <div v-if="allList.length>0">
       <div v-if="textList.length>0">
-        <div class="words">文档</div>
+        <el-divider>文档</el-divider>
+        <!-- <div class="words">文档</div> -->
         <div
           class="course"
           v-for="(item,index) in textList"
@@ -88,7 +89,8 @@
         </div>
       </div>
       <div v-if="pictureList.length>0">
-        <div class="words">图片、视频、音频</div>
+        <el-divider>图片、视频、音频</el-divider>
+        <!-- <div class="words">图片、视频、音频</div> -->
         <div
           class="course"
           v-for="(item,index) in pictureList"
@@ -233,24 +235,24 @@ export default {
       typeList: [
         {
           key: null,
-          value: "不限"
+          value: "不限",
         },
         {
           key: 1,
-          value: "文档"
+          value: "文档",
         },
         {
           key: 2,
-          value: "图片"
+          value: "图片",
         },
         {
           key: 3,
-          value: "视频"
+          value: "视频",
         },
         {
           key: 4,
-          value: "音频"
-        }
+          value: "音频",
+        },
       ],
       typename: "不限",
       subjectList: [],
@@ -261,16 +263,16 @@ export default {
           name: null,
           majorId: null,
           authorDepartment: null,
-          author: null
+          author: null,
         },
         limit: 9,
-        page: 1
+        page: 1,
       },
       allList: [],
       visible: false,
       textList: [],
       pictureList: [],
-      loading: true
+      loading: true,
     };
   },
   components: { vueVideoPlayer, AudioPlayer },
@@ -312,13 +314,10 @@ export default {
       if (duringTime >= 1) {
         let data = {
           coursewareId: this.coursewareId,
-          minutes: duringTime
+          minutes: duringTime,
         };
         // console.log(data);
-        this.$api
-          .saveMyLog(data)
-          .then()
-          .catch();
+        this.$api.saveMyLog(data).then().catch();
       }
     },
     //选择科目
@@ -328,13 +327,13 @@ export default {
       if (this.classname == "不限") {
         this.data.object.subjectId = "";
       } else {
-        this.classList.map(item => {
+        this.classList.map((item) => {
           if (item.value == this.classname) {
             this.data.object.subjectId = item.key;
           }
         });
       }
-      this.typeList.map(item => {
+      this.typeList.map((item) => {
         if (item.value == this.typename) {
           this.data.object.type = item.key;
         }
@@ -357,7 +356,7 @@ export default {
       this.audioUrl = [];
       this.$api
         .geturl(e.id)
-        .then(res => {
+        .then((res) => {
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -403,11 +402,11 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           //console.log(err);
         });
     },
@@ -448,7 +447,7 @@ export default {
     getdict() {
       this.$grade
         .getdict()
-        .then(res => {
+        .then((res) => {
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -462,18 +461,18 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           //console.log(err);
         });
     },
     getAllLearn() {
       this.$api
         .getLearn(this.data)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -483,15 +482,15 @@ export default {
             this.total = res.data.count;
             this.textList = [];
             this.pictureList = [];
-            this.allList.map(item => {
+            this.allList.map((item) => {
               item.uploadTime = this.timeFormat(item.uploadTime);
               item.fileSize = this.twoNumber(item.fileSize / 1024);
-              this.subjectList.map(itm => {
+              this.subjectList.map((itm) => {
                 if (item.majorId === Number(itm.key)) {
                   this.$set(item, "majorName", itm.value);
                 }
               });
-              this.classList.map(itm => {
+              this.classList.map((itm) => {
                 if (item.subjectId === Number(itm.key)) {
                   this.$set(item, "subjectName", itm.value);
                 }
@@ -518,14 +517,14 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
         });
-    }
+    },
   },
   mounted() {
     this.getdict();
@@ -533,15 +532,18 @@ export default {
     this.peopleId = userinfo.userId;
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 
 <style scoped lang='scss'>
+/deep/.el-divider--horizontal {
+  margin: 14px 0;
+}
 .choose {
   display: flex;
   align-items: center;
-  padding: 20px 20px;
+  padding: 10px 20px 10px 0;
 }
 .choosesymbol {
   margin-right: 20px;
@@ -557,13 +559,14 @@ export default {
   width: 32%;
   margin-right: 10px;
   padding-bottom: 20px;
-  margin-bottom: 30px;
-  border: 1px solid #f2f2f2;
-  box-shadow: 1px 1px 2px #c2c2c2;
+  margin-bottom: 15px;
+  border: 1px solid #e2e2e2;
+  box-shadow: 1px 1px 3px #c2c2c2;
   &:hover {
+    box-shadow: 0 0 15px #a2a2a2;
     cursor: pointer;
     // color: #cc4820;
-    background-color: #f2f2f2;
+    // background-color: #f2f2f2;
     img {
       transform: scale(1.1);
     }
@@ -605,10 +608,13 @@ export default {
   font-size: 20px;
   font-weight: bold;
   padding: 0 20px;
+  border-bottom: 1px dashed #c2c2c2;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
 }
 .desc {
   color: #606266;
-  span{
+  span {
     color: #409eff;
   }
 }

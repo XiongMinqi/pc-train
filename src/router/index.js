@@ -18,6 +18,11 @@ const routes = [{
     component: () => import( /* webpackChunkName: 'login' */ '../views/login/login.vue')
   },
   {
+    path: '/result',
+    name: 'result',
+    component: () => import( /* webpackChunkName: 'result' */ '../views/help/result.vue')
+  },
+  {
     path: '/testIng',
     name: 'testIng',
     // component: resolve => (require(["../views/testIng/testIng.vue"], resolve))
@@ -259,6 +264,16 @@ const routes = [{
       name: "user",
       // component: resolve => (require(["../views/user/user.vue"], resolve))
       component: () => import( /* webpackChunkName: 'user' */ "../views/user/user.vue")
+    }]
+  }, 
+  {
+    path: "/userDetail",
+    component: Home,
+    children: [{
+      path: "",
+      name: "userDetail",
+      // component: resolve => (require(["../views/user/user.vue"], resolve))
+      component: () => import( /* webpackChunkName: 'userDetail' */ "../views/user/userDetail.vue")
     }]
   }
 ]

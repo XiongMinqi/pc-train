@@ -189,7 +189,7 @@
       </el-table>
     </div>
 
-    <div class="vision" style="text-align: center;">版本号:20.07.24.18</div>
+    <div class="vision" style="text-align: center;">版本号:20.07.29.17</div>
   </div>
 </template>
 <script>
