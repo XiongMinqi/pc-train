@@ -69,10 +69,8 @@ export default {
         return axios.get("me/getExamRunningData")
     },
     //获取课程表
-    getCourseList() {
-        return axios.post("me/listPlanCourseByTime", {
-            timeRange: 1
-        })
+    getCourseList(data) {
+        return axios.post("me/listPlanCourseByTime", data)
     },
     getCourseByTime(data) {
         return axios.post("me/listPlanCourseByTime",data)

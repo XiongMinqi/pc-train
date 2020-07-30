@@ -1,8 +1,16 @@
 <template>
   <div v-loading="loading">
     <div class="msg">
-      <span style="padding-right:10px">{{date}}</span>
-      {{msg}}
+      <div>
+        <el-button round @click="beforeWeek">上一周</el-button>
+      </div>
+      <div>
+        {{msg}}
+        <span style="padding-left:10px;font-size:14px">({{date}})</span>
+      </div>
+      <div>
+        <el-button round @click="afterWeek">下一周</el-button>
+      </div>
     </div>
     <div id="coursesTable" style="text-align:center"></div>
     <el-dialog title="课程详情" :visible.sync="dialogFormVisible" @close="close">
@@ -104,7 +112,7 @@ export default {
           "",
           "",
           "",
-          ""
+          "",
         ],
         [
           "",
@@ -130,7 +138,7 @@ export default {
           "",
           "",
           "",
-          ""
+          "",
         ],
         [
           "",
@@ -156,7 +164,7 @@ export default {
           "",
           "",
           "",
-          ""
+          "",
         ],
         [
           "",
@@ -182,7 +190,7 @@ export default {
           "",
           "",
           "",
-          ""
+          "",
         ],
         [
           "",
@@ -208,7 +216,7 @@ export default {
           "",
           "",
           "",
-          ""
+          "",
         ],
         [
           "",
@@ -234,7 +242,7 @@ export default {
           "",
           "",
           "",
-          ""
+          "",
         ],
         [
           "",
@@ -260,8 +268,8 @@ export default {
           "",
           "",
           "",
-          ""
-        ]
+          "",
+        ],
       ],
       courseIdList: [
         [
@@ -288,7 +296,7 @@ export default {
           "",
           "",
           "",
-          ""
+          "",
         ],
         [
           "",
@@ -314,7 +322,7 @@ export default {
           "",
           "",
           "",
-          ""
+          "",
         ],
         [
           "",
@@ -340,7 +348,7 @@ export default {
           "",
           "",
           "",
-          ""
+          "",
         ],
         [
           "",
@@ -366,7 +374,7 @@ export default {
           "",
           "",
           "",
-          ""
+          "",
         ],
         [
           "",
@@ -392,7 +400,7 @@ export default {
           "",
           "",
           "",
-          ""
+          "",
         ],
         [
           "",
@@ -418,7 +426,7 @@ export default {
           "",
           "",
           "",
-          ""
+          "",
         ],
         [
           "",
@@ -444,8 +452,8 @@ export default {
           "",
           "",
           "",
-          ""
-        ]
+          "",
+        ],
       ],
       classList: [],
       date: "",
@@ -459,22 +467,455 @@ export default {
       isJoinCourse: false,
       isCommentCourse: false,
       loading: true,
-      dialogloading: false
+      dialogloading: false,
+      Timetable: {},
+      nowWeek: 0,
+      data: {
+        timeRange: 1,
+      },
     };
   },
   components: {},
   methods: {
+    beforeWeek() {
+      this.loading = true;
+      this.nowWeek -= 1;
+      let str = new this.getWeek().init().getWeekType(this.nowWeek);
+      let arr = [];
+      arr = str.split(",");
+      this.data = {
+        customStart: arr[0] + " 00:00:00",
+        customEnd: arr[1] + " 23:59:59",
+        timeRange: 3,
+      };
+      let year = new Date(arr[0]).getFullYear();
+      let month = new Date(arr[0]).getMonth() + 1;
+      let day = new Date(arr[0]).getDate();
+      let getDate = this.getMonthWeek(year, month, day);
+      this.date = arr[0] + "~" + arr[1];
+      this.msg = getDate.getMonth + " 月  第 " + getDate.getWeek + " 周 ";
+      this.getChangeCourseList();
+    },
+    afterWeek() {
+      this.loading = true;
+      this.nowWeek += 1;
+      let str = new this.getWeek().init().getWeekType(this.nowWeek);
+      let arr = [];
+      arr = str.split(",");
+      this.data = {
+        customStart: arr[0] + " 00:00:00",
+        customEnd: arr[1] + " 23:59:59",
+        timeRange: 3,
+      };
+      let year = new Date(arr[0]).getFullYear();
+      let month = new Date(arr[0]).getMonth() + 1;
+      let day = new Date(arr[0]).getDate();
+      let getDate = this.getMonthWeek(year, month, day);
+      this.date = arr[0] + "~" + arr[1];
+      this.msg = getDate.getMonth + " 月  第 " + getDate.getWeek + " 周 ";
+      this.getChangeCourseList();
+    },
+    getChangeCourseList() {
+      this.$grade
+        .getCourseList(this.data)
+        .then((res) => {
+          this.loading = false;
+          if (res.data.code === 1000) {
+            this.$message({
+              message: res.data.msg,
+              type: "warning",
+            });
+            this.$router.push({ name: "login", path: "/login" });
+          }
+          if (res.data.code === 0) {
+            this.classList = res.data.data;
+            this.courselist = [
+              [
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+              ],
+              [
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+              ],
+              [
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+              ],
+              [
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+              ],
+              [
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+              ],
+              [
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+              ],
+              [
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+              ],
+            ];
+            this.classList.map((item) => {
+              let endHour = new Date(item.endTime).getHours();
+              let duringTime = endHour - item.startHour;
+              for (let i = item.startHour; i < endHour; i++) {
+                if (this.courselist[item.startDayOfWeek - 1][i] === "") {
+                  this.courselist[item.startDayOfWeek - 1][i] = item.name;
+                  this.courseIdList[item.startDayOfWeek - 1][i] = item.id;
+                } else {
+                  this.courselist[item.startDayOfWeek - 1][i] =
+                    this.courselist[item.startDayOfWeek - 1][i] +
+                    " , " +
+                    item.name;
+                  this.courseIdList[item.startDayOfWeek - 1][i] =
+                    this.courseIdList[item.startDayOfWeek - 1][i] +
+                    "," +
+                    item.id;
+                }
+              }
+            });
+            // console.log(this.courselist);
+            //渲染页面
+            let timetableType = [
+              [{ index: "1", name: "00:00" }, 1],
+              [{ index: "2", name: "01:00" }, 1],
+              [{ index: "3", name: "02:00" }, 1],
+              [{ index: "4", name: "03:00" }, 1],
+              [{ index: "5", name: "04:00" }, 1],
+              [{ index: "6", name: "05:00" }, 1],
+              [{ index: "7", name: "06:00" }, 1],
+              [{ index: "8", name: "07:00" }, 1],
+              [{ index: "9", name: "08:00" }, 1],
+              [{ index: "10", name: "09:00" }, 1],
+              [{ index: "11", name: "10:00" }, 1],
+              [{ index: "12", name: "11:00" }, 1],
+              [{ index: "13", name: "12:00" }, 1],
+              [{ index: "14", name: "13:00" }, 1],
+              [{ index: "15", name: "14:00" }, 1],
+              [{ index: "16", name: "15:00" }, 1],
+              [{ index: "17", name: "16:00" }, 1],
+              [{ index: "18", name: "17:00" }, 1],
+              [{ index: "19", name: "18:00" }, 1],
+              [{ index: "20", name: "19:00" }, 1],
+              [{ index: "21", name: "20:00" }, 1],
+              [{ index: "22", name: "21:00" }, 1],
+              [{ index: "23", name: "22:00" }, 1],
+              [{ index: "24", name: "23:00" }, 1],
+            ];
+            let week = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
+            let str = new this.getWeek().init().getWeekType(this.nowWeek);
+            let arr = [];
+            arr = str.split(",");
+            let startTime = Date.parse(new Date(arr[0]));
+            let endTime = Date.parse(new Date(arr[1]));
+            let highlightWeek = new Date().getDay();
+            let nowTime = Date.parse(new Date());
+            let result = this.isTimes(nowTime, startTime, endTime);
+            if (result) {
+              if (highlightWeek < 7) {
+                highlightWeek += 1;
+              } else {
+                highlightWeek = 1;
+              }
+            } else {
+              highlightWeek = -1;
+            }
+            let styles = {
+              Gheight: 50,
+              leftHandWidth: 50,
+              palette: ["#ff6633", "#99CC33", "#666699", "#CCCCFF", "#0099CC"],
+            };
+            this.Timetable.setOption({
+              timetables: this.courselist,
+              week: week,
+              highlightWeek: highlightWeek,
+              timetableType: timetableType,
+              gridOnClick: (e) => {
+                this.courseDetail = {};
+                let weekDay = -1;
+                if (e.week === "周日") {
+                  weekDay = 0;
+                }
+                if (e.week === "周一") {
+                  weekDay = 1;
+                }
+                if (e.week === "周二") {
+                  weekDay = 2;
+                }
+                if (e.week === "周三") {
+                  weekDay = 3;
+                }
+                if (e.week === "周四") {
+                  weekDay = 4;
+                }
+                if (e.week === "周五") {
+                  weekDay = 5;
+                }
+                if (e.week === "周六") {
+                  weekDay = 6;
+                }
+                // console.log(e);
+                // console.log(this.courseIdList);
+                // console.log(this.courseIdList[weekDay]);
+                // console.log(this.courseIdList[weekDay][e.index-1]);
+                if (e.name && e.name.indexOf(",") === -1) {
+                  this.dialogFormVisible = true;
+                  this.dialogloading = true;
+                  this.$grade
+                    .getDetailById(this.courseIdList[weekDay][e.index - 1])
+                    .then((res) => {
+                      this.dialogloading = false;
+                      if (res.data.code === 1000) {
+                        this.$message({
+                          message: res.data.msg,
+                          type: "warning",
+                        });
+                        this.$router.push({ name: "login", path: "/login" });
+                      }
+                      if (res.data.code === 0) {
+                        this.courseDetail = res.data.data[0];
+                        this.isJoinCourse = false;
+                        this.isCommentCourse = false;
+                        this.isJoin(this.courseDetail.id);
+                        this.isComment(this.courseDetail.id);
+                        this.getTeacherImg();
+                        // this.dialogFormVisible = true;
+                      } else {
+                        this.$message({
+                          message: res.data.msg,
+                          type: "warning",
+                        });
+                      }
+                    })
+                    .catch((err) => {
+                      this.dialogloading = false;
+                      this.$message({
+                        message: err.data.msg,
+                        type: "warning",
+                      });
+                    });
+                } else if (e.name && e.name.indexOf(",") !== -1) {
+                  this.courseChooseList = [];
+                  let arr = e.name.split(",");
+                  let arrId = this.courseIdList[weekDay][e.index - 1].split(
+                    ","
+                  );
+                  arr.map((item, index) => {
+                    let data = {
+                      key: arrId[index],
+                      value: item,
+                    };
+                    this.courseChooseList.push(data);
+                  });
+                  this.choosedItem = "";
+                  this.diachoosed = true;
+                  // console.log(this.courseChooseList);
+                }
+              },
+              styles: styles,
+            });
+          } else {
+            this.$message({
+              message: res.data.msg,
+              type: "warning",
+            });
+          }
+        })
+        .catch((err) => {
+          this.loading = false;
+          this.$message({
+            message: "获取失败",
+            type: "warning",
+          });
+        });
+    },
+    //判断某个时间在某个时间段内
+    isTimes(newdate, startdate, enddate) {
+      var newdate = new Date(newdate);
+      var startdate = new Date(startdate);
+      var enddate = new Date(enddate);
+      // console.log(newdate);
+      // console.log(startdate);
+      // console.log(enddate);
+      var a = newdate.getTime() - startdate.getTime();
+      var b = newdate.getTime() - enddate.getTime();
+      // console.log(a);
+      // console.log(b);
+      if (a < 0 || b > 0) {
+        return false;
+      } else {
+        return true;
+      }
+    },
     chooseCourseClose() {
       if (this.choosedItem) {
         this.dialogloading = true;
         this.$grade
           .getDetailById(this.choosedItem)
-          .then(res => {
+          .then((res) => {
             this.dialogloading = false;
             if (res.data.code === 1000) {
               this.$message({
                 message: res.data.msg,
-                type: "warning"
+                type: "warning",
               });
               this.$router.push({ name: "login", path: "/login" });
             }
@@ -487,15 +928,15 @@ export default {
             } else {
               this.$message({
                 message: res.data.msg,
-                type: "warning"
+                type: "warning",
               });
             }
           })
-          .catch(err => {
+          .catch((err) => {
             this.dialogloading = false;
             this.$message({
               message: err.data.msg,
-              type: "warning"
+              type: "warning",
             });
           });
       }
@@ -512,20 +953,20 @@ export default {
         if (this.isCommentCourse === true) {
           this.$message({
             message: "本课程您已经评论过了，不能再次评论",
-            type: "warning"
+            type: "warning",
           });
         } else {
           this.$router.push({
             path: "/comments",
             query: {
-              detail: this.courseDetail
-            }
+              detail: this.courseDetail,
+            },
           });
         }
       } else {
         this.$message({
           message: "本课程您尚未参加，无法评论",
-          type: "error"
+          type: "error",
         });
       }
     },
@@ -536,19 +977,19 @@ export default {
         name: "allComments",
         path: "/allComments",
         query: {
-          planCourseId: this.courseDetail.id
-        }
+          planCourseId: this.courseDetail.id,
+        },
       });
     },
     //是否参加课程
     isJoin(id) {
       this.$grade
         .isJoinCourse(id)
-        .then(res => {
+        .then((res) => {
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -557,15 +998,15 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           //console.log(err);
           this.$message({
             message: err.data.msg,
-            type: "warning"
+            type: "warning",
           });
         });
     },
@@ -573,11 +1014,11 @@ export default {
     isComment(id) {
       this.$grade
         .isCommentCourse(id)
-        .then(res => {
+        .then((res) => {
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -586,15 +1027,15 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           //console.log(err);
           this.$message({
             message: err.data.msg,
-            type: "warning"
+            type: "warning",
           });
         });
     },
@@ -604,12 +1045,12 @@ export default {
       this.dialogloading = true;
       this.$grade
         .getPicture(this.courseDetail.teacherId)
-        .then(res => {
+        .then((res) => {
           this.dialogloading = false;
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -618,15 +1059,15 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           //console.log(err);
           this.$message({
             message: err.data.msg,
-            type: "warning"
+            type: "warning",
           });
         });
     },
@@ -657,23 +1098,28 @@ export default {
         [{ index: "21", name: "20:00" }, 1],
         [{ index: "22", name: "21:00" }, 1],
         [{ index: "23", name: "22:00" }, 1],
-        [{ index: "24", name: "23:00" }, 1]
+        [{ index: "24", name: "23:00" }, 1],
       ];
       let week = ["周日", "周一", "周二", "周三", "周四", "周五", "周六"];
       let highlightWeek = new Date().getDay();
+      if (highlightWeek < 7) {
+        highlightWeek += 1;
+      } else {
+        highlightWeek = 1;
+      }
       let styles = {
         Gheight: 50,
         leftHandWidth: 50,
-        palette: ["#ff6633", "#99CC33", "#666699", "#CCCCFF", "#0099CC"]
+        palette: ["#ff6633", "#99CC33", "#666699", "#CCCCFF", "#0099CC"],
       };
       // 实例化(初始化课表)
-      let Timetable = new Timetables({
+      this.Timetable = new Timetables({
         el: "#coursesTable",
         timetables: this.courselist,
         week: week,
         timetableType: timetableType,
         highlightWeek: highlightWeek,
-        gridOnClick: e => {
+        gridOnClick: (e) => {
           this.courseDetail = {};
           let weekDay = -1;
           if (e.week === "周日") {
@@ -706,12 +1152,12 @@ export default {
             this.dialogloading = true;
             this.$grade
               .getDetailById(this.courseIdList[weekDay][e.index - 1])
-              .then(res => {
+              .then((res) => {
                 this.dialogloading = false;
                 if (res.data.code === 1000) {
                   this.$message({
                     message: res.data.msg,
-                    type: "warning"
+                    type: "warning",
                   });
                   this.$router.push({ name: "login", path: "/login" });
                 }
@@ -726,15 +1172,15 @@ export default {
                 } else {
                   this.$message({
                     message: res.data.msg,
-                    type: "warning"
+                    type: "warning",
                   });
                 }
               })
-              .catch(err => {
+              .catch((err) => {
                 this.dialogloading = false;
                 this.$message({
                   message: err.data.msg,
-                  type: "warning"
+                  type: "warning",
                 });
               });
           } else if (e.name && e.name.indexOf(",") !== -1) {
@@ -744,7 +1190,7 @@ export default {
             arr.map((item, index) => {
               let data = {
                 key: arrId[index],
-                value: item
+                value: item,
               };
               this.courseChooseList.push(data);
             });
@@ -753,7 +1199,7 @@ export default {
             // console.log(this.courseChooseList);
           }
         },
-        styles: styles
+        styles: styles,
       });
     },
     //获取课程详情
@@ -761,19 +1207,19 @@ export default {
     //获取课程表
     getCourseList() {
       this.$grade
-        .getCourseList()
-        .then(res => {
+        .getCourseList(this.data)
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
             this.classList = res.data.data;
-            this.classList.map(item => {
+            this.classList.map((item) => {
               let endHour = new Date(item.endTime).getHours();
               let duringTime = endHour - item.startHour;
               for (let i = item.startHour; i < endHour; i++) {
@@ -797,15 +1243,15 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.$message({
             message: err.data.msg,
-            type: "warning"
+            type: "warning",
           });
         });
     },
@@ -823,10 +1269,44 @@ export default {
       let config = {
         getMonth: date.getMonth() + 1,
         getYear: date.getFullYear(),
-        getWeek: Math.ceil((d + 6 - w) / 7)
+        getWeek: Math.ceil((d + 6 - w) / 7),
       };
       return config;
-    }
+    },
+    getWeek() {
+      this.nowTime = new Date();
+      this.init = function () {
+        this.dayInWeek = this.nowTime.getDay();
+        this.dayInWeek == 0 && (this.dayInWeek = 7);
+        this.thsiWeekFirstDay =
+          this.nowTime.getTime() - (this.dayInWeek - 1) * 86400000;
+        this.thisWeekLastDay =
+          this.nowTime.getTime() + (7 - this.dayInWeek) * 86400000;
+        return this;
+      };
+      this.getWeekType = function (type) {
+        type = ~~type;
+        var firstDay = this.thsiWeekFirstDay + type * 7 * 86400000;
+        var lastDay = this.thisWeekLastDay + type * 7 * 86400000;
+        return this.getWeekHtml(firstDay, lastDay);
+      };
+      this.formateDate = function (time) {
+        var newTime = new Date(time);
+        var year = newTime.getFullYear();
+        var month = newTime.getMonth() + 1;
+        var day = newTime.getDate();
+        return (
+          year +
+          "-" +
+          (month >= 10 ? month : "0" + month) +
+          "-" +
+          (day >= 10 ? day : "0" + day)
+        );
+      };
+      this.getWeekHtml = function (f, l) {
+        return this.formateDate(f) + "," + this.formateDate(l);
+      };
+    },
   },
   mounted() {
     this.getCourseList();
@@ -834,29 +1314,33 @@ export default {
     let month = new Date().getMonth() + 1;
     let day = new Date().getDate();
     let getDate = this.getMonthWeek(year, month, day);
-
-    this.date = year + "/" + month + "/" + day;
-    this.msg =
-      getDate.getMonth + " 月 " + " 第 " + getDate.getWeek + " 周 " + "  ";
+    let str = new this.getWeek().init().getWeekType(this.nowWeek);
+    let arr = [];
+    arr = str.split(",");
+    this.date = arr[0] + "~" + arr[1];
+    this.msg = getDate.getMonth + " 月  第 " + getDate.getWeek + " 周 ";
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 
 <style scoped lang='scss'>
 /deep/li {
-  border-top: 1px dashed  rgb(219, 219, 219);
-  border-left: 1px dashed  rgb(219, 219, 219);
+  border-top: 1px dashed rgb(219, 219, 219);
+  border-left: 1px dashed rgb(219, 219, 219);
   // border-right: 1px solid rgb(59, 65, 65);
 }
-/deep/.course-hasContent{
+/deep/.course-hasContent {
   border-radius: 10px;
 }
 .msg {
   margin-bottom: 10px;
-  text-align: center;
+  // text-align: center;
   font-size: 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 #courseWrapper {
   border: 0 !important;
@@ -884,6 +1368,9 @@ export default {
   transform: translateX(-50%);
 }
 .stage_1 {
-  border-bottom: 1px solid #f2f2f2!important;
+  border-bottom: 1px solid #f2f2f2 !important;
+}
+/deep/.highlight-week {
+  background: #c6c6c6;
 }
 </style>

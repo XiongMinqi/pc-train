@@ -177,9 +177,9 @@
             />
           </div>
         </template>
-        <el-table-column prop="name" label="考试名称" width="180"></el-table-column>
-        <el-table-column prop="passScore" label="通过分数" width="180"></el-table-column>
-        <el-table-column prop="totalScore" label="总分数" width="180"></el-table-column>
+        <el-table-column prop="name" label="考试名称"></el-table-column>
+        <el-table-column prop="passScore" label="通过分数"></el-table-column>
+        <el-table-column prop="totalScore" label="总分数"></el-table-column>
         <el-table-column prop="publishTime" label="考试时间"></el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
