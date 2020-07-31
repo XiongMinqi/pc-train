@@ -171,7 +171,7 @@
       @close="close"
       @open="open"
       class="dialogVisible"
-      title="课件在线预览"
+      :title="courseTitle"
       :visible.sync="dialogVisible"
       :close-on-click-modal="false"
       :show-close="false"
@@ -221,6 +221,7 @@ export default {
       pdfUrl: "",
       audioUrl: [],
       wordUrl: "",
+      courseTitle: "",
       pictureUrl: "",
       dialogVisible: false,
       openVideoImg: "../../assets/img/maliao.png",
@@ -302,6 +303,7 @@ export default {
     //关闭对话框
     close() {
       // console.log("结束计时");
+      this.courseTitle = "";
       this.wordUrl = "";
       this.pdfUrl = "";
       this.videoPlayer = "";
@@ -348,6 +350,7 @@ export default {
     //查看资料
     checkcourse(e) {
       // console.log(e);
+      this.courseTitle = e.name;
       this.coursewareId = e.id;
       this.wordUrl = "";
       this.pdfUrl = "";

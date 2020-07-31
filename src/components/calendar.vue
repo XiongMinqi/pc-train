@@ -85,10 +85,10 @@ export default {
       return d;
     },
     handleEventClick(val) {
-      console.log(1111, val);
+      //console.log(1111, val);
     },
     handDrop(val) {
-      console.log(1, val);
+      //console.log(1, val);
     },
     // 当选择结束的时候获取开始和结束时间
     handleSelect(info) {

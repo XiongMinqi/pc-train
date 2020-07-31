@@ -51,6 +51,23 @@
         </el-form-item>
       </el-form>
     </div>
+    <div class="joinTeacher">
+      <el-popover placement="top" width="160" trigger="hover" v-model="visible">
+        <div style="margin-bottom:10px">
+          <a href="https://bucket20200417.oss-cn-huhehaote.aliyuncs.com/other/xinke.apk">点击直接下载</a>
+        </div>
+        <div style="margin-bottom:10px">或扫描二维码下载</div>
+        <div class="downloadImg">
+          <img src="../../assets/icon/download.png" alt />
+        </div>
+        <div style="margin-right:20px;" slot="reference">安卓App下载</div>
+        <!-- <el-button  style="margin-left:20px;" round slot="reference" icon="el-icon-download">app下载</el-button> -->
+      </el-popover>
+      <div>
+        <el-divider direction="vertical"></el-divider>
+      </div>
+      <div style="margin-left:20px" class="teacher" @click="teacher">管理员入口</div>
+    </div>
   </div>
 </template>
 
@@ -58,6 +75,7 @@
 export default {
   data() {
     return {
+      visible: false,
       answerList: {},
       imgLink: "../../assets/icon/bgimg.png",
       username: "",
@@ -73,7 +91,7 @@ export default {
         "#22e6c7",
         "#92d819",
         "#14d7f1",
-        "#e23c66"
+        "#e23c66",
       ], //阴影颜色列表
       directionList: ["leftTop", "leftBottom", "rightTop", "rightBottom"], //星星运行方向
       speed: 5, //星星运行速度
@@ -113,16 +131,20 @@ export default {
       height: window.innerHeight,
       loginForm: {
         userName: "",
-        passWord: ""
+        passWord: "",
       },
       loginRules: {
         username: "",
-        passWord: ""
-      }
+        passWord: "",
+      },
     };
   },
   components: {},
   methods: {
+    //管理员入口
+    teacher(){
+      window.open("../admin/index.html")
+    },
     inputUsername(e) {
       if (e !== this.loginRules.username) {
         this.passwords = "";
@@ -134,24 +156,24 @@ export default {
       let data = {
         username: this.username,
         password: this.passwords,
-        "remember-me": this.checked
+        "remember-me": this.checked,
       };
       this.$api
         .login(data)
-        .then(res => {
+        .then((res) => {
           // console.log(res);
           if (res.data.code === 0) {
             // console.log(res.data[0]);
             //console.log(res);
-            localStorage.setItem('token',res.headers['x-auth-token'])
+            localStorage.setItem("token", res.headers["x-auth-token"]);
             // this.$store.state.header['x-auth-token'] = res.header['x-auth-token']
             this.$message({
               message: res.data.msg,
-              type: "success"
+              type: "success",
             });
             this.$grade
               .getExamRunningData()
-              .then(reslut => {
+              .then((reslut) => {
                 // console.log(res);
                 this.$api.sendInfo();
                 if (
@@ -187,17 +209,17 @@ export default {
                   this.$router.push({ name: "testIng", path: "/testIng" });
                 }
               })
-              .catch(error => {
+              .catch((error) => {
                 //console.log(error);
               });
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           //console.log(err);
         });
     },
@@ -298,7 +320,7 @@ export default {
     }
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 
@@ -353,6 +375,30 @@ export default {
     .iconfont {
       color: #fff;
     }
+  }
+}
+.joinTeacher {
+  position: absolute;
+  top: 10px;
+  right: 30px;
+  display: flex;
+  align-items: center;
+  color: #c0c4cc;
+  :hover {
+    cursor: pointer;
+  }
+}
+.teacher {
+  &:hover {
+    color: #ffffff;
+  }
+}
+.downloadImg {
+  width: 160px;
+  height: 160px;
+  img {
+    width: 100%;
+    height: 100%;
   }
 }
 </style>

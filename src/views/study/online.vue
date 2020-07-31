@@ -244,7 +244,7 @@ export default {
       questionType: [],
       showBtn: true,
       choosed: false, //是否已选择选项
-      size: "5",
+      size: 5,
       listSize: ["5", "10", "15", "20", "25", "30"],
       sourceList: [
         {
@@ -264,7 +264,7 @@ export default {
           type: 0
         },
         fromMyWrongQuestionSet: false,
-        size: 10
+        size: 5
       },
       diffcult: [
         {

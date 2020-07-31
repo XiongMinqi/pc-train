@@ -365,7 +365,7 @@ export default {
               //console.log(this.wordUrl);
             } else if (e.fileSuffix === ".mp4") {
               this.videoPlayer = res.data.data[0];
-              console.log(this.videoPlayer);
+              //console.log(this.videoPlayer);
               this.dialogVisible = true;
             } else if (e.fileSuffix === ".mp3") {
               this.audioUrl.push(res.data.data[0]);

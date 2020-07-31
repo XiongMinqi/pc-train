@@ -42,10 +42,10 @@ export default {
       this.$router.push(path);
     },
     handleOpen(key, keyPath) {
-      console.log(key, keyPath);
+      //console.log(key, keyPath);
     },
     handleClose(key, keyPath) {
-      console.log(key, keyPath);
+      //console.log(key, keyPath);
     },
     //获取考试记录
     getTestExam() {
@@ -68,7 +68,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          //console.log(err);
         });
     }
   },

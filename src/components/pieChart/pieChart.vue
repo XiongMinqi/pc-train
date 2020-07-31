@@ -39,7 +39,7 @@ export default {
           }
         })
         .catch(err => {
-          console.log(err);
+          //console.log(err);
         });
     },
     //初始化数据

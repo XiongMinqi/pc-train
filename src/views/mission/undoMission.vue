@@ -185,7 +185,7 @@ export default {
         })
         .catch(err => {
           this.loading = false;
-          console.log(err);
+          //console.log(err);
           this.$message({
             message: "获取失败",
             type: "warning"

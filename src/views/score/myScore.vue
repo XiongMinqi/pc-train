@@ -17,7 +17,7 @@
     <div class="words">积分明细</div>
     <div>
       <el-table :data="scoreList" border style="width: 100%">
-        <el-table-column prop="createTime" label="时间" width="180"></el-table-column>
+        <el-table-column prop="createTime" label="时间" width="200"></el-table-column>
         <el-table-column prop="source" label="来源"></el-table-column>
         <el-table-column prop="point" label="积分" width="180"></el-table-column>
       </el-table>

@@ -142,11 +142,7 @@
           <el-table :data="missionList" style="width: 100%" height="300">
             <template slot="empty">
               <div>
-                <img
-                  style="width:250px;height:200px"
-                  src="../../assets/icon/kong.png"
-                  alt
-                />
+                <img style="width:250px;height:200px" src="../../assets/icon/kong.png" alt />
               </div>
             </template>
             <el-table-column prop="name" label="任务名称" width="180"></el-table-column>
@@ -170,11 +166,7 @@
       <el-table :data="testList" style="width: 100%" height="300">
         <template slot="empty">
           <div>
-            <img
-              style="width:250px;height:200px;"
-              src="../../assets/icon/kong.png"
-              alt
-            />
+            <img style="width:250px;height:200px;" src="../../assets/icon/kong.png" alt />
           </div>
         </template>
         <el-table-column prop="name" label="考试名称"></el-table-column>
@@ -189,7 +181,7 @@
       </el-table>
     </div>
 
-    <div class="vision" style="text-align: center;">版本号:20.07.29.17</div>
+    <div class="vision" style="text-align: center;">版本号:20.07.31.17</div>
   </div>
 </template>
 <script>
@@ -222,17 +214,24 @@ export default {
   components: { countTo, brokenLine },
   methods: {
     handleEdit(index, row) {
-      this.$message({
-        message: "即将进入考试，祝您考试顺利",
-        type: "success",
-      });
-      this.$router.push({
-        path: "/testIng",
-        query: {
-          paperId: row.paperId,
-          id: row.id,
-        },
-      });
+      if (row.totalScore > 0) {
+        this.$message({
+          message: "即将进入考试，祝您考试顺利",
+          type: "success",
+        });
+        this.$router.push({
+          path: "/testIng",
+          query: {
+            paperId: row.paperId,
+            id: row.id,
+          },
+        });
+      } else {
+        this.$message({
+          message: "试卷发生错误，请联系管理员",
+          type: "warning",
+        });
+      }
     },
     study() {
       this.$router.push({ name: "studyRecord", path: "/studyRecord" });
@@ -452,7 +451,7 @@ export default {
         })
         .catch((err) => {
           this.loading = false;
-          console.log(err);
+          //console.log(err);
           this.$message({
             message: "获取失败",
             type: "warning",
@@ -497,7 +496,7 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-li{
+li {
   border: 0;
 }
 .flex {
@@ -708,7 +707,7 @@ li{
 .wordsRight {
   width: 60%;
 }
-.learnRecord{
+.learnRecord {
   padding-top: 18px;
 }
 </style>

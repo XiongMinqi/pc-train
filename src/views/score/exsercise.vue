@@ -45,7 +45,7 @@
         </div>
         <div v-if="recordData.length>0">
           <div class="experList">
-            <el-timeline :reverse="reverse">
+            <el-timeline :reverse="false">
               <el-timeline-item
                 v-for="(activity, index) in recordData"
                 :key="index"

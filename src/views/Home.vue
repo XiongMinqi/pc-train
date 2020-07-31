@@ -263,7 +263,7 @@ export default {
       };
       //获得消息事件
       socket.onmessage = function(msg) {
-        console.log(msg.data);
+        //console.log(msg.data);
         if (msg.data) {
           let data = JSON.parse(msg.data);
           this.unReadList.unshift(data);
