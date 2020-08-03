@@ -1,6 +1,7 @@
 <template>
   <div v-loading="loading">
-    <div v-if="missionList.length>0">
+    <div v-if="showMission">
+      <div v-if="missionList.length>0">
       <div v-for="(item,index) in missionList" :key="index" class="cardsDetail">
         <el-card class="box-card" :class="item.running===true?'border-true':'border-false'">
           <div slot="header" class="clearfix">
@@ -31,6 +32,7 @@
       </div>
     </div>
     <div v-else class="else"></div>
+    </div>
     <div>
       <el-dialog :title="missiondetail.name" :visible.sync="dialogVisible" width="60%">
         <div style="min-height:40vh">
@@ -63,6 +65,7 @@ export default {
   data() {
     return {
       loading: true,
+      showMission:false,
       page: 1,
       limit: 6,
       dialogVisible: false,
@@ -163,6 +166,7 @@ export default {
         .getUndoMission(data)
         .then(res => {
           this.loading = false;
+          this.showMission =true;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -185,6 +189,7 @@ export default {
         })
         .catch(err => {
           this.loading = false;
+          this.showMission =true;
           //console.log(err);
           this.$message({
             message: "获取失败",

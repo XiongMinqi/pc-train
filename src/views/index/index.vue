@@ -32,16 +32,18 @@
             <div style="padding:10px">
               <i class="el-icon-s-data iconfont"></i>最近考试
             </div>
-            <div class="testrecord" v-if="allTestList.length>0">
-              <el-timeline :reverse="false">
-                <el-timeline-item
-                  v-for="(item, index) in allTestList"
-                  :key="index"
-                  :timestamp="item.beginTime"
-                >{{item.examName}}</el-timeline-item>
-              </el-timeline>
+            <div v-if="showTest">
+              <div class="testrecord" v-if="allTestList.length>0">
+                <el-timeline :reverse="false">
+                  <el-timeline-item
+                    v-for="(item, index) in allTestList"
+                    :key="index"
+                    :timestamp="item.beginTime"
+                  >{{item.examName}}</el-timeline-item>
+                </el-timeline>
+              </div>
+              <div v-else class="testrecord text-center">暂无数据</div>
             </div>
-            <div v-else class="testrecord text-center">暂无数据</div>
           </div>
         </div>
       </div>
@@ -139,17 +141,19 @@
           <div>
             <i class="el-icon-s-help iconfont"></i>学习任务
           </div>
-          <el-table :data="missionList" style="width: 100%" height="300">
-            <template slot="empty">
-              <div>
-                <img style="width:250px;height:200px" src="../../assets/icon/kong.png" alt />
-              </div>
-            </template>
-            <el-table-column prop="name" label="任务名称" width="180"></el-table-column>
-            <el-table-column prop="requireLearnTime" label="要求学习时长" width="180"></el-table-column>
-            <el-table-column prop="learnTime" label="已学习时长" width="180"></el-table-column>
-            <el-table-column prop="publishTime" label="发布时间"></el-table-column>
-          </el-table>
+          <div v-if="showMission">
+            <el-table :data="missionList" style="width: 100%" height="300">
+              <template slot="empty">
+                <div>
+                  <img style="width:250px;height:200px" src="../../assets/icon/kong.png" alt />
+                </div>
+              </template>
+              <el-table-column prop="name" label="任务名称" width="180"></el-table-column>
+              <el-table-column prop="requireLearnTime" label="要求学习时长" width="180"></el-table-column>
+              <el-table-column prop="learnTime" label="已学习时长" width="180"></el-table-column>
+              <el-table-column prop="publishTime" label="发布时间"></el-table-column>
+            </el-table>
+          </div>
         </div>
       </div>
     </div>
@@ -181,7 +185,7 @@
       </el-table>
     </div>
 
-    <div class="vision" style="text-align: center;">版本号:20.07.31.17</div>
+    <div class="vision" style="text-align: center;">版本号:20.08.03.16</div>
   </div>
 </template>
 <script>
@@ -191,6 +195,8 @@ export default {
   data() {
     return {
       userInfo: {},
+      showTest: false,
+      showMission:false,
       testInfo: {},
       page: 1,
       limit: 10000,
@@ -410,6 +416,7 @@ export default {
         .getExam(data)
         .then((res) => {
           this.loading = false;
+          this.showTest = true;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           } else if (res.data.code === 0) {
@@ -423,6 +430,7 @@ export default {
         })
         .catch((err) => {
           this.loading = false;
+          this.showTest = true;
           //console.log(err);
         });
     },
@@ -438,6 +446,7 @@ export default {
         .getUndoMission(data)
         .then((res) => {
           this.loading = false;
+          this.showMission =true;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           } else if (res.data.code === 0) {
@@ -451,6 +460,7 @@ export default {
         })
         .catch((err) => {
           this.loading = false;
+          this.showMission =true;
           //console.log(err);
           this.$message({
             message: "获取失败",

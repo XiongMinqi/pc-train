@@ -1,24 +1,27 @@
 <template>
   <div v-loading="loading">
     <div class="historyRecord">学习任务记录</div>
-    <el-table :data="missionList" border style="width: 100%">
-      <template slot="empty">
-        <div>
-          <img style="width:300px;height:200px;" src="../../assets/icon/kong.png" alt />
-        </div>
-      </template>
-      <el-table-column prop="name" label="任务名称"></el-table-column>
-      <el-table-column prop="requireLearnTime" label="要求学习时长/分钟"></el-table-column>
-      <el-table-column prop="requireRightCount" label="要求答对数量/道"></el-table-column>
-      <el-table-column prop="learnTime" label="学习时长/分钟"></el-table-column>
-      <el-table-column prop="lastSubmitTime" label="最后提交练习时间"></el-table-column>
-      <el-table-column prop="endTime" label="截止时间"></el-table-column>
-      <el-table-column fixed="right" label="操作" width="180">
-        <template slot-scope="scope">
-          <el-button @click="handleClick(scope.row)" type="primary" size="mini">查看练习</el-button>
+    <div v-if="showHistory">
+      <el-table :data="missionList" border style="width: 100%">
+        <template slot="empty">
+          <div>
+            <img style="width:300px;height:200px;" src="../../assets/icon/kong.png" alt />
+          </div>
         </template>
-      </el-table-column>
-    </el-table>
+        <el-table-column prop="name" label="任务名称"></el-table-column>
+        <el-table-column prop="requireLearnTime" label="要求学习时长/分钟"></el-table-column>
+        <el-table-column prop="requireRightCount" label="要求答对数量/道"></el-table-column>
+        <el-table-column prop="learnTime" label="学习时长/分钟"></el-table-column>
+        <el-table-column prop="lastSubmitTime" label="最后提交练习时间"></el-table-column>
+        <el-table-column prop="endTime" label="截止时间"></el-table-column>
+        <el-table-column fixed="right" label="操作" width="180">
+          <template slot-scope="scope">
+            <el-button @click="handleClick(scope.row)" type="primary" size="mini">查看练习</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </div>
+
     <div>
       <el-dialog
         width="90%"
@@ -115,6 +118,7 @@ export default {
   data() {
     return {
       loading: true,
+      showHistory: false,
       page: 1,
       limit: 10,
       missionList: [],
@@ -130,7 +134,7 @@ export default {
   components: {},
   methods: {
     handleClick(e) {
-      //e);
+      console.log(e);
       this.practiseList = [];
       this.dialogVisible = true;
       this.dialogLoading = true;
@@ -243,6 +247,7 @@ export default {
         .getUndoMission(data)
         .then((res) => {
           this.loading = false;
+          this.showHistory = true;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -263,6 +268,7 @@ export default {
         })
         .catch((err) => {
           this.loading = false;
+          this.showHistory = true;
           this.$message({
             message: err.data.msg,
             type: "warning",

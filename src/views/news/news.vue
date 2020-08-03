@@ -1,6 +1,7 @@
 <template>
   <div v-loading="loading">
-    <div class="choose">
+    <div v-if="show">
+      <div class="choose">
       <div class="classname">
         <el-input v-model="title" maxlength="30" show-word-limit clearable placeholder="请输入公告名称"></el-input>
       </div>
@@ -52,6 +53,7 @@
       </div>
     </div>
     <div v-else class="else"></div>
+    </div>
     <el-dialog :title="newsDetail.title" :visible.sync="dialogFormVisible" @close="close">
       <div class="newsMsg">
         <!-- <div
@@ -79,6 +81,7 @@ export default {
       newsList: [],
       total: 0,
       currentPage: 1,
+      show:false,
       title: "",
       dialogFormVisible: false,
       newsDetail: {},
@@ -113,6 +116,7 @@ export default {
         .getNews(data)
         .then((res) => {
           this.loading = false;
+          this.show = true;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -128,6 +132,7 @@ export default {
         })
         .catch((err) => {
           this.loading = false;
+          this.show = true;
           this.$message({
             message: err.data.msg,
             type: "warning",

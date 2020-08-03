@@ -15,83 +15,86 @@
       </div>
       <div class="explain">显示30天内，您需要参加的考试</div>
     </div>
-    <div v-if="testList.length>0">
-      <div
-        class="flex testDetail"
-        v-for="(item,index) in testList"
-        :key="index"
-        @click="onlineTest(item)"
-      >
-        <div style=" display: flex;align-items: center;">
-          <div class="userImg">
-            <!-- <img src="../../assets/icon/testlist.png" alt /> -->
-            <img src="../../assets/img/icon.png" alt />
-          </div>
-          <div style="margin-left:30px">
-            <div class="name" style="font-weight:bold">
-              {{item.name}}
-              <span
-                style="font-style: italic;font-weight:normal;font-size:13px;color:#909399;padding-left:10px"
-              >{{item.majorname}} / {{item.departname}}</span>
-              <span style="margin-left:10px">
-                <el-tag type="success" size="mini" v-if="item.level===0">简单</el-tag>
-                <el-tag type="info" size="mini" v-if="item.level===1">普通</el-tag>
-                <el-tag type="warning" size="mini" v-if="item.level===2">困难</el-tag>
-              </span>
+    <div v-if="showTestList">
+      <div v-if="testList.length>0">
+        <div
+          class="flex testDetail"
+          v-for="(item,index) in testList"
+          :key="index"
+          @click="onlineTest(item)"
+        >
+          <div style=" display: flex;align-items: center;">
+            <div class="userImg">
+              <!-- <img src="../../assets/icon/testlist.png" alt /> -->
+              <img src="../../assets/img/icon.png" alt />
             </div>
-            <div style="color:#606266;margin-bottom:5px;font-size:14px">
-              试题总分 : {{item.totalScore}}分
-              <el-divider direction="vertical"></el-divider>及格分数 :
-              <span class="bg-primary">{{item.passScore}}分</span>
-              <el-divider direction="vertical"></el-divider>
-              考试时间 : {{item.paperMinutes}}分钟
-            </div>
+            <div style="margin-left:30px">
+              <div class="name" style="font-weight:bold">
+                {{item.name}}
+                <span
+                  style="font-style: italic;font-weight:normal;font-size:13px;color:#909399;padding-left:10px"
+                >{{item.majorname}} / {{item.departname}}</span>
+                <span style="margin-left:10px">
+                  <el-tag type="success" size="mini" v-if="item.level===0">简单</el-tag>
+                  <el-tag type="info" size="mini" v-if="item.level===1">普通</el-tag>
+                  <el-tag type="warning" size="mini" v-if="item.level===2">困难</el-tag>
+                </span>
+              </div>
+              <div style="color:#606266;margin-bottom:5px;font-size:14px">
+                试题总分 : {{item.totalScore}}分
+                <el-divider direction="vertical"></el-divider>及格分数 :
+                <span class="bg-primary">{{item.passScore}}分</span>
+                <el-divider direction="vertical"></el-divider>
+                考试时间 : {{item.paperMinutes}}分钟
+              </div>
 
-            <div style="color:#606266;font-size:14px">
-              考试开始时间 : {{item.publishTime}}
-              <el-divider direction="vertical"></el-divider>截止交卷时间 :
-              <span class="bg-primary">{{item.expirationTime}}</span>
+              <div style="color:#606266;font-size:14px">
+                考试开始时间 : {{item.publishTime}}
+                <el-divider direction="vertical"></el-divider>截止交卷时间 :
+                <span class="bg-primary">{{item.expirationTime}}</span>
+              </div>
             </div>
           </div>
-        </div>
-        <div>
           <div>
-            <div v-if="item.status===1">
-              <div class="wordsedeed unbegin">未开始</div>
-              <!-- <el-tag effect="dark">未开始</el-tag> -->
-              <!-- <el-button type="danger" round>未开始</el-button> -->
-            </div>
-            <div v-if="item.status===3">
-              <!-- <el-tag type="info">审核中</el-tag> -->
-              <div class="wordsedeed doshenhe">审核中</div>
-              <!-- <el-button type="danger" round>审核中</el-button> -->
-            </div>
-            <div v-if="item.status===4">
-              <div class="wordsedeed finished">已结束</div>
-              <!-- <el-tag type="danger">已结束</el-tag> -->
-              <!-- <el-button type="danger" round>已结束</el-button> -->
-            </div>
-            <div v-if="item.status===2">
-              <div class="wordsedeed doing">运行中</div>
-              <!-- <el-tag type="success" effect="dark">运行中</el-tag> -->
-              <!-- <el-button type="primary" round>进入考试</el-button> -->
+            <div>
+              <div v-if="item.status===1">
+                <div class="wordsedeed unbegin">未开始</div>
+                <!-- <el-tag effect="dark">未开始</el-tag> -->
+                <!-- <el-button type="danger" round>未开始</el-button> -->
+              </div>
+              <div v-if="item.status===3">
+                <!-- <el-tag type="info">审核中</el-tag> -->
+                <div class="wordsedeed doshenhe">审核中</div>
+                <!-- <el-button type="danger" round>审核中</el-button> -->
+              </div>
+              <div v-if="item.status===4">
+                <div class="wordsedeed finished">已结束</div>
+                <!-- <el-tag type="danger">已结束</el-tag> -->
+                <!-- <el-button type="danger" round>已结束</el-button> -->
+              </div>
+              <div v-if="item.status===2">
+                <div class="wordsedeed doing">运行中</div>
+                <!-- <el-tag type="success" effect="dark">运行中</el-tag> -->
+                <!-- <el-button type="primary" round>进入考试</el-button> -->
+              </div>
             </div>
           </div>
         </div>
+        <div class="block">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[5, 10, 15, 20, 30, 40]"
+            :page-size="100"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total"
+          ></el-pagination>
+        </div>
       </div>
-      <div class="block">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[5, 10, 15, 20, 30, 40]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-        ></el-pagination>
-      </div>
+      <div v-else class="else"></div>
     </div>
-    <div v-else class="else"></div>
+
     <el-dialog width="60%" title="考试须知" :visible.sync="dialogTableVisible">
       <div class="rich-text needKnown">
         <p style="line-height:0; margin-bottom:5px;">
@@ -158,6 +161,7 @@ import submitPaper from "../../components/submitPaper/onlineTestPaper";
 export default {
   data() {
     return {
+      showTestList: false,
       currentPage: 1,
       offset: 1,
       limit: 5,
@@ -254,6 +258,7 @@ export default {
         .getTestInfo(data)
         .then((res) => {
           this.loading = false;
+          this.showTestList = true;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -296,6 +301,7 @@ export default {
           }
         })
         .catch((err) => {
+          this.showTestList = true;
           this.loading = false;
           //console.log(err);
         });

@@ -152,17 +152,17 @@ export default {
               this.paperName = [];
               this.score = [];
               this.totalScore = [];
-              if (this.subname !== "不限") {
-                this.$message({
-                  message: "科目" + this.subname + this.type + "暂无考试数据",
-                  type: "warning",
-                });
-              } else {
-                this.$message({
-                  message: this.type + "暂无考试数据",
-                  type: "warning",
-                });
-              }
+              // if (this.subname !== "不限") {
+              //   this.$message({
+              //     message: "科目" + this.subname + this.type + "暂无考试数据",
+              //     type: "warning",
+              //   });
+              // } else {
+              //   this.$message({
+              //     message: this.type + "暂无考试数据",
+              //     type: "warning",
+              //   });
+              // }
             }
           } else {
             this.$message({

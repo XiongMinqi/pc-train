@@ -156,7 +156,7 @@ export default {
           }
         },
         yAxis: {
-          name: "时长",
+          name: "学习时长",
           nameTextStyle: {
             color: "#FA6F53",
             fontSize: 16,

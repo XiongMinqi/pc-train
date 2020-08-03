@@ -6,7 +6,7 @@
       </div>
       <div>
         {{msg}}
-        <span style="padding-left:10px;font-size:14px">({{date}})</span>
+        <span style="padding-left:10px;font-size:14px">( {{date}} )</span>
       </div>
       <div>
         <el-button round @click="afterWeek">下一周</el-button>
@@ -1372,5 +1372,8 @@ export default {
 }
 /deep/.highlight-week {
   background: #c6c6c6;
+}
+/deep/.left-hand-index{
+  display: none;
 }
 </style>

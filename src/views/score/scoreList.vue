@@ -1,44 +1,46 @@
 <template>
   <div v-loading="loading">
     <div>积分排行</div>
-    <div v-if="scoreList.length>0">
-      <div v-for="(item,index) in scoreList" :key="index">
-        <div class="flex aligh-center scoreDetail justify-between">
-          <div class="flex aligh-center scoreListIndex">
-            <div class="index">
-              <div v-if="index===0">
-                <img src="../../assets/icon/gold.png" alt />
-              </div>
-              <div v-if="index===1">
-                <img src="../../assets/icon/sliver.png" alt />
-              </div>
-              <div v-if="index===2">
-                <img src="../../assets/icon/copper.png" alt />
-              </div>
-              <div v-if="index>2">{{index+1}}</div>
-            </div>
-            <div class="flex aligh-center">
-              <div class="userImg" @click="watchPeople(item)">
-                <div v-if="item.avatarUrl">
-                  <img :src="item.avatarUrl" alt />
+    <div v-if="showScoreList">
+      <div v-if="scoreList.length>0">
+        <div v-for="(item,index) in scoreList" :key="index">
+          <div class="flex aligh-center scoreDetail justify-between">
+            <div class="flex aligh-center scoreListIndex">
+              <div class="index">
+                <div v-if="index===0">
+                  <img src="../../assets/icon/gold.png" alt />
                 </div>
-                <div v-else>
-                  <img src="../../assets/icon/userImg.jpg" alt />
+                <div v-if="index===1">
+                  <img src="../../assets/icon/sliver.png" alt />
                 </div>
+                <div v-if="index===2">
+                  <img src="../../assets/icon/copper.png" alt />
+                </div>
+                <div v-if="index>2">{{index+1}}</div>
               </div>
-              <div>{{item.peopleName}}</div>
+              <div class="flex aligh-center">
+                <div class="userImg" @click="watchPeople(item)">
+                  <div v-if="item.avatarUrl">
+                    <img :src="item.avatarUrl" alt />
+                  </div>
+                  <div v-else>
+                    <img src="../../assets/icon/userImg.jpg" alt />
+                  </div>
+                </div>
+                <div>{{item.peopleName}}</div>
+              </div>
+              <div class="object">{{item.departmentName}} / {{item.majorName}}</div>
             </div>
-            <div class="object">{{item.departmentName}} / {{item.majorName}}</div>
-          </div>
-          
-          <div class="scoreCount">
-            <div v-if="item.rewardPoint">{{item.rewardPoint}} 积分</div>
-            <div v-else>0 积分</div>
+
+            <div class="scoreCount">
+              <div v-if="item.rewardPoint">{{item.rewardPoint}} 积分</div>
+              <div v-else>0 积分</div>
+            </div>
           </div>
         </div>
       </div>
+      <div class="else" v-else></div>
     </div>
-    <div class="else" v-else></div>
     <el-dialog
       :title="peopleDetail.nickName"
       :visible.sync="dialogVisible"
@@ -82,9 +84,10 @@ export default {
       loading: true,
       dialogVisible: false,
       dialogLoading: false,
+      showScoreList: false,
       peopleDetail: {},
       classList: [],
-      peopleUrl: ""
+      peopleUrl: "",
     };
   },
   components: {},
@@ -99,12 +102,12 @@ export default {
       this.dialogLoading = true;
       this.$api
         .checkPeople(e.peopleId)
-        .then(res => {
+        .then((res) => {
           this.dialogLoading = false;
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -113,16 +116,16 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.dialogLoading = false;
           //console.log(err);
           this.$message({
             message: err.data.msg,
-            type: "warning"
+            type: "warning",
           });
         });
       this.dialogVisible = true;
@@ -130,11 +133,11 @@ export default {
     getdict() {
       this.$grade
         .getdict()
-        .then(res => {
+        .then((res) => {
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -144,23 +147,24 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           //console.log(err);
         });
     },
     getScoreList() {
       this.$grade
         .getScoreRank()
-        .then(res => {
+        .then((res) => {
           this.loading = false;
+          this.showScoreList = true;
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -169,26 +173,27 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
+          this.showScoreList = true;
           //console.log(err);
           this.$message({
             message: err.data.msg,
-            type: "warning"
+            type: "warning",
           });
         });
-    }
+    },
   },
   mounted() {
     // this.getdict();
     this.getScoreList();
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 
@@ -245,15 +250,15 @@ export default {
     border-radius: 50%;
   }
 }
-.scoreListIndex{
+.scoreListIndex {
   // width: 350px;
 }
-.object{
+.object {
   color: #aaaaaa;
   font-size: 12px;
   margin-left: 10px;
 }
-.scoreCount{
+.scoreCount {
   width: 20%;
   text-align: end;
   color: #409eff;

@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="words">积分明细</div>
-    <div>
+    <div v-if="showLsit">
       <el-table :data="scoreList" border style="width: 100%">
         <el-table-column prop="createTime" label="时间" width="200"></el-table-column>
         <el-table-column prop="source" label="来源"></el-table-column>
@@ -40,6 +40,7 @@
 export default {
   data() {
     return {
+      showLsit: false,
       page: 1,
       limit: 5,
       percent: 0,
@@ -47,7 +48,7 @@ export default {
       currentPage: 1,
       total: 0,
       totalScore: 0,
-      loading: true
+      loading: true,
     };
   },
   components: {},
@@ -84,12 +85,12 @@ export default {
     getTotalScore() {
       this.$grade
         .checkScore()
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -107,16 +108,16 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           //console.log(err);
           this.$message({
             message: err.data.msg,
-            type: "warning"
+            type: "warning",
           });
         });
     },
@@ -125,23 +126,24 @@ export default {
       let data = {
         page: this.page,
         limit: this.limit,
-        object: {}
+        object: {},
       };
       this.$grade
         .getMyScoreList(data)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
+          this.showLsit = true;
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
             this.scoreList = res.data.data;
             this.total = res.data.count;
-            this.scoreList.map(item => {
+            this.scoreList.map((item) => {
               let source = "";
               if (item.type === 1) {
                 source = "课件学习";
@@ -154,22 +156,23 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
+          this.showLsit = true;
           this.loading = false;
           //console.log(err);
         });
-    }
+    },
   },
   mounted() {
     this.getTotalScore();
     this.checkMyList();
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 

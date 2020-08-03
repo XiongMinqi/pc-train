@@ -12,25 +12,27 @@
             <el-button type="primary" @click="getData">开始筛选</el-button>
           </div>
         </div>
-        <div v-if="experienceData.length>0">
-          <div class="experList">
-            <el-timeline :reverse="reverse">
-              <el-timeline-item
-                v-for="(activity, index) in experienceData"
-                :key="index"
-                :timestamp="activity.publishTime"
-                placement="top"
-              >
-                <el-card>
-                  <h4>{{activity.name}}</h4>
-                  <div v-if="activity.isAttendance==true">出勤</div>
-                  <div v-else>未出勤</div>
-                </el-card>
-              </el-timeline-item>
-            </el-timeline>
+        <div v-if="showExprience">
+          <div v-if="experienceData.length>0">
+            <div class="experList">
+              <el-timeline :reverse="reverse">
+                <el-timeline-item
+                  v-for="(activity, index) in experienceData"
+                  :key="index"
+                  :timestamp="activity.publishTime"
+                  placement="top"
+                >
+                  <el-card>
+                    <h4>{{activity.name}}</h4>
+                    <div v-if="activity.isAttendance==true">出勤</div>
+                    <div v-else>未出勤</div>
+                  </el-card>
+                </el-timeline-item>
+              </el-timeline>
+            </div>
           </div>
+          <div v-else class="else"></div>
         </div>
-        <div v-else class="else"></div>
       </el-tab-pane>
       <el-tab-pane label="考试记录" name="second">
         <div class="flex">
@@ -43,25 +45,27 @@
             <el-button type="primary" @click="getrecord">开始筛选</el-button>
           </div>
         </div>
-        <div v-if="recordData.length>0">
-          <div class="experList">
-            <el-timeline :reverse="false">
-              <el-timeline-item
-                v-for="(activity, index) in recordData"
-                :key="index"
-                :timestamp="activity.beginTime"
-                placement="top"
-              >
-                <el-card>
-                  <h4>{{activity.examName}}</h4>
-                  <div v-if="activity.isPass==true">通过</div>
-                  <div v-else>未通过</div>
-                </el-card>
-              </el-timeline-item>
-            </el-timeline>
+        <div v-if="showRecord">
+          <div v-if="recordData.length>0">
+            <div class="experList">
+              <el-timeline :reverse="false">
+                <el-timeline-item
+                  v-for="(activity, index) in recordData"
+                  :key="index"
+                  :timestamp="activity.beginTime"
+                  placement="top"
+                >
+                  <el-card>
+                    <h4>{{activity.examName}}</h4>
+                    <div v-if="activity.isPass==true">通过</div>
+                    <div v-else>未通过</div>
+                  </el-card>
+                </el-timeline-item>
+              </el-timeline>
+            </div>
           </div>
+          <div v-else class="else"></div>
         </div>
-        <div v-else class="else"></div>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -72,6 +76,8 @@ export default {
   data() {
     return {
       loading: true,
+      showExprience: false,
+      showRecord: false,
       activeName: "first",
       record: "今年",
       reverse: true,
@@ -81,18 +87,18 @@ export default {
       chooseLIst: [
         {
           key: 0,
-          value: "前年"
+          value: "前年",
         },
         {
           key: 1,
-          value: "去年"
+          value: "去年",
         },
         {
           key: 2,
-          value: "今年"
-        }
+          value: "今年",
+        },
       ],
-      year: 0
+      year: 0,
     };
   },
   components: {},
@@ -115,27 +121,28 @@ export default {
         data = {
           customStart: this.year - 2 + "-01-01 00:00:00",
           customEnd: this.year - 2 + "-12-30 23:59:59",
-          timeRange: 3
+          timeRange: 3,
         };
       }
       if (this.experience === "去年") {
         data = {
           customStart: this.year - 1 + "-01-01 00:00:00",
           customEnd: this.year - 1 + "-12-30 23:59:59",
-          timeRange: 3
+          timeRange: 3,
         };
       }
       if (this.experience === "今年") {
         data = {
           customStart: this.year + "-01-01 00:00:00",
           customEnd: this.year + "-12-30 23:59:59",
-          timeRange: 3
+          timeRange: 3,
         };
       }
       this.$grade
         .getCourseByTime(data)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
+          this.showExprience = true;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -144,15 +151,16 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
+          this.showExprience = true;
           this.$message({
             message: "获取失败",
-            type: "warning"
+            type: "warning",
           });
         });
     },
@@ -164,8 +172,8 @@ export default {
           page: 1,
           object: {
             beginTime: this.year - 2 + "-01-01 00:00:00",
-            endTime: this.year - 2 + "-12-30 23:59:59"
-          }
+            endTime: this.year - 2 + "-12-30 23:59:59",
+          },
         };
       }
       if (this.record === "去年") {
@@ -174,8 +182,8 @@ export default {
           page: 1,
           object: {
             beginTime: this.year - 1 + "-01-01 00:00:00",
-            endTime: this.year - 1 + "-12-30 23:59:59"
-          }
+            endTime: this.year - 1 + "-12-30 23:59:59",
+          },
         };
       }
       if (this.record === "今年") {
@@ -184,14 +192,15 @@ export default {
           page: 1,
           object: {
             beginTime: this.year + "-01-01 00:00:00",
-            endTime: this.year + "-12-30 23:59:59"
-          }
+            endTime: this.year + "-12-30 23:59:59",
+          },
         };
       }
       this.$grade
         .getExam(data)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
+          this.showRecord = true;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -200,25 +209,26 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
+          this.showRecord = true;
           this.$message({
             message: "获取失败",
-            type: "warning"
+            type: "warning",
           });
         });
-    }
+    },
   },
   mounted() {
     this.year = new Date().getFullYear();
     this.getData();
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 

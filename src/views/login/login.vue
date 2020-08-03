@@ -16,7 +16,7 @@
             <el-col :span="22">
               <el-input
                 class="inps"
-                placeholder="用户名"
+                placeholder="请输入用户名/手机号/身份证号"
                 v-model="username"
                 @input="inputUsername"
                 @keydown.enter.native="submitForm"
@@ -35,7 +35,7 @@
               <el-input
                 class="inps"
                 type="password"
-                placeholder="密码"
+                placeholder="请输入密码"
                 v-model="passwords"
                 @keydown.enter.native="submitForm"
               ></el-input>
@@ -142,8 +142,9 @@ export default {
   components: {},
   methods: {
     //管理员入口
-    teacher(){
-      window.open("../admin/index.html")
+    teacher() {
+      // window.open("../admin/index.html")；
+      window.location.href = "../admin/index.html";
     },
     inputUsername(e) {
       if (e !== this.loginRules.username) {
