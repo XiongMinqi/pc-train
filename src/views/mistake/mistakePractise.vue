@@ -456,7 +456,7 @@ export default {
         .catch(err => {
           this.loading = false;
           this.$message({
-            message: err.data.msg,
+            message: "获取失败",
             type: "warning"
           });
         });

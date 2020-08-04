@@ -13,17 +13,17 @@
             <div class="username">{{userInfo.nickName}}</div>
           </div>
           <div class="flex aligh-center fosize">
-            <div class="names">登录次数 :</div>
+            <div class="names">登录次数：</div>
             <div class="content" v-if="userInfo.loginCount">{{userInfo.loginCount}}</div>
             <div class="content" v-else>暂无登录记录</div>
           </div>
           <div class="flex aligh-center fosize">
-            <div class="names">上次登录时间 :</div>
+            <div class="names">上次登录时间：</div>
             <div class="content" v-if="userInfo.lastLoginTime">{{userInfo.lastLoginTime}}</div>
             <div class="content" v-else>暂时没有上次登录的记录</div>
           </div>
           <div class="flex aligh-center fosize">
-            <div class="names">我的积分 :</div>
+            <div class="names">我的积分：</div>
             <div class="content">{{totalScore}} 分</div>
           </div>
         </div>
@@ -143,11 +143,11 @@
           </div>
           <div v-if="showMission">
             <el-table :data="missionList" style="width: 100%" height="300">
-              <template slot="empty">
+              <!-- <template slot="empty">
                 <div>
                   <img style="width:250px;height:200px" src="../../assets/icon/kong.png" alt />
                 </div>
-              </template>
+              </template> -->
               <el-table-column prop="name" label="任务名称" width="180"></el-table-column>
               <el-table-column prop="requireLearnTime" label="要求学习时长" width="180"></el-table-column>
               <el-table-column prop="learnTime" label="已学习时长" width="180"></el-table-column>
@@ -168,11 +168,11 @@
         <i class="el-icon-edit iconfont"></i>我的考试
       </div>
       <el-table :data="testList" style="width: 100%" height="300">
-        <template slot="empty">
+        <!-- <template slot="empty">
           <div>
             <img style="width:250px;height:200px;" src="../../assets/icon/kong.png" alt />
           </div>
-        </template>
+        </template> -->
         <el-table-column prop="name" label="考试名称"></el-table-column>
         <el-table-column prop="passScore" label="通过分数"></el-table-column>
         <el-table-column prop="totalScore" label="总分数"></el-table-column>
@@ -196,7 +196,7 @@ export default {
     return {
       userInfo: {},
       showTest: false,
-      showMission:false,
+      showMission: false,
       testInfo: {},
       page: 1,
       limit: 10000,
@@ -250,29 +250,6 @@ export default {
     },
     testPaper(e) {
       this.$router.push({ name: "testRecords", path: "/testRecords" });
-    },
-    //转换时间
-    timeFormat(time) {
-      var clock = "";
-      var d = new Date(time);
-      var year = d.getFullYear(); //年
-      var month = d.getMonth() + 1; //月
-      var day = d.getDate(); //日
-      var hh = d.getHours(); //时
-      var mm = d.getMinutes(); //分
-      var ss = d.getSeconds(); //秒
-      clock += year + "/";
-      if (month < 10) clock += "0";
-      clock += month + "/";
-      if (day < 10) clock += "0";
-      clock += day + " ";
-      if (hh < 10) clock += "0";
-      clock += hh + ":";
-      if (mm < 10) clock += "0";
-      clock += mm + ":";
-      if (ss < 10) clock += "0";
-      clock += ss;
-      return clock;
     },
     //获取考试记录
     getTestNumber() {
@@ -391,6 +368,9 @@ export default {
             this.$router.push({ name: "login", path: "/login" });
           } else if (res.data.code === 0) {
             this.testList = res.data.data;
+            this.testList.map((item) => {
+              item.publishTime = this.timeFormat(item.publishTime);
+            });
           } else {
             this.$message({
               message: res.data.msg,
@@ -421,6 +401,9 @@ export default {
             this.$router.push({ name: "login", path: "/login" });
           } else if (res.data.code === 0) {
             this.allTestList = res.data.data;
+            this.allTestList.map((item) => {
+              item.beginTime = this.timeFormat(item.beginTime);
+            });
           } else {
             this.$message({
               message: res.data.msg,
@@ -446,11 +429,14 @@ export default {
         .getUndoMission(data)
         .then((res) => {
           this.loading = false;
-          this.showMission =true;
+          this.showMission = true;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           } else if (res.data.code === 0) {
             this.missionList = res.data.data;
+            this.missionList.map((item) => {
+              item.publishTime = this.timeFormat(item.publishTime);
+            });
           } else {
             this.$message({
               message: res.data.msg,
@@ -460,7 +446,7 @@ export default {
         })
         .catch((err) => {
           this.loading = false;
-          this.showMission =true;
+          this.showMission = true;
           //console.log(err);
           this.$message({
             message: "获取失败",

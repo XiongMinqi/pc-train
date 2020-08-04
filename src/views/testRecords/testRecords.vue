@@ -40,102 +40,84 @@
           未做试卷({{empty}})
         </el-radio-button>
       </el-radio-group>
-      <!-- <el-row>
-        <el-col :span="6">
-          <div class="grid-content bg-purple-all" @click="goTo(null)">
-            <span>全部试卷({{total}})</span>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple-pass" @click="goTo(0)">
-            <span>及格试卷({{pass}})</span>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple-fail" @click="goTo(1)">
-            <span>不及格试卷({{fail}})</span>
-          </div>
-        </el-col>
-        <el-col :span="6">
-          <div class="grid-content bg-purple-empty" @click="goTo(2)">
-            <span>未做试卷({{empty}})</span>
-          </div>
-        </el-col>
-      </el-row>-->
     </div>
-    <div class="scroll" v-if="allTestList.length>=0">
-      <div v-if="allTestList.length>0" class="infinite-list" style="overflow:auto">
-        <div>
-          <div class="flex">
-            <div class="index">序号</div>
-            <!-- <div class="testName">试卷</div> -->
-            <div class="testName">考试名称</div>
-            <div class="subject">科目</div>
-            <div class="testTime">开始答题时间</div>
-            <div class="duringTime">考试用时</div>
-            <div class="score">总分</div>
-            <div class="score">得分</div>
-            <div class="duringTime">及格情况</div>
-            <div class="operation">操作</div>
-          </div>
+
+    <div class="scroll">
+      <div v-if="showRecord">
+        <div v-if="allTestList.length>0" class="infinite-list" style="overflow:auto">
           <div>
-            <div v-for="(item,index) in allTestList" :key="index">
-              <div class="flex formTextWords indexText">
-                <div class="index" v-if="index>=9">{{index+1}}</div>
-                <div class="index" v-if="index<9">0{{index+1}}</div>
-                <!-- <div class="testName">{{item.paperName}}</div> -->
-                <div class="testName">{{item.examName}}</div>
-                <div class="subject">
-                  <span v-if="item.subjectId">
-                    <el-tag type="success">{{item.subjextName}}</el-tag>
-                  </span>
-                  <span v-else>---</span>
-                </div>
-                <div class="testTime">{{item.beginWriteTime}}</div>
-                <div class="duringTime" v-if="item.costMinutes">{{item.costMinutes}}</div>
-                <div class="duringTime" v-else>---</div>
-                <div class="score">{{item.totalScore}}</div>
-                <div class="score">{{item.score}}</div>
-                <div class="duringTime">
-                  <div v-if="item.isPass===true" class="bg-success">
-                    <el-tag>已通过</el-tag>
+            <div class="flex">
+              <div class="index">序号</div>
+              <!-- <div class="testName">试卷</div> -->
+              <div class="testName">考试名称</div>
+              <div class="subject">科目</div>
+              <div class="testTime">开始答题时间</div>
+              <div class="duringTime">考试用时</div>
+              <div class="score">总分</div>
+              <div class="score">得分</div>
+              <div class="duringTime">及格情况</div>
+              <div class="operation">操作</div>
+            </div>
+            <div>
+              <div v-for="(item,index) in allTestList" :key="index">
+                <div class="flex formTextWords indexText">
+                  <div class="index" v-if="index>=9">{{index+1}}</div>
+                  <div class="index" v-if="index<9">0{{index+1}}</div>
+                  <!-- <div class="testName">{{item.paperName}}</div> -->
+                  <div class="testName">{{item.examName}}</div>
+                  <div class="subject">
+                    <span v-if="item.subjectId">
+                      <el-tag type="success">{{item.subjextName}}</el-tag>
+                    </span>
+                    <span v-else>---</span>
                   </div>
-                  <div v-else-if="item.isPass===null" class="bg-info">
-                    <el-tag type="info">未交卷</el-tag>
+                  <div class="testTime" v-if="item.beginWriteTime">{{item.beginWriteTime}}</div>
+                  <div class="testTime" v-else>---</div>
+                  <div class="duringTime" v-if="item.costMinutes">{{item.costMinutes}}</div>
+                  <div class="duringTime" v-else>---</div>
+                  <div class="score">{{item.totalScore}}</div>
+                  <div class="score">{{item.score}}</div>
+                  <div class="duringTime">
+                    <div v-if="item.isPass===true" class="bg-success">
+                      <el-tag>已通过</el-tag>
+                    </div>
+                    <div v-else-if="item.isPass===null" class="bg-info">
+                      <el-tag type="info">未交卷</el-tag>
+                    </div>
+                    <div v-else class="bg-danger">
+                      <el-tag type="danger">不及格</el-tag>
+                    </div>
                   </div>
-                  <div v-else class="bg-danger">
-                    <el-tag type="danger">不及格</el-tag>
+                  <div
+                    class="operation"
+                    :class="item.submitId?'bg-primary':'bg-info'"
+                    @click="checkDetail(item)"
+                  >
+                    <span>查看明细</span>
                   </div>
-                </div>
-                <div
-                  class="operation"
-                  :class="item.submitId?'bg-primary':'bg-info'"
-                  @click="checkDetail(item)"
-                >
-                  <span>查看明细</span>
                 </div>
               </div>
             </div>
+            <el-dialog width="80%" title="试卷明细" top="1vh" :visible.sync="dialogTableVisible">
+              <div v-loading="submitPaperloading">
+                <submitPaper :submitId="submitId" :paperDetail="paperDetail" />
+              </div>
+            </el-dialog>
           </div>
-          <el-dialog width="80%" title="试卷明细" top="1vh" :visible.sync="dialogTableVisible">
-            <div v-loading="submitPaperloading">
-              <submitPaper :submitId="submitId" :paperDetail="paperDetail" />
-            </div>
-          </el-dialog>
+          <div class="block">
+            <el-pagination
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="[5, 10, 15, 20, 30, 40]"
+              :page-size="100"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="totalNum"
+            ></el-pagination>
+          </div>
         </div>
-        <div class="block">
-          <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-sizes="[5, 10, 15, 20, 30, 40]"
-            :page-size="100"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="totalNum"
-          ></el-pagination>
-        </div>
+        <div v-else class="else"></div>
       </div>
-      <div v-else class="else"></div>
     </div>
   </div>
 </template>
@@ -145,6 +127,7 @@ import submitPaper from "../../components/submitPaper/submitPaper";
 export default {
   data() {
     return {
+      showRecord: false,
       examList: [],
       allTestList: [],
       choosetype: "all",
@@ -224,29 +207,6 @@ export default {
           type: "warning",
         });
       }
-    },
-    //转换时间
-    timeFormat(time) {
-      var clock = "";
-      var d = new Date(time);
-      var year = d.getFullYear(); //年
-      var month = d.getMonth() + 1; //月
-      var day = d.getDate(); //日
-      var hh = d.getHours(); //时
-      var mm = d.getMinutes(); //分
-      var ss = d.getSeconds(); //秒
-      clock += year + "/";
-      if (month < 10) clock += "0";
-      clock += month + "/";
-      if (day < 10) clock += "0";
-      clock += day + " ";
-      if (hh < 10) clock += "0";
-      clock += hh + ":";
-      if (mm < 10) clock += "0";
-      clock += mm + ":";
-      if (ss < 10) clock += "0";
-      clock += ss;
-      return clock;
     },
     //保留两位小数
     twoNumber(num) {
@@ -335,6 +295,7 @@ export default {
         .getExam(data)
         .then((res) => {
           this.loading = false;
+          this.showRecord = true;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -345,7 +306,9 @@ export default {
             this.allTestList.map((item) => {
               item.beginTime = this.timeFormat(item.beginTime);
               item.endWriteTime = this.timeFormat(item.endWriteTime);
-              item.beginWriteTime = this.timeFormat(item.beginWriteTime);
+              if (item.beginWriteTime) {
+                item.beginWriteTime = this.timeFormat(item.beginWriteTime);
+              }
               this.subjectName.map((itm) => {
                 if (itm.key == item.subjectId) {
                   this.$set(item, "subjextName", itm.value);
@@ -361,6 +324,7 @@ export default {
         })
         .catch((err) => {
           this.loading = false;
+          this.showRecord = true;
           //console.log(err);
         });
     },
@@ -375,7 +339,7 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-/deep/.el-divider--horizontal{
+/deep/.el-divider--horizontal {
   margin: 14px 0;
 }
 .el-col {
@@ -461,11 +425,6 @@ export default {
     overflow: hidden;
   }
 }
-.block {
-  margin: 0 auto;
-  margin-top: 20px;
-  text-align: center;
-}
 .indexLeft {
   margin-bottom: 20px;
 }
@@ -480,7 +439,7 @@ export default {
 .indexText {
   border-bottom: 1px solid #f2f2f2;
   padding-bottom: 10px;
-  &:hover{
+  &:hover {
     background: #f2f2f2;
   }
 }

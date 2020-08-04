@@ -832,6 +832,12 @@ export default {
                       }
                       if (res.data.code === 0) {
                         this.courseDetail = res.data.data[0];
+                        this.courseDetail.endTime = this.timeFormat(
+                          this.courseDetail.endTime
+                        );
+                        this.courseDetail.startTime = this.timeFormat(
+                          this.courseDetail.startTime
+                        );
                         this.isJoinCourse = false;
                         this.isCommentCourse = false;
                         this.isJoin(this.courseDetail.id);
@@ -848,7 +854,7 @@ export default {
                     .catch((err) => {
                       this.dialogloading = false;
                       this.$message({
-                        message: err.data.msg,
+                        message: "获取失败",
                         type: "warning",
                       });
                     });
@@ -892,13 +898,8 @@ export default {
       var newdate = new Date(newdate);
       var startdate = new Date(startdate);
       var enddate = new Date(enddate);
-      // console.log(newdate);
-      // console.log(startdate);
-      // console.log(enddate);
       var a = newdate.getTime() - startdate.getTime();
       var b = newdate.getTime() - enddate.getTime();
-      // console.log(a);
-      // console.log(b);
       if (a < 0 || b > 0) {
         return false;
       } else {
@@ -921,6 +922,12 @@ export default {
             }
             if (res.data.code === 0) {
               this.courseDetail = res.data.data[0];
+              this.courseDetail.endTime = this.timeFormat(
+                this.courseDetail.endTime
+              );
+              this.courseDetail.startTime = this.timeFormat(
+                this.courseDetail.startTime
+              );
               this.isJoin(this.courseDetail.id);
               this.isComment(this.courseDetail.id);
               this.getTeacherImg();
@@ -935,7 +942,7 @@ export default {
           .catch((err) => {
             this.dialogloading = false;
             this.$message({
-              message: err.data.msg,
+              message: "获取失败",
               type: "warning",
             });
           });
@@ -1005,7 +1012,7 @@ export default {
         .catch((err) => {
           //console.log(err);
           this.$message({
-            message: err.data.msg,
+            message: "获取失败",
             type: "warning",
           });
         });
@@ -1034,7 +1041,7 @@ export default {
         .catch((err) => {
           //console.log(err);
           this.$message({
-            message: err.data.msg,
+            message: "获取失败",
             type: "warning",
           });
         });
@@ -1066,7 +1073,7 @@ export default {
         .catch((err) => {
           //console.log(err);
           this.$message({
-            message: err.data.msg,
+            message: "获取失败",
             type: "warning",
           });
         });
@@ -1163,6 +1170,12 @@ export default {
                 }
                 if (res.data.code === 0) {
                   this.courseDetail = res.data.data[0];
+                  this.courseDetail.endTime = this.timeFormat(
+                    this.courseDetail.endTime
+                  );
+                  this.courseDetail.startTime = this.timeFormat(
+                    this.courseDetail.startTime
+                  );
                   this.isJoinCourse = false;
                   this.isCommentCourse = false;
                   this.isJoin(this.courseDetail.id);
@@ -1179,7 +1192,7 @@ export default {
               .catch((err) => {
                 this.dialogloading = false;
                 this.$message({
-                  message: err.data.msg,
+                  message: "获取失败",
                   type: "warning",
                 });
               });
@@ -1250,7 +1263,7 @@ export default {
         .catch((err) => {
           this.loading = false;
           this.$message({
-            message: err.data.msg,
+            message: "获取失败",
             type: "warning",
           });
         });
@@ -1373,7 +1386,7 @@ export default {
 /deep/.highlight-week {
   background: #c6c6c6;
 }
-/deep/.left-hand-index{
+/deep/.left-hand-index {
   display: none;
 }
 </style>

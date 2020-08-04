@@ -124,7 +124,7 @@ export default {
           this.dialogLoading = false;
           //console.log(err);
           this.$message({
-            message: err.data.msg,
+            message: "获取失败",
             type: "warning",
           });
         });
@@ -182,7 +182,7 @@ export default {
           this.showScoreList = true;
           //console.log(err);
           this.$message({
-            message: err.data.msg,
+            message: "获取失败",
             type: "warning",
           });
         });

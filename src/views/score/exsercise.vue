@@ -148,6 +148,9 @@ export default {
           }
           if (res.data.code === 0) {
             this.experienceData = res.data.data;
+            this.experienceData.map(item=>{
+              item.publishTime = this.timeFormat(item.publishTime)
+            })
           } else {
             this.$message({
               message: res.data.msg,
@@ -206,6 +209,9 @@ export default {
           }
           if (res.data.code === 0) {
             this.recordData = res.data.data;
+            this.recordData.map(item=>{
+              item.beginTime = this.timeFormat(item.beginTime)
+            })
           } else {
             this.$message({
               message: res.data.msg,

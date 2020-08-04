@@ -299,7 +299,7 @@ export default {
         .catch(err => {
           this.loading = false;
           this.$message({
-            message: err.data.msg,
+            message:"获取失败",
             type: "warning"
           });
         });
@@ -397,23 +397,6 @@ export default {
           //console.log(err);
         });
     },
-    //转换时间
-    timeFormat(time) {
-      var clock = "";
-      var d = new Date(time);
-      var year = d.getFullYear(); //年
-      var month = d.getMonth() + 1; //月
-      var day = d.getDate(); //日
-      var hh = d.getHours(); //时
-      var mm = d.getMinutes(); //分
-      var ss = d.getSeconds(); //秒
-      clock += year + "/";
-      if (month < 10) clock += "0";
-      clock += month + "/";
-      if (day < 10) clock += "0";
-      clock += day + " ";
-      return clock;
-    },
     //保留两位小数
     twoNumber(num) {
       let str = num.toString();
@@ -475,7 +458,7 @@ export default {
         .catch(err => {
           this.loading = false;
           this.$message({
-            message: err.data.msg,
+            message: "获取失败",
             type: "warning"
           });
         });
@@ -544,7 +527,7 @@ export default {
 
 <style scoped lang='scss'>
 /deep/.el-divider--horizontal{
-  margin: 14px 0;
+  margin: 14px 0 25px 0;
 }
 .flex {
   display: flex;
@@ -591,10 +574,6 @@ export default {
   display: flex;
   align-items: center;
   // color: blue;
-}
-.block {
-  margin: 20px auto;
-  text-align: center;
 }
 .el-dialog {
   position: absolute;

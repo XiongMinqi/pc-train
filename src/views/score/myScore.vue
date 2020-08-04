@@ -116,7 +116,7 @@ export default {
           this.loading = false;
           //console.log(err);
           this.$message({
-            message: err.data.msg,
+            message: "获取失败",
             type: "warning",
           });
         });
@@ -151,6 +151,7 @@ export default {
                 source = "自主练习";
               }
               this.$set(item, "source", source);
+              item.createTime = this.timeFormat(item.createTime)
             });
             // console.log(this.scoreList);
           } else {
@@ -188,12 +189,6 @@ export default {
   align-items: center;
   padding: 10px 200px;
   margin-bottom: 20px;
-}
-.wordsadfs {
-}
-.block {
-  text-align: center;
-  margin-top: 20px;
 }
 .words {
   margin-bottom: 20px;

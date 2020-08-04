@@ -3,33 +3,37 @@
     <div class="backLastPage" @click="backLastPage">
       <i class="el-icon-arrow-left"></i>返回
     </div>
-    <div v-if="newsList.length>0">
-      <div v-for="(item,index) in newsList" :key="index" @click="checkNewsDetail(item)">
-        <div class="flex newsDetail">
-          <div>
-            <div class="unvoice">
-              <img src="../../assets/icon/unvoice.png" alt />
-            </div>
-            <div class="voice">
-              <img src="../../assets/icon/voice.png" alt />
-            </div>
-          </div>
-          <div class="newsInfo">
-            <div class="flex aligh-center">
-              <div style="margin-right:10px;font-size:13px;color:darkcyan;">
-                <div v-if="item.type<=1000">【系统通知】</div>
-                <div v-else>【其他通知】</div>
+    <div v-if="showNews">
+      <div v-if="newsList.length>0">
+        <div v-for="(item,index) in newsList" :key="index" @click="checkNewsDetail(item)">
+          <div class="flex newsDetail">
+            <div>
+              <div class="unvoice">
+                <img src="../../assets/icon/unvoice.png" alt />
               </div>
-              <div class="title">{{item.title}}</div>
+              <div class="voice">
+                <img src="../../assets/icon/voice.png" alt />
+              </div>
             </div>
-            <div style="font-size:13px;color:#a2a2a2;padding-left:6px;padding-top:3px">{{item.msg}}</div>
-            <div class="content">{{item.content}}</div>
+            <div class="newsInfo">
+              <div class="flex aligh-center">
+                <div style="margin-right:10px;font-size:13px;color:darkcyan;">
+                  <div v-if="item.type<=1000">【系统通知】</div>
+                  <div v-else>【其他通知】</div>
+                </div>
+                <div class="title">{{item.title}}</div>
+              </div>
+              <div
+                style="font-size:13px;color:#a2a2a2;padding-left:6px;padding-top:3px"
+              >{{item.msg}}</div>
+              <div class="content">{{item.content}}</div>
+            </div>
           </div>
         </div>
       </div>
+      <div v-else class="else"></div>
     </div>
-    <div style="text-align:center;padding:20px" v-else>暂无数据</div>
-    <div style="text-align:center;margin-top:15px">
+    <div  class="block">
       <el-pagination
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -47,12 +51,13 @@
 export default {
   data() {
     return {
+      showNews: false,
       page: 1,
       limit: 10,
       loading: true,
       total: 0,
-      currentPage:1,
-      newsList: []
+      currentPage: 1,
+      newsList: [],
     };
   },
   components: {},
@@ -78,7 +83,7 @@ export default {
       this.$router.push({
         name: "unReadNews",
         path: "/unReadNews",
-        query: { id: e.id, flag: false }
+        query: { id: e.id, flag: false },
       });
     },
     //时间处理
@@ -115,19 +120,20 @@ export default {
       let data = {
         limit: this.limit,
         page: this.page,
-        object: null
+        object: null,
       };
       this.$api
         .checkHistory(data)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
+          this.showNews = true;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
             this.total = res.data.count;
             this.newsList = res.data.data;
-            this.newsList.map(item => {
+            this.newsList.map((item) => {
               let msg = this.changTime(item.createTime);
               this.$set(item, "msg", msg);
             });
@@ -135,21 +141,22 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
+          this.showNews = true;
           //console.log(err);
         });
-    }
+    },
   },
   mounted() {
     this.getAllList();
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 

@@ -2,57 +2,57 @@
   <div v-loading="loading">
     <div v-if="show">
       <div class="choose">
-      <div class="classname">
-        <el-input v-model="title" maxlength="30" show-word-limit clearable placeholder="请输入公告名称"></el-input>
-      </div>
-      <div class="btn">
-        <el-button type="primary" @click="getNews">开始筛选</el-button>
-      </div>
-    </div>
-    <div v-if="newsList.length>0">
-      <div
-        class="newsdetail"
-        v-for="(item,index) in newsList"
-        :key="index"
-        @click="checkNews(item,index)"
-      >
-        <div class="flex justify-between aligh-center news">
-          <div class="flex aligh-center">
-            <div class="newsImg">
-              <!-- <img src="../../assets/icon/news.png" alt /> -->
-              <img src="../../assets/img/newsImg.png" alt />
-            </div>
-            <div>
-              <div class="title">{{item.title}}</div>
-              <div style="margin-bottom: 5px;color:#a2a2a2">
-                <span style=";padding-right: 10px;">By : {{item.peopleName}}</span>
-                <span>{{item.createTime}}</span>
-              </div>
-              <div style="color:#a2a2a2">
-                浏览次数 :
-                <span class="bg-primary">{{item.readCount}}</span>
-              </div>
-            </div>
-          </div>
-          <div>
-            <!-- <button @click="checkNews(item)">查看新闻</button> -->
-            <el-button type="primary" round @click="checkNews(item,index)">查看公告</el-button>
-          </div>
+        <div class="classname">
+          <el-input v-model="title" maxlength="30" show-word-limit clearable placeholder="请输入公告名称"></el-input>
+        </div>
+        <div class="btn">
+          <el-button type="primary" @click="getNews">开始筛选</el-button>
         </div>
       </div>
-      <div style="text-align:center">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[5, 10, 15, 20, 30, 40]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-        ></el-pagination>
+      <div v-if="newsList.length>0">
+        <div
+          class="newsdetail"
+          v-for="(item,index) in newsList"
+          :key="index"
+          @click="checkNews(item,index)"
+        >
+          <div class="flex justify-between aligh-center news">
+            <div class="flex aligh-center">
+              <div class="newsImg">
+                <!-- <img src="../../assets/icon/news.png" alt /> -->
+                <img src="../../assets/img/newsImg.png" alt />
+              </div>
+              <div>
+                <div class="title">{{item.title}}</div>
+                <div style="margin-bottom: 5px;color: rgb(96, 98, 102);font-size: 14px;">
+                  <span style=";padding-right: 10px;">By : {{item.peopleName}}</span>
+                  <span>{{item.createTime}}</span>
+                </div>
+                <div style="color: rgb(96, 98, 102);font-size: 14px;">
+                  浏览次数 :
+                  <span class="bg-primary">{{item.readCount}}</span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <!-- <button @click="checkNews(item)">查看新闻</button> -->
+              <el-button type="primary" round @click="checkNews(item,index)">查看公告</el-button>
+            </div>
+          </div>
+        </div>
+        <div  class="block">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[5, 10, 15, 20, 30, 40]"
+            :page-size="100"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total"
+          ></el-pagination>
+        </div>
       </div>
-    </div>
-    <div v-else class="else"></div>
+      <div v-else class="else"></div>
     </div>
     <el-dialog :title="newsDetail.title" :visible.sync="dialogFormVisible" @close="close">
       <div class="newsMsg">
@@ -81,7 +81,7 @@ export default {
       newsList: [],
       total: 0,
       currentPage: 1,
-      show:false,
+      show: false,
       title: "",
       dialogFormVisible: false,
       newsDetail: {},
@@ -122,6 +122,9 @@ export default {
           }
           if (res.data.code === 0) {
             this.newsList = res.data.data;
+            this.newsList.map(item=>{
+              item.createTime = this.timeFormat(item.createTime)
+            })
             this.total = res.data.count;
           } else {
             this.$message({
@@ -134,7 +137,7 @@ export default {
           this.loading = false;
           this.show = true;
           this.$message({
-            message: err.data.msg,
+            message: "获取失败",
             type: "warning",
           });
         });
@@ -163,7 +166,7 @@ export default {
         })
         .catch((err) => {
           this.$message({
-            message: err.data.msg,
+            message: "获取失败",
             type: "warning",
           });
         });
@@ -200,7 +203,8 @@ export default {
 .title {
   font-size: 18px;
   margin-bottom: 5px;
-  color: #1f3b7b;
+  // color: #1f3b7b;
+  font-weight: bold;
   width: 800px;
   display: inline-block;
   white-space: nowrap;

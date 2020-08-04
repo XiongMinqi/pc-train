@@ -20,63 +20,67 @@
         <el-button type="primary" @click="wrongQuestion">错题练习</el-button>
       </div>
     </div>
-    <div v-if="errorList.length>0">
-      <div v-for="(item,index) in errorList" :key="index">
-        <div class="mistake" @click="checkDetail(item)">
-          <div style="display: flex; align-items: center;width: 90%;">
-            <div class="userImg">
-              <!-- <img src="../../assets/icon/mistake.png" alt /> -->
-              <img src="../../assets/icon/pencil.png" alt />
-            </div>
-            <div style="margin-left:20px">
-              <div class="name">
-                <div class="questiontype" v-for="(itm,idx) in questionType" :key="idx">
-                  <div v-if="item.type == itm.key"  style="padding-bottom:5px;">
-                    <span style="font-weight:bold;margin-right:5px"><el-tag size="mini" effect="dark">{{itm.value}}</el-tag></span>
-                    <span class="bg-warning" style="font-size:12px">做错次数 ：{{item.wrongCount}}次</span>
+    <div v-if="showError">
+      <div v-if="errorList.length>0">
+        <div v-for="(item,index) in errorList" :key="index">
+          <div class="mistake" @click="checkDetail(item)">
+            <div style="display: flex; align-items: center;width: 90%;">
+              <div class="userImg">
+                <!-- <img src="../../assets/icon/mistake.png" alt /> -->
+                <img src="../../assets/icon/pencil.png" alt />
+              </div>
+              <div style="margin-left:20px">
+                <div class="name">
+                  <div class="questiontype" v-for="(itm,idx) in questionType" :key="idx">
+                    <div v-if="item.type == itm.key" style="padding-bottom:5px;">
+                      <span style="font-weight:bold;margin-right:5px">
+                        <el-tag size="mini" effect="dark">{{itm.value}}</el-tag>
+                      </span>
+                      <span class="bg-warning" style="font-size:12px">做错次数 ：{{item.wrongCount}}次</span>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div class="questioncontent">{{item.content}}</div>
-              <div style="font-size:12px;color:#a5a5a5;padding-left:6px">
-                <span class="promptWords">
-                  困难程度:
-                  <span>
-                    <span v-if="item.level===0">简单</span>
-                    <span v-if="item.level===1">普通</span>
-                    <span v-if="item.level===2">困难</span>
+                <div class="questioncontent">{{item.content}}</div>
+                <div style="font-size:12px;color:#a5a5a5;padding-left:6px">
+                  <span class="promptWords">
+                    困难程度:
+                    <span>
+                      <span v-if="item.level===0">简单</span>
+                      <span v-if="item.level===1">普通</span>
+                      <span v-if="item.level===2">困难</span>
+                    </span>
                   </span>
-                </span>
-                |
-                <span class="promptWords">所属专业 : {{item.majorname}}</span> |
-                <span class="promptWords">所属部门 : {{item.departname}}</span> |
-                <span class="promptWords">分数 ：{{item.defaultScore}}分</span>
+                  |
+                  <span class="promptWords">所属专业 : {{item.majorname}}</span> |
+                  <span class="promptWords">所属部门 : {{item.departname}}</span> |
+                  <span class="promptWords">分数 ：{{item.defaultScore}}分</span>
+                </div>
               </div>
-            </div>
-          </div>
-          <div>
-            <div style="margin-bottom:10px">
-              <el-button type="primary" round size="mini" @click="checkDetail(item)">错题重做</el-button>
             </div>
             <div>
-              <el-button type="danger" round size="mini" @click="deleteQuestion(item)">删除错题</el-button>
+              <div style="margin-bottom:10px">
+                <el-button type="primary" round size="mini" @click="checkDetail(item)">错题重做</el-button>
+              </div>
+              <div>
+                <el-button type="danger" round size="mini" @click="deleteQuestion(item)">删除错题</el-button>
+              </div>
             </div>
           </div>
         </div>
+        <div class="block">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[5, 10, 15, 20, 30, 40]"
+            :page-size="100"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total"
+          ></el-pagination>
+        </div>
       </div>
-      <div class="block">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[5, 10, 15, 20, 30, 40]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-        ></el-pagination>
-      </div>
+      <div v-else class="else"></div>
     </div>
-    <div v-else class="else"></div>
 
     <el-dialog title="错题详情" :visible.sync="dialogFormVisible" @close="close">
       <!-- <div> -->
@@ -175,6 +179,7 @@ export default {
   data() {
     return {
       subname: "不限",
+      showError: false,
       questionType: [],
       errorList: [], //错题
       question: "不限", //问题类型
@@ -199,7 +204,7 @@ export default {
       loading: true,
       dialogloading: false,
       showAnswer: false,
-      subjectId: -1
+      subjectId: -1,
     };
   },
   components: {},
@@ -253,28 +258,28 @@ export default {
     deleteQuestion(e) {
       this.$grade
         .deleteMistake(e.id)
-        .then(res => {
+        .then((res) => {
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
             this.$message({
               message: "删除成功",
-              type: "success"
+              type: "success",
             });
             this.loading = true;
             this.getErrorList();
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.$message({
             message: "获取失败",
-            type: "warning"
+            type: "warning",
           });
         });
     },
@@ -282,7 +287,7 @@ export default {
     wrongQuestion() {
       this.$router.push({
         name: "mistakePractise",
-        path: "/mistakePractise"
+        path: "/mistakePractise",
       });
     },
     //查看错题具体详情
@@ -293,7 +298,7 @@ export default {
       this.showAnswer = false;
       this.$grade
         .getErrorDetail(e.id)
-        .then(res => {
+        .then((res) => {
           this.dialogloading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -305,11 +310,11 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              typr: "warning"
+              typr: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.dialogloading = false;
         });
     },
@@ -317,7 +322,7 @@ export default {
     getQuestionType() {
       this.$grade
         .getdict()
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -332,15 +337,15 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.$message({
-            message: err.data.msg,
-            type: "warning"
+            message: "获取失败",
+            type: "warning",
           });
         });
     },
@@ -353,7 +358,7 @@ export default {
       if (this.question === "不限") {
         this.status = null;
       }
-      this.questionType.map(item => {
+      this.questionType.map((item) => {
         if (item.value === this.question) {
           this.status = item.key;
         }
@@ -366,7 +371,7 @@ export default {
       if (this.subname === "不限") {
         this.subjectId = null;
       } else {
-        this.subjectName.map(item => {
+        this.subjectName.map((item) => {
           if (this.subname === item.value) {
             this.subjectId = Number(item.key);
           }
@@ -377,26 +382,27 @@ export default {
         limit: this.limit,
         object: {
           questionType: this.status,
-          subjectId: this.subjectId
-        }
+          subjectId: this.subjectId,
+        },
       };
       this.$grade
         .getMistake(data)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
+          this.showError = true;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
             this.errorList = res.data.data;
             this.total = res.data.count;
-            this.errorList.map(item => {
-              this.major.map(itm => {
+            this.errorList.map((item) => {
+              this.major.map((itm) => {
                 if (item.majorId == itm.key) {
                   this.$set(item, "majorname", itm.value);
                 }
               });
-              this.department.map(itm => {
+              this.department.map((itm) => {
                 if (item.departmentId == itm.key) {
                   this.$set(item, "departname", itm.value);
                 }
@@ -406,24 +412,26 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              typr: "warning"
+              typr: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
+          this.showError = true;
           this.$message({
-            message: err.data.msg,
-            type: "warning"
+            message: "获取失败",
+            type: "warning",
           });
         });
-    }
+    },
   },
   mounted() {
     this.getQuestionType();
+    console.log(this.timeFormat("2020-02-08 01:26:27"));
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 
@@ -435,10 +443,6 @@ export default {
 }
 .subject {
   margin-right: 20px;
-}
-.block {
-  margin: 0 auto;
-  text-align: center;
 }
 .detail {
   // width: 100%;
@@ -496,7 +500,7 @@ export default {
   border: 1px solid #e9e9e9;
   border-radius: 6px;
   box-shadow: 5px 5px 10px #c2c2c2;
-  &:hover{
+  &:hover {
     cursor: pointer;
   }
 }

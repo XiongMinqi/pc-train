@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loading">
     <div class="historyRecord">课件学习记录</div>
-    <div class="list">
+    <div class="list" v-if="showList">
       <el-table :data="list" border style="width: 100%">
         <el-table-column prop="lastTime" label="上次观看时间" width="180"></el-table-column>
         <el-table-column prop="subjectName" label="名称"></el-table-column>
@@ -27,6 +27,7 @@
 export default {
   data() {
     return {
+      showList: false,
       userInfo: {},
       page: 1,
       limit: 10,
@@ -36,12 +37,12 @@ export default {
       currentPage: 1,
       data: {
         object: {
-          subjectId: ""
+          subjectId: "",
         },
         limit: 100,
-        page: 1
+        page: 1,
       },
-      loading: true
+      loading: true,
     };
   },
   components: {},
@@ -63,7 +64,7 @@ export default {
     getAllLearn() {
       this.$api
         .getLearn(this.data)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -74,11 +75,11 @@ export default {
             // console.log(this.allList);
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.$message({
-            message: err.data.msg,
-            type: "warning"
+            message: "获取失败",
+            type: "warning",
           });
         });
     },
@@ -86,16 +87,18 @@ export default {
     getStudy() {
       this.$api
         .getStudyRecord(this.page, this.limit)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
+          this.showList = true;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
             this.total = res.data.count;
             this.list = res.data.data;
-            this.list.map(item => {
-              this.allList.map(itm => {
+            this.list.map((item) => {
+              this.allList.map((itm) => {
+                item.lastTime = this.timeFormat(item.lastTime)
                 if (item.coursewareId === itm.id) {
                   this.$set(item, "subjectName", itm.name);
                 }
@@ -105,34 +108,31 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
+          this.showList = true;
           this.$message({
-            message: err.data.msg,
-            type: "warning"
+            message:"获取失败",
+            type: "warning",
           });
         });
-    }
+    },
   },
   mounted() {
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     this.getAllLearn();
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 
 <style scoped lang='scss'>
 .list {
-  text-align: center;
-}
-.block {
-  margin: 0 auto;
   text-align: center;
 }
 </style>

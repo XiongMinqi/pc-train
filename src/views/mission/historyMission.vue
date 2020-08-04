@@ -3,11 +3,11 @@
     <div class="historyRecord">学习任务记录</div>
     <div v-if="showHistory">
       <el-table :data="missionList" border style="width: 100%">
-        <template slot="empty">
+        <!-- <template slot="empty">
           <div>
             <img style="width:300px;height:200px;" src="../../assets/icon/kong.png" alt />
           </div>
-        </template>
+        </template> -->
         <el-table-column prop="name" label="任务名称"></el-table-column>
         <el-table-column prop="requireLearnTime" label="要求学习时长/分钟"></el-table-column>
         <el-table-column prop="requireRightCount" label="要求答对数量/道"></el-table-column>
@@ -212,29 +212,6 @@ export default {
           });
         });
     },
-    //转换时间
-    timeFormat(time) {
-      var clock = "";
-      var d = new Date(time);
-      var year = d.getFullYear(); //年
-      var month = d.getMonth() + 1; //月
-      var day = d.getDate(); //日
-      var hh = d.getHours(); //时
-      var mm = d.getMinutes(); //分
-      var ss = d.getSeconds(); //秒
-      clock += year + "-";
-      if (month < 10) clock += "0";
-      clock += month + "-";
-      if (day < 10) clock += "0";
-      clock += day + " ";
-      if (hh < 10) clock += "0";
-      clock += hh + ":";
-      if (mm < 10) clock += "0";
-      clock += mm + ":";
-      if (ss < 10) clock += "0";
-      clock += ss;
-      return clock;
-    },
     getUndoMission() {
       let data = {
         limit: this.limit,
@@ -255,6 +232,9 @@ export default {
             this.missionList = res.data.data;
             this.total = res.data.count;
             this.missionList.map((item) => {
+              if (item.lastSubmitTime) {
+                item.lastSubmitTime = this.timeFormat(item.lastSubmitTime);
+              }
               let times = Date.parse(item.publishTime) + item.lastTime * 60000;
               let endTime = this.timeFormat(times);
               this.$set(item, "endTime", endTime);
@@ -270,7 +250,7 @@ export default {
           this.loading = false;
           this.showHistory = true;
           this.$message({
-            message: err.data.msg,
+            message: "获取失败",
             type: "warning",
           });
         });
@@ -297,10 +277,6 @@ export default {
 .else {
   text-align: center;
   padding: 20px;
-}
-.block {
-  text-align: center;
-  margin-top: 20px;
 }
 .title {
   display: flex;

@@ -315,7 +315,7 @@ export default {
         })
         .catch(err => {
           this.$message({
-            message: err.data.msg,
+            message: "获取失败",
             type: "warning"
           });
           //console.log(err);

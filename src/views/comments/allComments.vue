@@ -3,40 +3,42 @@
     <div class="backLastPage" @click="backLastPage">
       <i class="el-icon-arrow-left"></i>返回
     </div>
-    <div v-if="allComments.length>0">
-      <div class="totalDetail">
-        <div class="flex aligh-center">
-          <div class="courseGood">
-            好评度 :
-            <span>{{courseGood}}%</span>
-          </div>
-          <div>
-          <div>已评论人数 : {{totalDetail.commentPeopleCount}}</div>
-          <div>评论总人数 : {{totalDetail.totalPeopleCount}}</div>
-        </div>
-        </div>
-        
-      </div>
-      <div v-for="(item,index) in allComments" :key="index">
-        <div class="flex align-start commentDetail" :class="index===0?'Firstindex':''">
-          <div class="flex aligh-center" style="width:20%">
-            <div class="userImg">
-              <img v-if="item.peopleAvatarPath" :src="item.peopleAvatarPath" alt />
-              <img v-else src="../../assets/icon/userImg.jpg" alt />
+    <div v-if="showComments">
+      <div v-if="allComments.length>0">
+        <div class="totalDetail">
+          <div class="flex aligh-center">
+            <div class="courseGood">
+              好评度 :
+              <span>{{courseGood}}%</span>
             </div>
-            <div style="width:100px">{{item.peopleName}}</div>
-          </div>
-          <div class="starComments">
-            <div class="star">
-              <el-rate disabled v-model="item.score"></el-rate>
+            <div>
+              <div>已评论人数 : {{totalDetail.commentPeopleCount}}</div>
+              <div>评论总人数 : {{totalDetail.totalPeopleCount}}</div>
             </div>
-            <div class="comments">{{item.comment}}</div>
-            <div class="commentTime">{{item.commentTime}}</div>
+          </div>
+        </div>
+        <div v-for="(item,index) in allComments" :key="index">
+          <div class="flex align-start commentDetail" :class="index===0?'Firstindex':''">
+            <div class="flex aligh-center" style="width:20%">
+              <div class="userImg">
+                <img v-if="item.peopleAvatarPath" :src="item.peopleAvatarPath" alt />
+                <img v-else src="../../assets/icon/userImg.jpg" alt />
+              </div>
+              <div style="width:100px">{{item.peopleName}}</div>
+            </div>
+            <div class="starComments">
+              <div class="star">
+                <el-rate disabled v-model="item.score"></el-rate>
+              </div>
+              <div class="comments">{{item.comment}}</div>
+              <div class="commentTime">{{item.commentTime}}</div>
+            </div>
           </div>
         </div>
       </div>
+      <div class="else" v-else></div>
     </div>
-    <div class="else" v-else></div>
+
     <div class="block">
       <el-pagination
         @size-change="handleSizeChange"
@@ -55,15 +57,16 @@
 export default {
   data() {
     return {
+      showComments: false,
       page: 1,
       limit: 4,
       allComments: [],
-      currentPage:1,
+      currentPage: 1,
       total: 0,
-      courseGood:"",
+      courseGood: "",
       totalDetail: {},
       planCourseId: 0,
-      loading:true
+      loading: true,
     };
   },
   components: {},
@@ -89,16 +92,17 @@ export default {
       let data = {
         limit: this.limit,
         page: this.page,
-        object: this.planCourseId
+        object: this.planCourseId,
       };
       this.$grade
         .checkAllComments(data)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
+          this.showComments = true;
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -108,51 +112,56 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
+          this.showComments = true;
           //console.log(err);
           this.$message({
-            message: err.data.msg,
-            type: "warning"
+            message: "获取失败",
+            type: "warning",
           });
         });
     },
     getTotalRank() {
       this.$grade
         .getTotalCommentsRank(this.planCourseId)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
             this.totalDetail = res.data.data[0];
-            this.courseGood = Math.ceil(this.totalDetail.goodCount/this.totalDetail.commentPeopleCount*100);
+            this.courseGood = Math.ceil(
+              (this.totalDetail.goodCount /
+                this.totalDetail.commentPeopleCount) *
+                100
+            );
             //console.log(this.courseGood);
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           //console.log(err);
           this.$message({
-            message: err.data.msg,
-            type: "warning"
+            message: "获取失败",
+            type: "warning",
           });
         });
-    }
+    },
   },
   mounted() {
     this.planCourseId = Number(this.$route.query.planCourseId);
@@ -160,17 +169,13 @@ export default {
     this.getTotalRank();
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 
 <style scoped lang='scss'>
 .else {
   text-align: center;
-}
-.block {
-  text-align: center;
-  margin-top: 20px;
 }
 .flex {
   display: flex;

@@ -306,6 +306,8 @@ export default {
       handler(newValue, oldValue) {
         this.loading=true;
         this.paperDetail = newValue;
+        this.paperDetail.beginWriteTime = this.timeFormat(this.paperDetail.beginWriteTime)
+        this.paperDetail.endWriteTime = this.timeFormat(this.paperDetail.endWriteTime)
         //console.log(newValue, "paperDetail");
       },
       deep: true

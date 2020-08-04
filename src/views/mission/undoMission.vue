@@ -2,36 +2,36 @@
   <div v-loading="loading">
     <div v-if="showMission">
       <div v-if="missionList.length>0">
-      <div v-for="(item,index) in missionList" :key="index" class="cardsDetail">
-        <el-card class="box-card" :class="item.running===true?'border-true':'border-false'">
-          <div slot="header" class="clearfix">
-            <span>{{item.name}}</span>
-            <el-button
-              style="float: right; padding: 3px 0"
-              type="text"
-              @click="checkDetail(item)"
-            >查看详情</el-button>
-          </div>
-          <div class="text item">要求学习时长 : {{item.requireLearnTime}}分钟</div>
-          <div class="text item">要求答对数量 : {{item.requireRightCount}}道</div>
-          <div class="text item">发布时间 : {{item.publishTime}}</div>
-          <div class="text item">截至时间 : {{item.endTime}}</div>
-          <!-- <div class="text item">持续时间 : {{item.msg}}</div> -->
-        </el-card>
+        <div v-for="(item,index) in missionList" :key="index" class="cardsDetail">
+          <el-card class="box-card" :class="item.running===true?'border-true':'border-false'">
+            <div slot="header" class="clearfix">
+              <span>{{item.name}}</span>
+              <el-button
+                style="float: right; padding: 3px 0"
+                type="text"
+                @click="checkDetail(item)"
+              >查看详情</el-button>
+            </div>
+            <div class="text item">要求学习时长 : {{item.requireLearnTime}}分钟</div>
+            <div class="text item">要求答对数量 : {{item.requireRightCount}}道</div>
+            <div class="text item">发布时间 : {{item.publishTime}}</div>
+            <div class="text item">截至时间 : {{item.endTime}}</div>
+            <!-- <div class="text item">持续时间 : {{item.msg}}</div> -->
+          </el-card>
+        </div>
+        <div class="block">
+          <el-pagination
+            @size-change="handleSizeChange"
+            @current-change="handleCurrentChange"
+            :current-page="currentPage"
+            :page-sizes="[6, 10, 15, 20, 30, 40]"
+            :page-size="100"
+            layout="total, sizes, prev, pager, next, jumper"
+            :total="total"
+          ></el-pagination>
+        </div>
       </div>
-      <div class="block">
-        <el-pagination
-          @size-change="handleSizeChange"
-          @current-change="handleCurrentChange"
-          :current-page="currentPage"
-          :page-sizes="[6, 10, 15, 20, 30, 40]"
-          :page-size="100"
-          layout="total, sizes, prev, pager, next, jumper"
-          :total="total"
-        ></el-pagination>
-      </div>
-    </div>
-    <div v-else class="else"></div>
+      <div v-else class="else"></div>
     </div>
     <div>
       <el-dialog :title="missiondetail.name" :visible.sync="dialogVisible" width="60%">
@@ -65,14 +65,14 @@ export default {
   data() {
     return {
       loading: true,
-      showMission:false,
+      showMission: false,
       page: 1,
       limit: 6,
       dialogVisible: false,
       currentPage: 1,
       missiondetail: {},
       missionList: [],
-      total: 0
+      total: 0,
     };
   },
   components: {},
@@ -123,35 +123,12 @@ export default {
         return msg;
       }
     },
-    //转换时间
-    timeFormat(time) {
-      var clock = "";
-      var d = new Date(time);
-      var year = d.getFullYear(); //年
-      var month = d.getMonth() + 1; //月
-      var day = d.getDate(); //日
-      var hh = d.getHours(); //时
-      var mm = d.getMinutes(); //分
-      var ss = d.getSeconds(); //秒
-      clock += year + "-";
-      if (month < 10) clock += "0";
-      clock += month + "-";
-      if (day < 10) clock += "0";
-      clock += day + " ";
-      if (hh < 10) clock += "0";
-      clock += hh + ":";
-      if (mm < 10) clock += "0";
-      clock += mm + ":";
-      if (ss < 10) clock += "0";
-      clock += ss;
-      return clock;
-    },
     joinMisson() {
       this.dialogVisible = false;
       this.$router.push({
         name: "doMission",
         path: "/doMission",
-        query: { id: this.missiondetail.id }
+        query: { id: this.missiondetail.id },
       });
     },
     getUndoMission() {
@@ -159,21 +136,25 @@ export default {
         limit: this.limit,
         page: this.page,
         object: {
-          isRunning: true
-        }
+          isRunning: true,
+        },
       };
       this.$api
         .getUndoMission(data)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
-          this.showMission =true;
+          this.showMission = true;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
             this.missionList = res.data.data;
             this.total = res.data.count;
-            this.missionList.map(item => {
+            this.missionList.map((item) => {
+              item.publishTime = this.timeFormat(item.publishTime);
+              if (item.lastSubmitTime) {
+                item.lastSubmitTime = this.timeFormat(item.lastSubmitTime);
+              }
               let msg = this.timeChange(item.lastTime);
               this.$set(item, "msg", msg);
               let times = Date.parse(item.publishTime) + item.lastTime * 60000;
@@ -183,26 +164,26 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
-          this.showMission =true;
+          this.showMission = true;
           //console.log(err);
           this.$message({
             message: "获取失败",
-            type: "warning"
+            type: "warning",
           });
         });
-    }
+    },
   },
   mounted() {
     this.getUndoMission();
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 
@@ -238,10 +219,6 @@ export default {
   display: inline-block;
   width: 50%;
   flex-wrap: wrap;
-}
-.block {
-  text-align: center;
-  margin-top: 10px;
 }
 .else {
   padding: 30px;

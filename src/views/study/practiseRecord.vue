@@ -1,7 +1,7 @@
 <template>
   <div v-loading="loading">
     <div class="historyRecord">在线练习记录</div>
-    <div class="list">
+    <div class="list" v-if="showList">
       <el-table :data="list" border style="width: 100%">
         <el-table-column prop="rightNumber" label="答对/道" width="180"></el-table-column>
         <el-table-column prop="questionNumber" label="全部/道" width="180"></el-table-column>
@@ -28,6 +28,7 @@
 export default {
   data() {
     return {
+      showList: false,
       userInfo: {},
       page: 1,
       limit: 10,
@@ -37,12 +38,12 @@ export default {
       currentPage: 1,
       data: {
         object: {
-          subjectId: ""
+          subjectId: "",
         },
         limit: 100,
-        page: 1
+        page: 1,
       },
-      loading: true
+      loading: true,
     };
   },
   components: {},
@@ -64,19 +65,21 @@ export default {
     getStudy() {
       let data = {
         page: this.page,
-        limit: this.limit
+        limit: this.limit,
       };
       this.$grade
         .getPractiseRecord(data)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
+          this.showList = true;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
             this.total = res.data.count;
             this.list = res.data.data;
-            this.list.map(item => {
+            this.list.map((item) => {
+              item.createTime = this.timeFormat(item.createTime)
               this.$set(item, "score", 1);
               if (item.costSeconds >= 60) {
                 if (item.costSeconds % 60 === 0) {
@@ -94,34 +97,31 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
+          this.showList = true;
           this.$message({
-            message: err.data.msg,
-            type: "warning"
+            message:"获取失败",
+            type: "warning",
           });
         });
-    }
+    },
   },
   mounted() {
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
     this.getStudy();
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 
 <style scoped lang='scss'>
 .list {
-  text-align: center;
-}
-.block {
-  margin: 0 auto;
   text-align: center;
 }
 </style>
