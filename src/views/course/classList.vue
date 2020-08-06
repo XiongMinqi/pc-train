@@ -1150,10 +1150,6 @@ export default {
           if (e.week === "周六") {
             weekDay = 6;
           }
-          // console.log(e);
-          // console.log(this.courseIdList);
-          // console.log(this.courseIdList[weekDay]);
-          // console.log(this.courseIdList[weekDay][e.index-1]);
           if (e.name && e.name.indexOf(",") === -1) {
             this.dialogFormVisible = true;
             this.dialogloading = true;
@@ -1214,6 +1210,11 @@ export default {
         },
         styles: styles,
       });
+      // let now = new Date();
+      // let hour = String(now.getHours());
+      // let div = document.getElementsByClassName("stage_" + hour);
+      // $(div).css("background","blue")
+      // console.log(div);
     },
     //获取课程详情
     getCourseDetail(weekDay, index) {},
@@ -1342,7 +1343,12 @@ export default {
 /deep/li {
   border-top: 1px dashed rgb(219, 219, 219);
   border-left: 1px dashed rgb(219, 219, 219);
+  // height: 25px!important;
   // border-right: 1px solid rgb(59, 65, 65);
+}
+/deep/ul{
+  // height: 25px!important;
+  // min-height: 25px!important;
 }
 /deep/.course-hasContent {
   border-radius: 10px;
@@ -1388,5 +1394,12 @@ export default {
 }
 /deep/.left-hand-index {
   display: none;
+}
+/deep/.Courses-head {
+  height: 30px;
+  line-height: 30px;
+}
+/deep/.left-hand-TextDom {
+  height: 20px!important;
 }
 </style>

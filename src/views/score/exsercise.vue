@@ -120,21 +120,21 @@ export default {
       if (this.experience === "前年") {
         data = {
           customStart: this.year - 2 + "-01-01 00:00:00",
-          customEnd: this.year - 2 + "-12-30 23:59:59",
+          customEnd: this.year - 2 + "-12-31 23:59:59",
           timeRange: 3,
         };
       }
       if (this.experience === "去年") {
         data = {
           customStart: this.year - 1 + "-01-01 00:00:00",
-          customEnd: this.year - 1 + "-12-30 23:59:59",
+          customEnd: this.year - 1 + "-12-31 23:59:59",
           timeRange: 3,
         };
       }
       if (this.experience === "今年") {
         data = {
           customStart: this.year + "-01-01 00:00:00",
-          customEnd: this.year + "-12-30 23:59:59",
+          customEnd: this.year + "-12-31 23:59:59",
           timeRange: 3,
         };
       }
@@ -175,7 +175,7 @@ export default {
           page: 1,
           object: {
             beginTime: this.year - 2 + "-01-01 00:00:00",
-            endTime: this.year - 2 + "-12-30 23:59:59",
+            endTime: this.year - 2 + "-12-31 23:59:59",
           },
         };
       }
@@ -185,7 +185,7 @@ export default {
           page: 1,
           object: {
             beginTime: this.year - 1 + "-01-01 00:00:00",
-            endTime: this.year - 1 + "-12-30 23:59:59",
+            endTime: this.year - 1 + "-12-31 23:59:59",
           },
         };
       }
@@ -195,7 +195,7 @@ export default {
           page: 1,
           object: {
             beginTime: this.year + "-01-01 00:00:00",
-            endTime: this.year + "-12-30 23:59:59",
+            endTime: this.year + "-12-31 23:59:59",
           },
         };
       }

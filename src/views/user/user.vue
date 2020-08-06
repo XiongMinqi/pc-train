@@ -157,6 +157,7 @@ export default {
       userMsg: {},
       imageUrl: "",
       telNumber: "",
+      phoneNumber: "",
       majorName: "",
       departmentName: "",
       originalPassword: "",
@@ -202,11 +203,44 @@ export default {
     changePassword() {
       this.popup = true;
     },
-    //更新个人信息
     submit() {
+      if (this.phoneNumber === this.telNumber) {
+        this.$message({
+          message: "请输入新的手机号码",
+          type: "warning",
+        });
+      } else {
+        this.$api
+          .getNumberResult(this.telNumber)
+          .then((res) => {
+            if (res.data.code === 1000) {
+              this.$router.push({ name: "login", path: "/login" });
+            }
+            if (res.data.code === 0) {
+              if (res.data.data[0] === true) {
+                this.$message({
+                  message: "手机号重复，请重新输入",
+                  type: "warning",
+                });
+              } else {
+                this.updateMsg();
+              }
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: "error",
+              });
+            }
+          })
+          .catch((err) => {});
+      }
+    },
+    //更新个人信息
+    updateMsg() {
       let data = {
         id: this.userInfo.id,
         phoneNumber: this.telNumber,
+        username:this.userInfo.username
       };
       // console.log(data);
       this.$api
@@ -218,7 +252,7 @@ export default {
           }
           if (res.data.code === 0) {
             this.$message({
-              message: "个人信息修改成功,请重新登录以更新个人信息",
+              message: "个人信息修改成功,请重新登录",
               type: "success",
             });
             this.$router.push({ name: "login", path: "/login" });
@@ -275,6 +309,7 @@ export default {
             this.userInfo = res.data.data[0];
             this.radio = this.userInfo.sex.toString();
             this.telNumber = this.userInfo.phoneNumber;
+            this.phoneNumber = this.userInfo.phoneNumber;
             // console.log(this.userInfo);
             // console.log(this.radio);
           } else {

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="position: relative;">
     <div class="titleWords">本月的成绩走势折线图</div>
     <!-- <div class="flex aligh-center chooseItem">
       <div class="classname">
@@ -16,8 +16,9 @@
       <div class="btn">
         <el-button type="primary" @click="getlist">开始筛选</el-button>
       </div>
-    </div>-->
+    </div> -->
     <div id="chartLineBox" style="width: 90%;height: 49vh;"></div>
+    <div v-if="paperName.length===0" class="zanwushuju">暂无数据</div>
   </div>
 </template>
 
@@ -104,7 +105,8 @@ export default {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
-          } else if (res.data.code === 0) {
+          }
+          if (res.data.code === 0) {
             this.subjectName = res.data.data[0]["科目名称"];
           } else {
             this.$message({
@@ -137,7 +139,8 @@ export default {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
-          } else if (res.data.code === 0) {
+          }
+          if (res.data.code === 0) {
             this.setOption();
             if (res.data.data.length > 0) {
               this.paperName = [];
@@ -155,12 +158,12 @@ export default {
               // if (this.subname !== "不限") {
               //   this.$message({
               //     message: "科目" + this.subname + this.type + "暂无考试数据",
-              //     type: "warning",
+              //     type: "warning"
               //   });
               // } else {
               //   this.$message({
               //     message: this.type + "暂无考试数据",
-              //     type: "warning",
+              //     type: "warning"
               //   });
               // }
             }
@@ -202,7 +205,7 @@ export default {
           name: "考试名称", //X轴 name
           nameTextStyle: {
             //坐标轴名称的文字样式
-            color: "#FA6F53",
+            color: "#000000",
             fontSize: 16,
             padding: [0, 0, 0, 20],
           },
@@ -236,7 +239,7 @@ export default {
         yAxis: {
           name: "分数",
           nameTextStyle: {
-            color: "#FA6F53",
+            color: "#000000",
             fontSize: 16,
             padding: [0, 0, 10, 0],
           },
@@ -371,5 +374,11 @@ export default {
 }
 .chooseItem {
   margin-bottom: 10px;
+}
+.zanwushuju {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-50%);
 }
 </style>

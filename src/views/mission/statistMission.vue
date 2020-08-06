@@ -11,6 +11,7 @@
       </div>
     </div>
     <div id="chartLineBox" style="width: 90%;height: 80vh;"></div>
+    <div v-if="paperName.length===0" class="zanwushuju">暂无数据</div>
   </div>
 </template>
 
@@ -26,67 +27,69 @@ export default {
     return {
       loading: true,
       type: "本周",
+      paperName:[],
+      score:[],
       listType: [
         {
           key: 1,
-          value: "今天"
+          value: "今天",
         },
         {
           key: 2,
-          value: "昨天"
+          value: "昨天",
         },
         {
           key: 3,
-          value: "近7天"
+          value: "近7天",
         },
         {
           key: 4,
-          value: "近30天"
+          value: "近30天",
         },
         {
           key: 5,
-          value: "本月"
+          value: "本月",
         },
         {
           key: 6,
-          value: "上一月"
+          value: "上一月",
         },
         {
           key: 7,
-          value: "本季度"
+          value: "本季度",
         },
         {
           key: 8,
-          value: "上季度"
+          value: "上季度",
         },
         {
           key: 9,
-          value: "本年"
+          value: "本年",
         },
         {
           key: 10,
-          value: "上年"
+          value: "上年",
         },
         {
           key: 11,
-          value: "本周"
+          value: "本周",
         },
         {
           key: 12,
-          value: "上周"
-        }
-      ]
+          value: "上周",
+        },
+      ],
     };
   },
   components: {},
   methods: {
     getlist() {
       let data = {
-        timeRange: this.type
+        timeRange: this.type,
       };
       this.$api
         .statistmission(data)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -96,27 +99,27 @@ export default {
               this.paperName = [];
               this.score = [];
               this.totalScore = [];
-              res.data.data.map(item => {
+              res.data.data.map((item) => {
                 this.paperName.push(item.assignmentName);
                 this.score.push(item.learnTime);
               });
             } else {
               this.paperName = [];
               this.score = [];
-              this.$message({
-                message: this.type + "暂无数据",
-                type: "warning"
-              });
+              // this.$message({
+              //   message: this.type + "暂无数据",
+              //   type: "warning",
+              // });
             }
             this.setOption();
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           // console.log(err);
         });
@@ -127,12 +130,12 @@ export default {
       this.option = {
         tooltip: {
           //设置tip提示
-          trigger: "axis"
+          trigger: "axis",
         },
 
         legend: {
           //设置区分（哪条线属于什么）
-          data: ["学习时长", "时间"]
+          data: ["学习时长", "时间"],
         },
         color: ["#FA6F53", "#fddeca"], //设置区分（每条线是什么颜色，和 legend 一一对应）
         xAxis: {
@@ -144,30 +147,30 @@ export default {
           name: "任务名称", //X轴 name
           nameTextStyle: {
             //坐标轴名称的文字样式
-            color: "#FA6F53",
+            color: "#000000",
             fontSize: 16,
-            padding: [0, 0, 0, 20]
+            padding: [0, 0, 0, 20],
           },
           axisLine: {
             //坐标轴轴线相关设置。
             lineStyle: {
-              color: "#000000"
-            }
-          }
+              color: "#000000",
+            },
+          },
         },
         yAxis: {
           name: "学习时长",
           nameTextStyle: {
-            color: "#FA6F53",
+            color: "#000000",
             fontSize: 16,
-            padding: [0, 0, 10, 0]
+            padding: [0, 0, 10, 0],
           },
           axisLine: {
             lineStyle: {
-              color: "#000000"
-            }
+              color: "#000000",
+            },
           },
-          type: "value"
+          type: "value",
         },
         series: [
           {
@@ -177,21 +180,21 @@ export default {
             type: "line",
             lineStyle: {
               normal: {
-                color: "#FA6F53"
-              }
-            }
-          }
-        ]
+                color: "#FA6F53",
+              },
+            },
+          },
+        ],
       };
       // 使用刚指定的配置项和数据显示图表。
       this.chartLine.setOption(this.option);
-    }
+    },
   },
   mounted() {
     this.getlist();
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 
@@ -205,7 +208,13 @@ export default {
 .justify-between {
   justify-content: space-between;
 }
-.btn{
-    margin-left: 20px;
+.btn {
+  margin-left: 20px;
+}
+.zanwushuju {
+  position: absolute;
+  top: 50%;
+  left: 55%;
+  transform: translateX(-50%) translateY(-50%);
 }
 </style>

@@ -23,6 +23,10 @@ export default {
     getNumber() {
         return axios.post('me/listUnreadNotify')
     },
+    //手机号是否重复
+    getNumberResult(num){
+        return axios.get(`people/isPhoneNumberDuplicate?phoneNumber=${num}`)
+    },
     //一键全读
     allRead(){
         return axios.post('me/readAllNotify')

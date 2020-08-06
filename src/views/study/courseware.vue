@@ -1,11 +1,11 @@
 <template>
   <div v-loading="loading">
     <div class="choose">
-      <div class="subject">
+      <!-- <div class="subject">
         <el-select disabled v-model="subjectname" placeholder="请选择专业">
           <el-option v-for="item in subjectList" :key="item.key" :value="item.value"></el-option>
         </el-select>
-      </div>
+      </div> -->
       <div class="classname">
         <el-select v-model="classname" placeholder="请选择科目">
           <el-option key value="不限"></el-option>

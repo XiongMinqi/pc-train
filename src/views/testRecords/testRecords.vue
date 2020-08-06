@@ -79,7 +79,7 @@
                   <div class="score">{{item.score}}</div>
                   <div class="duringTime">
                     <div v-if="item.isPass===true" class="bg-success">
-                      <el-tag>已通过</el-tag>
+                      <el-tag type="success">已通过</el-tag>
                     </div>
                     <div v-else-if="item.isPass===null" class="bg-info">
                       <el-tag type="info">未交卷</el-tag>

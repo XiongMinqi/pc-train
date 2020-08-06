@@ -495,7 +495,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
   padding-right: 20px;
   border: 1px solid #e9e9e9;
   border-radius: 6px;
