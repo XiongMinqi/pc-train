@@ -380,5 +380,7 @@ export default {
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
+  color: #909399;
+  font-size: 13px;
 }
 </style>

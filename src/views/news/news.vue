@@ -26,7 +26,7 @@
                 <div class="title">{{item.title}}</div>
                 <div style="margin-bottom: 5px;color: rgb(96, 98, 102);font-size: 14px;">
                   <span style=";padding-right: 10px;">By : {{item.peopleName}}</span>
-                  <span>{{item.createTime}}</span>
+                  <span style="font-size:11px;color:#909399">{{item.createTime}}</span>
                 </div>
                 <div style="color: rgb(96, 98, 102);font-size: 14px;">
                   浏览次数 :

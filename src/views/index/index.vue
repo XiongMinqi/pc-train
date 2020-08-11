@@ -147,7 +147,7 @@
                 <div>
                   <img style="width:250px;height:200px" src="../../assets/icon/kong.png" alt />
                 </div>
-              </template> -->
+              </template>-->
               <el-table-column prop="name" label="任务名称" width="180"></el-table-column>
               <el-table-column prop="requireLearnTime" label="要求学习时长" width="180"></el-table-column>
               <el-table-column prop="learnTime" label="已学习时长" width="180"></el-table-column>
@@ -172,7 +172,7 @@
           <div>
             <img style="width:250px;height:200px;" src="../../assets/icon/kong.png" alt />
           </div>
-        </template> -->
+        </template>-->
         <el-table-column prop="name" label="考试名称"></el-table-column>
         <el-table-column prop="passScore" label="通过分数"></el-table-column>
         <el-table-column prop="totalScore" label="总分数"></el-table-column>
@@ -184,8 +184,7 @@
         </el-table-column>
       </el-table>
     </div>
-
-    <div class="vision" style="text-align: center;">版本号:20.08.05.17</div>
+    <div class="vision" style="text-align: center;">版本号:20.08.11.12</div>
   </div>
 </template>
 <script>

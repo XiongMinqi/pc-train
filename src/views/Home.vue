@@ -73,7 +73,7 @@
           </div>
         </div>
       </el-header>
-      <el-container>
+      <el-container class="Contentasdfasdf">
         <el-aside :width="width">
           <!-- <indexLeft /> -->
           <div class="indexLeft">
@@ -241,7 +241,7 @@ export default {
       unReadList: [],
       popup: false,
       user: {},
-      width: "200px"
+      width: "200px",
     };
   },
   components: {},
@@ -257,12 +257,12 @@ export default {
     webscoket() {
       var socket = new WebSocket("ws://39.104.70.60:8080/imserver");
       //打开事件
-      socket.onopen = function() {
+      socket.onopen = function () {
         console.log("websocket已打开");
         socket.send("这是来自客户端的消息" + location.href + new Date());
       };
       //获得消息事件
-      socket.onmessage = function(msg) {
+      socket.onmessage = function (msg) {
         //console.log(msg.data);
         if (msg.data) {
           let data = JSON.parse(msg.data);
@@ -271,11 +271,11 @@ export default {
         //发现消息进入    开始处理前端触发逻辑
       };
       //关闭事件
-      socket.onclose = function() {
+      socket.onclose = function () {
         console.log("websocket已关闭");
       };
       //发生了错误事件
-      socket.onerror = function() {
+      socket.onerror = function () {
         console.log("websocket发生了错误");
       };
     },
@@ -292,14 +292,14 @@ export default {
       this.$router.push({
         name: "unReadNews",
         path: "/unReadNews",
-        query: { id: e.id, flag: true }
+        query: { id: e.id, flag: true },
       });
     },
     //一键全读
     readAll() {
       this.$api
         .allRead()
-        .then(res => {
+        .then((res) => {
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -309,14 +309,14 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.$message({
             message: "获取失败",
-            type: "warning"
+            type: "warning",
           });
           //console.log(err);
         });
@@ -325,7 +325,7 @@ export default {
     getAmount() {
       this.$api
         .getNumber()
-        .then(res => {
+        .then((res) => {
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -335,11 +335,11 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           //console.log(err);
         });
     },
@@ -347,18 +347,18 @@ export default {
     logout() {
       this.$api
         .logout()
-        .then(res => {
+        .then((res) => {
           // console.log(res);
           if (res.data.code === 0) {
             this.$message({
               message: "退出登录成功",
-              type: "success"
+              type: "success",
             });
             localStorage.removeItem("userInfo");
             this.$router.push({ name: "login", path: "/login" });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           //console.log(err);
         });
     },
@@ -370,7 +370,7 @@ export default {
     },
     handleClose(key, keyPath) {
       // console.log(key, keyPath);
-    }
+    },
   },
   mounted() {
     this.getAmount();
@@ -378,7 +378,7 @@ export default {
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 
@@ -393,17 +393,21 @@ export default {
   height: 100%;
   margin: 0 auto;
 }
-.el-container {
-  height: 100%;
+.Contentasdfasdf {
+  // height: 100%;
+  position: absolute;
+  top: 60px;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
-.el-header,
-.el-footer {
-  // background-color: #b3c0d1;
+.el-header {
+  position: absolute;
+  height: 60px;
+  width: 100%;
   background-color: #3b3b47;
-  // color: #333;
   color: #ffffff;
   text-align: center;
-  // line-height: 60px;
 }
 
 .el-aside {
@@ -415,7 +419,7 @@ export default {
 .el-main {
   // background-color: #e9eef3;
   // color: #333;
-  height: 100%;
+  // height: 100%;
 }
 .el-menu {
   border: 0;

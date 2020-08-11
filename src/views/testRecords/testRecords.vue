@@ -203,7 +203,7 @@ export default {
         this.dialogTableVisible = true;
       } else {
         this.$message({
-          message: "抱歉，暂时无法查看明细",
+          message: "抱歉，该场考试无法查看明细",
           type: "warning",
         });
       }
