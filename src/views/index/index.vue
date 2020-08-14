@@ -4,17 +4,18 @@
       <div class="index-left">
         <div class="userInfomation box-shadow">
           <div class="flex aligh-center userimage">
-            <div class="useravatarUrl" v-if="userInfo.avatarUrl">
-              <img class="userImg" :src="userInfo.avatarUrl" alt />
+            <div class="useravatarUrl" v-if="userInfo.avatarUrl===null || userInfo.avatarUrl===''">
+              <img class="userImg" src="../../assets/icon/userImg.jpg" alt />
             </div>
             <div v-else class="useravatarUrl">
-              <img class="userImg" src="../../assets/icon/userImg.jpg" alt />
+              <!-- <img class="userImg" src="../../assets/icon/userImg.jpg" alt /> -->
+               <img class="userImg" :src="userInfo.avatarUrl" alt />
             </div>
             <div class="username">{{userInfo.nickName}}</div>
           </div>
           <div class="flex aligh-center fosize">
             <div class="names">登录次数：</div>
-            <div class="content" v-if="userInfo.loginCount">{{userInfo.loginCount}}</div>
+            <div class="content" v-if="userInfo.loginCount">{{userInfo.loginCount}} 次</div>
             <div class="content" v-else>暂无登录记录</div>
           </div>
           <div class="flex aligh-center fosize">
@@ -127,11 +128,11 @@
             </div>
             <div>
               <div class="logintime learnRecord">
-                <div class="names">在线学习时长 :</div>
+                <div>在线学习时长 :</div>
                 <div class="content">{{totalStudyTime}}</div>
               </div>
               <div class="logintime learnRecord">
-                <div class="names">在线测试记录 :</div>
+                <div>在线测试记录 :</div>
                 <div class="content">{{fail+pass}}次</div>
               </div>
             </div>
@@ -184,7 +185,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="vision" style="text-align: center;">版本号:20.08.11.12</div>
+    <div class="vision" style="text-align: center;">版本号:20.08.13.17</div>
   </div>
 </template>
 <script>
@@ -491,9 +492,6 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-li {
-  border: 0;
-}
 .flex {
   display: flex;
 }
@@ -635,11 +633,13 @@ li {
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  margin-right: 20px;
+  margin-right: 10px;
 }
 .username {
   font-weight: bold;
   font-size: 20px;
+  width: 205px;
+  text-align: center;
 }
 .numberCount {
   border: 1px solid #e2e2e2;
@@ -704,5 +704,9 @@ li {
 }
 .learnRecord {
   padding-top: 18px;
+}
+.names{
+  width: 100px;
+  // text-align: end;
 }
 </style>

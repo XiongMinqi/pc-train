@@ -7,7 +7,7 @@
       <el-tab-pane label="课件" name="first">
         <div v-if="coursewareList.length>0">
           <div v-if="textList.length>0">
-             <el-divider>文档</el-divider>
+            <el-divider>文档</el-divider>
             <!-- <div class="words">文档</div> -->
             <div
               class="course"
@@ -62,7 +62,7 @@
             </div>
           </div>
           <div v-if="pictureList.length>0">
-             <el-divider>图片、视频、音频</el-divider>
+            <el-divider>图片、视频、音频</el-divider>
             <!-- <div class="words">图片、视频、音频</div> -->
             <div
               class="course"
@@ -72,7 +72,10 @@
             >
               <div class="courseware" slot="reference">
                 <div>
-                  <div v-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
+                  <div v-if="item.coverUrl">
+                    <img :src="item.coverUrl" alt />
+                  </div>
+                  <div v-else-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
                     <img src="../../assets/img/word.png" alt />
                   </div>
                   <div v-else-if="item.fileSuffix == '.xls' || item.fileSuffix == '.xlsx'">
@@ -240,7 +243,7 @@ export default {
       dialogVisible: false,
       beginTime: "",
       answerList: [],
-      assignmentId: ""
+      assignmentId: "",
     };
   },
   components: {
@@ -251,7 +254,7 @@ export default {
     nounExplanation,
     explain,
     vueVideoPlayer,
-    AudioPlayer
+    AudioPlayer,
   },
   methods: {
     backLastPage() {
@@ -273,12 +276,12 @@ export default {
     submit() {
       let data = {
         answerMap: this.$store.state.practiseList,
-        assignmentId: Number(this.id)
+        assignmentId: Number(this.id),
       };
       //console.log(data);
       this.$api
         .submitPratise(data)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -286,21 +289,21 @@ export default {
           if (res.data.code === 0) {
             this.$message({
               message: "练习提交成功",
-              type: "success"
+              type: "success",
             });
             this.$router.push({ name: "undoMission", path: "/undoMission" });
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.$message({
-            message:"获取失败",
-            type: "warning"
+            message: "获取失败",
+            type: "warning",
           });
         });
     },
@@ -316,7 +319,7 @@ export default {
       let duringTime = (this.endTime - this.beginTime) / 60000;
       let data = {
         assignmentId: Number(this.id),
-        minutes: Math.ceil(duringTime)
+        minutes: Math.ceil(duringTime),
       };
       this.$api.submitTime(data);
       //console.log(data);
@@ -344,7 +347,7 @@ export default {
       this.audioUrl = [];
       this.$api
         .geturl(e.id)
-        .then(res => {
+        .then((res) => {
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -389,11 +392,11 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           //console.log(err);
         });
     },
@@ -417,7 +420,7 @@ export default {
     getMissionType() {
       this.$api
         .getCourseware(this.id)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -426,7 +429,7 @@ export default {
             this.coursewareList = res.data.data;
             this.textList = [];
             this.pictureList = [];
-            this.coursewareList.map(item => {
+            this.coursewareList.map((item) => {
               item.uploadTime = this.timeFormat(item.uploadTime);
               item.fileSize = this.twoNumber(item.fileSize / 1024);
               if (
@@ -451,22 +454,22 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.$message({
             message: "获取失败",
-            type: "warning"
+            type: "warning",
           });
         });
     },
     getQuestiones() {
       this.$api
         .getQuestion(this.id)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -476,22 +479,22 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.$message({
             message: "获取失败",
-            type: "warning"
+            type: "warning",
           });
         });
     },
     getAnswer() {
       this.$api
         .getAnswer(this.id)
-        .then(res => {
+        .then((res) => {
           this.dialogLoading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -502,18 +505,18 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.dialogLoading = false;
           this.$message({
             message: "获取失败",
-            type: "warning"
+            type: "warning",
           });
         });
-    }
+    },
   },
   mounted() {
     this.id = this.$route.query.id;
@@ -521,12 +524,12 @@ export default {
     this.$store.state.practiseList = {};
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 
 <style scoped lang='scss'>
-/deep/.el-divider--horizontal{
+/deep/.el-divider--horizontal {
   margin: 14px 0 25px 0;
 }
 .flex {
@@ -546,13 +549,14 @@ export default {
   display: inline-block;
   width: 32%;
   margin-right: 10px;
+  padding-bottom: 10px;
   margin-bottom: 15px;
   border: 1px solid #f2f2f2;
   box-shadow: 1px 1px 2px #c2c2c2;
   &:hover {
     cursor: pointer;
     // color: #cc4820;
-    box-shadow: 0 0  20px #c2c2c2;
+    box-shadow: 0 0 20px #c2c2c2;
     // background-color: #f2f2f2;
     img {
       transform: scale(1.1);
@@ -563,11 +567,12 @@ export default {
   padding: 10px 0 0 20px;
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  // margin-bottom: 20px;
   img {
     width: 90px;
     height: 90px;
     margin-right: 10px;
+    // margin-top: 5px;
   }
 }
 .msg {

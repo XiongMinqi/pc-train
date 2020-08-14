@@ -5,7 +5,7 @@
         <el-select disabled v-model="subjectname" placeholder="请选择专业">
           <el-option v-for="item in subjectList" :key="item.key" :value="item.value"></el-option>
         </el-select>
-      </div> -->
+      </div>-->
       <div class="classname">
         <el-select v-model="classname" placeholder="请选择科目">
           <el-option key value="不限"></el-option>
@@ -100,7 +100,10 @@
           >
             <div class="courseware" slot="reference">
               <div>
-                <div v-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
+                <div v-if="item.coverUrl">
+                  <img :src="item.coverUrl" alt />
+                </div>
+                <div v-else-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
                   <img src="../../assets/img/word.png" alt />
                 </div>
                 <div v-else-if="item.fileSuffix == '.xls' || item.fileSuffix == '.xlsx'">
@@ -228,7 +231,7 @@ export default {
       courseTitle: "",
       pictureUrl: "",
       dialogVisible: false,
-      openVideoImg: "../../assets/img/maliao.png",
+      // openVideoImg: "../../assets/img/maliao.png",
       subjectname: "",
       coursewareId: "",
       peopleId: "",
@@ -385,6 +388,11 @@ export default {
               this.dialogVisible = true;
               //console.log(this.wordUrl);
             } else if (e.fileSuffix === ".mp4") {
+              if (e.coverUrl) {
+                this.openVideoImg = e.coverUrl;
+              } else {
+                this.openVideoImg = "";
+              }
               this.videoPlayer = res.data.data[0];
               this.dialogVisible = true;
             } else if (e.fileSuffix === ".pdf") {
@@ -550,7 +558,7 @@ export default {
   display: inline-block;
   width: 32%;
   margin-right: 10px;
-  padding-bottom: 20px;
+  padding-bottom: 10px;
   margin-bottom: 15px;
   border: 1px solid #e2e2e2;
   box-shadow: 1px 1px 3px #c2c2c2;
@@ -573,6 +581,7 @@ export default {
     width: 90px;
     height: 90px;
     margin-right: 10px;
+    margin-top: 5px;
   }
 }
 .msg {

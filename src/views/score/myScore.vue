@@ -14,7 +14,13 @@
         <span style="font-size:35px;font-weight:bold;padding:0 10px">{{percent}}%</span>的用户
       </div>
     </div>
-    <div class="words">积分明细</div>
+    <div class="flex justify-between">
+      <div class="words">积分明细</div>
+      <div>
+        <el-button size="mini" plain type="primary" @click="jump">积分排行</el-button>
+      </div>
+    </div>
+
     <div v-if="showLsit">
       <el-table :data="scoreList" border style="width: 100%">
         <el-table-column prop="createTime" label="时间" width="200"></el-table-column>
@@ -151,7 +157,7 @@ export default {
                 source = "自主练习";
               }
               this.$set(item, "source", source);
-              item.createTime = this.timeFormat(item.createTime)
+              item.createTime = this.timeFormat(item.createTime);
             });
             // console.log(this.scoreList);
           } else {
@@ -167,6 +173,9 @@ export default {
           //console.log(err);
         });
     },
+    jump(){
+      this.$router.push({name:"scoreList",path:"/scoreList"})
+    }
   },
   mounted() {
     this.getTotalScore();
@@ -192,5 +201,11 @@ export default {
 }
 .words {
   margin-bottom: 20px;
+}
+.flex {
+  display: flex;
+}
+.justify-between {
+  justify-content: space-between;
 }
 </style>

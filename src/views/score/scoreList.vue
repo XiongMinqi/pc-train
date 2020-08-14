@@ -1,6 +1,9 @@
 <template>
-  <div v-loading="loading">
-    <div>积分排行</div>
+  <div v-loading="loading" style="position:relative">
+    <div class="backLastPage" @click="backLastPage">
+      <i class="el-icon-arrow-left"></i>返回
+    </div>
+    <div class="tishiwenzi">积分排行</div>
     <div v-if="showScoreList">
       <div v-if="scoreList.length>0">
         <div v-for="(item,index) in scoreList" :key="index">
@@ -92,6 +95,9 @@ export default {
   },
   components: {},
   methods: {
+    backLastPage() {
+      this.$router.go(-1);
+    },
     close() {
       this.peopleUrl = "";
       this.peopleDetail = {};
@@ -262,5 +268,11 @@ export default {
   width: 20%;
   text-align: end;
   color: #409eff;
+}
+.tishiwenzi {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(50%);
 }
 </style>

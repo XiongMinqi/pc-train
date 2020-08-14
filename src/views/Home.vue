@@ -96,10 +96,10 @@
                   <i class="el-icon-menu"></i>
                   <span slot="title">系统公告</span>
                 </el-menu-item>
-                <el-menu-item index="5" @click="goTo('/classList')">
+                <!-- <el-menu-item index="5" @click="goTo('/classList')">
                   <i class="el-icon-s-promotion"></i>
                   <span slot="title">我的课程</span>
-                </el-menu-item>
+                </el-menu-item>-->
                 <el-submenu index="2">
                   <template slot="title">
                     <i class="el-icon-s-help"></i>
@@ -124,18 +124,19 @@
                 <el-submenu index="3">
                   <template slot="title">
                     <i class="el-icon-cherry"></i>
-                    <span slot="title">我的积分</span>
+                    <span slot="title">个人相关</span>
                   </template>
                   <el-menu-item-group>
-                    <template slot="title">积分</template>
-                    <el-menu-item index="3-1" @click="goTo('/myScore')">
+                    <template slot="title">个人</template>
+                    <el-menu-item index="3-1" @click="goTo('/classList')">
+                      <i class="el-icon-s-promotion"></i>
+                      <span slot="title">我的课程</span>
+                    </el-menu-item>
+                    <el-menu-item index="3-2" @click="goTo('/myScore')">
                       <i class="el-icon-notebook-1"></i>
                       <span slot="title">个人积分</span>
                     </el-menu-item>
-                    <el-menu-item index="3-2" @click="goTo('/scoreList')">
-                      <i class="el-icon-s-data"></i>
-                      <span slot="title">积分排行</span>
-                    </el-menu-item>
+
                     <el-menu-item index="3-3" @click="goTo('/exsercise')">
                       <i class="el-icon-tickets"></i>
                       <span slot="title">培训经历</span>
@@ -160,6 +161,10 @@
                     <el-menu-item index="4-3" @click="goTo('/grade')">
                       <i class="el-icon-medal"></i>
                       <span slot="title">成绩统计</span>
+                    </el-menu-item>
+                    <el-menu-item index="4-4" @click="goTo('/mistake')">
+                      <i class="el-icon-document"></i>
+                      <span slot="title">错题集选</span>
                     </el-menu-item>
                   </el-menu-item-group>
                 </el-submenu>
@@ -206,10 +211,10 @@
                     </el-menu-item>
                   </el-menu-item-group>
                 </el-submenu>
-                <el-menu-item index="7" @click="goTo('/mistake')">
+                <!-- <el-menu-item index="7" @click="goTo('/mistake')">
                   <i class="el-icon-document"></i>
                   <span slot="title">错题集选</span>
-                </el-menu-item>
+                </el-menu-item>-->
                 <!-- <el-menu-item index="8" @click="goTo('/grade')">
                   <i class="el-icon-medal"></i>
                   <span slot="title">成绩统计</span>
@@ -415,12 +420,6 @@ export default {
   // height: 100%;
   color: #333;
 }
-
-.el-main {
-  // background-color: #e9eef3;
-  // color: #333;
-  // height: 100%;
-}
 .el-menu {
   border: 0;
   background-color: #3b4141;
@@ -460,7 +459,7 @@ export default {
     color: darkcyan;
   }
   .userImg {
-    margin: 0 10px 0 20px;
+    margin: 4px 15px 0 20px;
     width: 50px;
     height: 50px;
     border-radius: 50%;
@@ -472,6 +471,7 @@ export default {
   .topLeft {
     display: flex;
     align-items: center;
+    // margin-top: 3px;
   }
 }
 .userlist {

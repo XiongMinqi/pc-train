@@ -70,6 +70,7 @@
         </div>
       </div>
     </div>
+    
     <div v-else class="prictise">
       <div>
         <div>
@@ -174,6 +175,7 @@
         </div>
       </div>
       <div class="choosebtn">
+        <el-button type="warning" round @click="abandon">放弃练习</el-button>
         <div v-if="showBtn">
           <el-button type="primary" round @click="confirm">完成</el-button>
         </div>
@@ -184,6 +186,7 @@
           <div v-else>
             <el-button type="primary" round @click="after">下一题</el-button>
           </div>
+          
         </div>
       </div>
     </div>
@@ -249,36 +252,36 @@ export default {
       sourceList: [
         {
           key: 0,
-          value: "题库"
+          value: "题库",
         },
         {
           key: 1,
-          value: "错题集"
-        }
+          value: "错题集",
+        },
       ],
       data: {
         criteria: {
           level: null,
           majorId: null,
           subjectId: null,
-          type: 0
+          type: 0,
         },
         fromMyWrongQuestionSet: false,
-        size: 5
+        size: 5,
       },
       diffcult: [
         {
           key: "EASY",
-          value: "简单"
+          value: "简单",
         },
         {
           key: "NORMAL",
-          value: "普通"
+          value: "普通",
         },
         {
           key: "HARD",
-          value: "困难"
-        }
+          value: "困难",
+        },
       ],
       questionId: "",
       questionDetail: {},
@@ -302,11 +305,14 @@ export default {
       rightPercent: "",
       loading: true,
       choosedisabled: false,
-      flag: false
+      flag: false,
     };
   },
   components: {},
   methods: {
+    abandon() {
+      this.showselect = true;
+    },
     //完成
     confirm() {
       if (this.radio !== "" || this.checkList.length > 0) {
@@ -317,7 +323,7 @@ export default {
       } else {
         this.$message({
           message: "至少选择一个选项才能进入下一题",
-          type: "none"
+          type: "none",
         });
       }
     },
@@ -342,7 +348,7 @@ export default {
         this.index -= 1;
         this.$message({
           message: "当前是最后一题",
-          type: "warning"
+          type: "warning",
         });
       }
     },
@@ -376,11 +382,11 @@ export default {
       let data = {
         costSeconds: duringTime / 1000,
         questionNumber: this.data.size,
-        rightNumber: this.rightQuestionId.length
+        rightNumber: this.rightQuestionId.length,
       };
       this.$grade
         .submitPractise(data)
-        .then(res => {
+        .then((res) => {
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
           }
@@ -388,7 +394,7 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              type: "warning"
+              type: "warning",
             });
           }
         })
@@ -402,7 +408,7 @@ export default {
     getdict() {
       this.$grade
         .getdict()
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -411,7 +417,7 @@ export default {
           if (res.data.code === 0) {
             this.classList = res.data.data[0]["科目名称"];
             this.subjectList = res.data.data[0]["专业名称"];
-            res.data.data[0]["题目类型"].map(item => {
+            res.data.data[0]["题目类型"].map((item) => {
               if (
                 item.value == "单选题" ||
                 item.value == "多选题" ||
@@ -424,11 +430,11 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              typr: "warning"
+              typr: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           //console.log(err);
         });
@@ -438,7 +444,7 @@ export default {
       this.loading = true;
       this.$grade
         .getErrorDetail(e)
-        .then(res => {
+        .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
             this.$router.push({ name: "login", path: "/login" });
@@ -450,15 +456,15 @@ export default {
           } else {
             this.$message({
               message: res.data.msg,
-              typr: "warning"
+              typr: "warning",
             });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           this.loading = false;
           this.$message({
             message: "获取失败",
-            type: "warning"
+            type: "warning",
           });
         });
     },
@@ -474,7 +480,7 @@ export default {
       if (this.classname == "" || this.classname == "不限") {
         this.data.criteria.subjectId = null;
       } else {
-        this.classList.map(item => {
+        this.classList.map((item) => {
           if (item.value == this.classname) {
             this.data.criteria.subjectId = item.key;
           }
@@ -484,7 +490,7 @@ export default {
       if (this.subjectname == "" || this.subjectname == "不限") {
         this.data.criteria.majorId = null;
       } else {
-        this.subjectList.map(item => {
+        this.subjectList.map((item) => {
           if (item.value == this.subjectname) {
             this.data.criteria.majorId = item.key;
           }
@@ -496,7 +502,7 @@ export default {
         this.type = false;
       } else {
         this.type = true;
-        this.questionType.map(item => {
+        this.questionType.map((item) => {
           if (item.value == this.topicType) {
             this.data.criteria.type = item.key;
           }
@@ -506,7 +512,7 @@ export default {
       if (this.easyType == "" || this.easyType == "不限") {
         this.data.criteria.level = null;
       } else {
-        this.diffcult.map(item => {
+        this.diffcult.map((item) => {
           if (item.value == this.easyType) {
             this.data.criteria.level = item.key;
           }
@@ -520,7 +526,7 @@ export default {
       if (this.type === true || this.data.type !== null) {
         this.$api
           .getRandomQuestion(this.data)
-          .then(res => {
+          .then((res) => {
             this.loading = false;
             // console.log(res);
             if (res.data.code === 0) {
@@ -534,17 +540,17 @@ export default {
             } else {
               this.$message({
                 message: "暂时没有足够的题目",
-                type: "warning"
+                type: "warning",
               });
             }
           })
-          .catch(err => {
+          .catch((err) => {
             this.loading = false;
           });
       } else {
         this.$message({
           message: "请至少选择一种题型",
-          type: "warning"
+          type: "warning",
         });
       }
     },
@@ -598,7 +604,7 @@ export default {
     checkbox(e) {
       let checkbox = [];
       let result = false;
-      e.map(item => {
+      e.map((item) => {
         if (item === 0) {
           checkbox.push("A");
         }
@@ -620,7 +626,7 @@ export default {
       });
       checkbox = checkbox.sort();
       let arr = [];
-      this.questionDetail.answers.map(item => {
+      this.questionDetail.answers.map((item) => {
         arr.push(item.content);
       });
       if (this.compare(arr, checkbox)) {
@@ -649,14 +655,14 @@ export default {
         }
       }
       return arr;
-    }
+    },
   },
   mounted() {
     this.getdict();
     this.flag = this.$route.query.flag;
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 
@@ -753,5 +759,11 @@ export default {
 }
 .padding {
   padding: 10px 0;
+}
+.abandonBtn {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  transform: translateX(50%);
 }
 </style>

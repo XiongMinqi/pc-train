@@ -67,6 +67,7 @@ export default {
   },
   mounted() {
     this.list = this.options[this.index];
+    console.log(this.list);
     //给填空题创建填空个数
     if (this.list.fillCount > 0) {
       for (let i = 0; i < this.list.fillCount; i++) {
@@ -76,11 +77,12 @@ export default {
       this.fillList.push("");
     }
     let answerDetail = this.answer[this.index];
+    console.log(answerDetail);
     if (answerDetail) {
       this.$store.state.practiseList[this.list.assignmentQuestionId] =
         answerDetail.content;
       if (answerDetail.content !== null) {
-        let arr = String(answerDetail.content).split("\\|");
+        let arr = String(answerDetail.content).split("|");
         this.textarea = arr;
       }
     }

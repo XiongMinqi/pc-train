@@ -1343,15 +1343,18 @@ export default {
 /deep/li {
   border-top: 1px dashed rgb(219, 219, 219);
   border-left: 1px dashed rgb(219, 219, 219);
-  // height: 25px!important;
+  // height: 25px !important;
   // border-right: 1px solid rgb(59, 65, 65);
 }
-/deep/ul{
-  // height: 25px!important;
-  // min-height: 25px!important;
+/deep/ul {
+  // height: 25px !important;
+  // min-height: 25px !important;
 }
 /deep/.course-hasContent {
   border-radius: 10px;
+  // transform: scaleY(0.5);
+  // font-size: 15px;
+  // line-height: 25px;
 }
 .msg {
   margin-bottom: 10px;
@@ -1400,6 +1403,6 @@ export default {
   line-height: 30px;
 }
 /deep/.left-hand-TextDom {
-  height: 20px!important;
+  height: 20px !important;
 }
 </style>
