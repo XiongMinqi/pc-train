@@ -11,6 +11,7 @@
               <div class="explain">
                 <div class="grid-content" style="color:green">考试说明</div>
                 <div>若考试时间超过了截止交卷时间，倒计时将以截止交卷时间为准</div>
+                <!-- <div>考试过程中请不要刷新本页面，以免数据丢失给您带来不便</div> -->
                 <div>
                   考试难度:
                   <span v-if="testInfo.level===0">简单</span>
@@ -294,7 +295,7 @@ export default {
       this.showDialog = false;
       this.$store.state.answerList = {};
       // this.$router.go(-1);
-      this.$router.push({ name: "result", path: "/result" });
+      this.$router.replace({ name: "result", path: "/result" });
     },
     //提交试卷
     submit() {
@@ -334,7 +335,7 @@ export default {
             //清空缓存在服务器的数据
             this.saveTestInfo(this.data);
             // this.$router.go(-1);
-            this.$router.push({ name: "result", path: "/result" });
+            this.$router.replace({ name: "result", path: "/result" });
           } else {
             //清除每分钟存数据到服务器
             clearInterval(this.saveMsg);
@@ -440,6 +441,29 @@ export default {
           //  console.log(err);
         });
     },
+    //时间格式转换
+    timechange(time) {
+      let clock = "";
+      let d = new Date(time);
+      let year = d.getFullYear(); //年
+      let month = d.getMonth() + 1; //月
+      let day = d.getDate(); //日
+      let hh = d.getHours(); //时
+      let mm = d.getMinutes(); //分
+      let ss = d.getSeconds(); //秒
+      clock += year + "-";
+      if (month < 10) clock += "0";
+      clock += month + "-";
+      if (day < 10) clock += "0";
+      clock += day + " ";
+      if (hh < 10) clock += "0";
+      clock += hh + ":";
+      if (mm < 10) clock += "0";
+      clock += mm + ":";
+      if (ss < 10) clock += "0";
+      clock += ss;
+      return clock;
+    },
     //时间倒计时
     timeDown() {
       var _this = this;
@@ -485,12 +509,12 @@ export default {
           // 本地时区时间 + 时差  = 中时区时间
           // 目标时区时间 + 时差 = 中时区时间
           // 目标时区时间 = 本地时区时间 + 本地时区时差 - 目标时区时差
-          // 东8区时间
-          let east8time =
-            new Date().getTime() +
-            _dif * 60 * 1000 -
-            targetTimezone * 60 * 60 * 1000;
-          let nowTime = _this.timeFormat(new Date(east8time));
+          // // 东8区时间
+          // let east8time =
+          //   new Date().getTime() +
+          //   _dif * 60 * 1000 -
+          //   targetTimezone * 60 * 60 * 1000;
+          // let nowTime = _this.timechange(new Date(east8time));
           //  console.log(nowTime);
           _this.dialogVisible = false;
           //获取学员peopleId
@@ -499,12 +523,12 @@ export default {
           // let ip = localStorage.getItem("Ip");
           // ip = ip.toString();
           let ip = "0.0.0.0";
-          _this.getBrowser();
+          // _this.getBrowser();
           //  console.log(this.testInfo.id);
           let data = {
             answers: _this.allAnswer,
-            beginTime: nowTime,
-            device: _this.llqName,
+            beginTime: _this.beginTestTime,
+            device: "chrome",
             ip: ip,
             ksExamId: _this.ksExamId,
             peopleId: userinfo.userId,
@@ -522,7 +546,7 @@ export default {
                 _this.data = "";
                 //清空缓存在服务器的数据
                 _this.saveTestInfo(this.data);
-                _this.$router.push({ name: "result", path: "/result" });
+                _this.$router.replace({ name: "result", path: "/result" });
               } else {
                 _this.$message({
                   message: res.data.msg,
@@ -567,6 +591,7 @@ export default {
           id: this.id,
           ksExamId: this.ksExamId,
         },
+        beginTestTime: this.beginTestTime,
         answerList: this.allAnswer,
         checkList: this.checkList,
       };
@@ -594,10 +619,6 @@ export default {
       .getExamRunningData()
       .then((res) => {
         if (res.data.code === 1000) {
-          this.$message({
-            message: res.data.msg,
-            type: "warning",
-          });
           this.$router.push({ name: "login", path: "/login" });
         }
         if (res.data.code === 0) {
@@ -625,6 +646,7 @@ export default {
             this.ksExamId = paperInfo.paperInfo.ksExamId;
             this.beginTestTime = paperInfo.beginTestTime;
             this.answer = paperInfo.answerList;
+            this.allAnswer = paperInfo.answerList;
             this.$store.state.answerList = this.answer;
             this.checkList = [];
             this.checkList = paperInfo.checkList;

@@ -29,50 +29,52 @@
 export default {
   props: {
     index: {
-      type: Number
+      type: Number,
     },
     options: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
-      }
+      },
     },
     answer: {
       type: Object,
-      default: function() {
+      default: function () {
         return {};
-      }
+      },
     },
     checkList: {
       type: Array,
-      default: function() {
+      default: function () {
         return [];
-      }
-    }
+      },
+    },
   },
   data() {
     return {
       checkBoxList: [],
       list: {},
       radio: "",
-      answerInfo: []
+      answerInfo: [],
     };
   },
   components: {},
   methods: {
     uniq(array) {
-      var temp = []; //一个新的临时数组
-      for (var i = 0; i < array.length; i++) {
-        if (temp.indexOf(array[i]) == -1) {
-          temp.push(array[i]);
-        }
-      }
-      return temp;
+      let arr = ["A", "B", "C", "D", "E", "F"];
+      let resultArr = [];
+      arr.map((item) => {
+        array.map((itm) => {
+          if (item == itm) {
+            resultArr.push(item);
+          }
+        });
+      });
+      return resultArr
     },
     changeCheckbox() {
-      // console.log(this.checkList, "前");
       this.answerInfo = [];
-      this.checkBoxList.map(item => {
+      this.checkBoxList.map((item) => {
         if (item == "0") {
           // console.log(0);
           this.answerInfo.push("A");
@@ -98,9 +100,7 @@ export default {
           this.answerInfo.push("F");
         }
       });
-      // console.log(this.checkList, "后");
-      // console.log(this.answerInfo, "答案");
-      this.answerInfo = this.uniq(this.answerInfo).sort();
+      this.answerInfo = this.uniq(this.answerInfo)
       // console.log(this.answerInfo, "答案");
       this.$store.state.answerList[this.list.id] = this.answerInfo;
       if (this.answerInfo.length > 0) {
@@ -111,7 +111,7 @@ export default {
         this.$emit("checkList", this.checkList);
       }
       // console.log(this.$store.state.answerList);
-    }
+    },
   },
   mounted() {
     this.options[this.index].checked = true;
@@ -119,7 +119,7 @@ export default {
     // console.log(this.answer[this.options[this.index].id]);
     if (this.answer[this.options[this.index].id]) {
       let answerDetail = this.answer[this.options[this.index].id];
-      answerDetail.map(item => {
+      answerDetail.map((item) => {
         if (item === "A") {
           this.checkBoxList.push("0");
         }
@@ -142,7 +142,7 @@ export default {
     }
   },
   watch: {},
-  computed: {}
+  computed: {},
 };
 </script>
 

@@ -379,6 +379,10 @@ export default {
   mounted() {
     // this.getSubjectDetail();
     this.getSubjectName();
+    // this.$api.getNowTime().then((res) => {
+    //   console.log((res.data.data[0]));
+    //   console.log((new Date()));
+    // });
   },
   watch: {},
   computed: {},

@@ -100,10 +100,13 @@
           >
             <div class="courseware" slot="reference">
               <div>
-                <div v-if="item.coverUrl">
+                <!-- <div v-if="item.coverUrl">
                   <img :src="item.coverUrl" alt />
                 </div>
                 <div v-else-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
+                  <img src="../../assets/img/word.png" alt />
+                </div> -->
+                <div v-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
                   <img src="../../assets/img/word.png" alt />
                 </div>
                 <div v-else-if="item.fileSuffix == '.xls' || item.fileSuffix == '.xlsx'">

@@ -55,13 +55,16 @@ export default {
   components: {},
   methods: {
     uniq(array) {
-      var temp = []; //一个新的临时数组
-      for (var i = 0; i < array.length; i++) {
-        if (temp.indexOf(array[i]) == -1) {
-          temp.push(array[i]);
-        }
-      }
-      return temp;
+      let arr = ["A", "B", "C", "D", "E", "F"];
+      let resultArr = [];
+      arr.map((item) => {
+        array.map((itm) => {
+          if (item == itm) {
+            resultArr.push(item);
+          }
+        });
+      });
+      return resultArr
     },
     changeCheckbox() {
       this.answerInfo = [];
@@ -85,7 +88,7 @@ export default {
           this.answerInfo.push("F");
         }
       });
-      this.answerInfo = this.uniq(this.answerInfo).sort();
+      this.answerInfo = this.uniq(this.answerInfo);
       if (this.answerInfo.length > 0) {
         let str = "";
         this.answerInfo.map((item, index) => {

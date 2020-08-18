@@ -150,5 +150,9 @@ export default {
     //获取正在运行的考试
     getRunningTest(){
         return axios.post("me/listMyTodoExam2")
+    },
+    //获取当前时间
+    getNowTime(){
+        return axios.get("getTime")
     }
 }

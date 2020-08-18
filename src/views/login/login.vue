@@ -80,7 +80,7 @@ export default {
       imgLink: "../../assets/icon/bgimg.png",
       username: "",
       passwords: "",
-      checked: true,
+      checked: false,
       canvas: null,
       context: null,
       stars: [], //星星数组

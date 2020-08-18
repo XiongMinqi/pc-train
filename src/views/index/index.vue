@@ -185,7 +185,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="vision" style="text-align: center;">版本号:20.08.13.17</div>
+    <div class="vision" style="text-align: center;">版本号:20.08.17.12</div>
   </div>
 </template>
 <script>
@@ -536,7 +536,6 @@ export default {
   margin: 10px 0 10px 10px;
 }
 .record:hover {
-  // color: green;
   cursor: pointer;
 }
 .classes {
