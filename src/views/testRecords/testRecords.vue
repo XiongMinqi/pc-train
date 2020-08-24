@@ -56,7 +56,7 @@
               <div class="score">总分</div>
               <div class="score">得分</div>
               <div class="duringTime">及格情况</div>
-              <div class="operation">操作</div>
+              <div class="operationes">操作</div>
             </div>
             <div>
               <div v-for="(item,index) in allTestList" :key="index">
@@ -420,6 +420,9 @@ export default {
     &:hover {
       cursor: pointer;
     }
+  }
+  .operationes{
+    width: 10%;
   }
   div {
     overflow: hidden;

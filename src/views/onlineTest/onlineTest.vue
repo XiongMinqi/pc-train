@@ -174,6 +174,7 @@ export default {
       dialogTableVisible: false,
       submitPaperloading: false,
       submitId: "",
+      setTime: {},
       paperDetail: {},
       subjectName: [],
       testDeatil: {},
@@ -224,6 +225,7 @@ export default {
     getlist() {},
     //获取考试信息
     getTest() {
+      this.loading = true;
       let data = {
         page: this.offset,
         limit: this.limit,
@@ -375,14 +377,16 @@ export default {
           //console.log(err);
         });
     },
+    timeOut() {
+      this.setTime = setInterval(() => {
+        // console.log("存数据");
+        this.getSubjectName();
+      }, 6000);
+    },
   },
   mounted() {
-    // this.getSubjectDetail();
     this.getSubjectName();
-    // this.$api.getNowTime().then((res) => {
-    //   console.log((res.data.data[0]));
-    //   console.log((new Date()));
-    // });
+    // this.timeOut();
   },
   watch: {},
   computed: {},

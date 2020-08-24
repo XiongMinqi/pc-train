@@ -9,7 +9,7 @@
             </div>
             <div v-else class="useravatarUrl">
               <!-- <img class="userImg" src="../../assets/icon/userImg.jpg" alt /> -->
-               <img class="userImg" :src="userInfo.avatarUrl" alt />
+              <img class="userImg" :src="userInfo.avatarUrl" alt />
             </div>
             <div class="username">{{userInfo.nickName}}</div>
           </div>
@@ -185,7 +185,65 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="vision" style="text-align: center;">版本号:20.08.17.12</div>
+    <div class="vision" style="text-align: center;">版本号:20.08.24.17</div>
+    <el-dialog width="60%" title="考试须知" :visible.sync="dialogTableVisible">
+      <div class="rich-text needKnown">
+        <p style="line-height:0; margin-bottom:5px;">
+          <span
+            class="--mb--rich-text"
+            data-boldtype="0"
+            style="font-family:SourceHanSansSC; font-weight:400; font-size:16px;  font-style:normal; letter-spacing:0px; line-height:24px; text-decoration:none;"
+          >一、考生应讲诚信并自觉服从监考员等考试工作人员管理，不得以任何理由妨碍监考员等考试工作人员履行职责，不得扰乱考场及其他考试工作地点的秩序。</span>
+        </p>
+        <p style="line-height:0; margin-bottom:5px;">
+          <span
+            class="--mb--rich-text"
+            data-boldtype="0"
+            style="font-family:SourceHanSansSC; font-weight:400; font-size:16px;  font-style:normal; letter-spacing:0px; line-height:24px; text-decoration:none;"
+          >二、凭有效身份证件，按规定时间和地点参加考试。</span>
+        </p>
+        <p style="line-height:0; margin-bottom:5px;">
+          <span
+            class="--mb--rich-text"
+            data-boldtype="0"
+            style="font-family:SourceHanSansSC; font-weight:400; font-size:16px;  font-style:normal; letter-spacing:0px; line-height:24px; text-decoration:none;"
+          >三、考生入场，严禁携带各种通信工具 (如手机、寻呼机及其他无线接收、传送设备等）、电子存储记忆录放设备以及涂改液、修正带等物品进入考场。允许使用计算器的课程，计算器也不得有程序储存功能。考场内不得自行传递文具、用品等。</span>
+        </p>
+        <p style="line-height:0; margin-bottom:5px;">
+          <span
+            class="--mb--rich-text"
+            data-boldtype="0"
+            style="font-family:SourceHanSansSC; font-weight:400; font-size:16px;  font-style:normal; letter-spacing:0px; line-height:24px; text-decoration:none;"
+          >四、考生入场后，遇计算机或考试系统问题，可举手询问；涉及试题内容的疑问，不得向监考员询问。</span>
+        </p>
+        <p style="line-height:0; margin-bottom:5px;">
+          <span
+            class="--mb--rich-text"
+            data-boldtype="0"
+            style="font-family:SourceHanSansSC; font-weight:400; font-size:16px;  font-style:normal; letter-spacing:0px; line-height:24px; text-decoration:none;"
+          >五、统一开考信号发出后才能开始答题。考试结束信号发出后考生立即停止答卷，根据监考员指令依次退出考场。交卷出场后不得再进场续考，也不得在考场附近逗留或交谈。</span>
+        </p>
+        <p style="line-height:0; margin-bottom:5px;">
+          <span
+            class="--mb--rich-text"
+            data-boldtype="0"
+            style="font-family:SourceHanSansSC; font-weight:400; font-size:16px;  font-style:normal; letter-spacing:0px; line-height:24px; text-decoration:none;"
+          >六、在考场内须保持安静，不准吸烟，不准喧哗，不准交头接耳、左顾右盼、打手势、做暗号，不准夹带、旁窥、抄袭或有意让他人抄袭。</span>
+        </p>
+        <p style="line-height:0; margin-bottom:5px;">
+          <span
+            class="--mb--rich-text"
+            data-boldtype="0"
+            style="font-family:SourceHanSansSC; font-weight:400; font-size:16px;  font-style:normal; letter-spacing:0px; line-height:24px; text-decoration:none;"
+          >七、如不遵守考场纪律，不服从考试工作人员管理，有违纪、作弊等行为的，将按照公司规定进行处理并记入考生诚信考试电子档案。</span>
+        </p>
+      </div>
+
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogTableVisible = false">取 消</el-button>
+        <el-button type="primary" @click="confirm">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -209,35 +267,53 @@ export default {
       alreadyStudy: 0,
       unstudy: 0,
       studypercent: 0,
+      dialogTableVisible: false,
       totalScore: 0,
       startVal: 0,
       duration: 2000,
       allTestList: [],
       missionList: [],
       testList: [],
+      testDeatil: {},
     };
   },
   components: { countTo, brokenLine },
   methods: {
     handleEdit(index, row) {
       if (row.totalScore > 0) {
-        this.$message({
-          message: "即将进入考试，祝您考试顺利",
-          type: "success",
-        });
-        this.$router.push({
-          path: "/testIng",
-          query: {
-            paperId: row.paperId,
-            id: row.id,
-          },
-        });
+        this.dialogTableVisible = true;
+        this.testDeatil = row;
+        // this.$message({
+        //   message: "即将进入考试，祝您考试顺利",
+        //   type: "success",
+        // });
+        // this.$router.push({
+        //   path: "/testIng",
+        //   query: {
+        //     paperId: row.paperId,
+        //     id: row.id,
+        //   },
+        // });
       } else {
         this.$message({
           message: "试卷发生错误，请联系管理员",
           type: "warning",
         });
       }
+    },
+    confirm() {
+      this.$message({
+        message: "即将进入考试，祝您考试顺利",
+        type: "success",
+      });
+      this.$router.push({
+        path: "/testIng",
+        query: {
+          paperId: this.testDeatil.paperId,
+          id: this.testDeatil.id,
+          finishTime: this.testDeatil.expirationTime,
+        },
+      });
     },
     study() {
       this.$router.push({ name: "studyRecord", path: "/studyRecord" });
@@ -368,8 +444,19 @@ export default {
             this.$router.push({ name: "login", path: "/login" });
           } else if (res.data.code === 0) {
             this.testList = res.data.data;
+            // this.testList.map((item) => {
+            //   item.publishTime = this.timeFormat(item.publishTime);
+            // });
             this.testList.map((item) => {
               item.publishTime = this.timeFormat(item.publishTime);
+              item.createTime = this.timeFormat(item.createTime);
+              let expirationTime =
+                Date.parse(new Date(item.publishTime)) + item.minutes * 60000;
+              this.$set(
+                item,
+                "expirationTime",
+                this.timeFormat(expirationTime)
+              );
             });
           } else {
             this.$message({
@@ -696,16 +783,22 @@ export default {
   font-weight: bold;
 }
 .iconLeft {
-  width: 40%;
+  // width: 40%;
 }
 .wordsRight {
-  width: 60%;
+  width: 283px;
+  text-align: center;
 }
 .learnRecord {
   padding-top: 18px;
 }
-.names{
+.names {
   width: 100px;
   // text-align: end;
+}
+.needKnown {
+  height: 50vh;
+  overflow-y: scroll;
+  color: #909399;
 }
 </style>

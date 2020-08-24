@@ -8,6 +8,9 @@
         <el-aside width="250px">
           <div>
             <div class="times">
+              <div class="btn">
+                <el-button type="primary" @click="checkPaper">提交试卷</el-button>
+              </div>
               <div class="explain">
                 <div class="grid-content" style="color:green">考试说明</div>
                 <div>若考试时间超过了截止交卷时间，倒计时将以截止交卷时间为准</div>
@@ -38,10 +41,6 @@
                     <div v-if="item.check===true" class="checkingtrue">{{index+1}}</div>
                   </div>
                 </div>
-              </div>
-              <div class="btn">
-                <el-button type="primary" @click="checkPaper">提交试卷</el-button>
-                <!-- <el-button type="primary" @click="savePaper">测试用保存试卷</el-button> -->
               </div>
             </div>
           </div>
@@ -218,6 +217,7 @@ export default {
       saveMsg: {},
       beginTestTime: "",
       noeTime: "",
+      submitResult: false,
     };
   },
   components: {
@@ -292,10 +292,18 @@ export default {
     },
     //时间到,关闭弹出层，跳转页面
     closePopup() {
-      this.showDialog = false;
-      this.$store.state.answerList = {};
-      // this.$router.go(-1);
-      this.$router.replace({ name: "result", path: "/result" });
+      if (this.submitResult === true) {
+        this.showDialog = false;
+        this.$store.state.answerList = {};
+        // this.$router.go(-1);
+        this.$router.replace({ name: "result", path: "/result" });
+      } else {
+        this.showDialog = false;
+        this.$message({
+          message: "试卷提交失败，请联系管理员",
+          type: "warning",
+        });
+      }
     },
     //提交试卷
     submit() {
@@ -332,6 +340,7 @@ export default {
             clearInterval(this.saveMsg);
             this.$store.state.answerList = {};
             this.data = "";
+            this.submitResult = true;
             //清空缓存在服务器的数据
             this.saveTestInfo(this.data);
             // this.$router.go(-1);
@@ -342,6 +351,7 @@ export default {
             //清空缓存在服务器的数据
             this.data = "";
             this.saveTestInfo(this.data);
+            this.submitResult = false;
             this.$message({
               message: res.data.msg,
               type: "warning",
@@ -419,7 +429,6 @@ export default {
             let newTime = Date.parse(new Date());
             let finishTimeing = this.$route.query.finishTime;
             let finishTime = Date.parse(new Date(finishTimeing));
-            console.log(finishTime);
             if (finishTime - newTime <= res.data.data[0].minutes * 60000) {
               this.time = this.beginTestTime + finishTime - newTime - newTime;
             } else {
@@ -777,8 +786,7 @@ span {
 }
 .btn {
   text-align: center;
-  margin-top: 20px;
-  margin-bottom: 50px;
+  margin-bottom: 10px;
 }
 .fixedTime {
   // position: fixed;
