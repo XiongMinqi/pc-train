@@ -98,11 +98,14 @@
                 </div>
               </div>
             </div>
-            <el-dialog width="80%" title="试卷明细" top="1vh" :visible.sync="dialogTableVisible">
-              <div v-loading="submitPaperloading">
-                <submitPaper :submitId="submitId" :paperDetail="paperDetail" />
-              </div>
-            </el-dialog>
+            <div style="position:relative">
+              <el-dialog width="80%" title="试卷明细" top="1vh" :visible.sync="dialogTableVisible">
+                <div v-loading="submitPaperloading">
+                  <submitPaper :submitId="submitId" :paperDetail="paperDetail" />
+                  <div class="tishiwords" v-if="paperDetail.status!=4">当前查看成绩不是最终成绩，结果仅供参考</div>
+                </div>
+              </el-dialog>
+            </div>
           </div>
           <div class="block">
             <el-pagination
@@ -421,7 +424,7 @@ export default {
       cursor: pointer;
     }
   }
-  .operationes{
+  .operationes {
     width: 10%;
   }
   div {
@@ -446,8 +449,15 @@ export default {
     background: #f2f2f2;
   }
 }
-.nameessdfsafsdf{
+.nameessdfsafsdf {
   border-bottom: 1px solid #f2f2f2;
   padding-bottom: 10px;
+}
+.tishiwords {
+  position: absolute;
+  top: 20px;
+  right: 200px;
+  color: #e6a23c;
+  font-size: 20px;
 }
 </style>

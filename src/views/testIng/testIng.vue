@@ -428,6 +428,7 @@ export default {
     },
     //获取考试信息
     getTestMsg() {
+      this.getNowTime();
       this.$onlineTest
         .onlineTest(this.id)
         .then((res) => {
@@ -715,7 +716,6 @@ export default {
   mounted() {
     this.getUserList();
     this.getSubjectDetail();
-    this.getNowTime();
     this.$store.state.answerList = {};
     //进入全屏
     this.handleFullScreen();

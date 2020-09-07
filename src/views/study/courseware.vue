@@ -206,7 +206,7 @@
           />
         </div>
         <div v-if="pictureUrl" style="height:70vh">
-          <img :src="pictureUrl" alt />
+          <img class="courseimg" :src="pictureUrl" alt />
         </div>
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -617,5 +617,9 @@ export default {
   span {
     color: #409eff;
   }
+}
+.courseimg{
+  max-width: 100%;
+  max-height: 100%;
 }
 </style>
