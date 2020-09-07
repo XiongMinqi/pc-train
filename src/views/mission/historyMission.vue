@@ -3,15 +3,11 @@
     <div class="historyRecord">学习任务记录</div>
     <div v-if="showHistory">
       <el-table :data="missionList" border style="width: 100%">
-        <!-- <template slot="empty">
-          <div>
-            <img style="width:300px;height:200px;" src="../../assets/icon/kong.png" alt />
-          </div>
-        </template> -->
         <el-table-column prop="name" label="任务名称"></el-table-column>
         <el-table-column prop="requireLearnTime" label="要求学习时长/分钟"></el-table-column>
         <el-table-column prop="requireRightCount" label="要求答对数量/道"></el-table-column>
         <el-table-column prop="learnTime" label="学习时长/分钟"></el-table-column>
+        <el-table-column prop="publishTime" label="发布时间"></el-table-column>
         <el-table-column prop="lastSubmitTime" label="最后提交练习时间"></el-table-column>
         <el-table-column prop="endTime" label="截止时间"></el-table-column>
         <el-table-column fixed="right" label="操作" width="180">
@@ -37,61 +33,67 @@
               <div>答对数量 :</div>
               <div class="count">{{rightCount}}</div>
             </div>
-            <div v-for="(item,index) in practiseList" :key="index">
-              <div class="title">
+            <div v-if="practiseList.length>0">
+              <div v-for="(item,index) in practiseList" :key="index">
+                <div class="title">
+                  <div>
+                    <div v-if="index<9">0{{index+1}}、</div>
+                    <div v-else>{{index+1}}、</div>
+                  </div>
+                  <div style="width:60px" :class="item.type===4?'name':'public'">
+                    <span v-if="item.type===0">【单选】</span>
+                    <span v-if="item.type===1">【多选】</span>
+                    <span v-if="item.type===2">【填空】</span>
+                    <span v-if="item.type===3">【判断】</span>
+                    <span v-if="item.type===4">【名词解释】</span>
+                    <span v-if="item.type===5">【问答】</span>
+                  </div>
+                  <div style="width:88%">{{item.content}}</div>
+                </div>
+                <div v-if="item.type===0||item.type===1" style="padding-bottom:10px">
+                  <div v-for="(itm,idx) in item.options" :key="idx">
+                    <div class="flex aligh-center" style="padding-left:10px">
+                      <div v-if="itm.order===0">A.</div>
+                      <div v-if="itm.order===1">B.</div>
+                      <div v-if="itm.order===2">C.</div>
+                      <div v-if="itm.order===3">D.</div>
+                      <div v-if="itm.order===4">E.</div>
+                      <div v-if="itm.order===5">F.</div>
+                      <div>{{itm.content}}</div>
+                    </div>
+                  </div>
+                </div>
+                <div v-if="item.type===3" style="padding-bottom:10px">
+                  <div style="padding-left:10px">正确</div>
+                  <div style="padding-left:10px">错误</div>
+                </div>
                 <div>
-                  <div v-if="index<9">0{{index+1}}、</div>
-                  <div v-else>{{index+1}}、</div>
-                </div>
-                <div style="width:60px" :class="item.type===4?'name':'public'">
-                  <span v-if="item.type===0">【单选】</span>
-                  <span v-if="item.type===1">【多选】</span>
-                  <span v-if="item.type===2">【填空】</span>
-                  <span v-if="item.type===3">【判断】</span>
-                  <span v-if="item.type===4">【名词解释】</span>
-                  <span v-if="item.type===5">【问答】</span>
-                </div>
-                <div style="width:88%">{{item.content}}</div>
-              </div>
-              <div v-if="item.type===0||item.type===1" style="padding-bottom:10px">
-                <div v-for="(itm,idx) in item.options" :key="idx">
-                  <div class="flex aligh-center" style="padding-left:10px">
-                    <div v-if="itm.order===0">A.</div>
-                    <div v-if="itm.order===1">B.</div>
-                    <div v-if="itm.order===2">C.</div>
-                    <div v-if="itm.order===3">D.</div>
-                    <div v-if="itm.order===4">E.</div>
-                    <div v-if="itm.order===5">F.</div>
-                    <div>{{itm.content}}</div>
+                  <div class="flex aligh-center">
+                    <div>学员答案</div>
+                    <div class="answerDetail" style="color:darkcyan">
+                      <div v-if="answerList.length>0">{{answerList[index].content}}</div>
+                      <div v-else>该题暂未作答</div>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div v-if="item.type===3" style="padding-bottom:10px">
-                <div style="padding-left:10px">正确</div>
-                <div style="padding-left:10px">错误</div>
-              </div>
-              <div>
-                <div class="flex aligh-center">
-                  <div>学员答案</div>
-                  <div class="answerDetail" style="color:darkcyan">
-                    <div v-if="answerList.length>0">{{answerList[index].content}}</div>
-                    <div v-else>该题暂未作答</div>
+                  <div class="flex aligh-center">
+                    <div>正确答案</div>
+                    <div
+                      class="answerDetail"
+                      style="color: darkolivegreen"
+                    >{{item.standardAnswerStr}}</div>
                   </div>
-                </div>
-                <div class="flex aligh-center">
-                  <div>正确答案</div>
-                  <div class="answerDetail" style="color: darkolivegreen">{{item.standardAnswerStr}}</div>
-                </div>
-                <div class="flex aligh-center">
-                  <div>练习结果</div>
-                  <div class="answerDetail" v-if="answerList.length>0">
-                    <div v-if="answerList[index].isRight===false" style="color:red">回答错误</div>
-                    <div v-if="answerList[index].isRight===true" style="color:green">回答正确</div>
+                  <div class="flex aligh-center">
+                    <div>练习结果</div>
+                    <div class="answerDetail" v-if="answerList.length>0">
+                      <div v-if="answerList[index].isRight===false" style="color:red">回答错误</div>
+                      <div v-if="answerList[index].isRight===true" style="color:green">回答正确</div>
+                    </div>
+                    <div class="answerDetail" v-else style="color:red">暂无结果</div>
                   </div>
-                  <div class="answerDetail" v-else style="color:red">暂无结果</div>
                 </div>
               </div>
             </div>
+            <div v-else class="else"></div>
           </div>
           <div slot="footer" class="dialog-footer Btn">
             <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -235,6 +237,7 @@ export default {
               if (item.lastSubmitTime) {
                 item.lastSubmitTime = this.timeFormat(item.lastSubmitTime);
               }
+              item.publishTime = this.timeFormat(item.publishTime)
               let times = Date.parse(item.publishTime) + item.lastTime * 60000;
               let endTime = this.timeFormat(times);
               this.$set(item, "endTime", endTime);

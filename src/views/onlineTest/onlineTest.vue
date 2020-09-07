@@ -59,23 +59,15 @@
             <div>
               <div v-if="item.status===1">
                 <div class="wordsedeed unbegin">未开始</div>
-                <!-- <el-tag effect="dark">未开始</el-tag> -->
-                <!-- <el-button type="danger" round>未开始</el-button> -->
               </div>
               <div v-if="item.status===3">
-                <!-- <el-tag type="info">审核中</el-tag> -->
                 <div class="wordsedeed doshenhe">审核中</div>
-                <!-- <el-button type="danger" round>审核中</el-button> -->
               </div>
               <div v-if="item.status===4">
                 <div class="wordsedeed finished">已结束</div>
-                <!-- <el-tag type="danger">已结束</el-tag> -->
-                <!-- <el-button type="danger" round>已结束</el-button> -->
               </div>
               <div v-if="item.status===2">
                 <div class="wordsedeed doing">运行中</div>
-                <!-- <el-tag type="success" effect="dark">运行中</el-tag> -->
-                <!-- <el-button type="primary" round>进入考试</el-button> -->
               </div>
             </div>
           </div>
@@ -146,6 +138,20 @@
             style="font-family:SourceHanSansSC; font-weight:400; font-size:16px;  font-style:normal; letter-spacing:0px; line-height:24px; text-decoration:none;"
           >七、如不遵守考场纪律，不服从考试工作人员管理，有违纪、作弊等行为的，将按照公司规定进行处理并记入考生诚信考试电子档案。</span>
         </p>
+        <p style="line-height:0; margin-bottom:5px;">
+          <span
+            class="--mb--rich-text"
+            data-boldtype="0"
+            style="font-family:SourceHanSansSC; font-weight:400; font-size:16px;  font-style:normal; letter-spacing:0px; line-height:24px; text-decoration:none;"
+          >八、请不要在输入框里输入任何表情符号，否则将不能提交试卷。</span>
+        </p>
+        <p style="line-height:0; margin-bottom:5px;">
+          <span
+            class="--mb--rich-text"
+            data-boldtype="0"
+            style="font-family:SourceHanSansSC; font-weight:bold; font-size:16px;  font-style:normal; letter-spacing:0px; line-height:24px; text-decoration:none;"
+          >九、建议在考试截止前五分钟提交试卷，若超时试卷将无法提交。</span>
+        </p>
       </div>
 
       <span slot="footer" class="dialog-footer">
@@ -192,7 +198,7 @@ export default {
         query: {
           paperId: this.testDeatil.paperId,
           id: this.testDeatil.id,
-          finishTime: this.testDeatil.expirationTime,
+          finishTime: this.testDeatil.expirationTestTime,
         },
       });
     },
@@ -265,6 +271,7 @@ export default {
                 "expirationTime",
                 this.timeFormat(expirationTime)
               );
+              this.$set(item, "expirationTestTime", expirationTime);
             });
             // this.testList.sort(function(a, b) {
             //   let minTime = new Date(a.publishTime).getTime();

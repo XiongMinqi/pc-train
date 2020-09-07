@@ -237,6 +237,8 @@ export default {
       activeName: "first",
       coursewareList: [],
       practiseList: [],
+      textList: [],
+      pictureList: [],
       videoPlayer: "",
       audioUrl: [],
       pdfUrl: "",
@@ -429,31 +431,35 @@ export default {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
-            this.coursewareList = res.data.data;
-            this.textList = [];
-            this.pictureList = [];
-            this.coursewareList.map((item) => {
-              item.uploadTime = this.timeFormat(item.uploadTime);
-              item.fileSize = this.twoNumber(item.fileSize / 1024);
-              if (
-                item.fileSuffix === ".jpg" ||
-                item.fileSuffix === ".png" ||
-                item.fileSuffix === ".jpeg" ||
-                item.fileSuffix === ".bmp" ||
-                item.fileSuffix === ".gif" ||
-                item.fileSuffix === ".wmv" ||
-                item.fileSuffix === ".avi" ||
-                item.fileSuffix === ".rm" ||
-                item.fileSuffix === ".flv" ||
-                item.fileSuffix === ".mp4" ||
-                item.fileSuffix === ".wma" ||
-                item.fileSuffix === ".mp3"
-              ) {
-                this.pictureList.push(item);
-              } else {
-                this.textList.push(item);
-              }
-            });
+            if (res.data.data === null) {
+              this.coursewareList = [];
+            } else {
+              this.coursewareList = res.data.data;
+              this.textList = [];
+              this.pictureList = [];
+              this.coursewareList.map((item) => {
+                item.uploadTime = this.timeFormat(item.uploadTime);
+                item.fileSize = this.twoNumber(item.fileSize / 1024);
+                if (
+                  item.fileSuffix === ".jpg" ||
+                  item.fileSuffix === ".png" ||
+                  item.fileSuffix === ".jpeg" ||
+                  item.fileSuffix === ".bmp" ||
+                  item.fileSuffix === ".gif" ||
+                  item.fileSuffix === ".wmv" ||
+                  item.fileSuffix === ".avi" ||
+                  item.fileSuffix === ".rm" ||
+                  item.fileSuffix === ".flv" ||
+                  item.fileSuffix === ".mp4" ||
+                  item.fileSuffix === ".wma" ||
+                  item.fileSuffix === ".mp3"
+                ) {
+                  this.pictureList.push(item);
+                } else {
+                  this.textList.push(item);
+                }
+              });
+            }
           } else {
             this.$message({
               message: res.data.msg,

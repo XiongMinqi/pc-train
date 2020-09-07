@@ -8,7 +8,6 @@
               <img class="userImg" src="../../assets/icon/userImg.jpg" alt />
             </div>
             <div v-else class="useravatarUrl">
-              <!-- <img class="userImg" src="../../assets/icon/userImg.jpg" alt /> -->
               <img class="userImg" :src="userInfo.avatarUrl" alt />
             </div>
             <div class="username">{{userInfo.nickName}}</div>
@@ -133,28 +132,31 @@
               </div>
               <div class="logintime learnRecord">
                 <div>在线测试记录 :</div>
-                <div class="content">{{fail+pass}}次</div>
+                <div class="content">{{fail+pass}} 次</div>
               </div>
             </div>
           </div>
         </div>
         <div class="courseList box-shadow">
           <div>
-            <i class="el-icon-s-help iconfont"></i>学习任务
+            <i class="el-icon-edit iconfont"></i>我的考试
           </div>
-          <div v-if="showMission">
-            <el-table :data="missionList" style="width: 100%" height="300">
-              <!-- <template slot="empty">
-                <div>
-                  <img style="width:250px;height:200px" src="../../assets/icon/kong.png" alt />
-                </div>
-              </template>-->
-              <el-table-column prop="name" label="任务名称" width="180"></el-table-column>
-              <el-table-column prop="requireLearnTime" label="要求学习时长" width="180"></el-table-column>
-              <el-table-column prop="learnTime" label="已学习时长" width="180"></el-table-column>
-              <el-table-column prop="publishTime" label="发布时间"></el-table-column>
-            </el-table>
-          </div>
+          <el-table :data="testList" style="width: 100%" height="300">
+            <el-table-column prop="name" label="考试名称"></el-table-column>
+            <el-table-column prop="passScore" label="通过分数" width="120"></el-table-column>
+            <el-table-column prop="totalScore" label="总分数" width="120"></el-table-column>
+            <el-table-column prop="publishTime" label="考试开始时间"></el-table-column>
+            <el-table-column prop="expirationTime" label="截止交卷时间"></el-table-column>
+            <el-table-column label="操作">
+              <template slot-scope="scope">
+                <el-button
+                  size="mini"
+                  type="primary"
+                  @click="handleEdit(scope.$index, scope.row)"
+                >进入考试</el-button>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
       </div>
     </div>
@@ -166,26 +168,18 @@
     </div>
     <div class="runningTestList box-shadow">
       <div>
-        <i class="el-icon-edit iconfont"></i>我的考试
+        <i class="el-icon-s-help iconfont"></i>学习任务
       </div>
-      <el-table :data="testList" style="width: 100%" height="300">
-        <!-- <template slot="empty">
-          <div>
-            <img style="width:250px;height:200px;" src="../../assets/icon/kong.png" alt />
-          </div>
-        </template>-->
-        <el-table-column prop="name" label="考试名称"></el-table-column>
-        <el-table-column prop="passScore" label="通过分数"></el-table-column>
-        <el-table-column prop="totalScore" label="总分数"></el-table-column>
-        <el-table-column prop="publishTime" label="考试时间"></el-table-column>
-        <el-table-column label="操作">
-          <template slot-scope="scope">
-            <el-button size="mini" type="primary" @click="handleEdit(scope.$index, scope.row)">进入考试</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <div v-if="showMission">
+        <el-table :data="missionList" style="width: 100%" height="300">
+          <el-table-column prop="name" label="任务名称"></el-table-column>
+          <el-table-column prop="requireLearnTime" label="要求学习时长"></el-table-column>
+          <el-table-column prop="learnTime" label="已学习时长"></el-table-column>
+          <el-table-column prop="publishTime" label="发布时间"></el-table-column>
+        </el-table>
+      </div>
     </div>
-    <div class="vision" style="text-align: center;">版本号:20.08.24.17</div>
+    <div class="vision" style="text-align: center;margin-bottom:50px">版本号:20.09.01.14</div>
     <el-dialog width="60%" title="考试须知" :visible.sync="dialogTableVisible">
       <div class="rich-text needKnown">
         <p style="line-height:0; margin-bottom:5px;">
@@ -236,6 +230,20 @@
             data-boldtype="0"
             style="font-family:SourceHanSansSC; font-weight:400; font-size:16px;  font-style:normal; letter-spacing:0px; line-height:24px; text-decoration:none;"
           >七、如不遵守考场纪律，不服从考试工作人员管理，有违纪、作弊等行为的，将按照公司规定进行处理并记入考生诚信考试电子档案。</span>
+        </p>
+        <p style="line-height:0; margin-bottom:5px;">
+          <span
+            class="--mb--rich-text"
+            data-boldtype="0"
+            style="font-family:SourceHanSansSC; font-weight:400; font-size:16px;  font-style:normal; letter-spacing:0px; line-height:24px; text-decoration:none;"
+          >八、请不要在输入框里输入任何表情符号，否则将不能提交试卷。</span>
+        </p>
+        <p style="line-height:0; margin-bottom:5px;">
+          <span
+            class="--mb--rich-text"
+            data-boldtype="0"
+            style="font-family:SourceHanSansSC; font-weight:bold; font-size:16px;  font-style:normal; letter-spacing:0px; line-height:24px; text-decoration:none;"
+          >九、建议在考试截止前五分钟提交试卷，若超时试卷将无法提交。</span>
         </p>
       </div>
 
@@ -311,7 +319,7 @@ export default {
         query: {
           paperId: this.testDeatil.paperId,
           id: this.testDeatil.id,
-          finishTime: this.testDeatil.expirationTime,
+          finishTime: this.testDeatil.expirationTestTime,
         },
       });
     },
@@ -355,7 +363,7 @@ export default {
     //获取我的学习记录
     getStudy() {
       this.$api
-        .getStudyRecord(this.userInfo.userId, this.page, this.limit)
+        .getStudyRecord(this.page, this.limit)
         .then((res) => {
           this.loading = false;
           if (res.data.code === 1000) {
@@ -367,9 +375,9 @@ export default {
             if (this.totalStudyTime > 60) {
               let hour = Math.floor(this.totalStudyTime / 60);
               let minute = this.totalStudyTime - hour * 60;
-              this.totalStudyTime = hour + "小时" + minute + "分钟";
+              this.totalStudyTime = hour + " 小时 " + minute + " 分钟";
             } else {
-              this.totalStudyTime = this.totalStudyTime + "分钟";
+              this.totalStudyTime = this.totalStudyTime + " 分钟";
             }
           } else {
             this.$message({
@@ -457,6 +465,11 @@ export default {
                 "expirationTime",
                 this.timeFormat(expirationTime)
               );
+              this.$set(
+                 item,
+                "expirationTestTime",
+                expirationTime
+              )
             });
           } else {
             this.$message({

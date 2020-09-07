@@ -8,7 +8,7 @@
 export default {
   data() {
     return {
-      time: {}
+      time: {},
     };
   },
   components: {},
@@ -22,7 +22,15 @@ export default {
     //定时给后台发信息
     sendMsg() {
       this.time = setInterval(() => {
-        this.$api.sendInfo();
+        this.$api.sendInfo().then((res) => {
+          if (res.data.code === 1000) {
+            this.$router.push({ name: "login", path: "/login" });
+            this.$message({
+              message: res.data.msg,
+              type: "warning",
+            });
+          }
+        });
         // console.log("五分钟发一次消息");
       }, 300000);
     },
@@ -35,7 +43,7 @@ export default {
           chrome: false,
           netscape: false,
           appname: "unknown",
-          version: 0
+          version: 0,
         },
         ua = window.navigator.userAgent.toLowerCase();
       if (/(msie|firefox|opera|chrome|netscape)\D+(\d[\d.]*)/.test(ua)) {
@@ -50,25 +58,31 @@ export default {
       }
       // return browser.appname + " " + browser.version;
       return browser.appname;
-    }
+    },
   },
   mounted() {
     this.sendMsg();
     if (this._isMobile()) {
       this.$message({
         message: "请使用电脑浏览本网站，否则会影响您的正常使用",
-        type: "warning"
+        type: "warning",
       });
     }
     var a = this.getBrowser();
-    if (a.indexOf("ie") !== -1||a.indexOf("IE") !== -1||a.indexOf("Explorer") !== -1|| a.indexOf("unknown") !== -1) {
+    if (
+      a.indexOf("ie") !== -1 ||
+      a.indexOf("IE") !== -1 ||
+      a.indexOf("Explorer") !== -1 ||
+      a.indexOf("unknown") !== -1
+    ) {
       this.$notify({
         title: "注意",
-        message: "此系统不适用于当前浏览器，请更换为谷歌、edge、火狐等浏览器使用",
+        message:
+          "此系统不适用于当前浏览器，请更换为谷歌、edge、火狐等浏览器使用",
         showClose: false,
-        position: 'bottom-right',
-        type:"warning",
-        duration: 0
+        position: "bottom-right",
+        type: "warning",
+        duration: 0,
       });
     }
   },
@@ -76,7 +90,7 @@ export default {
   computed: {},
   destroyed() {
     clearInterval(this.time);
-  }
+  },
 };
 </script>
 

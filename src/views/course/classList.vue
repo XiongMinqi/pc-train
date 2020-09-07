@@ -48,7 +48,7 @@
         <div>
           <div class="teacherPicture">
             <div v-if="teacherImg">
-              <img :src="teacherImg[0]" alt />
+              <img :src="teacherImg" alt />
             </div>
             <div v-else>
               <img src="../../assets/icon/userImg.jpg" alt />
@@ -460,7 +460,7 @@ export default {
       msg: "",
       dialogFormVisible: false,
       courseDetail: {},
-      teacherImg: [],
+      teacherImg: "",
       courseChooseList: [],
       diachoosed: false,
       choosedItem: "",
@@ -1062,7 +1062,7 @@ export default {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
-            this.teacherImg = res.data.data;
+            this.teacherImg = res.data.data[0];
           } else {
             this.$message({
               message: res.data.msg,

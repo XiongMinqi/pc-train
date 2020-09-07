@@ -46,7 +46,7 @@
       <div v-if="showRecord">
         <div v-if="allTestList.length>0" class="infinite-list" style="overflow:auto">
           <div>
-            <div class="flex">
+            <div class="flex nameessdfsafsdf">
               <div class="index">序号</div>
               <!-- <div class="testName">试卷</div> -->
               <div class="testName">考试名称</div>
@@ -445,5 +445,9 @@ export default {
   &:hover {
     background: #f2f2f2;
   }
+}
+.nameessdfsafsdf{
+  border-bottom: 1px solid #f2f2f2;
+  padding-bottom: 10px;
 }
 </style>

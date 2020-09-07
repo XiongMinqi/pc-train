@@ -169,9 +169,16 @@ export default {
             localStorage.setItem("token", res.headers["x-auth-token"]);
             // this.$store.state.header['x-auth-token'] = res.header['x-auth-token']
             this.$message({
-              message: res.data.msg,
+              message: "欢迎, " + res.data.data[0].nickName,
               type: "success",
+              duration: 5000,
             });
+            // this.$notify({
+            //   type: "success",
+            //   title: "登录成功",
+            //   message: "欢迎你, " + res.data.data[0].nickName,
+            //   duration: 0,
+            // });
             this.$grade
               .getExamRunningData()
               .then((reslut) => {
