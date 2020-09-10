@@ -76,9 +76,9 @@ export default {
       a.indexOf("unknown") !== -1
     ) {
       this.$notify({
-        title: "注意",
+        title: "温馨提示",
         message:
-          "此系统不适用于当前浏览器，请更换为谷歌、edge、火狐等浏览器使用",
+          "自2015年3月起，微软已宣布弃用IE，且不再对IE提供任何更新维护。如果您使用的是双核浏览器，请您切换浏览器内核为极速模式后再浏览本网页。建议使用chorme或者firefox浏览器",
         showClose: false,
         position: "bottom-right",
         type: "warning",

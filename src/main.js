@@ -11,7 +11,6 @@ import VueVideoPlayer from 'vue-video-player'
 import 'video.js/dist/video-js.css'
 import "./assets/common.css"
 import 'vue-video-player/src/custom-theme.css'
-import timeFormat from "./assets/common.js"
 //
 import Axios from 'axios'
 import ElementUI from 'element-ui';
