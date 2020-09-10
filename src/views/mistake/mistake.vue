@@ -27,20 +27,20 @@
             <div style="display: flex; align-items: center;width: 90%;">
               <div class="userImg">
                 <!-- <img src="../../assets/icon/mistake.png" alt /> -->
-                <img src="../../assets/icon/pencil.png" alt />
+                <img src="../../assets/icon/pencil.png" alt/>
               </div>
               <div style="margin-left:20px">
                 <div class="name">
                   <div class="questiontype" v-for="(itm,idx) in questionType" :key="idx">
                     <div v-if="item.type == itm.key" style="padding-bottom:5px;">
                       <span style="font-weight:bold;margin-right:5px">
-                        <el-tag size="mini" effect="dark">{{itm.value}}</el-tag>
+                        <el-tag size="mini" effect="dark">{{ itm.value }}</el-tag>
                       </span>
-                      <span class="bg-warning" style="font-size:12px">做错次数 ：{{item.wrongCount}}次</span>
+                      <span class="bg-warning" style="font-size:12px">做错次数 ：{{ item.wrongCount }}次</span>
                     </div>
                   </div>
                 </div>
-                <div class="questioncontent">{{item.content}}</div>
+                <div class="questioncontent">{{ item.content }}</div>
                 <div style="font-size:12px;color:#a5a5a5;padding-left:6px">
                   <span class="promptWords">
                     困难程度:
@@ -51,9 +51,9 @@
                     </span>
                   </span>
                   |
-                  <span class="promptWords">所属专业 : {{item.majorname}}</span> |
-                  <span class="promptWords">所属部门 : {{item.departname}}</span> |
-                  <span class="promptWords">分数 ：{{item.defaultScore}}分</span>
+                  <span class="promptWords">所属专业 : {{ item.majorname }}</span> |
+                  <span class="promptWords">所属部门 : {{ item.departname }}</span> |
+                  <span class="promptWords">分数 ：{{ item.defaultScore }}分</span>
                 </div>
               </div>
             </div>
@@ -69,13 +69,13 @@
         </div>
         <div class="block">
           <el-pagination
-            @size-change="handleSizeChange"
-            @current-change="handleCurrentChange"
-            :current-page="currentPage"
-            :page-sizes="[5, 10, 15, 20, 30, 40]"
-            :page-size="100"
-            layout="total, sizes, prev, pager, next, jumper"
-            :total="total"
+              @size-change="handleSizeChange"
+              @current-change="handleCurrentChange"
+              :current-page="currentPage"
+              :page-sizes="[5, 10, 15, 20, 30, 40]"
+              :page-size="100"
+              layout="total, sizes, prev, pager, next, jumper"
+              :total="total"
           ></el-pagination>
         </div>
       </div>
@@ -87,9 +87,9 @@
       <div v-loading="dialogloading">
         <div class="detail">
           <div class="questiontype" v-for="(itm,idx) in questionType" :key="idx">
-            <span v-if="questionDetail.type == itm.key">【{{itm.value}}】</span>
+            <span v-if="questionDetail.type == itm.key">【{{ itm.value }}】</span>
           </div>
-          <div class="content">{{questionDetail.content}}</div>
+          <div class="content">{{ questionDetail.content }}</div>
         </div>
         <!-- 选项 -->
         <div>
@@ -102,7 +102,7 @@
                   <span v-if="item.order === 1">B、</span>
                   <span v-if="item.order === 2">C、</span>
                   <span v-if="item.order === 3">D、</span>
-                  {{item.content}}
+                  {{ item.content }}
                 </el-radio>
               </el-radio-group>
             </div>
@@ -129,40 +129,40 @@
                   <span v-if="item.order === 3">D、</span>
                   <span v-if="item.order === 4">E、</span>
                   <span v-if="item.order === 5">F、</span>
-                  {{item.content}}
+                  {{ item.content }}
                 </el-checkbox>
               </el-checkbox-group>
             </div>
           </div>
           <div v-if="questionDetail.type==2||questionDetail.type==4||questionDetail.type==5">
             <el-input
-              type="textarea"
-              :autosize="{ minRows: 2, maxRows: 4}"
-              placeholder="请输入内容"
-              v-model="textarea"
+                type="textarea"
+                :autosize="{ minRows: 2, maxRows: 4}"
+                placeholder="请输入内容"
+                v-model="textarea"
             ></el-input>
           </div>
         </div>
         <div class="checkRightAnswer">
           <div @click="checkRightAnswer">
-            <img src="../../assets/icon/light-bulb.png" alt />
+            <img src="../../assets/icon/light-bulb.png" alt/>
           </div>
           <div @click="checkRightAnswer" v-if="showAnswer">关闭提示</div>
           <div @click="checkRightAnswer" v-else>查看提示</div>
         </div>
         <div v-if="showAnswer">
           答题提示 :
-          <span v-if="questionDetail.answerResolve">{{questionDetail.answerResolve}}</span>
+          <span v-if="questionDetail.answerResolve">{{ questionDetail.answerResolve }}</span>
           <span v-else>暂无提示</span>
         </div>
         <div v-if="disappear" style="display:flex;align-items: center;padding-top:20px">
           <div>正确答案 :</div>
           <div v-if="questionDetail.type==1" style="padding-left:10px;color:green">
             <span v-for="(item,index) in questionDetail.answers" :key="index">
-              <span>{{item.content}}</span>
+              <span>{{ item.content }}</span>
             </span>
           </div>
-          <div v-else style="padding-left:10px;color:green">{{questionDetail.answers[0].content}}</div>
+          <div v-else style="padding-left:10px;color:green">{{ questionDetail.answers[0].content }}</div>
         </div>
       </div>
       <div slot="footer" class="dialog-footer">
@@ -238,11 +238,11 @@ export default {
     //确定按钮
     submit() {
       if (
-        this.textarea != "" ||
-        this.radio !== "" ||
-        this.checkList.length > 0 ||
-        this.judge1 != "" ||
-        this.judge2 != ""
+          this.textarea != "" ||
+          this.radio !== "" ||
+          this.checkList.length > 0 ||
+          this.judge1 != "" ||
+          this.judge2 != ""
       ) {
         if (this.closeDialog === false) {
           this.disappear = true;
@@ -257,31 +257,31 @@ export default {
     //删除错题
     deleteQuestion(e) {
       this.$grade
-        .deleteMistake(e.id)
-        .then((res) => {
-          if (res.data.code === 1000) {
-            this.$router.push({ name: "login", path: "/login" });
-          }
-          if (res.data.code === 0) {
+          .deleteMistake(e.id)
+          .then((res) => {
+            if (res.data.code === 1000) {
+              this.$router.push({name: "login", path: "/login"});
+            }
+            if (res.data.code === 0) {
+              this.$message({
+                message: "删除成功",
+                type: "success",
+              });
+              this.loading = true;
+              this.getErrorList();
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: "warning",
+              });
+            }
+          })
+          .catch((err) => {
             this.$message({
-              message: "删除成功",
-              type: "success",
-            });
-            this.loading = true;
-            this.getErrorList();
-          } else {
-            this.$message({
-              message: res.data.msg,
+              message: "获取失败",
               type: "warning",
             });
-          }
-        })
-        .catch((err) => {
-          this.$message({
-            message: "获取失败",
-            type: "warning",
           });
-        });
     },
     //错题组卷
     wrongQuestion() {
@@ -297,57 +297,57 @@ export default {
       this.dialogloading = true;
       this.showAnswer = false;
       this.$grade
-        .getErrorDetail(e.id)
-        .then((res) => {
-          this.dialogloading = false;
-          if (res.data.code === 1000) {
-            this.$router.push({ name: "login", path: "/login" });
-          }
-          if (res.data.code === 0) {
-            // console.log(res);
-            this.questionDetail = res.data.data[0];
-            // console.log(this.questionDetail);
-          } else {
-            this.$message({
-              message: res.data.msg,
-              typr: "warning",
-            });
-          }
-        })
-        .catch((err) => {
-          this.dialogloading = false;
-        });
+          .getErrorDetail(e.id)
+          .then((res) => {
+            this.dialogloading = false;
+            if (res.data.code === 1000) {
+              this.$router.push({name: "login", path: "/login"});
+            }
+            if (res.data.code === 0) {
+              // console.log(res);
+              this.questionDetail = res.data.data[0];
+              // console.log(this.questionDetail);
+            } else {
+              this.$message({
+                message: res.data.msg,
+                typr: "warning",
+              });
+            }
+          })
+          .catch((err) => {
+            this.dialogloading = false;
+          });
     },
     //获取全部题目类型
     getQuestionType() {
       this.$grade
-        .getdict()
-        .then((res) => {
-          this.loading = false;
-          if (res.data.code === 1000) {
-            this.$router.push({ name: "login", path: "/login" });
-          }
-          if (res.data.code === 0) {
-            this.questionType = res.data.data[0]["题目类型"];
-            this.major = res.data.data[0]["专业名称"];
-            this.department = res.data.data[0]["部门名称"];
-            this.subjectName = res.data.data[0]["科目名称"];
-            this.getErrorList();
-            // console.log(this.department);
-          } else {
+          .getdict()
+          .then((res) => {
+            this.loading = false;
+            if (res.data.code === 1000) {
+              this.$router.push({name: "login", path: "/login"});
+            }
+            if (res.data.code === 0) {
+              this.questionType = res.data.data[0]["题目类型"];
+              this.major = res.data.data[0]["专业名称"];
+              this.department = res.data.data[0]["部门名称"];
+              this.subjectName = res.data.data[0]["科目名称"];
+              this.getErrorList();
+              // console.log(this.department);
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: "warning",
+              });
+            }
+          })
+          .catch((err) => {
+            this.loading = false;
             this.$message({
-              message: res.data.msg,
+              message: "获取失败",
               type: "warning",
             });
-          }
-        })
-        .catch((err) => {
-          this.loading = false;
-          this.$message({
-            message: "获取失败",
-            type: "warning",
           });
-        });
     },
     //选择题目类型
     chooseClass() {
@@ -386,49 +386,48 @@ export default {
         },
       };
       this.$grade
-        .getMistake(data)
-        .then((res) => {
-          this.loading = false;
-          this.showError = true;
-          if (res.data.code === 1000) {
-            this.$router.push({ name: "login", path: "/login" });
-          }
-          if (res.data.code === 0) {
-            this.errorList = res.data.data;
-            this.total = res.data.count;
-            this.errorList.map((item) => {
-              this.major.map((itm) => {
-                if (item.majorId == itm.key) {
-                  this.$set(item, "majorname", itm.value);
-                }
+          .getMistake(data)
+          .then((res) => {
+            this.loading = false;
+            this.showError = true;
+            if (res.data.code === 1000) {
+              this.$router.push({name: "login", path: "/login"});
+            }
+            if (res.data.code === 0) {
+              this.errorList = res.data.data;
+              this.total = res.data.count;
+              this.errorList.map((item) => {
+                this.major.map((itm) => {
+                  if (item.majorId == itm.key) {
+                    this.$set(item, "majorname", itm.value);
+                  }
+                });
+                this.department.map((itm) => {
+                  if (item.departmentId == itm.key) {
+                    this.$set(item, "departname", itm.value);
+                  }
+                });
               });
-              this.department.map((itm) => {
-                if (item.departmentId == itm.key) {
-                  this.$set(item, "departname", itm.value);
-                }
+              // console.log(this.errorList);
+            } else {
+              this.$message({
+                message: res.data.msg,
+                typr: "warning",
               });
-            });
-            // console.log(this.errorList);
-          } else {
+            }
+          })
+          .catch((err) => {
+            this.loading = false;
+            this.showError = true;
             this.$message({
-              message: res.data.msg,
-              typr: "warning",
+              message: "获取失败",
+              type: "warning",
             });
-          }
-        })
-        .catch((err) => {
-          this.loading = false;
-          this.showError = true;
-          this.$message({
-            message: "获取失败",
-            type: "warning",
           });
-        });
     },
   },
   mounted() {
     this.getQuestionType();
-    console.log(this.timeFormat("2020-02-08 01:26:27"));
   },
   watch: {},
   computed: {},
@@ -441,36 +440,44 @@ export default {
   align-items: center;
   padding: 0 0 10px 20px;
 }
+
 .subject {
   margin-right: 20px;
 }
+
 .detail {
   // width: 100%;
   // display: flex;
   // align-items: center;
   padding-bottom: 20px;
   padding-left: 20px;
+
   span {
     color: blue;
   }
 }
+
 .allList {
   // width: 100%;
   display: flex;
   align-items: center;
   padding-bottom: 10px;
   padding-left: 20px;
+
   span {
     color: blue;
   }
 }
+
 .allList:hover {
   span {
     color: green;
   }
+
   cursor: pointer;
   color: green;
 }
+
 .questioncontent {
   max-width: 800px;
   display: inline-block;
@@ -480,17 +487,21 @@ export default {
   padding-bottom: 5px;
   padding-left: 6px;
 }
+
 .el-radio-group {
   padding: 0 0 15px 25px;
 }
+
 .userImg {
   width: 130px;
   height: 100px;
+
   img {
     width: 100%;
     height: 100%;
   }
 }
+
 .mistake {
   display: flex;
   align-items: center;
@@ -500,33 +511,40 @@ export default {
   border: 1px solid #e9e9e9;
   border-radius: 6px;
   box-shadow: 5px 5px 10px #c2c2c2;
+
   &:hover {
     cursor: pointer;
   }
 }
+
 .else {
   text-align: center;
   padding: 20px 0;
   font-size: 17px;
   color: red;
 }
+
 .btn {
   margin-right: 20px;
 }
+
 .checkRightAnswer {
   color: #d56f2b;
   display: flex;
   align-items: center;
   font-size: 13px;
   padding: 10px 0;
+
   :hover {
     cursor: pointer;
   }
+
   img {
     width: 15px;
     height: 15px;
   }
 }
+
 .classname {
   margin-right: 20px;
 }

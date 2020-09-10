@@ -367,9 +367,6 @@ export default {
           //console.log(err);
         });
     },
-    goTo(path) {
-      this.$router.push(path);
-    },
     handleOpen(key, keyPath) {
       // console.log(key, keyPath);
     },

@@ -718,8 +718,6 @@ export default {
 .userInfomation {
   border: 1px solid #f2f2f2;
   padding: 20px;
-  // margin-right: 10px;
-  border: 1px solid #e2e2e2;
   margin-bottom: 10px;
 }
 .useravatarUrl {
