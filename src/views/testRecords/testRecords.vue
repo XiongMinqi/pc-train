@@ -50,7 +50,7 @@
               <div class="index">序号</div>
               <!-- <div class="testName">试卷</div> -->
               <div class="testName">考试名称</div>
-              <div class="subject">科目</div>
+<!--              <div class="subject">科目</div>-->
               <div class="testTime">开始答题时间</div>
               <div class="duringTime">考试用时</div>
               <div class="score">总分</div>
@@ -65,12 +65,12 @@
                   <div class="index" v-if="index<9">0{{index+1}}</div>
                   <!-- <div class="testName">{{item.paperName}}</div> -->
                   <div class="testName">{{item.examName}}</div>
-                  <div class="subject">
-                    <span v-if="item.subjectId">
-                      <el-tag type="success">{{item.subjextName}}</el-tag>
-                    </span>
-                    <span v-else>---</span>
-                  </div>
+<!--                  <div class="subject">-->
+<!--                    <span v-if="item.subjectId">-->
+<!--                      <el-tag type="success">{{item.subjextName}}</el-tag>-->
+<!--                    </span>-->
+<!--                    <span v-else>-&#45;&#45;</span>-->
+<!--                  </div>-->
                   <div class="testTime" v-if="item.beginWriteTime">{{item.beginWriteTime}}</div>
                   <div class="testTime" v-else>---</div>
                   <div class="duringTime" v-if="item.costMinutes">{{item.costMinutes}}</div>
@@ -102,7 +102,7 @@
               <el-dialog width="80%" title="试卷明细" top="1vh" :visible.sync="dialogTableVisible">
                 <div v-loading="submitPaperloading">
                   <submitPaper :submitId="submitId" :paperDetail="paperDetail" />
-                  <div class="tishiwords" v-if="paperDetail.status!=4">当前查看成绩不是最终成绩，结果仅供参考</div>
+                  <div class="tishiwords" v-if="paperDetail.isPublishResult===false">当前查看成绩不是最终成绩，结果仅供参考</div>
                 </div>
               </el-dialog>
             </div>
