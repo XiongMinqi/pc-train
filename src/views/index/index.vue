@@ -179,7 +179,7 @@
         </el-table>
       </div>
     </div>
-    <div class="vision" style="text-align: center;margin-bottom:50px">版本号:20.09.10.18</div>
+    <div class="vision" style="text-align: center;margin-bottom:50px">版本号:20.10.12.17</div>
     <el-dialog width="60%" title="考试须知" :visible.sync="dialogTableVisible">
       <div class="rich-text needKnown">
         <p style="line-height:0; margin-bottom:5px;">
@@ -721,14 +721,16 @@ export default {
   margin-bottom: 10px;
 }
 .useravatarUrl {
+  width: 84px;
+  height: 84px;
 }
 .userimage {
   padding-bottom: 10px;
   border-bottom: 2px solid #409eff;
 }
 .userImg {
-  width: 80px;
-  height: 80px;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   margin-right: 10px;
 }

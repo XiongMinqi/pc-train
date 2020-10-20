@@ -145,7 +145,6 @@ export default {
       dialogTableVisible: false,
       submitId: 0,
       currentPage: 1,
-      total: 0,
       paperDetail: {},
       subjectName: [],
       loading: true,

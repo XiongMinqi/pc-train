@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-input type="textarea" :rows="2" placeholder="请输入内容" maxlength="300" show-word-limit v-model="textarea" @input="inputInfo"></el-input>
+    <el-input type="textarea" :rows="2" placeholder="请输入内容" maxlength="800" show-word-limit v-model="textarea" @input="inputInfo"></el-input>
   </div>
 </template>
 

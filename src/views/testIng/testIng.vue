@@ -43,7 +43,6 @@
                       v-for="(item,index) in checkList"
                       :key="index"
                       :id="'tchar_nav_'+index"
-                      @click="choosecheck(index)"
                     >
                       <div v-if="item.check===false" class="checkingfalse">{{index+1}}</div>
                       <div v-if="item.check===true" class="checkingtrue">{{index+1}}</div>
@@ -190,6 +189,12 @@
         </span>
       </el-dialog>
     </div>
+    <el-dialog :visible.sync="showFalut" title="警告">
+      <div>与服务器同步时间失败，系统将使用本机时间进行考试，请确认时间是否无误，若有问题，请立即联系管理员</div>
+      <span slot="footer" class="dialog-footer">
+          <el-button type="primary" @click="showFalut=false">确 定</el-button>
+        </span>
+    </el-dialog>
   </div>
 </template>
 <script>
@@ -233,6 +238,7 @@ export default {
       noeTime: "",
       submitResult: false,
       nowTeastTime: 0,
+      showFalut:false,
       userInfomation: {},
       majorName: "",
       departmentName: "",
@@ -307,12 +313,6 @@ export default {
     getcheckList(data) {
       this.checkList = data;
       // console.log(this.checkList);
-    },
-    //点击题号跳转到相应位置
-    choosecheck(index) {
-      // console.log(index);
-      // console.log(item, index);
-      document.getElementById("tchar_nav_" + index).scrollIntoView();
     },
     //时间到,关闭弹出层，跳转页面
     closePopup() {
@@ -391,7 +391,7 @@ export default {
     getBrowser() {
       let types = ["edge", "firefox", "chrome", "safari", "opera "];
       let userAgent = navigator.userAgent.toLocaleLowerCase();
-      var res = [];
+      let res = [];
       types.forEach((element) => {
         //  console.log(element);
         if (userAgent.indexOf(element) > 0) {
@@ -512,17 +512,18 @@ export default {
     },
     //时间倒计时
     timeDown() {
-      var _this = this;
-      var countdown = document.getElementById("countdown");
-      var time = _this.time / 1000; //30分钟换算成1800秒
+      let _this = this;
+      let countdown = document.getElementById("countdown");
+      let time = _this.time / 1000; //30分钟换算成1800秒
       //  console.log(this.testInfo.minutes);
-      var timecount = setInterval(function () {
+      _this.timecount = setInterval(function () {
         time = time - 1;
         if (time >= 0) {
           _this.time = time;
-          var minute = parseInt(time / 60);
+          let hour = 0;
+          let minute = parseInt(time / 60);
           if (minute > 60) {
-            var hour = parseInt(time / 60 / 60);
+            hour = parseInt(time / 60 / 60);
             if (hour < 10) {
               hour = "0" + hour;
             }
@@ -533,7 +534,7 @@ export default {
           } else if (minute < 10) {
             minute = "0" + minute;
           }
-          var second = parseInt(time % 60);
+          let second = parseInt(time % 60);
           if (second < 10) {
             second = "0" + second;
           }
@@ -543,7 +544,7 @@ export default {
             countdown.innerHTML = minute + ":" + second;
           }
         } else {
-          clearInterval(timecount);
+          clearInterval(_this.timecount);
           // _this.numberes = true;
           _this.showDialog = true;
           // console.log(_this.numberes);
@@ -574,11 +575,16 @@ export default {
               //  console.log(res);
               if (res.data.code === 1000) {
                 _this.$router.push({ name: "login", path: "/login" });
-              } else if (res.data.code === 0) {
+              }
+              if (res.data.code === 0) {
                 _this.$store.state.answerList = {};
                 _this.data = "";
                 //清空缓存在服务器的数据
                 _this.saveTestInfo(this.data);
+                _this.$message({
+                  message: "交卷成功",
+                  type: "success",
+                });
                 _this.$router.replace({ name: "result", path: "/result" });
               } else {
                 _this.$message({
@@ -595,7 +601,6 @@ export default {
             });
         }
       }, 1000);
-      _this.timecount = timecount;
       if (_this.numberes) {
         _this.submit();
       }
@@ -647,6 +652,10 @@ export default {
           let nowTest = new Date(newTime);
           this.nowTeastTime = Date.parse(nowTest);
           // console.log(newTime, nowTest, this.nowTeastTime);
+        } else {
+          this.showFalut=true;
+          let nowTest = new Date();
+          this.nowTeastTime = Date.parse(nowTest);
         }
       });
     },
@@ -727,7 +736,7 @@ export default {
           this.$router.push({ name: "login", path: "/login" });
         }
         if (res.data.code === 0) {
-          if (res.data.data[0] === null || res.data.data[0].data === "") {
+          if (res.data.data === null || res.data.data[0].data === "") {
             this.$api.getNowTime().then((result) => {
               if (result.data.code === 1000) {
                 this.$router.push({ name: "login", path: "/login" });

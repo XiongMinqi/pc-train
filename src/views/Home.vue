@@ -9,7 +9,7 @@
               <i class="el-icon-s-unfold"></i>
             </div>
             <div class="title" @click="goTo('/index')">
-              <span>新科在线培训系统</span>
+              <span>基础知识学习系统</span>
             </div>
           </div>
           <div class="indexTop">
@@ -121,28 +121,28 @@
                     </el-menu-item>
                   </el-menu-item-group>
                 </el-submenu>
-                <el-submenu index="3">
-                  <template slot="title">
-                    <i class="el-icon-cherry"></i>
-                    <span slot="title">个人相关</span>
-                  </template>
-                  <el-menu-item-group>
-                    <template slot="title">个人</template>
-                    <el-menu-item index="3-1" @click="goTo('/classList')">
-                      <i class="el-icon-s-promotion"></i>
-                      <span slot="title">我的课程</span>
-                    </el-menu-item>
-                    <el-menu-item index="3-2" @click="goTo('/myScore')">
-                      <i class="el-icon-notebook-1"></i>
-                      <span slot="title">个人积分</span>
-                    </el-menu-item>
+<!--                <el-submenu index="3">-->
+<!--                  <template slot="title">-->
+<!--                    <i class="el-icon-cherry"></i>-->
+<!--                    <span slot="title">个人相关</span>-->
+<!--                  </template>-->
+<!--                  <el-menu-item-group>-->
+<!--                    <template slot="title">个人</template>-->
+<!--                    <el-menu-item index="3-1" @click="goTo('/classList')">-->
+<!--                      <i class="el-icon-s-promotion"></i>-->
+<!--                      <span slot="title">我的课程</span>-->
+<!--                    </el-menu-item>-->
+<!--                    <el-menu-item index="3-2" @click="goTo('/myScore')">-->
+<!--                      <i class="el-icon-notebook-1"></i>-->
+<!--                      <span slot="title">个人积分</span>-->
+<!--                    </el-menu-item>-->
 
-                    <el-menu-item index="3-3" @click="goTo('/exsercise')">
-                      <i class="el-icon-tickets"></i>
-                      <span slot="title">培训经历</span>
-                    </el-menu-item>
-                  </el-menu-item-group>
-                </el-submenu>
+<!--                    <el-menu-item index="3-3" @click="goTo('/exsercise')">-->
+<!--                      <i class="el-icon-tickets"></i>-->
+<!--                      <span slot="title">培训经历</span>-->
+<!--                    </el-menu-item>-->
+<!--                  </el-menu-item-group>-->
+<!--                </el-submenu>-->
                 <el-submenu index="4">
                   <template slot="title">
                     <i class="el-icon-edit-outline"></i>
