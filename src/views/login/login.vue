@@ -4,7 +4,8 @@
       <canvas id="myCanvas" :width="width" :height="height"></canvas>
     </div>
     <div id="loginBox">
-      <h4>基础知识学习系统</h4>
+<!--      <h4>基础知识学习系统</h4>-->
+      <h4>新科培训管理系统</h4>
       <el-form :model="loginForm" :rules="loginRules" ref="loginForm" label-width="0px">
         <el-form-item label prop="userName" style="margin-top:20px;">
           <el-row>
@@ -186,7 +187,7 @@ export default {
                 this.$api.sendInfo();
                 if (
                   reslut.data.data === null ||
-                  reslut.data.data.data === ""
+                  reslut.data.data[0].data === ""
                 ) {
                   localStorage.setItem(
                     "userInfo",
@@ -200,7 +201,7 @@ export default {
                   } else {
                     localStorage.setItem("userList-afsdfsdafd", {});
                   }
-                  console.log(1234231)
+                  // console.log(1234231)
                   this.$router.push({ name: "index", path: "/index" });
                 } else {
                   localStorage.setItem(

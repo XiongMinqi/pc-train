@@ -52,6 +52,9 @@
                 <div v-else-if="item.fileSuffix == '.pdf'">
                   <img src="../../assets/img/pdf.png" alt />
                 </div>
+                <div v-else-if="item.fileSuffix == '.txt'">
+                  <img src="../../assets/img/txt.png" alt />
+                </div>
                 <div
                   v-else-if="item.fileSuffix == '.jpg'||item.fileSuffix == '.png'||item.fileSuffix == '.gif'||item.fileSuffix == '.tif'||item.fileSuffix == '.psd'||item.fileSuffix == '.dng'"
                 >
@@ -129,6 +132,9 @@
                 <div v-else-if="item.fileSuffix == '.wma'||item.fileSuffix == '.mp3'">
                   <img src="../../assets/img/audio.png" alt />
                 </div>
+                <div v-else-if="item.fileSuffix == '.txt'">
+                  <img src="../../assets/img/txt.png" alt />
+                </div>
                 <div v-else>
                   <img src="../../assets/img/other.png" alt />
                 </div>
@@ -193,6 +199,9 @@
         <div v-if="pdfUrl" style="height:70vh">
           <iframe class="filename" :src="pdfUrl" width="100%" height="100%" frameborder="0"></iframe>
         </div>
+        <div v-if="txtUrl" style="height:70vh">
+          <iframe class="filename" :src="txtUrl" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
         <div v-if="wordUrl" style="height:70vh">
           <iframe class="filename" :src="wordUrl" width="100%" height="100%" frameborder="0"></iframe>
         </div>
@@ -230,6 +239,7 @@ export default {
       total: 0,
       pdfUrl: "",
       audioUrl: [],
+      txtUrl:'',
       wordUrl: "",
       courseTitle: "",
       pictureUrl: "",
@@ -374,49 +384,61 @@ export default {
             this.$router.push({ name: "login", path: "/login" });
           }
           if (res.data.code === 0) {
-            // console.log(res);
-            if (
-              e.fileSuffix === ".docx" ||
-              e.fileSuffix === ".doc" ||
-              e.fileSuffix === ".xls" ||
-              e.fileSuffix === ".xlsx" ||
-              e.fileSuffix === ".ppt" ||
-              e.fileSuffix === ".pptx"
-            ) {
-              this.wordUrl =
-                // "http://192.168.0.45:8012/onlinePreview?url=" +
-                // encodeURIComponent(res.data.data[0]);
-                "https://view.officeapps.live.com/op/view.aspx?src=" +
-                encodeURIComponent(res.data.data[0]);
-              this.dialogVisible = true;
-              //console.log(this.wordUrl);
-            } else if (e.fileSuffix === ".mp4") {
-              if (e.coverUrl) {
-                this.openVideoImg = e.coverUrl;
+            if(res.data.data[0]){
+              if (
+                  e.fileSuffix === ".docx" ||
+                  e.fileSuffix === ".doc" ||
+                  e.fileSuffix === ".xls" ||
+                  e.fileSuffix === ".xlsx" ||
+                  e.fileSuffix === ".ppt" ||
+                  e.fileSuffix === ".pptx"
+              ) {
+                this.wordUrl =
+                    // "http://192.168.0.45:8012/onlinePreview?url=" +
+                    // encodeURIComponent(res.data.data[0]);
+                    "https://view.officeapps.live.com/op/view.aspx?src=" +
+                    encodeURIComponent(res.data.data[0]);
+                this.dialogVisible = true;
+                //console.log(this.wordUrl);
+              } else if (e.fileSuffix === ".mp4") {
+                if (e.coverUrl) {
+                  this.openVideoImg = e.coverUrl;
+                } else {
+                  this.openVideoImg = "";
+                }
+                this.videoPlayer = res.data.data[0];
+                this.dialogVisible = true;
+              } else if (e.fileSuffix === ".pdf") {
+                this.pdfUrl = res.data.data[0];
+                this.dialogVisible = true;
+              } else if (e.fileSuffix === ".mp3") {
+                this.audioUrl.push(res.data.data[0]);
+                this.dialogVisible = true;
+              } else if (
+                  e.fileSuffix == ".jpg" ||
+                  e.fileSuffix == ".png" ||
+                  e.fileSuffix == ".gif" ||
+                  e.fileSuffix == ".tif" ||
+                  e.fileSuffix == ".psd" ||
+                  e.fileSuffix == ".dng"
+              ) {
+                this.pictureUrl = res.data.data[0];
+                this.dialogVisible = true;
+              } else if (
+                  e.fileSuffix == ".txt" ) {
+                this.txtUrl = res.data.data[0];
+                this.dialogVisible = true;
               } else {
-                this.openVideoImg = "";
+                // window.open(res.data.data[0]);
               }
-              this.videoPlayer = res.data.data[0];
-              this.dialogVisible = true;
-            } else if (e.fileSuffix === ".pdf") {
-              this.pdfUrl = res.data.data[0];
-              this.dialogVisible = true;
-            } else if (e.fileSuffix === ".mp3") {
-              this.audioUrl.push(res.data.data[0]);
-              this.dialogVisible = true;
-            } else if (
-              e.fileSuffix == ".jpg" ||
-              e.fileSuffix == ".png" ||
-              e.fileSuffix == ".gif" ||
-              e.fileSuffix == ".tif" ||
-              e.fileSuffix == ".psd" ||
-              e.fileSuffix == ".dng"
-            ) {
-              this.pictureUrl = res.data.data[0];
-              this.dialogVisible = true;
-            } else {
-              // window.open(res.data.data[0]);
+            }else{
+              this.$message({
+                message: "获取课件失败，请联系管理员",
+                type: "warning",
+              });
             }
+            // console.log(res);
+
           } else {
             this.$message({
               message: res.data.msg,

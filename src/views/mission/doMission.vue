@@ -10,52 +10,55 @@
             <el-divider>文档</el-divider>
             <!-- <div class="words">文档</div> -->
             <div
-              class="course"
-              v-for="(item,index) in textList"
-              :key="index"
-              @click="checkcourse(item)"
+                class="course"
+                v-for="(item,index) in textList"
+                :key="index"
+                @click="checkcourse(item)"
             >
               <div class="courseware" slot="reference">
                 <div>
                   <div v-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
-                    <img src="../../assets/img/word.png" alt />
+                    <img src="../../assets/img/word.png" alt/>
                   </div>
                   <div v-else-if="item.fileSuffix == '.xls' || item.fileSuffix == '.xlsx'">
-                    <img src="../../assets/img/excel.png" alt />
+                    <img src="../../assets/img/excel.png" alt/>
                   </div>
                   <div v-else-if="item.fileSuffix == '.ppt' || item.fileSuffix == '.pptx'">
-                    <img src="../../assets/img/ppt.png" alt />
+                    <img src="../../assets/img/ppt.png" alt/>
                   </div>
                   <div v-else-if="item.fileSuffix == '.mp4'">
-                    <img src="../../assets/img/movie.png" alt />
+                    <img src="../../assets/img/movie.png" alt/>
                   </div>
                   <div v-else-if="item.fileSuffix == '.pdf'">
-                    <img src="../../assets/img/pdf.png" alt />
+                    <img src="../../assets/img/pdf.png" alt/>
+                  </div>
+                  <div v-else-if="item.fileSuffix == '.txt'">
+                    <img src="../../assets/img/txt.png" alt/>
                   </div>
                   <div v-else-if="item.fileSuffix == '.mp3'|| item.fileSuffix == '.wma'">
-                    <img src="../../assets/img/audio.png" alt />
+                    <img src="../../assets/img/audio.png" alt/>
                   </div>
                   <div
-                    v-else-if="item.fileSuffix == '.jpg'||item.fileSuffix == '.png'||item.fileSuffix == '.gif'||item.fileSuffix == '.tif'||item.fileSuffix == '.psd'||item.fileSuffix == '.dng'"
+                      v-else-if="item.fileSuffix == '.jpg'||item.fileSuffix == '.png'||item.fileSuffix == '.gif'||item.fileSuffix == '.tif'||item.fileSuffix == '.psd'||item.fileSuffix == '.dng'"
                   >
-                    <img src="../../assets/img/picture.png" alt />
+                    <img src="../../assets/img/picture.png" alt/>
                   </div>
                   <div v-else>
-                    <img src="../../assets/img/other.png" alt />
+                    <img src="../../assets/img/other.png" alt/>
                   </div>
                 </div>
                 <div>
                   <div class="msg">
-                    <div>课件名称: {{item.name}}</div>
+                    <div>课件名称: {{ item.name }}</div>
                   </div>
                   <div style="font-size:14px">
-                    <div>作者: {{item.author}}</div>
+                    <div>作者: {{ item.author }}</div>
                   </div>
                   <div class="desc" style="font-size:14px">
-                    <div>上传时间: {{item.uploadTime}}</div>
+                    <div>上传时间: {{ item.uploadTime }}</div>
                   </div>
                   <div class="desc" style="font-size:14px">
-                    <div>文件大小: {{item.fileSize}}KB</div>
+                    <div>文件大小: {{ item.fileSize }}KB</div>
                   </div>
                 </div>
               </div>
@@ -65,10 +68,10 @@
             <el-divider>图片、视频、音频</el-divider>
             <!-- <div class="words">图片、视频、音频</div> -->
             <div
-              class="course"
-              v-for="(item,index) in pictureList"
-              :key="index"
-              @click="checkcourse(item)"
+                class="course"
+                v-for="(item,index) in pictureList"
+                :key="index"
+                @click="checkcourse(item)"
             >
               <div class="courseware" slot="reference">
                 <div>
@@ -79,44 +82,47 @@
                     <img src="../../assets/img/word.png" alt />
                   </div>-->
                   <div v-if="item.fileSuffix == '.docx' || item.fileSuffix == '.doc'">
-                    <img src="../../assets/img/word.png" alt />
+                    <img src="../../assets/img/word.png" alt/>
                   </div>
                   <div v-else-if="item.fileSuffix == '.xls' || item.fileSuffix == '.xlsx'">
-                    <img src="../../assets/img/excel.png" alt />
+                    <img src="../../assets/img/excel.png" alt/>
                   </div>
                   <div v-else-if="item.fileSuffix == '.ppt' || item.fileSuffix == '.pptx'">
-                    <img src="../../assets/img/ppt.png" alt />
+                    <img src="../../assets/img/ppt.png" alt/>
                   </div>
                   <div v-else-if="item.fileSuffix == '.mp4'">
-                    <img src="../../assets/img/movie.png" alt />
+                    <img src="../../assets/img/movie.png" alt/>
                   </div>
                   <div v-else-if="item.fileSuffix == '.mp3'|| item.fileSuffix == '.wma'">
-                    <img src="../../assets/img/audio.png" alt />
+                    <img src="../../assets/img/audio.png" alt/>
                   </div>
                   <div v-else-if="item.fileSuffix == '.pdf'">
-                    <img src="../../assets/img/pdf.png" alt />
+                    <img src="../../assets/img/pdf.png" alt/>
+                  </div>
+                  <div v-else-if="item.fileSuffix == '.txt'">
+                    <img src="../../assets/img/txt.png" alt/>
                   </div>
                   <div
-                    v-else-if="item.fileSuffix == '.jpg'||item.fileSuffix == '.png'||item.fileSuffix == '.gif'||item.fileSuffix == '.tif'||item.fileSuffix == '.psd'||item.fileSuffix == '.dng'"
+                      v-else-if="item.fileSuffix == '.jpg'||item.fileSuffix == '.png'||item.fileSuffix == '.gif'||item.fileSuffix == '.tif'||item.fileSuffix == '.psd'||item.fileSuffix == '.dng'"
                   >
-                    <img src="../../assets/img/picture.png" alt />
+                    <img src="../../assets/img/picture.png" alt/>
                   </div>
                   <div v-else>
-                    <img src="../../assets/img/other.png" alt />
+                    <img src="../../assets/img/other.png" alt/>
                   </div>
                 </div>
                 <div>
                   <div class="msg">
-                    <div>课件名称: {{item.name}}</div>
+                    <div>课件名称: {{ item.name }}</div>
                   </div>
                   <div style="font-size:14px">
-                    <div>作者: {{item.author}}</div>
+                    <div>作者: {{ item.author }}</div>
                   </div>
                   <div class="desc" style="font-size:14px">
-                    <div>上传时间: {{item.uploadTime}}</div>
+                    <div>上传时间: {{ item.uploadTime }}</div>
                   </div>
                   <div class="desc" style="font-size:14px">
-                    <div>文件大小: {{item.fileSize}}KB</div>
+                    <div>文件大小: {{ item.fileSize }}KB</div>
                   </div>
                 </div>
               </div>
@@ -130,8 +136,8 @@
           <div v-for="(item,index) in practiseList" :key="index">
             <div class="title">
               <div style="width:2%">
-                <div v-if="index<9">0{{index+1}}、</div>
-                <div v-else>{{index+1}}、</div>
+                <div v-if="index<9">0{{ index + 1 }}、</div>
+                <div v-else>{{ index + 1 }}、</div>
               </div>
               <div>
                 <span v-if="item.type===0">【单选】</span>
@@ -141,32 +147,32 @@
                 <span v-if="item.type===4">【名词解释】</span>
                 <span v-if="item.type===5">【问答】</span>
               </div>
-              <div style="width:88%">{{item.content}}</div>
+              <div style="width:88%">{{ item.content }}</div>
             </div>
             <div class="answer">
               <!-- 单选 -->
               <div v-if="item.type===0">
-                <radio :options="practiseList" :index="index" :answer="answerList" />
+                <radio :options="practiseList" :index="index" :answer="answerList"/>
               </div>
               <!-- 多选 -->
               <div v-if="item.type===1">
-                <checkbox :options="practiseList" :index="index" :answer="answerList" />
+                <checkbox :options="practiseList" :index="index" :answer="answerList"/>
               </div>
               <!-- 填空 -->
               <div v-if="item.type===2">
-                <fillBlanks :options="practiseList" :index="index" :answer="answerList" />
+                <fillBlanks :options="practiseList" :index="index" :answer="answerList"/>
               </div>
               <!-- 判断 -->
               <div v-if="item.type===3">
-                <judge :options="practiseList" :index="index" :answer="answerList" />
+                <judge :options="practiseList" :index="index" :answer="answerList"/>
               </div>
               <!-- 名词解释 -->
               <div v-if="item.type===4">
-                <nounExplanation :options="practiseList" :index="index" :answer="answerList" />
+                <nounExplanation :options="practiseList" :index="index" :answer="answerList"/>
               </div>
               <!-- 问答 -->
               <div v-if="item.type===5">
-                <explain :options="practiseList" :index="index" :answer="answerList" />
+                <explain :options="practiseList" :index="index" :answer="answerList"/>
               </div>
             </div>
           </div>
@@ -178,38 +184,41 @@
       </el-tab-pane>
     </el-tabs>
     <el-dialog
-      width="90%"
-      top="1vh"
-      @close="close"
-      @open="open"
-      class="dialogVisible"
-      title="课件在线预览"
-      :visible.sync="dialogVisible"
-      :close-on-click-modal="false"
-      :show-close="false"
-      :modal-append-to-body="true"
+        width="90%"
+        top="1vh"
+        @close="close"
+        @open="open"
+        class="dialogVisible"
+        title="课件在线预览"
+        :visible.sync="dialogVisible"
+        :close-on-click-modal="false"
+        :show-close="false"
+        :modal-append-to-body="true"
     >
       <div>
         <div v-if="videoPlayer">
-          <vueVideoPlayer :src="videoPlayer" :cover_url="openVideoImg" />
+          <vueVideoPlayer :src="videoPlayer" :cover_url="openVideoImg"/>
         </div>
         <div v-if="pdfUrl" style="height:74vh">
           <iframe class="filename" :src="pdfUrl" width="100%" height="100%" frameborder="0"></iframe>
+        </div>
+        <div v-if="txtUrl" style="height:74vh">
+          <iframe class="filename" :src="txtUrl" width="100%" height="100%" frameborder="0"></iframe>
         </div>
         <div v-if="wordUrl" style="height:74vh">
           <iframe class="filename" :src="wordUrl" width="100%" height="100%" frameborder="0"></iframe>
         </div>
         <div v-if="audioUrl.length>0" style="height:60vh">
           <AudioPlayer
-            :audio-list="audioUrl"
-            :show-prev-button="false"
-            :show-next-button="false"
-            :isLoop="false"
-            progressInterval="10"
+              :audio-list="audioUrl"
+              :show-prev-button="false"
+              :show-next-button="false"
+              :isLoop="false"
+              progressInterval="10"
           />
         </div>
         <div v-if="pictureUrl" style="height:74vh">
-          <img :src="pictureUrl" alt />
+          <img :src="pictureUrl" alt/>
         </div>
         <div slot="footer" class="dialog-footer">
           <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
@@ -227,8 +236,9 @@ import judge from "../../components/pratise/judge";
 import nounExplanation from "../../components/pratise/nounExplanation";
 import explain from "../../components/pratise/explain";
 import vueVideoPlayer from "../../components/video";
-import { AudioPlayer } from "@liripeng/vue-audio-player";
+import {AudioPlayer} from "@liripeng/vue-audio-player";
 import "@liripeng/vue-audio-player/lib/vue-audio-player.css";
+
 export default {
   data() {
     return {
@@ -242,6 +252,7 @@ export default {
       videoPlayer: "",
       audioUrl: [],
       pdfUrl: "",
+      txtUrl: "",
       openVideoImg: "",
       wordUrl: "",
       pictureUrl: "",
@@ -285,32 +296,32 @@ export default {
       };
       //console.log(data);
       this.$api
-        .submitPratise(data)
-        .then((res) => {
-          this.loading = false;
-          if (res.data.code === 1000) {
-            this.$router.push({ name: "login", path: "/login" });
-          }
-          if (res.data.code === 0) {
+          .submitPratise(data)
+          .then((res) => {
+            this.loading = false;
+            if (res.data.code === 1000) {
+              this.$router.push({name: "login", path: "/login"});
+            }
+            if (res.data.code === 0) {
+              this.$message({
+                message: "练习提交成功",
+                type: "success",
+              });
+              this.$router.push({name: "undoMission", path: "/undoMission"});
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: "warning",
+              });
+            }
+          })
+          .catch((err) => {
+            this.loading = false;
             this.$message({
-              message: "练习提交成功",
-              type: "success",
-            });
-            this.$router.push({ name: "undoMission", path: "/undoMission" });
-          } else {
-            this.$message({
-              message: res.data.msg,
+              message: "获取失败",
               type: "warning",
             });
-          }
-        })
-        .catch((err) => {
-          this.loading = false;
-          this.$message({
-            message: "获取失败",
-            type: "warning",
           });
-        });
     },
     //开启对话框
     open() {
@@ -351,59 +362,63 @@ export default {
       this.pictureUrl = "";
       this.audioUrl = [];
       this.$api
-        .geturl(e.id)
-        .then((res) => {
-          if (res.data.code === 1000) {
-            this.$router.push({ name: "login", path: "/login" });
-          }
-          if (res.data.code === 0) {
-            // console.log(res);
-            if (
-              e.fileSuffix === ".docx" ||
-              e.fileSuffix === ".doc" ||
-              e.fileSuffix === ".xls" ||
-              e.fileSuffix === ".xlsx" ||
-              e.fileSuffix === ".ppt" ||
-              e.fileSuffix === ".pptx"
-            ) {
-              this.wordUrl =
-                "https://view.officeapps.live.com/op/view.aspx?src=" +
-                encodeURIComponent(res.data.data[0]);
-              this.dialogVisible = true;
-              //console.log(this.wordUrl);
-            } else if (e.fileSuffix === ".mp4") {
-              this.videoPlayer = res.data.data[0];
-              //console.log(this.videoPlayer);
-              this.dialogVisible = true;
-            } else if (e.fileSuffix === ".mp3") {
-              this.audioUrl.push(res.data.data[0]);
-              this.dialogVisible = true;
-            } else if (e.fileSuffix === ".pdf") {
-              this.pdfUrl = res.data.data[0];
-              this.dialogVisible = true;
-            } else if (
-              e.fileSuffix == ".jpg" ||
-              e.fileSuffix == ".png" ||
-              e.fileSuffix == ".gif" ||
-              e.fileSuffix == ".tif" ||
-              e.fileSuffix == ".psd" ||
-              e.fileSuffix == ".dng"
-            ) {
-              this.pictureUrl = res.data.data[0];
-              this.dialogVisible = true;
-            } else {
-              // window.open(res.data.data[0]);
+          .geturl(e.id)
+          .then((res) => {
+            if (res.data.code === 1000) {
+              this.$router.push({name: "login", path: "/login"});
             }
-          } else {
-            this.$message({
-              message: res.data.msg,
-              type: "warning",
-            });
-          }
-        })
-        .catch((err) => {
-          //console.log(err);
-        });
+            if (res.data.code === 0) {
+              // console.log(res);
+              if (
+                  e.fileSuffix === ".docx" ||
+                  e.fileSuffix === ".doc" ||
+                  e.fileSuffix === ".xls" ||
+                  e.fileSuffix === ".xlsx" ||
+                  e.fileSuffix === ".ppt" ||
+                  e.fileSuffix === ".pptx"
+              ) {
+                this.wordUrl =
+                    "https://view.officeapps.live.com/op/view.aspx?src=" +
+                    encodeURIComponent(res.data.data[0]);
+                this.dialogVisible = true;
+                //console.log(this.wordUrl);
+              } else if (e.fileSuffix === ".mp4") {
+                this.videoPlayer = res.data.data[0];
+                //console.log(this.videoPlayer);
+                this.dialogVisible = true;
+              } else if (e.fileSuffix === ".mp3") {
+                this.audioUrl.push(res.data.data[0]);
+                this.dialogVisible = true;
+              } else if (e.fileSuffix === ".pdf") {
+                this.pdfUrl = res.data.data[0];
+                this.dialogVisible = true;
+              } else if (
+                  e.fileSuffix == ".jpg" ||
+                  e.fileSuffix == ".png" ||
+                  e.fileSuffix == ".gif" ||
+                  e.fileSuffix == ".tif" ||
+                  e.fileSuffix == ".psd" ||
+                  e.fileSuffix == ".dng"
+              ) {
+                this.pictureUrl = res.data.data[0];
+                this.dialogVisible = true;
+              } else if (
+                  e.fileSuffix == ".txt") {
+                this.txtUrl = res.data.data[0];
+                this.dialogVisible = true;
+              } else {
+                // window.open(res.data.data[0]);
+              }
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: "warning",
+              });
+            }
+          })
+          .catch((err) => {
+            //console.log(err);
+          });
     },
     //保留两位小数
     twoNumber(num) {
@@ -424,107 +439,107 @@ export default {
     },
     getMissionType() {
       this.$api
-        .getCourseware(this.id)
-        .then((res) => {
-          this.loading = false;
-          if (res.data.code === 1000) {
-            this.$router.push({ name: "login", path: "/login" });
-          }
-          if (res.data.code === 0) {
-            if (res.data.data === null) {
-              this.coursewareList = [];
+          .getCourseware(this.id)
+          .then((res) => {
+            this.loading = false;
+            if (res.data.code === 1000) {
+              this.$router.push({name: "login", path: "/login"});
+            }
+            if (res.data.code === 0) {
+              if (res.data.data === null) {
+                this.coursewareList = [];
+              } else {
+                this.coursewareList = res.data.data;
+                this.textList = [];
+                this.pictureList = [];
+                this.coursewareList.map((item) => {
+                  item.uploadTime = this.timeFormat(item.uploadTime);
+                  item.fileSize = this.twoNumber(item.fileSize / 1024);
+                  if (
+                      item.fileSuffix === ".jpg" ||
+                      item.fileSuffix === ".png" ||
+                      item.fileSuffix === ".jpeg" ||
+                      item.fileSuffix === ".bmp" ||
+                      item.fileSuffix === ".gif" ||
+                      item.fileSuffix === ".wmv" ||
+                      item.fileSuffix === ".avi" ||
+                      item.fileSuffix === ".rm" ||
+                      item.fileSuffix === ".flv" ||
+                      item.fileSuffix === ".mp4" ||
+                      item.fileSuffix === ".wma" ||
+                      item.fileSuffix === ".mp3"
+                  ) {
+                    this.pictureList.push(item);
+                  } else {
+                    this.textList.push(item);
+                  }
+                });
+              }
             } else {
-              this.coursewareList = res.data.data;
-              this.textList = [];
-              this.pictureList = [];
-              this.coursewareList.map((item) => {
-                item.uploadTime = this.timeFormat(item.uploadTime);
-                item.fileSize = this.twoNumber(item.fileSize / 1024);
-                if (
-                  item.fileSuffix === ".jpg" ||
-                  item.fileSuffix === ".png" ||
-                  item.fileSuffix === ".jpeg" ||
-                  item.fileSuffix === ".bmp" ||
-                  item.fileSuffix === ".gif" ||
-                  item.fileSuffix === ".wmv" ||
-                  item.fileSuffix === ".avi" ||
-                  item.fileSuffix === ".rm" ||
-                  item.fileSuffix === ".flv" ||
-                  item.fileSuffix === ".mp4" ||
-                  item.fileSuffix === ".wma" ||
-                  item.fileSuffix === ".mp3"
-                ) {
-                  this.pictureList.push(item);
-                } else {
-                  this.textList.push(item);
-                }
+              this.$message({
+                message: res.data.msg,
+                type: "warning",
               });
             }
-          } else {
+          })
+          .catch((err) => {
+            this.loading = false;
             this.$message({
-              message: res.data.msg,
+              message: "获取失败",
               type: "warning",
             });
-          }
-        })
-        .catch((err) => {
-          this.loading = false;
-          this.$message({
-            message: "获取失败",
-            type: "warning",
           });
-        });
     },
     getQuestiones() {
       this.$api
-        .getQuestion(this.id)
-        .then((res) => {
-          this.loading = false;
-          if (res.data.code === 1000) {
-            this.$router.push({ name: "login", path: "/login" });
-          }
-          if (res.data.code === 0) {
-            this.practiseList = res.data.data;
-          } else {
+          .getQuestion(this.id)
+          .then((res) => {
+            this.loading = false;
+            if (res.data.code === 1000) {
+              this.$router.push({name: "login", path: "/login"});
+            }
+            if (res.data.code === 0) {
+              this.practiseList = res.data.data;
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: "warning",
+              });
+            }
+          })
+          .catch((err) => {
+            this.loading = false;
             this.$message({
-              message: res.data.msg,
+              message: "获取失败",
               type: "warning",
             });
-          }
-        })
-        .catch((err) => {
-          this.loading = false;
-          this.$message({
-            message: "获取失败",
-            type: "warning",
           });
-        });
     },
     getAnswer() {
       this.$api
-        .getAnswer(this.id)
-        .then((res) => {
-          this.dialogLoading = false;
-          if (res.data.code === 1000) {
-            this.$router.push({ name: "login", path: "/login" });
-          }
-          if (res.data.code === 0) {
-            this.answerList = res.data.data;
-            this.getQuestiones();
-          } else {
+          .getAnswer(this.id)
+          .then((res) => {
+            this.dialogLoading = false;
+            if (res.data.code === 1000) {
+              this.$router.push({name: "login", path: "/login"});
+            }
+            if (res.data.code === 0) {
+              this.answerList = res.data.data;
+              this.getQuestiones();
+            } else {
+              this.$message({
+                message: res.data.msg,
+                type: "warning",
+              });
+            }
+          })
+          .catch((err) => {
+            this.dialogLoading = false;
             this.$message({
-              message: res.data.msg,
+              message: "获取失败",
               type: "warning",
             });
-          }
-        })
-        .catch((err) => {
-          this.dialogLoading = false;
-          this.$message({
-            message: "获取失败",
-            type: "warning",
           });
-        });
     },
   },
   mounted() {
@@ -538,22 +553,27 @@ export default {
 </script>
 
 <style scoped lang='scss'>
-/deep/.el-divider--horizontal {
+/deep/ .el-divider--horizontal {
   margin: 14px 0 25px 0;
 }
+
 .flex {
   display: flex;
 }
+
 .aligh-center {
   align-items: center;
 }
+
 .justify-between {
   justify-content: space-between;
 }
+
 .else {
   padding: 30px;
   text-align: center;
 }
+
 .course {
   display: inline-block;
   width: 32%;
@@ -562,6 +582,7 @@ export default {
   margin-bottom: 15px;
   border: 1px solid #f2f2f2;
   box-shadow: 1px 1px 2px #c2c2c2;
+
   &:hover {
     cursor: pointer;
     // color: #cc4820;
@@ -572,6 +593,7 @@ export default {
     }
   }
 }
+
 .courseware {
   padding: 10px 0 0 20px;
   display: flex;
@@ -584,11 +606,13 @@ export default {
     // margin-top: 5px;
   }
 }
+
 .msg {
   display: flex;
   align-items: center;
   // color: blue;
 }
+
 .el-dialog {
   position: absolute;
   margin: 0 auto;
@@ -597,21 +621,25 @@ export default {
   box-sizing: border-box;
   width: 90%;
 }
+
 .dialog-footer {
   text-align: center;
   margin-top: 10px;
 }
+
 .words {
   font-size: 20px;
   font-weight: bold;
   padding: 0 20px;
 }
+
 .title {
   display: flex;
   //   align-items: center;
   padding-bottom: 10px;
   padding-top: 10px;
 }
+
 span {
   color: blue;
 }
