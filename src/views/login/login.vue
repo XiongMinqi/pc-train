@@ -5,7 +5,7 @@
     </div>
     <div id="loginBox">
 <!--      <h4>基础知识学习系统</h4>-->
-      <h4>新科培训管理系统</h4>
+      <h4>新科培训管理系统 <span v-if="environment">(开发版)</span></h4>
       <el-form :model="loginForm" :rules="loginRules" ref="loginForm" label-width="0px">
         <el-form-item label prop="userName" style="margin-top:20px;">
           <el-row>
@@ -64,9 +64,11 @@
         <div style="margin-right:20px;" slot="reference">安卓App下载</div>
         <!-- <el-button  style="margin-left:20px;" round slot="reference" icon="el-icon-download">app下载</el-button> -->
       </el-popover>
+
       <div>
         <el-divider direction="vertical"></el-divider>
       </div>
+
       <div style="margin-left:20px" class="teacher" @click="teacher">管理员入口</div>
     </div>
   </div>
@@ -84,6 +86,7 @@ export default {
       checked: false,
       canvas: null,
       context: null,
+      environment:"",
       stars: [], //星星数组
       shadowColorList: [
         "#39f",
@@ -166,7 +169,7 @@ export default {
           // console.log(res);
           if (res.data.code === 0) {
             // console.log(res.data[0]);
-            //console.log(res);
+            // console.log(res);
             localStorage.setItem("token", res.headers["x-auth-token"]);
             // this.$store.state.header['x-auth-token'] = res.header['x-auth-token']
             this.$message({
@@ -317,6 +320,14 @@ export default {
     },
   },
   mounted() {
+    if (!location.port || location.port == "80") {
+      // console.log("正式版")
+    } else {
+      // console.log("开发版")
+      this.environment="开发版";
+    }
+    // this.environment=process.env.NODE_ENV;
+    // console.log(this.environment)
     this.canvas = document.getElementById("myCanvas");
     this.context = this.canvas.getContext("2d");
     this.createStar(true);

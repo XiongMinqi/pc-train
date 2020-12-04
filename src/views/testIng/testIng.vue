@@ -235,6 +235,7 @@ export default {
       data: {},
       saveMsg: {},
       beginTestTime: "",
+      finishTime: "",
       noeTime: "",
       submitResult: false,
       nowTeastTime: 0,
@@ -451,19 +452,20 @@ export default {
               });
             }
             // console.log(this.checkList);
-            let finishTimeing = this.$route.query.finishTime;
-            let finishTime = Date.parse(new Date(finishTimeing));
+            // let finishTimeing = this.$route.query.finishTime;
+            // let finishTime = Date.parse(new Date(finishTimeing));
             this.beginWriteTime = this.timeFormat(this.beginTestTime);
+            this.finishTime = this.timeFormat(this.finishTime);
             this.endWriteTime = this.timeFormat(finishTime);
             //finishTime 截至交卷时间
             //this.nowTeastTime 当前时间
             //res.data.data[0].minutes * 60000  考试限时
             //this.beginTestTime 开始答卷时间
             if (
-              finishTime - this.nowTeastTime <=
+              this.finishTime - this.nowTeastTime <=
               res.data.data[0].minutes * 60000
             ) {
-              this.time = finishTime - this.nowTeastTime;
+              this.time = this.finishTime - this.nowTeastTime;
               // console.log(this.time);
             } else {
               // this.time = res.data.data[0].minutes * 60000;
@@ -545,6 +547,7 @@ export default {
           }
         } else {
           clearInterval(_this.timecount);
+          clearInterval(_this.saveMsg);
           // _this.numberes = true;
           _this.showDialog = true;
           // console.log(_this.numberes);
@@ -577,10 +580,11 @@ export default {
                 _this.$router.push({ name: "login", path: "/login" });
               }
               if (res.data.code === 0) {
+
                 _this.$store.state.answerList = {};
                 _this.data = "";
                 //清空缓存在服务器的数据
-                _this.saveTestInfo(this.data);
+                _this.saveTestInfo(_this.data);
                 _this.$message({
                   message: "交卷成功",
                   type: "success",
@@ -630,6 +634,7 @@ export default {
           ksExamId: this.ksExamId,
         },
         beginTestTime: this.beginTestTime,
+        finishTime: this.finishTime,
         answerList: this.allAnswer,
         checkList: this.checkList,
       };
@@ -750,10 +755,12 @@ export default {
                     id: this.id,
                     ksExamId: this.ksExamId,
                   },
+                  finishTime : this.$route.query.finishTime,
                   beginTestTime: Date.parse(nowTest),
                   answerList: {},
                   checkList: [],
                 };
+                this.finishTime = Date.parse(this.data.finishTime);
                 this.beginTestTime = Date.parse(nowTest);
                 // console.log(this.data);
                 this.saveTestInfo(JSON.stringify(this.data));
@@ -787,6 +794,7 @@ export default {
             this.id = paperInfo.paperInfo.id;
             this.ksExamId = paperInfo.paperInfo.ksExamId;
             this.beginTestTime = paperInfo.beginTestTime;
+            this.finishTime = paperInfo.finishTime;
             this.answer = paperInfo.answerList;
             this.allAnswer = paperInfo.answerList;
             this.$store.state.answerList = this.answer;

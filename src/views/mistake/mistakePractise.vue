@@ -81,7 +81,7 @@
                 </div>
               </div>
               <div style="padding-right:20px">
-                <span style="color:#d56f2">{{index+1}}</span>
+                <span style="color:#d56f2b">{{index+1}}</span>
                 /{{data.size}}
               </div>
             </div>

@@ -377,7 +377,7 @@ export default {
   },
   mounted() {
     this.getAmount();
-    this.webscoket();
+    // this.webscoket();
     this.userInfo = JSON.parse(localStorage.getItem("userInfo"));
   },
   watch: {},

@@ -83,7 +83,7 @@
                 </div>
               </div>
               <div style="padding-right:20px">
-                <span style="color:#d56f2">{{index+1}}</span>
+                <span style="color:#d56f2b">{{index+1}}</span>
                 /{{data.size}}
               </div>
             </div>
@@ -312,6 +312,13 @@ export default {
   methods: {
     abandon() {
       this.showselect = true;
+      this.disabled = false;
+      this.showAnswer = false;
+      this.choosed = false;
+      this.showBtn = true;
+      this.radio = "";
+      this.checkList = [];
+      this.questionDetail = {};
     },
     //完成
     confirm() {
