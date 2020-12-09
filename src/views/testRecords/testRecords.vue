@@ -198,11 +198,19 @@ export default {
     //查看明细
     checkDetail(e) {
       if (e.submitId) {
-        this.submitId = e.submitId;
-        this.paperDetail = {};
-        this.paperDetail = e;
-        // console.log("允许查看");
-        this.dialogTableVisible = true;
+        if(e.isPublishResult){
+          this.submitId = e.submitId;
+          this.paperDetail = {};
+          this.paperDetail = e;
+          // console.log("允许查看");
+          this.dialogTableVisible = true;
+        }else {
+          this.$message({
+            message: "结果还未发布，不允许查看",
+            type: "warning",
+          });
+        }
+
       } else {
         this.$message({
           message: "抱歉，该场考试无法查看明细",

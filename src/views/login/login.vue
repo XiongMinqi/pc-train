@@ -20,7 +20,6 @@
                 placeholder="请输入用户名/手机号/身份证号"
                 v-model="username"
                 @input="inputUsername"
-                @keydown.enter.native="submitForm"
               ></el-input>
             </el-col>
           </el-row>
@@ -159,7 +158,7 @@ export default {
     //提交登录
     submitForm() {
       let data = {
-        username: this.username,
+        username: this.username.replace(/\s/gi, ''),
         password: this.passwords,
         "remember-me": this.checked,
       };

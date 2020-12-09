@@ -52,7 +52,7 @@
                   </span>
                   |
                   <span class="promptWords">所属专业 : {{ item.majorname }}</span> |
-                  <span class="promptWords">所属部门 : {{ item.departname }}</span> |
+<!--                  <span class="promptWords">所属部门 : {{ item.departname }}</span> |-->
                   <span class="promptWords">分数 ：{{ item.defaultScore }}分</span>
                 </div>
               </div>

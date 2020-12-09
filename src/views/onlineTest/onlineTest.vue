@@ -44,12 +44,12 @@
                 试题总分 : {{item.totalScore}}分
                 <el-divider direction="vertical"></el-divider>及格分数 :
                 <span class="bg-primary">{{item.passScore}}分</span>
-                <el-divider direction="vertical"></el-divider>
-                考试时间 : {{item.paperMinutes}}分钟
+<!--                <el-divider direction="vertical"></el-divider>-->
+<!--                考试时间 : {{item.paperMinutes}}分钟-->
               </div>
 
               <div style="color:#606266;font-size:14px">
-                考试开始时间 : {{item.publishTime}}
+                考试开始时间 : {{item.beginTestTime}}
                 <el-divider direction="vertical"></el-divider>截止交卷时间 :
                 <span class="bg-primary">{{item.expirationTime}}</span>
               </div>
@@ -252,7 +252,8 @@ export default {
             this.total = res.data.count;
             this.testList = res.data.data;
             this.testList.map((item) => {
-              item.publishTime = this.timeFormat(item.publishTime);
+              this.$set(item, "beginTestTime", this.timeFormat(item.publishTime));
+              // item.publishTime = this.timeFormat(item.publishTime);
               item.createTime = this.timeFormat(item.createTime);
               let expirationTime =
                 Date.parse(new Date(item.publishTime)) + item.minutes * 60000;
@@ -313,13 +314,13 @@ export default {
       }
     },
     onlineTest(e) {
-      // console.log(e);
-      if (e.status === 1) {
-        this.$message({
-          message: "考试还未开始，不能进入该场考试",
-          type: "warning",
-        });
-      }
+      console.log(e);
+      // if (e.status === 1) {
+      //   this.$message({
+      //     message: "考试还未开始，不能进入该场考试",
+      //     type: "warning",
+      //   });
+      // }
       if (e.status === 3) {
         this.$message({
           message: "考试正在审核，不能再次进入该场考试",
@@ -332,10 +333,44 @@ export default {
           type: "warning",
         });
       }
-      if (e.status === 2) {
+      if (e.status === 2||e.status===1) {
         if (e.totalScore > 0) {
-          this.dialogTableVisible = true;
-          this.testDeatil = e;
+          //获取服务器当前时间
+            this.$api.getNowTime().then((res) => {
+              if (res.data.code === 1000) {
+                this.$router.push({ name: "login", path: "/login" });
+              } else if (res.data.code === 0) {
+
+                let newTime = res.data.data[0];
+                let nowTest = new Date(newTime);
+                let nowTime = Date.parse(nowTest);
+                let beginTime = Date.parse(new Date(e.publishTime))
+                if(nowTime<beginTime){
+                  this.$message({
+                      message: "考试还未开始，不能进入该场考试",
+                      type: "warning",
+                    });
+                } else {
+                  if(nowTime<e.expirationTestTime){
+                    this.dialogTableVisible = true;
+                    this.testDeatil = e;
+                  } else {
+                    this.$message({
+                      message: "考试时间已过",
+                      type: "warning",
+                    });
+                  }
+                }
+
+                // console.log(newTime, nowTest, this.nowTeastTime);
+              } else {
+                this.showFalut=true;
+                let nowTest = new Date();
+                this.nowTeastTime = Date.parse(nowTest);
+              }
+            });
+          // this.dialogTableVisible = true;
+          // this.testDeatil = e;
         } else {
           this.$message({
             message: "试卷发生错误，请联系管理员",

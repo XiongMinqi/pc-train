@@ -179,7 +179,7 @@
         </el-table>
       </div>
     </div>
-    <div class="vision" style="text-align: center;margin-bottom:50px">版本号:20.11.11.14</div>
+    <div class="vision" style="text-align: center;margin-bottom:50px">版本号:20.12.04.16</div>
     <el-dialog width="60%" title="考试须知" :visible.sync="dialogTableVisible">
       <div class="rich-text needKnown">
         <p style="line-height:0; margin-bottom:5px;">

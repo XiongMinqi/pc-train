@@ -74,6 +74,7 @@ export default {
     }
   },
   mounted() {
+    // console.log(this.options)
     // this.options[this.index].checked = true;
     this.list = this.options[this.index];
     this.answerList = this.$store.state.answerList;

@@ -16,7 +16,7 @@
           <div class="indexTop">
             <el-popover placement="bottom-end" width="800" trigger="hover">
               <el-button type="primary" @click="readAll">一键全读</el-button>
-              <el-button type="primary" @click="checkHistory">查看历史</el-button>ce:
+              <el-button type="primary" @click="checkHistory">查看历史</el-button>
               <el-table :data="unReadList" max-height="400">
                 <el-table-column width="150" property="title" label="标题"></el-table-column>
                 <el-table-column width="300" property="content" label="内容"></el-table-column>

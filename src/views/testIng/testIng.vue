@@ -451,31 +451,35 @@ export default {
                 this.checkList.push(data);
               });
             }
+
+            this.currentOptions = res.data.data[0].questions;
+            //  console.log(this.testInfo);
             // console.log(this.checkList);
             // let finishTimeing = this.$route.query.finishTime;
             // let finishTime = Date.parse(new Date(finishTimeing));
             this.beginWriteTime = this.timeFormat(this.beginTestTime);
-            this.finishTime = this.timeFormat(this.finishTime);
-            this.endWriteTime = this.timeFormat(finishTime);
+            this.endWriteTime = this.timeFormat(this.finishTime);
+            this.finishTime = Date.parse(new Date(this.finishTime))
             //finishTime 截至交卷时间
             //this.nowTeastTime 当前时间
             //res.data.data[0].minutes * 60000  考试限时
             //this.beginTestTime 开始答卷时间
             if (
-              this.finishTime - this.nowTeastTime <=
-              res.data.data[0].minutes * 60000
+                this.finishTime - this.nowTeastTime <=
+                res.data.data[0].minutes * 60000
             ) {
               this.time = this.finishTime - this.nowTeastTime;
               // console.log(this.time);
             } else {
               // this.time = res.data.data[0].minutes * 60000;
               this.time =
-                res.data.data[0].minutes * 60000 -
-                (this.nowTeastTime - this.beginTestTime);
+                  res.data.data[0].minutes * 60000 -
+                  (this.nowTeastTime - this.beginTestTime);
               // console.log(this.time);
             }
-            this.currentOptions = res.data.data[0].questions;
-            //  console.log(this.testInfo);
+            // console.log(this.finishTime);
+            // console.log(this.nowTeastTime);
+            // console.log(this.beginTestTime);
             this.timeDown();
           } else {
             this.$message({
@@ -662,6 +666,11 @@ export default {
           let nowTest = new Date();
           this.nowTeastTime = Date.parse(nowTest);
         }
+      })
+      .catch(err=>{
+        this.showFalut=true;
+        let nowTest = new Date();
+        this.nowTeastTime = Date.parse(nowTest);
       });
     },
     //获取个人信息
@@ -728,6 +737,7 @@ export default {
     clearInterval(this.saveMsg);
   },
   mounted() {
+    console.log(this.$route.query)
     this.getUserList();
     this.getSubjectDetail();
     this.$store.state.answerList = {};
@@ -760,7 +770,7 @@ export default {
                   answerList: {},
                   checkList: [],
                 };
-                this.finishTime = Date.parse(this.data.finishTime);
+                this.finishTime = this.data.finishTime;
                 this.beginTestTime = Date.parse(nowTest);
                 // console.log(this.data);
                 this.saveTestInfo(JSON.stringify(this.data));

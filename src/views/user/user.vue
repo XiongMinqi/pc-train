@@ -168,6 +168,9 @@ export default {
   },
   components: {},
   methods: {
+    setMyAvatar(e){
+      console.log(e)
+    },
     backLastPage() {
       this.$router.go(-1);
     },
