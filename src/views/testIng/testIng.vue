@@ -464,22 +464,26 @@ export default {
             //this.nowTeastTime 当前时间
             //res.data.data[0].minutes * 60000  考试限时
             //this.beginTestTime 开始答卷时间
+            if(this.nowTeastTime===0){
+              this.showFalut=true;
+              this.nowTeastTime=Date.parse(new Date())
+            }
             if (
                 this.finishTime - this.nowTeastTime <=
                 res.data.data[0].minutes * 60000
             ) {
               this.time = this.finishTime - this.nowTeastTime;
-              // console.log(this.time);
+              console.log(this.time);
             } else {
               // this.time = res.data.data[0].minutes * 60000;
               this.time =
                   res.data.data[0].minutes * 60000 -
                   (this.nowTeastTime - this.beginTestTime);
-              // console.log(this.time);
+              console.log(this.time);
             }
-            // console.log(this.finishTime);
-            // console.log(this.nowTeastTime);
-            // console.log(this.beginTestTime);
+            console.log(this.finishTime);
+            console.log(this.nowTeastTime);
+            console.log(this.beginTestTime);
             this.timeDown();
           } else {
             this.$message({

@@ -82,7 +82,7 @@
                 </div>
                 <div class="desc" style="font-size:12px">
                   <div>
-                    {{item.majorName}}/{{item.subjectName}}/浏览
+                    {{item.subjectName}}/浏览
                     <span
                       style="padding:0 4px;"
                     >{{item.readCount}}</span>次
@@ -154,7 +154,7 @@
                 </div>
                 <div class="desc" style="font-size:12px">
                   <div>
-                    {{item.majorName}}/{{item.subjectName}}/浏览
+                    {{item.subjectName}}/浏览
                     <span
                       style="padding:0 4px;"
                     >{{item.readCount}}</span>次
@@ -477,7 +477,6 @@ export default {
           //console.log(res);
           if (res.data.code === 0) {
             this.classList = res.data.data[0]["科目名称"];
-            this.subjectList = res.data.data[0]["专业名称"];
             //console.log(this.subjectList, "专业");
             //console.log(this.classList, "科目");
             this.getAllLearn();
@@ -509,11 +508,6 @@ export default {
             this.allList.map((item) => {
               item.uploadTime = this.timeFormat(item.uploadTime);
               item.fileSize = this.twoNumber(item.fileSize / 1024);
-              this.subjectList.map((itm) => {
-                if (item.majorId === Number(itm.key)) {
-                  this.$set(item, "majorName", itm.value);
-                }
-              });
               this.classList.map((itm) => {
                 if (item.subjectId === Number(itm.key)) {
                   this.$set(item, "subjectName", itm.value);

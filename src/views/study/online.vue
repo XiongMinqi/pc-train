@@ -3,24 +3,23 @@
     <div v-if="showselect===true">
       <div style="display:flex;align-items:center;justify-content: center;">
         <div class="choose">
-          <div class="classname">
-            <div class="wordes">来源 :</div>
-            <div>
-              <el-select v-model="source" placeholder="请选择题库">
-                <!-- <el-option key=0 value="题库"></el-option> -->
-                <el-option v-for="item in sourceList" :key="item.key" :value="item.value"></el-option>
-              </el-select>
-            </div>
-          </div>
-          <div class="classname">
-            <div class="wordes">专业 :</div>
-            <div>
-              <el-select v-model="subjectname" placeholder="请选择专业">
-                <el-option key value="不限"></el-option>
-                <el-option v-for="item in subjectList" :key="item.key" :value="item.value"></el-option>
-              </el-select>
-            </div>
-          </div>
+<!--          <div class="classname">-->
+<!--            <div class="wordes">来源 :</div>-->
+<!--            <div>-->
+<!--              <el-select v-model="source" placeholder="请选择题库">-->
+<!--                <el-option v-for="item in sourceList" :key="item.key" :value="item.value"></el-option>-->
+<!--              </el-select>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--          <div class="classname">-->
+<!--            <div class="wordes">专业 :</div>-->
+<!--            <div>-->
+<!--              <el-select v-model="subjectname" placeholder="请选择专业">-->
+<!--                <el-option key value="不限"></el-option>-->
+<!--                <el-option v-for="item in subjectList" :key="item.key" :value="item.value"></el-option>-->
+<!--              </el-select>-->
+<!--            </div>-->
+<!--          </div>-->
           <div class="classname">
             <div class="wordes">科目 :</div>
             <div>
@@ -62,9 +61,9 @@
         </div>
         <div class="info bg-warning">
           <div>请选择题型等筛选条件</div>
-          <div style="padding-top:5px">系统默认选择题库</div>
+<!--          <div style="padding-top:5px">系统默认选择题库</div>-->
           <div style="padding-top:5px">系统默认选择单选题</div>
-          <div style="padding-top:5px">系统默认选择十道题</div>
+          <div style="padding-top:5px">系统默认选择五道题</div>
           <div style="padding-top:5px">其余条件不限</div>
           <div style="padding-top:5px">若练习中途退出则不计入练习记录</div>
         </div>

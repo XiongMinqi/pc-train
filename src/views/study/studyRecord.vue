@@ -4,7 +4,7 @@
     <div class="list" v-if="showList">
       <el-table :data="list" border style="width: 100%">
         <el-table-column prop="lastTime" label="上次观看时间" width="180"></el-table-column>
-        <el-table-column prop="subjectName" label="名称"></el-table-column>
+        <el-table-column prop="coursewareName" label="名称"></el-table-column>
         <el-table-column prop="totalMinutes" label="总时长/分钟" width="180"></el-table-column>
         <el-table-column prop="times" label="次数/次" width="180"></el-table-column>
       </el-table>

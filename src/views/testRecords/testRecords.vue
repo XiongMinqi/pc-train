@@ -73,7 +73,7 @@
 <!--                  </div>-->
                   <div class="testTime" v-if="item.beginWriteTime">{{item.beginWriteTime}}</div>
                   <div class="testTime" v-else>---</div>
-                  <div class="duringTime" v-if="item.costMinutes">{{item.costMinutes}}</div>
+                  <div class="duringTime" v-if="item.costMinutes!==null">{{item.costMinutes}}</div>
                   <div class="duringTime" v-else>---</div>
                   <div class="score">{{item.totalScore}}</div>
                   <div class="score">{{item.score}}</div>
@@ -210,7 +210,6 @@ export default {
             type: "warning",
           });
         }
-
       } else {
         this.$message({
           message: "抱歉，该场考试无法查看明细",
