@@ -1,6 +1,11 @@
 <template>
   <div v-loading="loading">
-    <div class="historyRecord">学习任务记录</div>
+    <div>
+      <div class="backLastPage" @click="backLastPage">
+        <i class="el-icon-arrow-left"></i>返回
+      </div>
+      <div class="pageTitle">学习任务记录</div>
+    </div>
     <div v-if="showHistory">
       <el-table :data="missionList" border style="width: 100%">
         <el-table-column prop="name" label="任务名称"></el-table-column>
@@ -135,6 +140,9 @@ export default {
   },
   components: {},
   methods: {
+    backLastPage() {
+      this.$router.go(-1);
+    },
     handleClick(e) {
       // console.log(e);
       this.practiseList = [];

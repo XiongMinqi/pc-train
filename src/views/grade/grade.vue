@@ -1,5 +1,11 @@
 <template>
   <div class="gradebody" v-loading="loading">
+    <div>
+      <div class="backLastPage" @click="backLastPage">
+        <i class="el-icon-arrow-left"></i>返回
+      </div>
+      <div class="pageTitle">成绩统计</div>
+    </div>
     <div class="flex justify" style="height:280px">
       <div style="width:50%;height:100%">
         <div class="flex list">
@@ -61,6 +67,9 @@ export default {
     brokenLine
   },
   methods: {
+    backLastPage() {
+      this.$router.go(-1);
+    },
     //获取科目名称
     getSubjectName() {
       this.$grade

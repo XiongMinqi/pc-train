@@ -1,13 +1,18 @@
 <template>
   <div v-loading="loading">
-    <div class="choose">
+
+    <div class="display-flex display-align-center display-justify-between">
+      <div class="pageTitle">待完成考试</div>
+      <div><el-button size="mini" plain type="primary" @click="jumpHistoryList('/testRecords')">考试记录</el-button></div>
+    </div>
+    <div class="choose searchPadding">
       <div class="classname">
         <el-input
-          v-model="paperName"
-          maxlength="30"
-          show-word-limit
-          clearable
-          placeholder="请输入试卷名称"
+            v-model="paperName"
+            maxlength="30"
+            show-word-limit
+            clearable
+            placeholder="请输入试卷名称"
         ></el-input>
       </div>
       <div class="btn">
@@ -31,9 +36,9 @@
             <div style="margin-left:30px">
               <div class="name" style="font-weight:bold">
                 {{item.name}}
-                <span
-                  style="font-style: italic;font-weight:normal;font-size:13px;color:#909399;padding-left:10px"
-                >{{item.majorname}} / {{item.departname}}</span>
+<!--                <span-->
+<!--                  style="font-style: italic;font-weight:normal;font-size:13px;color:#909399;padding-left:10px"-->
+<!--                >{{item.majorname}} / {{item.departname}}</span>-->
                 <span style="margin-left:10px">
                   <el-tag type="success" size="mini" v-if="item.level===0">简单</el-tag>
                   <el-tag type="info" size="mini" v-if="item.level===1">普通</el-tag>
@@ -188,6 +193,9 @@ export default {
   },
   components: { submitPaper },
   methods: {
+    jumpHistoryList(e){
+      this.$router.push({path:e})
+    },
     confirm() {
       this.$message({
         message: "即将进入考试，祝您考试顺利",
@@ -490,7 +498,7 @@ export default {
 .choose {
   display: flex;
   align-items: center;
-  padding-bottom: 5px;
+  //padding-bottom: 5px;
 }
 .classname {
   margin-right: 20px;

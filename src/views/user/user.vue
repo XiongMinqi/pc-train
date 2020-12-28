@@ -69,7 +69,7 @@
       <div class="input">
         <el-upload
           class="avatar-uploader"
-          action="people/setMyAvatar"
+          action="../people/setMyAvatar"
           :show-file-list="false"
           :on-success="handleAvatarSuccess"
           :on-progress="onProgress"
@@ -89,18 +89,18 @@
     </div>
     <el-dialog title="修改密码" :visible.sync="popup">
       <div class="changepass">
-        <div class="userlist">
-          <div class="word">姓名</div>
-          <div class="input">
-            <el-input size="mini" v-model="userInfo.username" placeholder="请输入姓名"></el-input>
-          </div>
-        </div>
-        <div class="userlist">
-          <div class="word">身份证号码</div>
-          <div class="input">
-            <el-input size="mini" v-model="userInfo.idCardNumber" placeholder="请输入身份证号码"></el-input>
-          </div>
-        </div>
+<!--        <div class="userlist">-->
+<!--          <div class="word">姓名</div>-->
+<!--          <div class="input">-->
+<!--            <el-input size="mini" v-model="userInfo.username" placeholder="请输入姓名"></el-input>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        <div class="userlist">-->
+<!--          <div class="word">身份证号码</div>-->
+<!--          <div class="input">-->
+<!--            <el-input size="mini" v-model="userInfo.idCardNumber" placeholder="请输入身份证号码"></el-input>-->
+<!--          </div>-->
+<!--        </div>-->
         <div class="userlist">
           <div class="word">原密码</div>
           <div class="input">
@@ -275,28 +275,51 @@ export default {
       // console.log(this.originalPassword);
       // console.log(this.newPassword);
       // console.log(this.confirmPassword);
-      let data = {
-        newPassword: this.newPassword,
-        oldPassword: this.originalPassword,
-      };
-      this.$api
-        .changePassword(data)
-        .then((res) => {
-          // console.log(res);
-          if (res.data.code === 1000) {
-            this.$router.push({ name: "login", path: "/login" });
-          }
-          if (res.data.code == 0) {
-            this.$message({
-              message: "密码修改成功",
-              type: "success",
-            });
-            this.$router.push({ name: "login", path: "/login" });
-          }
-        })
-        .catch((err) => {
-          // console.log(err);
+      if(this.originalPassword===""){
+        this.$message({
+          message: "请输入旧密码",
+          type: "warning",
         });
+      }else if(this.newPassword===""){
+        this.$message({
+          message: "请输入新密码",
+          type: "warning",
+        });
+      }else if(this.confirmPassword===""){
+        this.$message({
+          message: "请再次输入密码",
+          type: "warning",
+        });
+      }else if(this.newPassword!==this.confirmPassword){
+        this.$message({
+          message: "两次密码输入不一致",
+          type: "warning",
+        });
+      } else {
+        let data = {
+          newPassword: this.newPassword,
+          oldPassword: this.originalPassword,
+        };
+        this.$api
+            .changePassword(data)
+            .then((res) => {
+              // console.log(res);
+              if (res.data.code === 1000) {
+                this.$router.push({ name: "login", path: "/login" });
+              }
+              if (res.data.code == 0) {
+                this.$message({
+                  message: "密码修改成功",
+                  type: "success",
+                });
+                this.$router.push({ name: "login", path: "/login" });
+              }
+            })
+            .catch((err) => {
+              // console.log(err);
+            });
+      }
+
     },
     //获取个人信息
     getUserList() {

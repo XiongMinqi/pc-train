@@ -1,5 +1,11 @@
 <template>
   <div v-loading="loading">
+    <div>
+      <div class="backLastPage" @click="backLastPage">
+        <i class="el-icon-arrow-left"></i>返回
+      </div>
+      <div class="pageTitle">任务统计</div>
+    </div>
     <div class="flex aligh-center">
       <div>
         <el-select v-model="type" placeholder="请选择时间范围">
@@ -83,6 +89,9 @@ export default {
   },
   components: {},
   methods: {
+    backLastPage() {
+      this.$router.go(-1);
+    },
     getlist() {
       let data = {
         timeRange: this.type,

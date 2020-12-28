@@ -1,26 +1,37 @@
 <template>
   <div v-loading="loading">
-    <div class="choose">
-      <div class="classname">
-        <el-select v-model="subname" placeholder="请选择科目">
-          <el-option key value="不限"></el-option>
-          <el-option v-for="item in subjectName" :key="item.key" :value="item.value"></el-option>
-        </el-select>
+    <div>
+      <div class="backLastPage" @click="backLastPage">
+        <i class="el-icon-arrow-left"></i>返回
       </div>
+      <div class="display-align-center display-flex display-justify-between">
+        <div class="pageTitle">考试记录</div>
+        <div><el-button size="mini" plain type="primary" @click="jumpHistoryList('/grade')">成绩统计</el-button></div>
+      </div>
+
+    </div>
+
+    <div class="choose searchPadding">
+      <!--      <div class="classname">-->
+      <!--        <el-select v-model="subname" placeholder="请选择科目">-->
+      <!--          <el-option key value="不限"></el-option>-->
+      <!--          <el-option v-for="item in subjectName" :key="item.key" :value="item.value"></el-option>-->
+      <!--        </el-select>-->
+      <!--      </div>-->
       <div class="classname">
         <el-input
-          v-model="paperName"
-          maxlength="30"
-          show-word-limit
-          clearable
-          placeholder="请输入考试名称"
+            v-model="paperName"
+            maxlength="30"
+            show-word-limit
+            clearable
+            placeholder="请输入考试名称"
         ></el-input>
       </div>
       <div class="btn">
-        <el-button type="primary" @click="getTestExam" plain>开始筛选</el-button>
+        <el-button type="primary" @click="beginGetTestExam" plain>开始筛选</el-button>
       </div>
     </div>
-    <el-divider>考试记录</el-divider>
+<!--    <el-divider>考试记录</el-divider>-->
     <div class="indexLeft">
       <el-radio-group v-model="choosetype" @change="chooseradio">
         <el-radio-button label="all">
@@ -155,6 +166,17 @@ export default {
   },
   components: { submitPaper },
   methods: {
+    jumpHistoryList(e){
+      this.$router.push({path:e})
+    },
+    backLastPage() {
+      this.$router.go(-1);
+    },
+    beginGetTestExam(){
+      this.status = null;
+      this.page = 1;
+      this.getTestExam();
+    },
     chooseradio() {
       console.log(this.choosetype);
       if (this.choosetype === "all") {
@@ -282,15 +304,15 @@ export default {
     },
     getTestExam() {
       this.loading = true;
-      if (this.subname === "不限") {
-        this.subjectId = null;
-      } else {
-        this.subjectName.map((item) => {
-          if (this.subname === item.value) {
-            this.subjectId = Number(item.key);
-          }
-        });
-      }
+      // if (this.subname === "不限") {
+      //   this.subjectId = null;
+      // } else {
+      //   this.subjectName.map((item) => {
+      //     if (this.subname === item.value) {
+      //       this.subjectId = Number(item.key);
+      //     }
+      //   });
+      // }
       let data = {
         page: this.page,
         limit: this.limit,
@@ -443,7 +465,7 @@ export default {
 .choose {
   display: flex;
   align-items: center;
-  padding-bottom: 8px;
+  //padding-bottom: 8px;
 }
 .classname {
   margin-right: 20px;

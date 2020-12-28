@@ -127,5 +127,9 @@ export default {
     //删除错题
     deleteMistake(id) {
         return axios.get(`me/deleteWrongQuestionSet?questionId=${id}`)
+    },
+    //获取题库列表
+    getBankList(data){
+        return axios.post("tkQuestion/pageQuestionLibrary",data)
     }
 }

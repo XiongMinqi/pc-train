@@ -1,6 +1,7 @@
 <template>
   <div v-loading="loading">
-    <div class="choose">
+    <div class="pageTitle">错题集</div>
+    <div class="choose searchPadding">
       <div class="classname">
         <el-select v-model="subname" placeholder="请选择科目">
           <el-option key value="不限"></el-option>
@@ -438,7 +439,6 @@ export default {
 .choose {
   display: flex;
   align-items: center;
-  padding: 0 0 10px 20px;
 }
 
 .subject {

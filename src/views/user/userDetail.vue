@@ -135,6 +135,7 @@ export default {
     },
     //获取专业和部门名称
     getSubjectDetail() {
+      this.getUserList();
       this.$api
         .getSubject()
         .then((res) => {
@@ -178,7 +179,6 @@ export default {
     },
   },
   mounted() {
-    this.getUserList();
     this.getSubjectDetail();
     let userInfo = JSON.parse(localStorage.getItem("userInfo"));
     this.imgUrl = userInfo.avatarUrl;

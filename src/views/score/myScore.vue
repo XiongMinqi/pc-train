@@ -1,5 +1,6 @@
 <template>
   <div v-loading="loading">
+    <div class="pageTitle">个人积分</div>
     <div class="scorebg bg-white">
       <div style="text-align:center; display: flex;align-items: center;">
         <div>总积分</div>

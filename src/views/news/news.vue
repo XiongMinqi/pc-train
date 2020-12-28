@@ -1,7 +1,8 @@
 <template>
   <div v-loading="loading">
+    <div class="pageTitle">系统公告</div>
     <div v-if="show">
-      <div class="choose">
+      <div class="choose searchPadding">
         <div class="classname">
           <el-input v-model="title" maxlength="30" show-word-limit clearable placeholder="请输入公告名称"></el-input>
         </div>
@@ -18,8 +19,10 @@
         >
           <div class="flex justify-between aligh-center news">
             <div class="flex aligh-center">
-              <div class="newsImg">
-                <!-- <img src="../../assets/icon/news.png" alt /> -->
+              <div class="newsImg" v-if="item.thumbnailUrl">
+                <img :src="item.thumbnailUrl" alt />
+              </div>
+              <div class="newsImg" v-else>
                 <img src="../../assets/img/newsImg.png" alt />
               </div>
               <div>
@@ -54,8 +57,8 @@
       </div>
       <div v-else class="else"></div>
     </div>
-    <el-dialog :title="newsDetail.title" :visible.sync="dialogFormVisible" @close="close">
-      <div class="newsMsg">
+    <el-dialog :title="newsDetail.title" :visible.sync="dialogFormVisible" @close="close" >
+      <div class="newsMsg" style="height: 60vh;overflow-y: scroll">
         <!-- <div
           style="font-size: 18px;margin-bottom: 10px;letter-spacing: 1px;line-height:1.5em;"
         >{{newsDetail.title}}</div>-->
@@ -63,6 +66,9 @@
           <div style=";padding-right: 10px;">发布时间 : {{newsDetail.createTime}}</div>
           <div>发布人员 : {{newsDetail.peopleName}}</div>
           <div style="color:#a2a2a2;padding-left:10px">浏览次数 : {{newsDetail.readCount}}</div>
+        </div>
+        <div style="margin: 0 auto;text-align: center">
+          <img :src="newsDetail.pictureUrl" alt="">
         </div>
         <div
           style="text-indent:2em;margin-top:10px;letter-spacing: 0.5px;line-height:2em;"
@@ -235,8 +241,6 @@ export default {
 .choose {
   display: flex;
   align-items: center;
-  padding-bottom: 5px;
-  margin-bottom: 5px;
 }
 .classname {
   margin-right: 20px;

@@ -1,5 +1,11 @@
 <template>
   <div v-loading="loading">
+    <div class="display-align-center display-flex display-justify-between">
+      <div class="pageTitle">学习任务</div>
+      <div >
+        <el-button size="mini" plain type="primary" @click="jumpHistoryList('/statistMission')">任务统计</el-button>
+        <el-button size="mini" plain type="primary" @click="jumpHistoryList('/historyMission')">历史记录</el-button></div>
+    </div>
     <div v-if="showMission">
       <div v-if="missionList.length>0">
         <div v-for="(item,index) in missionList" :key="index" class="cardsDetail">
@@ -77,6 +83,9 @@ export default {
   },
   components: {},
   methods: {
+    jumpHistoryList(e){
+      this.$router.push({path:e})
+    },
     handleSizeChange(val) {
       this.loading = true;
       this.page = 1;

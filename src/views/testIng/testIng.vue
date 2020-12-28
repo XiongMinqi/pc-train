@@ -736,7 +736,7 @@ export default {
         });
     },
   },
-  destroyed() {
+  beforeDestroy() {
     clearInterval(this.timecount);
     clearInterval(this.saveMsg);
   },
@@ -774,6 +774,8 @@ export default {
                   answerList: {},
                   checkList: [],
                 };
+                this.$store.state.answerList = {};
+                this.answer={};
                 this.finishTime = this.data.finishTime;
                 this.beginTestTime = Date.parse(nowTest);
                 // console.log(this.data);
@@ -848,6 +850,10 @@ export default {
     };
     //一分钟传一次数据
     this.saveMsgMinute();
+    this.$once('hook:beforeDestroy', () => {
+      clearInterval(this.timecount);
+      clearInterval(this.saveMsg);
+    })
   },
   watch: {
     time(oldval, newval) {

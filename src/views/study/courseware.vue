@@ -1,5 +1,10 @@
 <template>
   <div v-loading="loading">
+
+    <div class="display-justify-between display-flex display-align-center">
+      <div class="pageTitle">课件学习</div>
+      <div><el-button size="mini" plain type="primary" @click="jumpHistoryList('/studyRecord')">学习记录</el-button></div>
+    </div>
     <div class="choose">
       <!-- <div class="subject">
         <el-select disabled v-model="subjectname" placeholder="请选择专业">
@@ -298,6 +303,9 @@ export default {
   },
   components: { vueVideoPlayer, AudioPlayer },
   methods: {
+    jumpHistoryList(e){
+      this.$router.push({path:e})
+    },
     handleSizeChange(val) {
       this.loading = true;
       this.data.page = 1;
@@ -477,8 +485,6 @@ export default {
           //console.log(res);
           if (res.data.code === 0) {
             this.classList = res.data.data[0]["科目名称"];
-            //console.log(this.subjectList, "专业");
-            //console.log(this.classList, "科目");
             this.getAllLearn();
           } else {
             this.$message({
@@ -562,7 +568,7 @@ export default {
 .choose {
   display: flex;
   align-items: center;
-  padding: 10px 20px 10px 0;
+  padding-bottom: 10px;
 }
 .choosesymbol {
   margin-right: 20px;

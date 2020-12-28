@@ -1,6 +1,12 @@
 <template>
   <div v-loading="loading">
-    <div class="historyRecord">在线练习记录</div>
+    <div>
+      <div class="backLastPage" @click="backLastPage">
+        <i class="el-icon-arrow-left"></i>返回
+      </div>
+      <div class="pageTitle">在线练习记录</div>
+    </div>
+
     <div class="list" v-if="showList">
       <el-table :data="list" border style="width: 100%">
         <el-table-column prop="rightNumber" label="答对/道" width="180"></el-table-column>
@@ -48,6 +54,9 @@ export default {
   },
   components: {},
   methods: {
+    backLastPage() {
+      this.$router.go(-1);
+    },
     handleSizeChange(val) {
       this.loading = true;
       this.page = 1;

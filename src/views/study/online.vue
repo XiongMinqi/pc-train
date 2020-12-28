@@ -1,16 +1,21 @@
 <template>
   <div v-loading="loading">
+    <div class="display-align-center display-flex display-justify-between">
+      <div class="pageTitle">在线练习</div>
+      <div ><el-button size="mini" plain type="primary" @click="jumpHistoryList('/practiseRecord')">练习记录</el-button></div>
+    </div>
+
     <div v-if="showselect===true">
-      <div style="display:flex;align-items:center;justify-content: center;">
+      <div>
         <div class="choose">
-<!--          <div class="classname">-->
-<!--            <div class="wordes">来源 :</div>-->
-<!--            <div>-->
-<!--              <el-select v-model="source" placeholder="请选择题库">-->
-<!--                <el-option v-for="item in sourceList" :key="item.key" :value="item.value"></el-option>-->
-<!--              </el-select>-->
-<!--            </div>-->
-<!--          </div>-->
+          <div class="classname">
+            <div class="wordes">题库 :</div>
+            <div>
+              <el-select v-model="source" placeholder="请选择题库">
+                <el-option v-for="item in sourceList" :key="item.key" :value="item.value"></el-option>
+              </el-select>
+            </div>
+          </div>
 <!--          <div class="classname">-->
 <!--            <div class="wordes">专业 :</div>-->
 <!--            <div>-->
@@ -38,15 +43,15 @@
               </el-select>
             </div>
           </div>
-          <div class="classname">
-            <div class="wordes">难易程度 :</div>
-            <div>
-              <el-select v-model="easyType" placeholder="请选择难易程度">
-                <el-option key value="不限"></el-option>
-                <el-option v-for="item in diffcult" :key="item.key" :value="item.value"></el-option>
-              </el-select>
-            </div>
-          </div>
+<!--          <div class="classname">-->
+<!--            <div class="wordes">难易程度 :</div>-->
+<!--            <div>-->
+<!--              <el-select v-model="easyType" placeholder="请选择难易程度">-->
+<!--                <el-option key value="不限"></el-option>-->
+<!--                <el-option v-for="item in diffcult" :key="item.key" :value="item.value"></el-option>-->
+<!--              </el-select>-->
+<!--            </div>-->
+<!--          </div>-->
           <div class="classname">
             <div class="wordes">数量 :</div>
             <div>
@@ -55,18 +60,26 @@
               </el-select>
             </div>
           </div>
+          <div class="info">
+<!--            <div>请选择题库等筛选条件</div>-->
+            <!--          <div style="padding-top:5px">系统默认选择题库</div>-->
+<!--            <div style="padding-top:5px">系统默认选择单选题</div>-->
+<!--            <div style="padding-top:5px">系统默认选择五道题</div>-->
+<!--            <div style="padding-top:5px">其余条件不限</div>-->
+            <div style="padding-top:5px">若练习中途退出则不计入练习记录</div>
+          </div>
           <div class="btn">
             <el-button type="primary" @click="chooseClass">开始练习</el-button>
           </div>
         </div>
-        <div class="info bg-warning">
-          <div>请选择题型等筛选条件</div>
-<!--          <div style="padding-top:5px">系统默认选择题库</div>-->
-          <div style="padding-top:5px">系统默认选择单选题</div>
-          <div style="padding-top:5px">系统默认选择五道题</div>
-          <div style="padding-top:5px">其余条件不限</div>
-          <div style="padding-top:5px">若练习中途退出则不计入练习记录</div>
-        </div>
+<!--        <div class="info bg-warning">-->
+<!--          <div>请选择题库等筛选条件</div>-->
+<!--&lt;!&ndash;          <div style="padding-top:5px">系统默认选择题库</div>&ndash;&gt;-->
+<!--          <div style="padding-top:5px">系统默认选择单选题</div>-->
+<!--          <div style="padding-top:5px">系统默认选择五道题</div>-->
+<!--          <div style="padding-top:5px">其余条件不限</div>-->
+<!--          <div style="padding-top:5px">若练习中途退出则不计入练习记录</div>-->
+<!--        </div>-->
       </div>
     </div>
     
@@ -238,8 +251,16 @@ export default {
       classname: "不限",
       topicType: "单选题",
       easyType: "不限",
-      source: "题库",
+      source: "",
       dialogVisible: false,
+      bankData:{
+        page:1,
+        limit:500,
+        object:{
+          isFilterByAuth:false,
+          type:1
+        }
+      },
       classList: [],
       disabled: false, //点击确定后就不能再选择其他答案
       subjectList: [],
@@ -248,22 +269,14 @@ export default {
       choosed: false, //是否已选择选项
       size: 5,
       listSize: ["5", "10", "15", "20", "25", "30"],
-      sourceList: [
-        {
-          key: 0,
-          value: "题库",
-        },
-        {
-          key: 1,
-          value: "错题集",
-        },
-      ],
+      sourceList: [],
       data: {
         criteria: {
           level: null,
-          majorId: null,
+          // majorId: null,
           subjectId: null,
           type: 0,
+          questionLibraryIds:[],
         },
         fromMyWrongQuestionSet: false,
         size: 5,
@@ -309,6 +322,9 @@ export default {
   },
   components: {},
   methods: {
+    jumpHistoryList(e){
+      this.$router.push({path:e})
+    },
     abandon() {
       this.showselect = true;
       this.disabled = false;
@@ -445,6 +461,41 @@ export default {
           //console.log(err);
         });
     },
+    //获取题库列表
+    getWorkList(){
+      this.$grade.getBankList(this.bankData)
+          .then((res) => {
+            this.loading = false;
+            if (res.data.code === 1000) {
+              this.$router.push({ name: "login", path: "/login" });
+            }
+            if (res.data.code === 0) {
+              this.sourceList=[];
+              if(res.data.data){
+                let data={}
+                res.data.data.map(item=>{
+                  data={
+                    value:item.name,
+                    key:item.id
+                  };
+                  this.sourceList.push(data)
+                })
+              }
+            } else {
+              this.$message({
+                message: res.data.msg,
+                typr: "warning",
+              });
+            }
+          })
+          .catch((err) => {
+            this.loading = false;
+            this.$message({
+              message: "获取失败",
+              type: "warning",
+            });
+          });
+    },
     //根据题目id获取详情
     getInfo(e) {
       this.loading = true;
@@ -476,60 +527,64 @@ export default {
     },
     //选择科目，专业，题型
     chooseClass() {
-      this.loading = true;
       // console.log(this.classname);
-      if (this.source === "题库") {
-        this.data.fromMyWrongQuestionSet = false;
-      } else if (this.source === "错题集") {
-        this.data.fromMyWrongQuestionSet = true;
+      if (this.source === "") {
+        this.$message({
+          message: "请选择一个题库",
+          type: "warning",
+        })
+        // this.data.fromMyWrongQuestionSet = false;
+      } else if(this.source!==""){
+        this.sourceList.map((item) => {
+          if (item.value == this.source) {
+            this.data.criteria.questionLibraryIds=[]
+            this.data.criteria.questionLibraryIds[0] = item.key;
+          }
+        });
       }
-      if (this.classname == "" || this.classname == "不限") {
+      if (this.classname === "" || this.classname === "不限") {
         this.data.criteria.subjectId = null;
       } else {
         this.classList.map((item) => {
-          if (item.value == this.classname) {
+          if (item.value === this.classname) {
             this.data.criteria.subjectId = item.key;
           }
         });
       }
-      // console.log(this.subjectname);
-      if (this.subjectname == "" || this.subjectname == "不限") {
-        this.data.criteria.majorId = null;
-      } else {
-        this.subjectList.map((item) => {
-          if (item.value == this.subjectname) {
-            this.data.criteria.majorId = item.key;
-          }
-        });
-      }
-      // console.log(this.topicType);
-      if (this.topicType == "" || this.topicType == "不限") {
+      // if (this.subjectname === "" || this.subjectname === "不限") {
+      //   this.data.criteria.majorId = null;
+      // } else{
+      //   this.subjectList.map((item) => {
+      //     if (item.value === this.subjectname) {
+      //       this.data.criteria.majorId = item.key;
+      //     }
+      //   });
+      // }
+      if (this.topicType === "" || this.topicType === "不限") {
         this.data.criteria.type = 0;
         this.type = false;
       } else {
         this.type = true;
         this.questionType.map((item) => {
-          if (item.value == this.topicType) {
+          if (item.value === this.topicType) {
             this.data.criteria.type = item.key;
           }
         });
       }
-      // console.log(this.easyType);
-      if (this.easyType == "" || this.easyType == "不限") {
+      if (this.easyType === "" || this.easyType === "不限") {
         this.data.criteria.level = null;
       } else {
         this.diffcult.map((item) => {
-          if (item.value == this.easyType) {
+          if (item.value === this.easyType) {
             this.data.criteria.level = item.key;
           }
         });
       }
-      // console.log(this.size);
-      if (this.size != "") {
+      if (this.size !== "") {
         this.data.size = Number(this.size);
       }
-      //console.log(this.data);
-      if (this.type === true || this.data.type !== null) {
+      if(this.source!==""){
+      this.loading = true;
         this.$api
           .getRandomQuestion(this.data)
           .then((res) => {
@@ -553,11 +608,6 @@ export default {
           .catch((err) => {
             this.loading = false;
           });
-      } else {
-        this.$message({
-          message: "请至少选择一种题型",
-          type: "warning",
-        });
       }
     },
     // 单选
@@ -665,6 +715,7 @@ export default {
   },
   mounted() {
     this.getdict();
+    this.getWorkList();
     this.flag = this.$route.query.flag;
   },
   watch: {},
@@ -676,7 +727,7 @@ export default {
 .choose {
   // display: flex;
   // align-items: center;
-  padding: 20px 20px;
+  padding: 20px 0;
 }
 .choosesymbol {
   margin-right: 20px;
@@ -742,10 +793,11 @@ export default {
   margin-top: 50px;
 }
 .info {
-  text-align: center;
-  margin-left: 100px;
-  padding: 50px;
-  font-size: 20px;
+  //text-align: center;
+  //margin-left: 100px;
+  //padding: 50px;
+  //font-size: 20px;
+  color: #909399;
   // color: red;
 }
 .flex {

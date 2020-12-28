@@ -1,5 +1,6 @@
 <template>
   <div v-loading="loading">
+    <div class="pageTitle">培训经历</div>
     <el-tabs v-model="activeName" :stretch="true" @tab-click="handleClick">
       <el-tab-pane label="培训经历" name="first">
         <div class="flex">

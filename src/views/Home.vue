@@ -49,7 +49,7 @@
             <el-dropdown>
               <div class="topLeft">
                 <div>
-                  <div v-if="userInfo.avatarUrl">
+                  <div v-if="userInfo.avatarUrl" style="margin: 4px 15px 0 20px;">
                     <img class="userImg" :src="userInfo.avatarUrl" alt />
                   </div>
                   <div v-else>
@@ -101,27 +101,27 @@
                   <i class="el-icon-s-promotion"></i>
                   <span slot="title">我的课程</span>
                 </el-menu-item>-->
-                <el-submenu index="2">
-                  <template slot="title">
-                    <i class="el-icon-s-help"></i>
-                    <span slot="title">学习任务</span>
-                  </template>
-                  <el-menu-item-group>
-                    <template slot="title">任务</template>
-                    <el-menu-item index="2-1" @click="goTo('/undoMission')">
-                      <i class="el-icon-notebook-1"></i>
-                      <span slot="title">待完成任务</span>
-                    </el-menu-item>
-                    <el-menu-item index="2-2" @click="goTo('/historyMission')">
-                      <i class="el-icon-tickets"></i>
-                      <span slot="title">历史记录</span>
-                    </el-menu-item>
-                    <el-menu-item index="2-3" @click="goTo('/statistMission')">
-                      <i class="el-icon-s-data"></i>
-                      <span slot="title">任务统计</span>
-                    </el-menu-item>
-                  </el-menu-item-group>
-                </el-submenu>
+<!--                <el-submenu index="2">-->
+<!--                  <template slot="title">-->
+<!--                    <i class="el-icon-s-help"></i>-->
+<!--                    <span slot="title">学习任务</span>-->
+<!--                  </template>-->
+<!--                  <el-menu-item-group>-->
+<!--                    <template slot="title">任务</template>-->
+<!--                    <el-menu-item index="2-1" @click="goTo('/undoMission')">-->
+<!--                      <i class="el-icon-notebook-1"></i>-->
+<!--                      <span slot="title">待完成任务</span>-->
+<!--                    </el-menu-item>-->
+<!--                    <el-menu-item index="2-2" @click="goTo('/historyMission')">-->
+<!--                      <i class="el-icon-tickets"></i>-->
+<!--                      <span slot="title">历史记录</span>-->
+<!--                    </el-menu-item>-->
+<!--                    <el-menu-item index="2-3" @click="goTo('/statistMission')">-->
+<!--                      <i class="el-icon-s-data"></i>-->
+<!--                      <span slot="title">任务统计</span>-->
+<!--                    </el-menu-item>-->
+<!--                  </el-menu-item-group>-->
+<!--                </el-submenu>-->
                 <el-submenu index="3">
                   <template slot="title">
                     <i class="el-icon-cherry"></i>
@@ -155,14 +155,14 @@
                       <i class="el-icon-edit"></i>
                       <span slot="title">我的考试</span>
                     </el-menu-item>
-                    <el-menu-item index="4-2" @click="goTo('/testRecords')">
-                      <i class="el-icon-s-data"></i>
-                      <span slot="title">考试记录</span>
-                    </el-menu-item>
-                    <el-menu-item index="4-3" @click="goTo('/grade')">
-                      <i class="el-icon-medal"></i>
-                      <span slot="title">成绩统计</span>
-                    </el-menu-item>
+<!--                    <el-menu-item index="4-2" @click="goTo('/testRecords')">-->
+<!--                      <i class="el-icon-s-data"></i>-->
+<!--                      <span slot="title">考试记录</span>-->
+<!--                    </el-menu-item>-->
+<!--                    <el-menu-item index="4-3" @click="goTo('/grade')">-->
+<!--                      <i class="el-icon-medal"></i>-->
+<!--                      <span slot="title">成绩统计</span>-->
+<!--                    </el-menu-item>-->
                     <el-menu-item index="4-4" @click="goTo('/mistake')">
                       <i class="el-icon-document"></i>
                       <span slot="title">错题集选</span>
@@ -202,14 +202,18 @@
                       <i class="el-icon-edit"></i>
                       <span slot="title">在线练习</span>
                     </el-menu-item>
-                    <el-menu-item index="6-4" @click="goTo('/studyRecord')">
-                      <i class="el-icon-tickets"></i>
-                      <span slot="title">学习记录</span>
+                    <el-menu-item index="6-4" @click="goTo('/undoMission')">
+                      <i class="el-icon-notebook-1"></i>
+                      <span slot="title">学习任务</span>
                     </el-menu-item>
-                    <el-menu-item index="6-5" @click="goTo('/practiseRecord')">
-                      <i class="el-icon-document"></i>
-                      <span slot="title">练习记录</span>
-                    </el-menu-item>
+<!--                    <el-menu-item index="6-4" @click="goTo('/studyRecord')">-->
+<!--                      <i class="el-icon-tickets"></i>-->
+<!--                      <span slot="title">学习记录</span>-->
+<!--                    </el-menu-item>-->
+<!--                    <el-menu-item index="6-5" @click="goTo('/practiseRecord')">-->
+<!--                      <i class="el-icon-document"></i>-->
+<!--                      <span slot="title">练习记录</span>-->
+<!--                    </el-menu-item>-->
                   </el-menu-item-group>
                 </el-submenu>
                 <!-- <el-menu-item index="7" @click="goTo('/mistake')">

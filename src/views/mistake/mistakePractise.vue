@@ -1,7 +1,13 @@
 <template>
   <div v-loading="loading">
+    <div>
+      <div class="backLastPage" @click="backLastPage">
+        <i class="el-icon-arrow-left"></i>返回
+      </div>
+      <div class="pageTitle">错题练习</div>
+    </div>
     <div v-if="showselect===true">
-      <div style="display:flex;align-items:center;justify-content: center;">
+      <div>
         <div class="choose">
           <div class="classname">
             <div class="wordes">来源 :</div>
@@ -12,15 +18,15 @@
               </el-select>
             </div>
           </div>
-          <div class="classname">
-            <div class="wordes">专业 :</div>
-            <div>
-              <el-select v-model="subjectname" placeholder="请选择专业">
-                <el-option key value="不限"></el-option>
-                <el-option v-for="item in subjectList" :key="item.key" :value="item.value"></el-option>
-              </el-select>
-            </div>
-          </div>
+<!--          <div class="classname">-->
+<!--            <div class="wordes">专业 :</div>-->
+<!--            <div>-->
+<!--              <el-select v-model="subjectname" placeholder="请选择专业">-->
+<!--                <el-option key value="不限"></el-option>-->
+<!--                <el-option v-for="item in subjectList" :key="item.key" :value="item.value"></el-option>-->
+<!--              </el-select>-->
+<!--            </div>-->
+<!--          </div>-->
           <div class="classname">
             <div class="wordes">科目 :</div>
             <div>
@@ -39,15 +45,15 @@
               </el-select>
             </div>
           </div>
-          <div class="classname">
-            <div class="wordes">难易程度 :</div>
-            <div>
-              <el-select v-model="easyType" placeholder="请选择难易程度">
-                <el-option key value="不限"></el-option>
-                <el-option v-for="item in diffcult" :key="item.key" :value="item.value"></el-option>
-              </el-select>
-            </div>
-          </div>
+<!--          <div class="classname">-->
+<!--            <div class="wordes">难易程度 :</div>-->
+<!--            <div>-->
+<!--              <el-select v-model="easyType" placeholder="请选择难易程度">-->
+<!--                <el-option key value="不限"></el-option>-->
+<!--                <el-option v-for="item in diffcult" :key="item.key" :value="item.value"></el-option>-->
+<!--              </el-select>-->
+<!--            </div>-->
+<!--          </div>-->
           <div class="classname">
             <div class="wordes">数量 :</div>
             <div>
@@ -56,17 +62,24 @@
               </el-select>
             </div>
           </div>
+          <div class="info">
+<!--            <div>请选择题型等筛选条件</div>-->
+<!--            <div style="padding-top:5px">系统默认选择单选题</div>-->
+<!--            <div style="padding-top:5px">系统默认选择十道题</div>-->
+<!--            <div style="padding-top:5px">其余条件不限</div>-->
+            <div style="padding-top:5px">若练习中途退出则不计入练习记录</div>
+          </div>
           <div class="btn">
             <el-button type="primary" @click="chooseClass">开始练习</el-button>
           </div>
         </div>
-        <div class="info bg-warning">
-          <div>请选择题型等筛选条件</div>
-          <div style="padding-top:5px">系统默认选择单选题</div>
-          <div style="padding-top:5px">系统默认选择十道题</div>
-          <div style="padding-top:5px">其余条件不限</div>
-          <div style="padding-top:5px">若练习中途退出则不计入练习记录</div>
-        </div>
+<!--        <div class="info bg-warning">-->
+<!--          <div>请选择题型等筛选条件</div>-->
+<!--          <div style="padding-top:5px">系统默认选择单选题</div>-->
+<!--          <div style="padding-top:5px">系统默认选择十道题</div>-->
+<!--          <div style="padding-top:5px">其余条件不限</div>-->
+<!--          <div style="padding-top:5px">若练习中途退出则不计入练习记录</div>-->
+<!--        </div>-->
       </div>
     </div>
     <div v-else class="prictise">
@@ -173,6 +186,7 @@
         </div>
       </div>
       <div class="choosebtn">
+        <el-button type="warning" round @click="abandon">放弃练习</el-button>
         <div v-if="showBtn">
           <el-button type="primary" round @click="confirm">完成</el-button>
         </div>
@@ -306,6 +320,9 @@ export default {
   },
   components: {},
   methods: {
+    backLastPage() {
+      this.$router.go(-1);
+    },
     //完成
     confirm() {
       if (this.radio !== "" || this.checkList.length > 0) {
@@ -344,6 +361,16 @@ export default {
           type: "warning"
         });
       }
+    },
+    abandon() {
+      this.showselect = true;
+      this.disabled = false;
+      this.showAnswer = false;
+      this.choosed = false;
+      this.showBtn = true;
+      this.radio = "";
+      this.checkList = [];
+      this.questionDetail = {};
     },
     //提交练习
     submitTrain() {
@@ -475,7 +502,7 @@ export default {
       } else {
         this.classList.map(item => {
           if (item.value == this.classname) {
-            this.data.criteria.subjectId = item.key;
+            this.data.criteria.subjectId = Number(item.key);
           }
         });
       }
@@ -485,7 +512,7 @@ export default {
       } else {
         this.subjectList.map(item => {
           if (item.value == this.subjectname) {
-            this.data.criteria.majorId = item.key;
+            this.data.criteria.majorId = Number(item.key);
           }
         });
       }
@@ -497,7 +524,7 @@ export default {
         this.type = true;
         this.questionType.map(item => {
           if (item.value == this.topicType) {
-            this.data.criteria.type = item.key;
+            this.data.criteria.type = Number(item.key);
           }
         });
       }
@@ -507,7 +534,7 @@ export default {
       } else {
         this.diffcult.map(item => {
           if (item.value == this.easyType) {
-            this.data.criteria.level = item.key;
+            this.data.criteria.level = Number(item.key);
           }
         });
       }
@@ -662,7 +689,7 @@ export default {
 .choose {
   // display: flex;
   // align-items: center;
-  padding: 20px 20px;
+  padding: 20px 0;
 }
 .choosesymbol {
   margin-right: 20px;
@@ -728,10 +755,11 @@ export default {
   margin-top: 50px;
 }
 .info {
-  text-align: center;
-  margin-left: 100px;
-  padding: 50px;
-  font-size: 20px;
+  //text-align: center;
+  //margin-left: 100px;
+  //padding: 50px;
+  //font-size: 20px;
+  color: #909399;
 }
 .flex {
   display: flex;

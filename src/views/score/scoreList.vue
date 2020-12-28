@@ -1,9 +1,11 @@
 <template>
   <div v-loading="loading" style="position:relative">
-    <div class="backLastPage" @click="backLastPage">
-      <i class="el-icon-arrow-left"></i>返回
+    <div>
+      <div class="backLastPage" @click="backLastPage">
+        <i class="el-icon-arrow-left"></i>返回
+      </div>
+      <div class="pageTitle">积分排行</div>
     </div>
-    <div class="tishiwenzi">积分排行</div>
     <div v-if="showScoreList">
       <div v-if="scoreList.length>0">
         <div v-for="(item,index) in scoreList" :key="index">
@@ -32,7 +34,7 @@
                 </div>
                 <div>{{item.peopleName}}</div>
               </div>
-              <div class="object">{{item.departmentName}} / {{item.majorName}}</div>
+              <div class="object">{{item.departmentName}} </div>
             </div>
 
             <div class="scoreCount">
