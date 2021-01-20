@@ -22,6 +22,7 @@
                   :key="index"
                   :timestamp="activity.publishTime"
                   placement="top"
+                  type="primary"
                 >
                   <el-card>
                     <h4>{{activity.name}}</h4>
@@ -51,6 +52,7 @@
             <div class="experList">
               <el-timeline :reverse="false">
                 <el-timeline-item
+                  type="primary"
                   v-for="(activity, index) in recordData"
                   :key="index"
                   :timestamp="activity.beginTime"
