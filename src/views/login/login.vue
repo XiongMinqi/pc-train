@@ -172,7 +172,7 @@ export default {
             localStorage.setItem("token", res.headers["x-auth-token"]);
             // this.$store.state.header['x-auth-token'] = res.header['x-auth-token']
             this.$message({
-              message: "欢迎, " + res.data.data[0].nickName,
+              message: "欢迎你, " + res.data.data[0].nickName,
               type: "success",
               duration: 5000,
             });

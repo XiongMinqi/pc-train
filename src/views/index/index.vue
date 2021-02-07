@@ -36,6 +36,7 @@
               <div class="testrecord" v-if="allTestList.length>0">
                 <el-timeline :reverse="false">
                   <el-timeline-item
+                    type="primary"
                     v-for="(item, index) in allTestList"
                     :key="index"
                     :timestamp="item.beginTime"
@@ -49,7 +50,7 @@
       </div>
       <div class="grade">
         <div class="flex aligh-center justify-between">
-          <div class="flex aligh-center numberCount box-shadow numcou" @click="testPaper(1)">
+          <div class="flex aligh-center numberCount box-shadow numcou">
             <div class="iconLeft">
               <div class="numberImg back-primary">
                 <img src="../../assets/img/allpaper.png" alt />
@@ -62,7 +63,7 @@
               <div class="bg-info">全部试卷</div>
             </div>
           </div>
-          <div class="flex aligh-center numberCount box-shadow numcou" @click="testPaper(2)">
+          <div class="flex aligh-center numberCount box-shadow numcou">
             <div class="indexLeft">
               <div class="numberImg back-success">
                 <img src="../../assets/img/eglass-pass.png" alt />
@@ -75,7 +76,7 @@
               <div class="bg-info">及格试卷</div>
             </div>
           </div>
-          <div class="flex aligh-center numberCount box-shadow numcou" @click="testPaper(3)">
+          <div class="flex aligh-center numberCount box-shadow numcou">
             <div class="indexLeft">
               <div class="numberImg back-warning">
                 <img src="../../assets/img/failure.png" alt />
@@ -88,7 +89,7 @@
               <div class="bg-info">不及格试卷</div>
             </div>
           </div>
-          <div class="flex aligh-center numberCount box-shadow numcou" @click="testPaper(4)">
+          <div class="flex aligh-center numberCount box-shadow numcou">
             <div class="indexLeft">
               <div class="numberImg back-info">
                 <img src="../../assets/img/file-empty.png" alt />
@@ -103,7 +104,7 @@
           </div>
         </div>
         <div class="flex justify-between">
-          <div class="classes box-shadow" @click="classes">
+          <div class="classes box-shadow">
             <div>
               <i class="el-icon-s-promotion iconfont"></i>我的课程进度(本周)
             </div>
@@ -121,7 +122,7 @@
               </div>
             </div>
           </div>
-          <div class="record box-shadow" @click="study">
+          <div class="record box-shadow">
             <div>
               <i class="el-icon-tickets iconfont"></i>我的学习记录
             </div>
@@ -636,7 +637,7 @@ export default {
   margin: 10px 0 10px 10px;
 }
 .record:hover {
-  cursor: pointer;
+  //cursor: pointer;
 }
 .classes {
   width: 50%;
@@ -655,7 +656,7 @@ export default {
 }
 .classes:hover {
   // background: #e2e2e2;
-  cursor: pointer;
+  //cursor: pointer;
 }
 .logintime {
   padding: 18px 20px 0 20px;
@@ -671,7 +672,7 @@ export default {
 .el-col {
   // border: 0.5px solid #e2e2e2;
   :hover {
-    cursor: pointer;
+    //cursor: pointer;
     background: #e9e9e9;
     color: green;
   }
@@ -689,7 +690,7 @@ export default {
   color: red;
   width: 123px;
   :hover {
-    cursor: pointer;
+    //cursor: pointer;
     color: green;
   }
   position: relative;
@@ -700,7 +701,7 @@ export default {
     background: red;
     color: white;
     :hover {
-      cursor: pointer;
+      //cursor: pointer;
       color: red !important;
       background: white;
     }
@@ -760,7 +761,7 @@ export default {
 .numcou {
   width: 24%;
   &:hover {
-    cursor: pointer;
+    //cursor: pointer;
     // background: #f2f2f2;
   }
 }

@@ -24,8 +24,8 @@
     <div v-if="showError">
       <div v-if="errorList.length>0">
         <div v-for="(item,index) in errorList" :key="index">
-          <div class="mistake" @click="checkDetail(item)">
-            <div style="display: flex; align-items: center;width: 90%;">
+          <div class="mistake">
+            <div style="display: flex; align-items: center;width: 90%;" @click="checkDetail(item)">
               <div class="userImg">
                 <!-- <img src="../../assets/icon/mistake.png" alt /> -->
                 <img src="../../assets/icon/pencil.png" alt/>

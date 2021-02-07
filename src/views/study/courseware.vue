@@ -610,9 +610,12 @@ export default {
   }
 }
 .msg {
-  display: flex;
-  align-items: center;
   color: #303133;
+  //max-width:300px;
+  //display:inline-block;
+  //white-space:nowrap;
+  //overflow:hidden;
+  //text-overflow:ellipsis;
 }
 .el-dialog {
   position: absolute;
